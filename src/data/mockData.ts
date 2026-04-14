@@ -118,10 +118,10 @@ export const kpiData = {
 };
 
 export const segmentationData = [
-  { type: "new" as DealerType, count: 1230, label: "New Dealers", percentage: 23 },
-  { type: "loyal" as DealerType, count: 2100, label: "Loyal Dealers", percentage: 40 },
-  { type: "inactive" as DealerType, count: 1050, label: "Inactive Dealers", percentage: 20 },
-  { type: "declining" as DealerType, count: 867, label: "Declining Dealers", percentage: 17 },
+  { type: "new" as DealerType, count: 1250, label: "New Dealers", percentage: 25 },
+  { type: "loyal" as DealerType, count: 2000, label: "Loyal Dealers", percentage: 40 },
+  { type: "inactive" as DealerType, count: 1000, label: "Inactive Dealers", percentage: 20 },
+  { type: "declining" as DealerType, count: 750, label: "Declining Dealers", percentage: 15 },
 ];
 
 export const engagementTrend = [
