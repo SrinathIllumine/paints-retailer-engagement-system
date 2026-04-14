@@ -1,16 +1,45 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Smartphone, Monitor } from "lucide-react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="max-w-2xl w-full space-y-8 animate-slide-up">
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            Retailer Engagement Platform
+          </div>
+          <h1 className="font-display font-bold text-4xl text-foreground">JK Cement</h1>
+          <p className="text-muted-foreground text-lg">Select your interface to continue</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me")}>
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
+            </div>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">Field App (ME)</h2>
+            <p className="text-sm text-muted-foreground mb-4">Proactive Engagement Model for Marketing Executives. Mobile-first, zero-typing field conversations.</p>
+            <Button variant="field" className="w-full">Open Field App →</Button>
+          </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/leadership")}>
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Monitor className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
+            </div>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">Leadership Dashboard</h2>
+            <p className="text-sm text-muted-foreground mb-4">Dealer Intelligence System for ASMs and Regional Heads. Strategic visibility and analytics.</p>
+            <Button variant="outline" className="w-full">Open Dashboard →</Button>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
