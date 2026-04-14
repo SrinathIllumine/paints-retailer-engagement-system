@@ -23,8 +23,8 @@ const Index = () => {
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
-            <h2 className="font-display font-bold text-xl text-foreground mb-1">Field App (ME)</h2>
-            <p className="text-sm text-muted-foreground mb-4">Proactive Engagement Model for Marketing Executives. Mobile-first, zero-typing field conversations.</p>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">Retailer Engagement App (for ME)</h2>
+            <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits.</p>
             <Button variant="field" className="w-full">Open Field App →</Button>
           </Card>
 
@@ -32,8 +32,8 @@ const Index = () => {
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Monitor className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
-            <h2 className="font-display font-bold text-xl text-foreground mb-1">Leadership Dashboard</h2>
-            <p className="text-sm text-muted-foreground mb-4">Dealer Intelligence System for the Leadership and ASMs. Strategic visibility and analytics.</p>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">Dealer Intelligence System (for Leadership)</h2>
+            <p className="text-sm text-muted-foreground mb-4">Enables leadership of JK to:</p>
             <Button variant="outline" className="w-full">Open Dashboard →</Button>
           </Card>
         </div>
