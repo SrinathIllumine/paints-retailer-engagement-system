@@ -27,14 +27,14 @@ export interface Objection {
 }
 
 export const dealers: Dealer[] = [
-  { id: "1", name: "Jai Maharashtra Hardware", location: "Pune, MH", type: "loyal", engagementScore: 85, openness: "high", lastVisit: "2 days ago", lastOutcome: "Positive – ordered JK White Cement", area: "Pune West" },
-  { id: "2", name: "Sharma Building Materials", location: "Jaipur, RJ", type: "new", engagementScore: 40, openness: "medium", lastVisit: "1 week ago", lastOutcome: "Introduction completed", area: "Jaipur Central" },
-  { id: "3", name: "Krishna Traders", location: "Hyderabad, TS", type: "declining", engagementScore: 30, openness: "low", lastVisit: "3 weeks ago", lastOutcome: "Unresponsive – competitor focus", area: "Hyderabad East" },
-  { id: "4", name: "Gupta Cement House", location: "Delhi, DL", type: "inactive", engagementScore: 20, openness: "low", lastVisit: "1 month ago", lastOutcome: "Shop closed during visit", area: "Delhi South" },
-  { id: "5", name: "Rajesh Construction Supply", location: "Mumbai, MH", type: "loyal", engagementScore: 92, openness: "high", lastVisit: "Yesterday", lastOutcome: "JK Paint launch discussion – very interested", area: "Mumbai Central" },
-  { id: "6", name: "Patel & Sons Hardware", location: "Ahmedabad, GJ", type: "new", engagementScore: 55, openness: "high", lastVisit: "3 days ago", lastOutcome: "First meeting – willing to stock", area: "Ahmedabad West" },
-  { id: "7", name: "Singh Building Centre", location: "Chandigarh, PB", type: "declining", engagementScore: 35, openness: "medium", lastVisit: "2 weeks ago", lastOutcome: "Price concerns raised", area: "Chandigarh" },
-  { id: "8", name: "Mahalaxmi Traders", location: "Nagpur, MH", type: "loyal", engagementScore: 78, openness: "high", lastVisit: "4 days ago", lastOutcome: "Repeat order placed", area: "Nagpur" },
+  { id: "1", name: "Jai Maharashtra Hardware", location: "Pune West", type: "loyal", engagementScore: 85, openness: "high", lastVisit: "2 days ago", lastOutcome: "Positive – ordered JK White Cement", area: "Pune West" },
+  { id: "2", name: "Sharma Building Materials", location: "Pune East, MH", type: "new", engagementScore: 40, openness: "medium", lastVisit: "1 week ago", lastOutcome: "Introduction completed", area: "Pune East" },
+  { id: "3", name: "Krishna Traders", location: "Pune South, MH", type: "declining", engagementScore: 30, openness: "low", lastVisit: "3 weeks ago", lastOutcome: "Unresponsive – competitor focus", area: "Pune South" },
+  { id: "4", name: "Gupta Cement House", location: "Pune North, MH", type: "inactive", engagementScore: 20, openness: "low", lastVisit: "1 month ago", lastOutcome: "Shop closed during visit", area: "Pune North" },
+  { id: "5", name: "Rajesh Construction Supply", location: "Pune NE, MH", type: "loyal", engagementScore: 92, openness: "high", lastVisit: "Yesterday", lastOutcome: "JK Paint launch discussion – very interested", area: "Pune NE" },
+  { id: "6", name: "Patel & Sons Hardware", location: "Pune SE, MH", type: "new", engagementScore: 55, openness: "high", lastVisit: "3 days ago", lastOutcome: "First meeting – willing to stock", area: "Pune SE" },
+  { id: "7", name: "Singh Building Centre", location: "Pune NW, MH", type: "declining", engagementScore: 35, openness: "medium", lastVisit: "2 weeks ago", lastOutcome: "Price concerns raised", area: "Pune NW" },
+  { id: "8", name: "Mahalaxmi Traders", location: "Pune SW, MH", type: "loyal", engagementScore: 78, openness: "high", lastVisit: "4 days ago", lastOutcome: "Repeat order placed", area: "Pune SW" },
 ];
 
 export const discussionPoints: DiscussionPoint[] = [
