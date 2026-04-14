@@ -42,7 +42,7 @@ const DealerProfile = () => (
           </div>
           <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
             <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{dealer.location}</span>
-            <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />Last: {dealer.lastVisit}</span>
+            <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{dealer.lastVisit}</span>
           </div>
           <div className="flex items-center gap-4 mt-2">
             <div className="text-sm"><span className="font-bold text-foreground">{dealer.engagementScore}</span><span className="text-muted-foreground">/100 Score</span></div>
