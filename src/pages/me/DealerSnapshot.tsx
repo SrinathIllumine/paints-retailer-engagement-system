@@ -3,8 +3,7 @@ import MeLayout from "@/components/me/MeLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
-import OpennessBadge from "@/components/OpennessBadge";
-import { MapPin, Clock, Target, MessageSquare, Sparkles, Star } from "lucide-react";
+import { MapPin, Clock, MessageSquare, Sparkles, Star, Target, IndianRupee } from "lucide-react";
 import { dealers } from "@/data/mockData";
 
 const purposes = [
@@ -13,6 +12,12 @@ const purposes = [
   { icon: Target, label: "Conversion Attempt", active: false },
   { icon: MessageSquare, label: "Issue Handling", active: false },
 ];
+
+const revenueLabelMap: Record<string, string> = {
+  A: "> ₹2 Cr",
+  B: "₹1–2 Cr",
+  C: "< ₹1 Cr",
+};
 
 const DealerSnapshot = () => {
   const { id } = useParams();
@@ -32,6 +37,7 @@ const DealerSnapshot = () => {
                   <MapPin className="w-3.5 h-3.5" />
                   <span>{dealer.location}</span>
                 </div>
+                <p className="text-xs text-muted-foreground mt-0.5">{dealer.dealerCode}</p>
               </div>
               <DealerTypeBadge type={dealer.type} />
             </div>
@@ -39,12 +45,16 @@ const DealerSnapshot = () => {
           <CardContent className="p-4 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-secondary/50 rounded-lg p-3">
-                <p className="text-xs text-muted-foreground mb-0.5">Openness</p>
-                <OpennessBadge level={dealer.openness} />
+                <p className="text-xs text-muted-foreground mb-0.5">Category</p>
+                <DealerTypeBadge type={dealer.type} />
               </div>
               <div className="bg-secondary/50 rounded-lg p-3">
-                <p className="text-xs text-muted-foreground mb-0.5">Score</p>
-                <p className="font-bold text-foreground text-lg">{dealer.engagementScore}<span className="text-xs text-muted-foreground font-normal">/100</span></p>
+                <p className="text-xs text-muted-foreground mb-0.5">Revenue Tier</p>
+                <div className="flex items-center gap-1">
+                  <IndianRupee className="w-3.5 h-3.5 text-foreground" />
+                  <span className="font-bold text-foreground">{dealer.revenueCategory}</span>
+                  <span className="text-xs text-muted-foreground">{revenueLabelMap[dealer.revenueCategory]}</span>
+                </div>
               </div>
             </div>
             <div className="flex items-start gap-2 bg-secondary/30 rounded-lg p-3">
