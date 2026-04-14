@@ -27,7 +27,7 @@ const Dashboard = () => (
               <div className={`w-10 h-10 rounded-lg bg-secondary flex items-center justify-center`}>
                 <kpi.icon className={`w-5 h-5 ${kpi.color}`} />
               </div>
-              <ArrowUpRight className="w-4 h-4 text-success" />
+              <ArrowUpRight className="w-4 h-4 text-primary-foreground" />
             </div>
             <p className="font-display font-bold text-2xl text-foreground mt-3">{kpi.value}</p>
             <p className="text-sm text-muted-foreground">{kpi.label}</p>
