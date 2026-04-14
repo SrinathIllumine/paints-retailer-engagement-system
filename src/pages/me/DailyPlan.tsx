@@ -59,7 +59,7 @@ const DailyPlan = () => {
                     <MapPin className="w-3.5 h-3.5" />
                     <span>{dealer.location}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Last: {dealer.lastVisit}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Last visited: {dealer.lastVisit}</p>
                 </div>
                 <Button
                   variant="field"
