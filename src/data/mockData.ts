@@ -110,8 +110,8 @@ export const regions = ["North", "South", "East", "West"];
 export const zones = ["Zone A", "Zone B", "Zone C", "Zone D"];
 
 export const kpiData = {
-  totalDealers: 5247,
-  conversationsToday: 423,
+  totalDealers: 5000,
+  conversationsToday: 2000,
   conversationsWeek: 2180,
   engagementQualityIndex: 7.4,
   launchReadiness: 68,
