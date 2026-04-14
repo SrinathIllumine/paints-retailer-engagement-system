@@ -14,7 +14,7 @@ const Index = () => {
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             Retailer Engagement Platform
           </div>
-          <h1 className="font-display font-bold text-4xl text-foreground">JK Cement</h1>
+          <h1 className="font-display font-bold text-4xl text-foreground">JK Cements</h1>
           <p className="text-muted-foreground text-lg">Select your interface to continue</p>
         </div>
 
@@ -33,7 +33,7 @@ const Index = () => {
               <Monitor className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
             <h2 className="font-display font-bold text-xl text-foreground mb-1">Leadership Dashboard</h2>
-            <p className="text-sm text-muted-foreground mb-4">Dealer Intelligence System for ASMs and Regional Heads. Strategic visibility and analytics.</p>
+            <p className="text-sm text-muted-foreground mb-4">Dealer Intelligence System for the Leadership and ASMs. Strategic visibility and analytics.</p>
             <Button variant="outline" className="w-full">Open Dashboard →</Button>
           </Card>
         </div>
