@@ -33,7 +33,11 @@ const Index = () => {
               <Monitor className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
             <h2 className="font-display font-bold text-xl text-foreground mb-1">Dealer Intelligence System (for Leadership)</h2>
-            <p className="text-sm text-muted-foreground mb-4">Enables leadership of JK to:</p>
+            <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">
+              Enables leadership of JK to:
+              {"\n"}- have a strategic vision of how dealer networks are operating
+              {"\n"}- view the quality of engagement at the ME level across the system
+            </p>
             <Button variant="outline" className="w-full">Open Dashboard →</Button>
           </Card>
         </div>
