@@ -6,9 +6,9 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, L
 
 const kpis = [
   { icon: Users, label: "Total Dealers", value: kpiData.totalDealers.toLocaleString(), change: "+124 this month", color: "text-info" },
-  { icon: MessageSquare, label: "Today's Conversations", value: kpiData.conversationsToday.toString(), change: "78% of target", color: "text-success" },
+  { icon: MessageSquare, label: "Today's Conversations", value: kpiData.conversationsToday.toString(), change: "66.67% of target", color: "text-success" },
   { icon: TrendingUp, label: "Engagement Quality", value: `${kpiData.engagementQualityIndex}/10`, change: "+0.4 vs last month", color: "text-warning" },
-  { icon: Rocket, label: "Launch Readiness", value: `${kpiData.launchReadiness}%`, change: "JK Paint", color: "text-primary" },
+  { icon: Rocket, label: "Launch Readiness", value: `${kpiData.launchReadiness}%`, change: "JK Paint Ultima", color: "text-primary" },
 ];
 
 const Dashboard = () => (
