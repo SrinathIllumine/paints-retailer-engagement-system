@@ -14,7 +14,7 @@ const Index = () => {
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             Retailer Engagement Platform
           </div>
-          <h1 className="font-display font-bold text-4xl text-foreground">JK Cements</h1>
+          <h1 className="font-display font-bold text-4xl text-foreground">JK Cement</h1>
           <p className="text-muted-foreground text-lg">Select your interface to continue</p>
         </div>
 
