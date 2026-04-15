@@ -70,7 +70,7 @@ export const engagementThemes: EngagementTheme[] = [
   {
     id: "et1",
     title: "Alignment to JK's Vision of Multi-Products",
-    subtitle: "Help dealers see the opportunity in a diversified product portfolio",
+    subtitle: "Help retailers see the opportunity in a multi-product portfolio",
     icon: "Layers",
     color: "primary",
     discussionPoints: [
@@ -122,7 +122,7 @@ export const engagementThemes: EngagementTheme[] = [
   },
   {
     id: "et2",
-    title: "Getting Initial Success as a New Dealer",
+    title: "Getting Initial Success as a New Retailer",
     subtitle: "Build confidence and momentum in the first 90 days",
     icon: "Rocket",
     color: "info",
