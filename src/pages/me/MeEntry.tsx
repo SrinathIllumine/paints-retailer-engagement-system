@@ -42,7 +42,9 @@ const MeEntry = () => {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-display font-bold text-foreground text-lg">Flashpoints</h3>
-              <p className="text-sm text-muted-foreground mt-1">-&gt; collective intelligence through precise questions</p>
+              <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line">
+                -&gt; capture &amp; curate and get the best practices{"\n"}-&gt; auto-upgrading system{"\n"}-&gt; collective intelligence through precise questions
+              </p>
             </div>
             <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full shrink-0 mt-1 font-medium">Soon</span>
           </div>
