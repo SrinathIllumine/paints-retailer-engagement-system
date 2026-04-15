@@ -32,12 +32,9 @@ const revenueConfig: Record<RevenueCategory, { label: string; range: string }> =
 
 const puneZones = [
   { name: "Pune West", dealers: dealers.filter((d) => d.area === "Pune West"), x: 20, y: 45 },
-  { name: "Pune East", dealers: dealers.filter((d) => d.area === "Pune East"), x: 75, y: 40 },
   { name: "Pune South", dealers: dealers.filter((d) => d.area === "Pune South"), x: 45, y: 75 },
   { name: "Pune North", dealers: dealers.filter((d) => d.area === "Pune North"), x: 45, y: 15 },
   { name: "Pune NE", dealers: dealers.filter((d) => d.area === "Pune NE"), x: 72, y: 18 },
-  { name: "Pune SE", dealers: dealers.filter((d) => d.area === "Pune SE"), x: 72, y: 72 },
-  { name: "Pune NW", dealers: dealers.filter((d) => d.area === "Pune NW"), x: 20, y: 18 },
   { name: "Pune SW", dealers: dealers.filter((d) => d.area === "Pune SW"), x: 20, y: 72 },
 ];
 
