@@ -84,7 +84,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp2",
         title: "Full Customer Solution",
         description: "Capture the entire demand cycle from base to finish",
-        detail: "When a contractor visits your shop for cement, they also need putty, white cement, and paints. By offering the complete JK range, you become a one-stop solution — reducing customer leakage to competitors.",
+        detail: "When a contractor visits your shop for cement, they also need putty, white cement, and paints. By offering the complete JK range, you become a one-stop solution - reducing customer leakage to competitors.",
       },
       {
         id: "dp3",
