@@ -45,7 +45,7 @@ const DealerSnapshot = () => {
               <div className="bg-secondary/50 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-0.5">Revenue Tier</p>
                 <div className="flex items-center gap-1">
-                  <Award className="w-3.5 h-3.5 text-card" />
+                  <Award className="w-3.5 h-3.5 text-secondary-foreground" />
                   <span className="font-bold text-foreground">{dealer.revenueCategory}</span>
                   <span className="text-xs text-muted-foreground">{revenueLabelMap[dealer.revenueCategory]}</span>
                 </div>
