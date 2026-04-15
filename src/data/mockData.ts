@@ -90,7 +90,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp3",
         title: "Low-Risk Expansion",
         description: "Begin with limited SKUs and scale gradually with company support",
-        detail: "Start with just 5-8 SKUs across categories. JK provides 30-day credit, free display materials, and a dedicated support team. Scale up only when you see traction — zero pressure, full flexibility.",
+        detail: "Start with just 5-8 SKUs across categories. JK provides free display materials, and a dedicated support team. Scale up only when you see traction - zero pressure, full flexibility.",
       },
     ],
     whatIfs: [
