@@ -125,7 +125,7 @@ const MyTradingArea = () => {
         {/* Dynamic Filters based on dropdown */}
         {discoveryMode === "area" && !selectedArea && !showDealerList && (
           <div className="space-y-2 animate-fade-in">
-            <h3 className="font-semibold text-foreground text-sm">Select Area</h3>
+            <h3 className="font-semibold text-foreground text-sm">Select Market Area</h3>
             {areas.map((area) => (
               <Card
                 key={area}
