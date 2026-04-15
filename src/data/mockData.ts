@@ -98,7 +98,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "wi1",
         label: "No demand in my area",
         peerLearning: "Ramesh Traders in a similar tier-2 market started with 10 units of JK Putty. Within 3 months, monthly orders grew to 80+ units as contractors discovered the quality. Initial demand is created through awareness, not existing demand.",
-        dealerStory: "\"I thought the same thing. But once I placed the JK display, contractors started asking. Now multi-products are 40% of my revenue.\" — Ramesh Traders, Nagpur",
+        dealerStory: "\"I thought the same thing. But once I placed the JK display, contractors started asking. Now multi-products are 40% of my revenue.\" - Ramesh Traders, Nagpur",
       },
       {
         id: "wi2",
