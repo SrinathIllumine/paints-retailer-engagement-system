@@ -16,22 +16,38 @@ import {
   Layers,
   Rocket,
   Users,
+  ArrowRight,
 } from "lucide-react";
-import { engagementThemes } from "@/data/mockData";
+import { engagementThemes, dealers } from "@/data/mockData";
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
+const suggestedTakeaways = [
+  "Concern about working capital",
+  "Needs market demand proof",
+  "Open to trial later",
+  "Interested in contractor connect",
+  "Wants to see display stand",
+  "Agreed to start with limited SKUs",
+  "Will discuss with partner",
+  "Requested product samples",
+  "Positive about JK brand",
+  "Needs follow-up in 2 weeks",
+];
+
 const EngagementTheme = () => {
-  const { themeId } = useParams();
+  const { themeId, id: dealerId } = useParams();
   const navigate = useNavigate();
   const theme = engagementThemes.find((t) => t.id === themeId) || engagementThemes[0];
+  const dealer = dealers.find((d) => d.id === dealerId) || dealers[0];
   const Icon = themeIcons[theme.icon] || Layers;
 
   const [expandedPoint, setExpandedPoint] = useState<string | null>(theme.discussionPoints[0]?.id || null);
   const [completedPoints, setCompletedPoints] = useState<Set<string>>(new Set());
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
   const [expandedWhatIf, setExpandedWhatIf] = useState<string | null>(null);
-  const [notes, setNotes] = useState("");
+  const [selectedChips, setSelectedChips] = useState<Set<string>>(new Set());
+  const [additionalNotes, setAdditionalNotes] = useState("");
 
   const toggleComplete = (id: string) => {
     const next = new Set(completedPoints);
@@ -51,9 +67,17 @@ const EngagementTheme = () => {
     setSelectedWhatIfs(next);
   };
 
+  const toggleChip = (chip: string) => {
+    const next = new Set(selectedChips);
+    if (next.has(chip)) next.delete(chip); else next.add(chip);
+    setSelectedChips(next);
+  };
+
   const progress = theme.discussionPoints.length > 0
     ? (completedPoints.size / theme.discussionPoints.length) * 100
     : 0;
+
+  const allDiscussed = completedPoints.size === theme.discussionPoints.length;
 
   return (
     <MeLayout title={theme.title} showBack>
@@ -67,7 +91,7 @@ const EngagementTheme = () => {
               </div>
               <div>
                 <h2 className="font-display font-bold text-foreground text-base leading-snug">{theme.title}</h2>
-                <p className="text-xs text-muted-foreground mt-1">{theme.subtitle}</p>
+                <p className="text-xs text-muted-foreground mt-1">Conversation with {dealer.name}</p>
               </div>
             </div>
           </Card>
@@ -87,7 +111,7 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Discussion Points — Visual Cards */}
+        {/* Discussion Points */}
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <MessageSquare className="w-3.5 h-3.5" />
@@ -171,7 +195,6 @@ const EngagementTheme = () => {
 
                   {isSelected && isExpanded && (
                     <div className="mt-2 space-y-2 animate-fade-in">
-                      {/* Peer Learning */}
                       <Card className="p-3 border-info/20 bg-info/5">
                         <div className="flex items-start gap-2">
                           <BookOpen className="w-4 h-4 text-info shrink-0 mt-0.5" />
@@ -181,8 +204,6 @@ const EngagementTheme = () => {
                           </div>
                         </div>
                       </Card>
-
-                      {/* Dealer Story */}
                       <Card className="p-3 border-success/20 bg-success/5">
                         <div className="flex items-start gap-2">
                           <Quote className="w-4 h-4 text-success shrink-0 mt-0.5" />
@@ -200,29 +221,55 @@ const EngagementTheme = () => {
           </div>
         )}
 
-        {/* Dealer Notes */}
-        <div className="space-y-2">
+        {/* AI-Assisted Dealer Notes & Takeaways */}
+        <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <StickyNote className="w-3.5 h-3.5" />
             Dealer Notes &amp; Takeaways
           </div>
-          <p className="text-xs text-muted-foreground -mt-0.5">Capture what you both agreed on — outcomes, not instructions.</p>
+          <p className="text-xs text-muted-foreground -mt-1">Tap to select key takeaways from your discussion.</p>
+
+          {/* Suggestion Chips */}
+          <div className="flex flex-wrap gap-2">
+            {suggestedTakeaways.map((chip) => {
+              const isSelected = selectedChips.has(chip);
+              return (
+                <button
+                  key={chip}
+                  onClick={() => toggleChip(chip)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all tap-target ${
+                    isSelected
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-secondary text-muted-foreground border border-border/50 hover:border-primary/30"
+                  }`}
+                >
+                  {isSelected && <span className="mr-1">✓</span>}
+                  {chip}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Optional free text */}
           <Textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="e.g., Agreed to try 5 SKUs of JK Putty. Will follow up in 2 weeks with contractor intro..."
-            className="min-h-[100px] rounded-xl bg-card text-sm"
+            value={additionalNotes}
+            onChange={(e) => setAdditionalNotes(e.target.value)}
+            placeholder="Any additional notes (optional)..."
+            className="min-h-[60px] rounded-xl bg-card text-sm"
           />
         </div>
 
-        {/* Continue */}
-        <Button
-          variant="field"
-          className="w-full"
-          onClick={() => navigate("/me")}
-        >
-          Save &amp; Return to My Area →
-        </Button>
+        {/* Continue to Summary */}
+        <div className="pt-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
+          <Button
+            variant="field"
+            className="w-full"
+            onClick={() => navigate(`/me/notes/${dealer.id}`)}
+          >
+            Continue to Summary
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
       </div>
     </MeLayout>
   );

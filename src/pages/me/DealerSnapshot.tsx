@@ -1,23 +1,17 @@
 import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
-import { MapPin, Clock, MessageSquare, Sparkles, Star, Target, IndianRupee } from "lucide-react";
-import { dealers } from "@/data/mockData";
-
-const purposes = [
-  { icon: Sparkles, label: "New Product Launch", active: true },
-  { icon: Star, label: "Relationship Building", active: false },
-  { icon: Target, label: "Conversion Attempt", active: false },
-  { icon: MessageSquare, label: "Issue Handling", active: false },
-];
+import { MapPin, Clock, IndianRupee, ChevronRight, Layers, Rocket, Users } from "lucide-react";
+import { dealers, engagementThemes } from "@/data/mockData";
 
 const revenueLabelMap: Record<string, string> = {
   A: "> ₹2 Cr",
   B: "₹1–2 Cr",
   C: "< ₹1 Cr",
 };
+
+const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
 const DealerSnapshot = () => {
   const { id } = useParams();
@@ -67,37 +61,34 @@ const DealerSnapshot = () => {
           </CardContent>
         </Card>
 
-        {/* Suggested Purpose */}
+        {/* Customized Engagement Plan */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Suggested Visit Purpose</h3>
-          <div className="space-y-2">
-            {purposes.map((p) => (
-              <Card
-                key={p.label}
-                className={`p-3.5 flex items-center gap-3 tap-target cursor-pointer transition-all ${
-                  p.active ? "border-primary bg-primary/5 ring-1 ring-primary/20" : ""
-                }`}
-              >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${p.active ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}>
-                  <p.icon className="w-4 h-4" />
-                </div>
-                <span className={`font-medium ${p.active ? "text-foreground" : "text-muted-foreground"}`}>{p.label}</span>
-                {p.active && <span className="ml-auto text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">Recommended</span>}
-              </Card>
-            ))}
+          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Customized Engagement Plan</h3>
+          <p className="text-xs text-muted-foreground mb-3">Guided discussions tailored for {dealer.name} — choose a theme to begin.</p>
+          <div className="space-y-3">
+            {engagementThemes.map((theme, i) => {
+              const Icon = themeIcons[theme.icon] || Layers;
+              return (
+                <Card
+                  key={theme.id}
+                  className="p-4 cursor-pointer active:scale-[0.98] transition-all hover:shadow-md animate-slide-up"
+                  style={{ animationDelay: `${(i + 2) * 60}ms`, animationFillMode: "backwards" }}
+                  onClick={() => navigate(`/me/engagement/${dealer.id}/${theme.id}`)}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`w-11 h-11 rounded-xl bg-${theme.color}/10 flex items-center justify-center shrink-0`}>
+                      <Icon className={`w-5 h-5 text-${theme.color}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-foreground text-sm leading-snug">{theme.title}</h3>
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{theme.subtitle}</p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
+                  </div>
+                </Card>
+              );
+            })}
           </div>
-        </div>
-
-        {/* CTA */}
-        <div className="pt-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
-          <Button
-            variant="field"
-            className="w-full"
-            onClick={() => navigate(`/me/conversation/${dealer.id}`)}
-          >
-            <MessageSquare className="w-5 h-5 mr-2" />
-            Start Conversation
-          </Button>
         </div>
       </div>
     </MeLayout>
