@@ -115,7 +115,7 @@ const EngagementTheme = () => {
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <MessageSquare className="w-3.5 h-3.5" />
-            Discussion Points
+            CORE DISCUSSION POINTS
           </div>
           {theme.discussionPoints.map((point, i) => {
             const isExpanded = expandedPoint === point.id;
@@ -135,8 +135,8 @@ const EngagementTheme = () => {
                     {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-sm font-bold">{i + 1}</span>}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-foreground text-sm">{point.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{point.description}</p>
+                    <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
+                    <p className="mt-0.5 line-clamp-2 text-base font-extrabold font-sans text-muted-foreground">{point.description}</p>
                   </div>
                   {isExpanded ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0 mt-1" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />}
                 </button>
@@ -168,7 +168,7 @@ const EngagementTheme = () => {
               <Lightbulb className="w-3.5 h-3.5" />
               What-Ifs &amp; Objections
             </div>
-            <p className="text-xs text-muted-foreground -mt-1">Select any objection the dealer raises — see how peers have addressed it.</p>
+            <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises - see how peers have addressed it.</p>
             {theme.whatIfs.map((wi) => {
               const isSelected = selectedWhatIfs.has(wi.id);
               const isExpanded = expandedWhatIf === wi.id;
@@ -225,7 +225,7 @@ const EngagementTheme = () => {
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <StickyNote className="w-3.5 h-3.5" />
-            Dealer Notes &amp; Takeaways
+            RETAILER NOTES & TAKEAWAYS
           </div>
           <p className="text-xs text-muted-foreground -mt-1">Tap to select key takeaways from your discussion.</p>
 
