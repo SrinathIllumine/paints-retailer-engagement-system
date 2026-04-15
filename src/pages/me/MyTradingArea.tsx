@@ -189,7 +189,7 @@ const MyTradingArea = () => {
         {/* Interactive Pune Map */}
         {discoveryMode === "map" && (
           <div className="animate-fade-in space-y-3">
-            <h3 className="font-semibold text-foreground text-sm">Pune Dealer Map</h3>
+            <h3 className="font-semibold text-foreground text-sm">Pune Retailer Map</h3>
             <Card className="overflow-hidden">
               <div className="relative bg-secondary/20 h-72">
                 {/* Map grid background */}
@@ -234,7 +234,7 @@ const MyTradingArea = () => {
                 </div>
               </div>
               <div className="p-3 border-t border-border/50 bg-card">
-                <p className="text-xs text-muted-foreground text-center">Tap a zone to see dealers in that area · {dealers.length} total retailer(s)</p>
+                <p className="text-xs text-muted-foreground text-center">Tap a zone to see retailers in that area · {dealers.length} total retailer(s)</p>
               </div>
             </Card>
           </div>
