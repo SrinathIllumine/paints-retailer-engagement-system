@@ -25,7 +25,7 @@ const Index = () => {
             </div>
             <h2 className="font-display font-bold text-xl text-foreground mb-1">Retailer Engagement App (for ME)</h2>
             <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits.</p>
-            <Button variant="field" className="w-full">Open Field App →</Button>
+            <Button variant="field" className="w-full">Open Engagement App →</Button>
           </Card>
 
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/leadership")}>
