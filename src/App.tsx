@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import MeEntry from "./pages/me/MeEntry.tsx";
 import MyTradingArea from "./pages/me/MyTradingArea.tsx";
 import DealerSnapshot from "./pages/me/DealerSnapshot.tsx";
 import GuidedConversation from "./pages/me/GuidedConversation.tsx";
@@ -27,10 +28,11 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/me" element={<MyTradingArea />} />
+          <Route path="/me" element={<MeEntry />} />
+          <Route path="/me/area" element={<MyTradingArea />} />
           <Route path="/me/dealer/:id" element={<DealerSnapshot />} />
           <Route path="/me/conversation/:id" element={<GuidedConversation />} />
-          <Route path="/me/engagement/:themeId" element={<EngagementTheme />} />
+          <Route path="/me/engagement/:id/:themeId" element={<EngagementTheme />} />
           <Route path="/me/notes/:id" element={<VisitNotes />} />
           <Route path="/me/complete/:id" element={<VisitComplete />} />
           <Route path="/leadership" element={<Dashboard />} />
