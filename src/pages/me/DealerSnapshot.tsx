@@ -19,7 +19,7 @@ const DealerSnapshot = () => {
   const dealer = dealers.find((d) => d.id === id) || dealers[0];
 
   return (
-    <MeLayout title="Dealer Snapshot" showBack>
+    <MeLayout title="Retailer Snapshot" showBack>
       <div className="p-4 space-y-4">
         {/* Dealer Card */}
         <Card className="overflow-hidden animate-slide-up">
