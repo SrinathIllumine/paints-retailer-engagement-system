@@ -4,8 +4,8 @@ import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, Edit3 } from "lucide-react";
-import { dealers } from "@/data/mockData";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, Edit3, X } from "lucide-react";
+import { dealers, engagementThemes } from "@/data/mockData";
 
 const VisitNotes = () => {
   const { id } = useParams();
@@ -13,13 +13,22 @@ const VisitNotes = () => {
   const dealer = dealers.find((d) => d.id === id) || dealers[0];
   const [isEditing, setIsEditing] = useState(false);
   const [editableNotes, setEditableNotes] = useState(
-    "Dealer open to trial order for JK Paint. Requested samples. Agreed to discuss multi-product stocking in next visit."
+    "Retailer open to trial order for JK Paint. Requested samples. Agreed to discuss multi-product stocking in next visit."
   );
+  const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
+
+  // Map topics from engagement plan discussion points
+  const topicsDiscussed = engagementThemes.flatMap(t => t.discussionPoints.map(dp => dp.title)).join(", ");
+
+  // Map objections from engagement plan what-ifs
+  const objectionsRaised = engagementThemes.flatMap(t => t.whatIfs.map(wi => wi.label)).slice(0, 3).join(", ");
 
   const autoNotes = [
-    { icon: MessageSquare, label: "Topics Discussed", value: "JK Paint Launch, White Cement Push, Relationship Building" },
-    { icon: AlertTriangle, label: "Objections Raised", value: "Already selling 4 paint brands, Working capital concern" },
+    { icon: MessageSquare, label: "Topics Discussed", value: topicsDiscussed },
+    { icon: AlertTriangle, label: "Objections Raised", value: objectionsRaised },
   ];
+
+  const whatsAppMessage = `*Visit Summary - ${dealer.name}*\n\n📋 *Topics Discussed:*\n${topicsDiscussed}\n\n⚠️ *Objections Raised:*\n${objectionsRaised}\n\n✅ *What We Agreed On:*\n${editableNotes}\n\n- JK Cement ME Team`;
 
   return (
     <MeLayout title="Visit Summary" showBack>
@@ -29,7 +38,7 @@ const VisitNotes = () => {
             <FileText className="w-8 h-8 text-success" />
           </div>
           <h2 className="font-display font-bold text-xl text-foreground">Visit Summary</h2>
-          <p className="text-sm text-muted-foreground mt-1">Review, edit, and share — what you both agreed on</p>
+          <p className="text-sm text-muted-foreground mt-1">Review, edit, and share - what you both agreed on</p>
         </div>
 
         <Card className="p-4 space-y-4 animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
@@ -47,7 +56,7 @@ const VisitNotes = () => {
           ))}
         </Card>
 
-        {/* Editable Notes — What We Agreed On */}
+        {/* Editable Notes - What We Agreed On */}
         <Card className="p-4 space-y-3 animate-slide-up" style={{ animationDelay: "150ms", animationFillMode: "backwards" }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
@@ -77,15 +86,45 @@ const VisitNotes = () => {
               <Share2 className="w-5 h-5 text-success" />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-foreground">Share with Dealer</h3>
+              <h3 className="text-sm font-semibold text-foreground">Share with Retailer</h3>
               <p className="text-xs text-muted-foreground">Send summary via WhatsApp</p>
             </div>
-            <Button variant="outline" size="sm" className="shrink-0 text-xs rounded-lg">
+            <Button variant="outline" size="sm" className="shrink-0 text-xs rounded-lg" onClick={() => setShowWhatsAppPreview(true)}>
               <Share2 className="w-3.5 h-3.5 mr-1" />
               Share
             </Button>
           </div>
         </Card>
+
+        {/* WhatsApp Preview Modal */}
+        {showWhatsAppPreview && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-card rounded-2xl w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl">
+              <div className="p-4 border-b border-border flex items-center justify-between">
+                <h3 className="font-semibold text-foreground text-sm">WhatsApp Preview</h3>
+                <button onClick={() => setShowWhatsAppPreview(false)} className="p-1 text-muted-foreground">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="p-4">
+                {/* Chat bubble */}
+                <div className="bg-[#dcf8c6] rounded-lg rounded-tr-none p-3 shadow-sm">
+                  <p className="text-xs text-foreground font-semibold mb-1">{dealer.name}</p>
+                  <p className="text-xs text-foreground/80 whitespace-pre-line leading-relaxed">{whatsAppMessage}</p>
+                  <p className="text-[10px] text-foreground/40 text-right mt-1">Just now ✓✓</p>
+                </div>
+              </div>
+              <div className="p-4 border-t border-border space-y-2">
+                <Button variant="field" className="w-full" onClick={() => setShowWhatsAppPreview(false)}>
+                  Confirm & Share
+                </Button>
+                <Button variant="ghost" className="w-full text-muted-foreground text-sm" onClick={() => setShowWhatsAppPreview(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "250ms", animationFillMode: "backwards" }}>
           <Button variant="field" className="w-full" onClick={() => navigate(`/me/complete/${dealer.id}`)}>

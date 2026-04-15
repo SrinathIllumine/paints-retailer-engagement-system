@@ -7,10 +7,10 @@ import { Target, Rocket, TrendingUp, Users } from "lucide-react";
 import { useState } from "react";
 
 const strategies = [
-  { icon: Rocket, label: "Open to New Launches", description: "Dealers showing high openness for new product adoption", filter: (d: typeof dealers[0]) => d.openness === "high" },
-  { icon: TrendingUp, label: "Non-JK with High Potential", description: "New dealers with medium+ openness for conversion", filter: (d: typeof dealers[0]) => d.type === "new" && d.openness !== "low" },
-  { icon: Target, label: "High-Potential Under-Engaged", description: "Dealers with good scores but infrequent visits", filter: (d: typeof dealers[0]) => d.engagementScore > 40 && (d.type === "inactive" || d.type === "declining") },
-  { icon: Users, label: "All Declining Dealers", description: "Dealers needing immediate intervention", filter: (d: typeof dealers[0]) => d.type === "declining" },
+  { icon: Rocket, label: "Open to New Launches", description: "Retailers showing high openness for new product adoption", filter: (d: typeof dealers[0]) => d.openness === "high" },
+  { icon: TrendingUp, label: "Non-JK with High Potential", description: "New retailers with medium+ openness for conversion", filter: (d: typeof dealers[0]) => d.type === "new" && d.openness !== "low" },
+  { icon: Target, label: "High-Potential Under-Engaged", description: "Retailers with good scores but infrequent visits", filter: (d: typeof dealers[0]) => d.engagementScore > 40 && (d.type === "inactive" || d.type === "declining") },
+  { icon: Users, label: "All Declining Retailers", description: "Retailers needing immediate intervention", filter: (d: typeof dealers[0]) => d.type === "declining" },
 ];
 
 const StrategicSlicing = () => {
@@ -22,7 +22,7 @@ const StrategicSlicing = () => {
       <div className="space-y-6">
         <div>
           <h1 className="font-display font-bold text-2xl text-foreground">Strategic Targeting</h1>
-          <p className="text-sm text-muted-foreground mt-1">Smart dealer segments for targeted action</p>
+          <p className="text-sm text-muted-foreground mt-1">Smart retailer segments for targeted action</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -39,7 +39,7 @@ const StrategicSlicing = () => {
                 <div>
                   <h3 className="font-semibold text-foreground">{s.label}</h3>
                   <p className="text-sm text-muted-foreground">{s.description}</p>
-                  <p className="text-xs font-medium text-primary mt-1">{dealers.filter(s.filter).length} dealers</p>
+                  <p className="text-xs font-medium text-primary mt-1">{dealers.filter(s.filter).length} retailers</p>
                 </div>
               </div>
             </Card>
@@ -58,13 +58,13 @@ const StrategicSlicing = () => {
                     <span className="font-medium text-foreground">{dealer.name}</span>
                     <DealerTypeBadge type={dealer.type} />
                   </div>
-                  <p className="text-sm text-muted-foreground">{dealer.location} · Score: {dealer.engagementScore}</p>
+                  <p className="text-sm text-muted-foreground">{dealer.location} - Score: {dealer.engagementScore}</p>
                 </div>
                 <OpennessBadge level={dealer.openness} />
               </div>
             ))}
             {filtered.length === 0 && (
-              <p className="p-8 text-center text-muted-foreground">No dealers match this criteria</p>
+              <p className="p-8 text-center text-muted-foreground">No retailers match this criteria</p>
             )}
           </div>
         </Card>

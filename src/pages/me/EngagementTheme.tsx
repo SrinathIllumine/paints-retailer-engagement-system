@@ -11,28 +11,41 @@ import {
   MessageSquare,
   Lightbulb,
   BookOpen,
-  Quote,
   StickyNote,
   Layers,
   Rocket,
   Users,
   ArrowRight,
+  Target,
 } from "lucide-react";
 import { engagementThemes, dealers } from "@/data/mockData";
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
-const suggestedTakeaways = [
-  "Concern about working capital",
-  "Needs market demand proof",
+// Strategy suggestions per what-if objection
+const strategySuggestions: Record<string, string[]> = {
+  wi1: ["Reach out to architects", "Onboard new contractors in your area", "Start with product demos at local sites"],
+  wi2: ["Leverage JK's credit terms", "Start with minimum order quantity", "Use fast-moving SKUs to build cash flow"],
+  wi3: ["Use JK compact display stand (4 sq ft)", "Place near counter for visibility", "Rotate slow-moving items"],
+  wi4: ["Highlight JK buy-back guarantee", "Start with trial order", "Track results for 30 days"],
+  wi5: ["Position JK as premium tier alongside existing brands", "Highlight margin difference", "Run side-by-side comparison"],
+  wi6: ["Provide free product samples", "Arrange contractor testing", "Share quality certifications"],
+  wi7: ["Introduce JK contractor loyalty program", "Organize a training session", "Share margin comparison with competitors"],
+  wi8: ["Request JK field team for contractor introductions", "Host a painter meet", "Use JK referral network"],
+};
+
+// Positive-only takeaways (no objections/what-ifs)
+const positiveTakeaways = [
   "Open to trial later",
   "Interested in contractor connect",
   "Wants to see display stand",
   "Agreed to start with limited SKUs",
-  "Will discuss with partner",
   "Requested product samples",
   "Positive about JK brand",
-  "Needs follow-up in 2 weeks",
+  "Excited about loyalty program",
+  "Willing to host painter meet",
+  "Interested in training sessions",
+  "Ready for follow-up visit",
 ];
 
 const EngagementTheme = () => {
@@ -41,6 +54,11 @@ const EngagementTheme = () => {
   const theme = engagementThemes.find((t) => t.id === themeId) || engagementThemes[0];
   const dealer = dealers.find((d) => d.id === dealerId) || dealers[0];
   const Icon = themeIcons[theme.icon] || Layers;
+
+  // Find current theme index for sequential navigation
+  const currentThemeIndex = engagementThemes.findIndex((t) => t.id === themeId);
+  const isLastTheme = currentThemeIndex === engagementThemes.length - 1;
+  const nextTheme = !isLastTheme ? engagementThemes[currentThemeIndex + 1] : null;
 
   const [expandedPoint, setExpandedPoint] = useState<string | null>(theme.discussionPoints[0]?.id || null);
   const [completedPoints, setCompletedPoints] = useState<Set<string>>(new Set());
@@ -76,8 +94,6 @@ const EngagementTheme = () => {
   const progress = theme.discussionPoints.length > 0
     ? (completedPoints.size / theme.discussionPoints.length) * 100
     : 0;
-
-  const allDiscussed = completedPoints.size === theme.discussionPoints.length;
 
   return (
     <MeLayout title={theme.title} showBack>
@@ -144,6 +160,7 @@ const EngagementTheme = () => {
                 {isExpanded && (
                   <div className="px-4 pb-4 space-y-3 animate-fade-in">
                     <div className="bg-secondary/40 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Insight</p>
                       <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
                     </div>
                     <Button
@@ -172,6 +189,7 @@ const EngagementTheme = () => {
             {theme.whatIfs.map((wi) => {
               const isSelected = selectedWhatIfs.has(wi.id);
               const isExpanded = expandedWhatIf === wi.id;
+              const suggestions = strategySuggestions[wi.id] || [];
 
               return (
                 <div key={wi.id}>
@@ -195,24 +213,32 @@ const EngagementTheme = () => {
 
                   {isSelected && isExpanded && (
                     <div className="mt-2 space-y-2 animate-fade-in">
-                      <Card className="p-3 border-info/20 bg-info/5">
-                        <div className="flex items-start gap-2">
-                          <BookOpen className="w-4 h-4 text-info shrink-0 mt-0.5" />
-                          <div>
-                            <p className="text-xs font-semibold text-info uppercase mb-1">SUCCESS STORY FROM OTHER RETAILERS</p>
-                            <p className="text-sm text-foreground/80 leading-relaxed">{wi.peerLearning}</p>
-                          </div>
-                        </div>
-                      </Card>
+                      {/* Merged Retailer Success Story */}
                       <Card className="p-3 border-success/20 bg-success/5">
                         <div className="flex items-start gap-2">
-                          <Quote className="w-4 h-4 text-success shrink-0 mt-0.5" />
+                          <BookOpen className="w-4 h-4 text-success shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-xs font-semibold text-success uppercase mb-1">RETAILER STORY</p>
-                            <p className="text-sm text-foreground/80 leading-relaxed italic">{wi.dealerStory}</p>
+                            <p className="text-xs font-semibold text-success uppercase mb-1">RETAILER SUCCESS STORY</p>
+                            <p className="text-sm text-foreground/80 leading-relaxed mb-2">{wi.peerLearning}</p>
+                            <p className="text-sm text-foreground/80 leading-relaxed italic border-t border-success/20 pt-2">{wi.dealerStory}</p>
                           </div>
                         </div>
                       </Card>
+
+                      {/* Core Strategy Suggestions */}
+                      {suggestions.length > 0 && (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider px-1">
+                            <Target className="w-3 h-3" />
+                            Core Strategy Suggestions
+                          </div>
+                          {suggestions.map((suggestion, idx) => (
+                            <div key={idx} className="bg-info/5 border border-info/15 rounded-lg px-3 py-2.5 text-sm text-foreground/80">
+                              {suggestion}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -221,7 +247,7 @@ const EngagementTheme = () => {
           </div>
         )}
 
-        {/* AI-Assisted Dealer Notes & Takeaways */}
+        {/* Retailer Notes & Takeaways - Positive Only */}
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <StickyNote className="w-3.5 h-3.5" />
@@ -229,9 +255,9 @@ const EngagementTheme = () => {
           </div>
           <p className="text-xs text-muted-foreground -mt-1">Tap to select key takeaways from your discussion.</p>
 
-          {/* Suggestion Chips */}
+          {/* Positive Suggestion Chips */}
           <div className="flex flex-wrap gap-2">
-            {suggestedTakeaways.map((chip) => {
+            {positiveTakeaways.map((chip) => {
               const isSelected = selectedChips.has(chip);
               return (
                 <button
@@ -259,16 +285,27 @@ const EngagementTheme = () => {
           />
         </div>
 
-        {/* Continue to Summary */}
+        {/* Sequential Navigation */}
         <div className="pt-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
-          <Button
-            variant="field"
-            className="w-full"
-            onClick={() => navigate(`/me/notes/${dealer.id}`)}
-          >
-            Continue to Summary
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
+          {isLastTheme ? (
+            <Button
+              variant="field"
+              className="w-full"
+              onClick={() => navigate(`/me/notes/${dealer.id}`)}
+            >
+              Continue to Summary
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button
+              variant="field"
+              className="w-full"
+              onClick={() => navigate(`/me/engagement/${dealer.id}/${nextTheme!.id}`)}
+            >
+              Next: {nextTheme!.title}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          )}
         </div>
       </div>
     </MeLayout>

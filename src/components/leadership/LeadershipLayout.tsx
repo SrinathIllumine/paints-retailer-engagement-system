@@ -5,7 +5,7 @@ import { LayoutDashboard, Users, UserCircle, Target, BarChart3, LogOut } from "l
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/leadership" },
   { icon: Users, label: "Segmentation", path: "/leadership/segmentation" },
-  { icon: UserCircle, label: "Dealer 360°", path: "/leadership/dealer-profile" },
+  { icon: UserCircle, label: "Retailer 360°", path: "/leadership/dealer-profile" },
   { icon: Target, label: "Strategic", path: "/leadership/targeting" },
   { icon: BarChart3, label: "Analytics", path: "/leadership/analytics" },
 ];
@@ -20,7 +20,7 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
       <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-5 border-b border-sidebar-border">
           <h1 className="font-display font-bold text-lg text-sidebar-foreground">JK Cement</h1>
-          <p className="text-xs text-sidebar-foreground/60 mt-0.5">Dealer Intelligence System</p>
+          <p className="text-xs text-sidebar-foreground/60 mt-0.5">Retailer Intelligence System</p>
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {navItems.map((item) => {

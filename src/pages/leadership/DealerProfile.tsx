@@ -12,7 +12,7 @@ const radarData = [
   { attribute: "JK Alignment", value: 85 },
   { attribute: "Value Prop", value: 70 },
   { attribute: "Market Awareness", value: 65 },
-  { attribute: "Dealer Mindset", value: 78 },
+  { attribute: "Retailer Mindset", value: 78 },
   { attribute: "Growth Potential", value: 82 },
 ];
 
@@ -26,11 +26,11 @@ const DealerProfile = () => (
   <LeadershipLayout>
     <div className="space-y-6">
       <div>
-        <h1 className="font-display font-bold text-2xl text-foreground">Dealer 360° Profile</h1>
+        <h1 className="font-display font-bold text-2xl text-foreground">Retailer 360° Profile</h1>
         <p className="text-sm text-muted-foreground mt-1">Complete engagement intelligence</p>
       </div>
 
-      {/* Dealer Header */}
+      {/* Retailer Header */}
       <Card className="p-5 flex items-start gap-5">
         <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
           <span className="font-display font-bold text-xl text-primary">JM</span>
@@ -54,7 +54,7 @@ const DealerProfile = () => (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Radar */}
         <Card className="p-5">
-          <h3 className="font-semibold text-foreground mb-4">Dealer Attributes</h3>
+          <h3 className="font-semibold text-foreground mb-4">Retailer Attributes</h3>
           <ResponsiveContainer width="100%" height={280}>
             <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="70%">
               <PolarGrid stroke="hsl(220,13%,90%)" />
@@ -71,7 +71,7 @@ const DealerProfile = () => (
             {timeline.map((entry, i) => (
               <div key={i} className="relative pl-6 border-l-2 border-border pb-4 last:pb-0">
                 <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary" />
-                <p className="text-xs text-muted-foreground">{entry.date} · {entry.me}</p>
+                <p className="text-xs text-muted-foreground">{entry.date} - {entry.me}</p>
                 <div className="mt-1 space-y-1">
                   <div className="flex items-start gap-1.5 text-sm">
                     <MessageSquare className="w-3.5 h-3.5 text-info mt-0.5 shrink-0" />
