@@ -78,7 +78,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp1",
         title: "Higher Profit Pool",
         description: "Multi-product play increases margins vs single-product reliance",
-        detail: "Dealers stocking putty, white cement, and paints see 25-35% higher margins compared to cement-only dealers. The diversified portfolio reduces dependency on seasonal cement demand and creates year-round revenue streams.",
+        detail: "Dealers stocking putty, white cement, and paints see 25-35% higher margins compared to cement-only dealers. The multi-product portfolio reduces dependency on seasonal cement demand and creates year-round revenue streams.",
       },
       {
         id: "dp2",
