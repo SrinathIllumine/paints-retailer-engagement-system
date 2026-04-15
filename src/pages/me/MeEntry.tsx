@@ -10,8 +10,8 @@ const MeEntry = () => {
     <MeLayout title="Retailer Engagement App" showBack>
       <div className="p-4 space-y-4 flex flex-col justify-center min-h-[70vh]">
         <div className="text-center mb-4 animate-fade-in">
-          <h2 className="font-display font-bold text-xl text-foreground">What would you like to do?</h2>
-          <p className="text-sm text-muted-foreground mt-1">Choose how you'd like to engage today</p>
+          <h2 className="font-display font-bold text-xl text-foreground">Choose how you'd like to engage today</h2>
+          <p className="text-sm text-muted-foreground mt-1">{" "}</p>
         </div>
 
         <Card
@@ -25,7 +25,7 @@ const MeEntry = () => {
             <div className="flex-1 min-w-0">
               <h3 className="font-display font-bold text-foreground text-lg">Proactive Engagement</h3>
               <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line">
-                -&gt; used by ME to build the core discussion{"\n"}-&gt; attrition-proof system
+                use this to build structured discussions with retailers around specific business outcomes
               </p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0 mt-2" />
@@ -43,7 +43,7 @@ const MeEntry = () => {
             <div className="flex-1 min-w-0">
               <h3 className="font-display font-bold text-foreground text-lg">Flashpoints</h3>
               <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line">
-                -&gt; capture &amp; curate and get the best practices{"\n"}-&gt; auto-upgrading system{"\n"}-&gt; collective intelligence through precise questions
+                -&gt; capture &amp; curate and get the best practices{"\n"}-&gt; solve day-to-day challenges
               </p>
             </div>
             <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full shrink-0 mt-1 font-medium">Soon</span>
