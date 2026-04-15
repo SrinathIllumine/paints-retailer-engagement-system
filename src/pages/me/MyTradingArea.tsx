@@ -100,7 +100,7 @@ const MyTradingArea = () => {
         <div className="relative animate-fade-in">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search by name, area, or dealer code..."
+            placeholder="Search by name, area, or retailer code..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 h-12 rounded-xl bg-card border-border/60 text-sm"
@@ -137,7 +137,7 @@ const MyTradingArea = () => {
                   <span className="font-medium text-sm text-foreground">{area}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{dealers.filter((d) => d.area === area).length} dealers</span>
+                  <span className="text-xs text-muted-foreground">{dealers.filter((d) => d.area === area).length} retailer(s)</span>
                   <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
                 </div>
               </Card>
@@ -156,7 +156,7 @@ const MyTradingArea = () => {
               >
                 <DealerTypeBadge type={type} />
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{categoryCounts[type]} dealers</span>
+                  <span className="text-xs text-muted-foreground">{categoryCounts[type]} retailer(s)</span>
                   <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
                 </div>
               </Card>
@@ -178,7 +178,7 @@ const MyTradingArea = () => {
                   <span className="text-xs text-muted-foreground ml-2">{revenueConfig[cat].range}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{revenueCounts[cat]} dealers</span>
+                  <span className="text-xs text-muted-foreground">{revenueCounts[cat]} retailer(s)</span>
                   <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
                 </div>
               </Card>
@@ -234,7 +234,7 @@ const MyTradingArea = () => {
                 </div>
               </div>
               <div className="p-3 border-t border-border/50 bg-card">
-                <p className="text-xs text-muted-foreground text-center">Tap a zone to see dealers in that area · {dealers.length} total dealers</p>
+                <p className="text-xs text-muted-foreground text-center">Tap a zone to see dealers in that area · {dealers.length} total retailer(s)</p>
               </div>
             </Card>
           </div>
