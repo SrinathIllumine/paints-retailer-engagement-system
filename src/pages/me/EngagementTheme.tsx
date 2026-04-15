@@ -199,7 +199,7 @@ const EngagementTheme = () => {
                         <div className="flex items-start gap-2">
                           <BookOpen className="w-4 h-4 text-info shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-xs font-semibold text-info uppercase mb-1">Peer Learning</p>
+                            <p className="text-xs font-semibold text-info uppercase mb-1">SUCCESS STORY FROM OTHER RETAILERS</p>
                             <p className="text-sm text-foreground/80 leading-relaxed">{wi.peerLearning}</p>
                           </div>
                         </div>
