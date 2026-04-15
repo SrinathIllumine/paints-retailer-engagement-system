@@ -144,7 +144,7 @@ const EngagementTheme = () => {
                 {isExpanded && (
                   <div className="px-4 pb-4 space-y-3 animate-fade-in">
                     <div className="bg-secondary/40 rounded-lg p-3">
-                      <p className="text-sm text-foreground/85 leading-relaxed">{point.detail}</p>
+                      <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
                     </div>
                     <Button
                       variant={isDone ? "secondary" : "field"}
