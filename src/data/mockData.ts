@@ -56,12 +56,12 @@ export interface WhatIf {
 }
 
 export const dealers: Dealer[] = [
-  { id: "1", name: "Jai Maharashtra Hardware", location: "Pune West, MH", type: "loyal", engagementScore: 85, openness: "high", lastVisit: "Last visited: 2 days ago", lastOutcome: "Positive – ordered JK White Cement", area: "Pune West", dealerCode: "JMH-001", revenueCategory: "A", lat: 18.520, lng: 73.840 },
+  { id: "1", name: "Jai Maharashtra Hardware", location: "Pune West, MH", type: "loyal", engagementScore: 85, openness: "high", lastVisit: "Last visited: 2 days ago", lastOutcome: "Positive - ordered JK White Cement", area: "Pune West", dealerCode: "JMH-001", revenueCategory: "A", lat: 18.520, lng: 73.840 },
   { id: "2", name: "Sharma Building Materials", location: "Pune West, MH", type: "new", engagementScore: 40, openness: "medium", lastVisit: "Last visited: 1 week ago", lastOutcome: "Introduction completed", area: "Pune West", dealerCode: "SBM-002", revenueCategory: "B", lat: 18.530, lng: 73.920 },
-  { id: "3", name: "Krishna Traders", location: "Pune South, MH", type: "declining", engagementScore: 30, openness: "low", lastVisit: "Last visited: 3 weeks ago", lastOutcome: "Unresponsive – competitor focus", area: "Pune South", dealerCode: "KT-003", revenueCategory: "C", lat: 18.480, lng: 73.870 },
+  { id: "3", name: "Krishna Traders", location: "Pune South, MH", type: "declining", engagementScore: 30, openness: "low", lastVisit: "Last visited: 3 weeks ago", lastOutcome: "Unresponsive - competitor focus", area: "Pune South", dealerCode: "KT-003", revenueCategory: "C", lat: 18.480, lng: 73.870 },
   { id: "4", name: "Gupta Cement House", location: "Pune North, MH", type: "inactive", engagementScore: 20, openness: "low", lastVisit: "Last visited: 1 month ago", lastOutcome: "Shop closed during visit", area: "Pune North", dealerCode: "GCH-004", revenueCategory: "C", lat: 18.570, lng: 73.850 },
-  { id: "5", name: "Rajesh Construction Supply", location: "Pune NE, MH", type: "loyal", engagementScore: 92, openness: "high", lastVisit: "Last visited: Yesterday", lastOutcome: "JK Paint launch discussion – very interested", area: "Pune NE", dealerCode: "RCS-005", revenueCategory: "A", lat: 18.560, lng: 73.930 },
-  { id: "6", name: "Patel & Sons Hardware", location: "Pune NE, MH", type: "new", engagementScore: 55, openness: "high", lastVisit: "Last visited: 3 days ago", lastOutcome: "First meeting – willing to stock", area: "Pune NE", dealerCode: "PSH-006", revenueCategory: "B", lat: 18.490, lng: 73.920 },
+  { id: "5", name: "Rajesh Construction Supply", location: "Pune NE, MH", type: "loyal", engagementScore: 92, openness: "high", lastVisit: "Last visited: Yesterday", lastOutcome: "JK Paint launch discussion - very interested", area: "Pune NE", dealerCode: "RCS-005", revenueCategory: "A", lat: 18.560, lng: 73.930 },
+  { id: "6", name: "Patel & Sons Hardware", location: "Pune NE, MH", type: "new", engagementScore: 55, openness: "high", lastVisit: "Last visited: 3 days ago", lastOutcome: "First meeting - willing to stock", area: "Pune NE", dealerCode: "PSH-006", revenueCategory: "B", lat: 18.490, lng: 73.920 },
   { id: "7", name: "Singh Building Centre", location: "Pune SW, MH", type: "declining", engagementScore: 35, openness: "medium", lastVisit: "Last weeks ago", lastOutcome: "Price concerns raised", area: "Pune SW", dealerCode: "SBC-007", revenueCategory: "B", lat: 18.560, lng: 73.810 },
   { id: "8", name: "Mahalaxmi Traders", location: "Pune SW, MH", type: "loyal", engagementScore: 78, openness: "high", lastVisit: "Last visited: 4 days ago", lastOutcome: "Repeat order placed", area: "Pune SW", dealerCode: "MT-008", revenueCategory: "A", lat: 18.490, lng: 73.820 },
 ];
@@ -78,7 +78,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp1",
         title: "Higher Profit Pool",
         description: "Multi-product play increases margins vs single-product reliance",
-        detail: "Dealers stocking putty, white cement, and paints see 25-35% higher margins compared to cement-only dealers. The multi-product portfolio reduces dependency on seasonal cement demand and creates year-round revenue streams.",
+        detail: "Retailers stocking putty, white cement, and paints see 25-35% higher margins compared to cement-only retailers. The multi-product portfolio reduces dependency on seasonal cement demand and creates year-round revenue streams.",
       },
       {
         id: "dp2",
@@ -103,20 +103,20 @@ export const engagementThemes: EngagementTheme[] = [
       {
         id: "wi2",
         label: "Working capital will get blocked",
-        peerLearning: "JK offers 30-day credit terms for new categories. The average dealer recoups investment within 45 days. Many dealers start with just ₹15,000-20,000 worth of stock across categories.",
-        dealerStory: "\"The credit terms made it risk-free. I started small and the stock turned over faster than I expected.\" — Gupta Hardware, Jaipur",
+        peerLearning: "JK offers 30-day credit terms for new categories. The average retailer recoups investment within 45 days. Many retailers start with just ₹15,000-20,000 worth of stock across categories.",
+        dealerStory: "\"The credit terms made it risk-free. I started small and the stock turned over faster than I expected.\" - Gupta Hardware, Jaipur",
       },
       {
         id: "wi3",
         label: "No space in the shop",
         peerLearning: "JK's compact multi-product display stand takes just 4 sq ft and holds products across all categories. It's designed for small shops. JK provides it free of cost with branding that attracts walk-ins.",
-        dealerStory: "\"I was worried about space too. The JK stand fits right by the counter and actually draws attention to higher-margin products.\" — Patel Store, Surat",
+        dealerStory: "\"I was worried about space too. The JK stand fits right by the counter and actually draws attention to higher-margin products.\" - Patel Store, Surat",
       },
       {
         id: "wi4",
         label: "What if it doesn't work?",
-        peerLearning: "JK offers a buy-back guarantee on unsold initial stock within 90 days. Of 500+ dealers who started multi-products last year, less than 3% used the buy-back — because the products sell.",
-        dealerStory: "\"The buy-back gave me confidence. I never needed it — the products moved within the first month itself.\" — Singh Building, Indore",
+        peerLearning: "JK offers a buy-back guarantee on unsold initial stock within 90 days. Of 500+ retailers who started multi-products last year, less than 3% used the buy-back - because the products sell.",
+        dealerStory: "\"The buy-back gave me confidence. I never needed it - the products moved within the first month itself.\" - Singh Building, Indore",
       },
     ],
   },
@@ -131,33 +131,33 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp4",
         title: "Quick Wins Strategy",
         description: "Focus on high-demand, fast-moving SKUs first",
-        detail: "Start with JK's top 5 best-selling SKUs in your area. These products have proven demand and quick turnaround — giving you confidence and cash flow within the first 2-3 weeks.",
+        detail: "Start with JK's top 5 best-selling SKUs in your area. These products have proven demand and quick turnaround - giving you confidence and cash flow within the first 2-3 weeks.",
       },
       {
         id: "dp5",
         title: "Contractor Network Building",
         description: "Connect with local contractors through JK's referral program",
-        detail: "JK provides a list of active contractors in your area and facilitates introductions. Contractors who use JK products get loyalty rewards — driving repeat business to your shop.",
+        detail: "JK provides a list of active contractors in your area and facilitates introductions. Contractors who use JK products get loyalty rewards - driving repeat business to your shop.",
       },
       {
         id: "dp6",
         title: "Marketing & Visibility Support",
         description: "Free in-shop branding and local marketing campaigns",
-        detail: "JK provides shop board branding, product displays, and local advertising support at zero cost. This establishes you as an authorized JK dealer and drives footfall from day one.",
+        detail: "JK provides shop board branding, product displays, and local advertising support at zero cost. This establishes you as an authorized JK retailer and drives footfall from day one.",
       },
     ],
     whatIfs: [
       {
         id: "wi5",
         label: "I already have established brands",
-        peerLearning: "JK doesn't replace your existing brands — it adds a premium tier. Dealers who added JK alongside existing brands saw 20% increase in overall revenue without cannibalizing existing sales.",
-        dealerStory: "\"Adding JK gave my customers a premium option they were looking for. My existing brands continued selling as before.\" — Mehta Hardware, Pune",
+        peerLearning: "JK doesn't replace your existing brands - it adds a premium tier. Retailers who added JK alongside existing brands saw 20% increase in overall revenue without cannibalizing existing sales.",
+        dealerStory: "\"Adding JK gave my customers a premium option they were looking for. My existing brands continued selling as before.\" - Mehta Hardware, Pune",
       },
       {
         id: "wi6",
         label: "I'm not sure about the quality",
-        peerLearning: "JK Cement has 40+ years of trust. Free product samples are available for you and your contractors to test. 95% of dealers who tested the products placed their first order within a week.",
-        dealerStory: "\"I tested the putty myself on a wall at home. The finish was clearly superior. After that, I was confident to recommend it.\" — Verma Traders, Bhopal",
+        peerLearning: "JK Cement has 40+ years of trust. Free product samples are available for you and your contractors to test. 95% of retailers who tested the products placed their first order within a week.",
+        dealerStory: "\"I tested the putty myself on a wall at home. The finish was clearly superior. After that, I was confident to recommend it.\" - Verma Traders, Bhopal",
       },
     ],
   },
@@ -178,7 +178,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp8",
         title: "Technical Training Sessions",
         description: "Free training builds contractor confidence and loyalty",
-        detail: "JK conducts free application training for contractors at your shop. This positions you as a knowledge hub, builds trust, and ensures contractors apply products correctly — reducing complaints.",
+        detail: "JK conducts free application training for contractors at your shop. This positions you as a knowledge hub, builds trust, and ensures contractors apply products correctly - reducing complaints.",
       },
       {
         id: "dp9",
@@ -192,13 +192,13 @@ export const engagementThemes: EngagementTheme[] = [
         id: "wi7",
         label: "Contractors prefer other brands",
         peerLearning: "Contractors follow margins and support. JK's contractor loyalty program offers 15% better rewards than competitor programs. Once contractors attend a JK training session, 70% switch within 3 months.",
-        dealerStory: "\"My contractors were loyal to Brand X. After the JK training, they tried the products and never looked back. The quality spoke for itself.\" — Agarwal Building, Lucknow",
+        dealerStory: "\"My contractors were loyal to Brand X. After the JK training, they tried the products and never looked back. The quality spoke for itself.\" - Agarwal Building, Lucknow",
       },
       {
         id: "wi8",
         label: "I don't know enough contractors",
-        peerLearning: "JK's field team helps identify and connect you with active contractors in your area. On average, each new dealer is introduced to 8-12 contractors within the first month.",
-        dealerStory: "\"JK's ME introduced me to 10 contractors I didn't even know were active in my area. Three of them are now my regulars.\" — Rajput Hardware, Kanpur",
+        peerLearning: "JK's field team helps identify and connect you with active contractors in your area. On average, each new retailer is introduced to 8-12 contractors within the first month.",
+        dealerStory: "\"JK's ME introduced me to 10 contractors I didn't even know were active in my area. Three of them are now my regulars.\" - Rajput Hardware, Kanpur",
       },
     ],
   },
@@ -207,22 +207,22 @@ export const engagementThemes: EngagementTheme[] = [
 export const discussionPoints: DiscussionPoint[] = [
   {
     id: "1",
-    title: "JK Paint Launch – New Product Introduction",
+    title: "JK Paint Launch - New Product Introduction",
     bullets: [
       "JK Cement is entering the paints category with premium quality offerings",
       "Initial product range covers interior emulsions and exterior coatings",
-      "Competitive dealer margins of 18-22% on MRP",
+      "Competitive retailer margins of 18-22% on MRP",
       "Marketing support with in-shop branding and local campaigns",
     ],
     objections: [
-      { id: "o1", label: "Already selling 4 paint brands", response: "JK Paint fills a value gap between economy and premium. Your existing brands continue – JK Paint adds an incremental revenue stream. Dealers who carry 5+ brands see 15% higher footfall." },
-      { id: "o2", label: "No demand in my area", response: "We've seen a 30% increase in paint demand in similar tier-2 areas. JK Cement's brand recall drives initial trial – 78% of dealers in pilot markets reported first-month sales." },
+      { id: "o1", label: "Already selling 4 paint brands", response: "JK Paint fills a value gap between economy and premium. Your existing brands continue - JK Paint adds an incremental revenue stream. Retailers who carry 5+ brands see 15% higher footfall." },
+      { id: "o2", label: "No demand in my area", response: "We've seen a 30% increase in paint demand in similar tier-2 areas. JK Cement's brand recall drives initial trial - 78% of retailers in pilot markets reported first-month sales." },
       { id: "o3", label: "Working capital will get blocked", response: "We offer 30-day credit terms for new launches and a buy-back guarantee on unsold initial stock within 90 days. Minimum order is just 20 units." },
     ],
   },
   {
     id: "2",
-    title: "JK White Cement – Seasonal Push",
+    title: "JK White Cement - Seasonal Push",
     bullets: [
       "Festival season demand typically 40% higher for white cement",
       "New packaging in 1kg and 5kg consumer packs",
@@ -239,9 +239,9 @@ export const discussionPoints: DiscussionPoint[] = [
     title: "Relationship & Trust Building",
     bullets: [
       "Check on any pending issues or service gaps",
-      "Discuss dealer's business growth and how JK can support",
-      "Share success stories from similar dealers in the region",
-      "Understand competitive landscape in the dealer's area",
+      "Discuss retailer's business growth and how JK can support",
+      "Share success stories from similar retailers in the region",
+      "Understand competitive landscape in the retailer's area",
     ],
     objections: [
       { id: "o6", label: "JK delivery is often delayed", response: "We've added 3 new distribution points in your zone. Current average delivery time is 48 hours. Share any specific incidents and I'll escalate immediately." },
@@ -251,9 +251,9 @@ export const discussionPoints: DiscussionPoint[] = [
     id: "4",
     title: "Value-Added Services & Loyalty Program",
     bullets: [
-      "JK Star Dealer program – earn points on every purchase",
-      "Annual dealer meet and recognition awards",
-      "Technical training for dealer staff on product applications",
+      "JK Star Retailer program - earn points on every purchase",
+      "Annual retailer meet and recognition awards",
+      "Technical training for retailer staff on product applications",
       "Priority access to new product launches",
     ],
     objections: [
@@ -277,7 +277,7 @@ export const regions = ["North", "South", "East", "West"];
 export const zones = ["Zone A", "Zone B", "Zone C", "Zone D"];
 
 export const kpiData = {
-  totalDealers: 5000,
+  totalRetailers: 5000,
   conversationsToday: 2000,
   conversationsWeek: 2180,
   engagementQualityIndex: 7.4,
@@ -285,10 +285,10 @@ export const kpiData = {
 };
 
 export const segmentationData = [
-  { type: "new" as DealerType, count: 1250, label: "New Dealers", percentage: 25 },
-  { type: "loyal" as DealerType, count: 2000, label: "Loyal Dealers", percentage: 40 },
-  { type: "inactive" as DealerType, count: 1000, label: "Inactive Dealers", percentage: 20 },
-  { type: "declining" as DealerType, count: 750, label: "Declining Dealers", percentage: 15 },
+  { type: "new" as DealerType, count: 1250, label: "New Retailers", percentage: 25 },
+  { type: "loyal" as DealerType, count: 2000, label: "Loyal Retailers", percentage: 40 },
+  { type: "inactive" as DealerType, count: 1000, label: "Inactive Retailers", percentage: 20 },
+  { type: "declining" as DealerType, count: 750, label: "Declining Retailers", percentage: 15 },
 ];
 
 export const engagementTrend = [

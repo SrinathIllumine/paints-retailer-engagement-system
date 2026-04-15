@@ -23,8 +23,8 @@ const DealerSegmentation = () => {
     <LeadershipLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="font-display font-bold text-2xl text-foreground">Dealer Segmentation</h1>
-          <p className="text-sm text-muted-foreground mt-1">Dealers grouped by morphology</p>
+          <h1 className="font-display font-bold text-2xl text-foreground">Retailer Segmentation</h1>
+          <p className="text-sm text-muted-foreground mt-1">Retailers grouped by morphology</p>
         </div>
 
         {/* Segment cards */}
@@ -43,11 +43,11 @@ const DealerSegmentation = () => {
           ))}
         </div>
 
-        {/* Dealer List */}
+        {/* Retailer List */}
         <Card className="overflow-hidden">
           <div className="p-4 border-b border-border">
             <h3 className="font-semibold text-foreground">
-              {selected ? `${segmentationData.find((s) => s.type === selected)?.label}` : "All Dealers"} ({filteredDealers.length})
+              {selected ? `${segmentationData.find((s) => s.type === selected)?.label}` : "All Retailers"} ({filteredDealers.length})
             </h3>
           </div>
           <div className="divide-y divide-border">

@@ -54,7 +54,7 @@ const EngagementAnalytics = () => (
 
       {/* ME Performance */}
       <Card className="p-5">
-        <h3 className="font-semibold text-foreground mb-4">ME Performance – Engagement Quality</h3>
+        <h3 className="font-semibold text-foreground mb-4">ME Performance - Engagement Quality</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={mePerformance} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,13%,90%)" />
@@ -74,7 +74,7 @@ const EngagementAnalytics = () => (
           </div>
           <div>
             <h4 className="font-semibold text-foreground text-sm">Attrition-Proof Data</h4>
-            <p className="text-sm text-muted-foreground">All engagement history is retained even when MEs change. Dealer intelligence persists independently of field staff assignments.</p>
+            <p className="text-sm text-muted-foreground">All engagement history is retained even when MEs change. Retailer intelligence persists independently of field staff assignments.</p>
           </div>
         </div>
       </Card>

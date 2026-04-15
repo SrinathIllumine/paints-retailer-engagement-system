@@ -5,7 +5,7 @@ import { Users, MessageSquare, TrendingUp, Rocket, ArrowUpRight } from "lucide-r
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 
 const kpis = [
-  { icon: Users, label: "Total Dealers", value: kpiData.totalDealers.toLocaleString(), change: "+124 this month", color: "text-info" },
+  { icon: Users, label: "Total Retailers", value: kpiData.totalRetailers.toLocaleString(), change: "+124 this month", color: "text-info" },
   { icon: MessageSquare, label: "Today's Conversations", value: kpiData.conversationsToday.toString(), change: "66.67% of target", color: "text-success" },
   { icon: TrendingUp, label: "Engagement Quality", value: `${kpiData.engagementQualityIndex}/10`, change: "+0.4 vs last month", color: "text-warning" },
   { icon: Rocket, label: "Launch Readiness", value: `${kpiData.launchReadiness}%`, change: "JK Paint Ultima", color: "text-primary" },
@@ -16,7 +16,7 @@ const Dashboard = () => (
     <div className="space-y-6">
       <div>
         <h1 className="font-display font-bold text-2xl text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-1">Dealer engagement overview - April 14, 2026</p>
+        <p className="text-sm text-muted-foreground mt-1">Retailer engagement overview - April 14, 2026</p>
       </div>
 
       {/* KPIs */}
@@ -51,9 +51,9 @@ const Dashboard = () => (
           </ResponsiveContainer>
         </Card>
 
-        {/* Dealer Segments */}
+        {/* Retailer Segments */}
         <Card className="p-5">
-          <h3 className="font-semibold text-foreground mb-4">Dealer Segmentation</h3>
+          <h3 className="font-semibold text-foreground mb-4">Retailer Segmentation</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={segmentationData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,13%,90%)" />

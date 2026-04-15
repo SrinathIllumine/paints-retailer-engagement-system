@@ -26,7 +26,7 @@ type DiscoveryMode = "area" | "category" | "revenue" | "map" | null;
 
 const revenueConfig: Record<RevenueCategory, { label: string; range: string }> = {
   A: { label: "A Category", range: "> ₹2 Cr" },
-  B: { label: "B Category", range: "₹1–2 Cr" },
+  B: { label: "B Category", range: "₹1-2 Cr" },
   C: { label: "C Category", range: "< ₹1 Cr" },
 };
 
@@ -93,6 +93,9 @@ const MyTradingArea = () => {
     setDiscoveryMode(value as DiscoveryMode);
   };
 
+  // JK center hub coordinates
+  const jkCenter = { x: 48, y: 45 };
+
   return (
     <MeLayout title="My Trading Area" showBack>
       <div className="p-4 space-y-4">
@@ -114,7 +117,7 @@ const MyTradingArea = () => {
               <SelectValue placeholder="Discover Retailers By..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="area">Search By Area</SelectItem>
+              <SelectItem value="area">Search By Market Area</SelectItem>
               <SelectItem value="category">Search By Category</SelectItem>
               <SelectItem value="revenue">Search By Revenue</SelectItem>
               <SelectItem value="map">Map View</SelectItem>
@@ -196,10 +199,43 @@ const MyTradingArea = () => {
                 <div className="absolute inset-0 opacity-20">
                   <svg className="w-full h-full" viewBox="0 0 100 100">
                     {/* City boundary */}
-                    <ellipse cx="48" cy="48" rx="42" ry="40" fill="none" stroke="hsl(var(--border))" strokeWidth="0.5" strokeDasharray="2,2" />
+                    <ellipse cx="48" cy="45" rx="42" ry="40" fill="none" stroke="hsl(var(--border))" strokeWidth="0.5" strokeDasharray="2,2" />
                     {/* Cross lines */}
                     <line x1="48" y1="5" x2="48" y2="90" stroke="hsl(var(--border))" strokeWidth="0.3" />
-                    <line x1="5" y1="48" x2="90" y2="48" stroke="hsl(var(--border))" strokeWidth="0.3" />
+                    <line x1="5" y1="45" x2="90" y2="45" stroke="hsl(var(--border))" strokeWidth="0.3" />
+                  </svg>
+                </div>
+
+                {/* Arrows from JK center to each zone */}
+                <div className="absolute inset-0 z-[5]">
+                  <svg className="w-full h-full" viewBox="0 0 100 100">
+                    <defs>
+                      <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+                        <polygon points="0 0, 6 2, 0 4" fill="hsl(var(--primary))" />
+                      </marker>
+                    </defs>
+                    {puneZones.map((zone) => {
+                      const dx = zone.x - jkCenter.x;
+                      const dy = zone.y - jkCenter.y;
+                      const dist = Math.sqrt(dx * dx + dy * dy);
+                      const startOffset = 6;
+                      const endOffset = 5;
+                      const sx = jkCenter.x + (dx / dist) * startOffset;
+                      const sy = jkCenter.y + (dy / dist) * startOffset;
+                      const ex = zone.x - (dx / dist) * endOffset;
+                      const ey = zone.y - (dy / dist) * endOffset;
+                      return (
+                        <line
+                          key={zone.name}
+                          x1={sx} y1={sy} x2={ex} y2={ey}
+                          stroke="hsl(var(--primary))"
+                          strokeWidth="0.6"
+                          strokeDasharray="2,1.5"
+                          markerEnd="url(#arrowhead)"
+                          opacity="0.6"
+                        />
+                      );
+                    })}
                   </svg>
                 </div>
 
@@ -228,19 +264,21 @@ const MyTradingArea = () => {
                   </div>
                 ))}
 
-                {/* Center label */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
-                  <Map className="w-6 h-6 text-muted-foreground/20" />
+                {/* JK Center Circle */}
+                <div className="absolute z-[15]" style={{ left: `${jkCenter.x}%`, top: `${jkCenter.y}%`, transform: "translate(-50%, -50%)" }}>
+                  <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-sm shadow-lg border-2 border-primary-foreground/20">
+                    JK
+                  </div>
                 </div>
               </div>
               <div className="p-3 border-t border-border/50 bg-card">
-                <p className="text-xs text-muted-foreground text-center">Tap a zone to see retailers in that area · {dealers.length} total retailer(s)</p>
+                <p className="text-xs text-muted-foreground text-center">Tap a zone to see retailers in that area - {dealers.length} total retailer(s)</p>
               </div>
             </Card>
           </div>
         )}
 
-        {/* Dealer List */}
+        {/* Retailer List */}
         {showDealerList && (
           <div className="space-y-3 animate-fade-in">
             <div className="flex items-center justify-between">
@@ -263,7 +301,7 @@ const MyTradingArea = () => {
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <MapPin className="w-3 h-3" />
                       <span>{dealer.location}</span>
-                      <span className="mx-1">·</span>
+                      <span className="mx-1">-</span>
                       <span className="font-medium">{dealer.dealerCode}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">{dealer.lastVisit}</p>
