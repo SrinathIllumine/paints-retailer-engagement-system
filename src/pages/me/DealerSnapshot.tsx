@@ -63,7 +63,7 @@ const DealerSnapshot = () => {
 
         {/* Customized Engagement Plan */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Customized Engagement Plan</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN</h3>
           <p className="text-xs text-muted-foreground mb-3">Guided discussions tailored for {dealer.name} — choose a theme to begin.</p>
           <div className="space-y-3">
             {engagementThemes.map((theme, i) => {
