@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
-import { MapPin, Clock, IndianRupee, ChevronRight, Layers, Rocket, Users } from "lucide-react";
+import { MapPin, Clock, Award, ChevronRight, Layers, Rocket, Users } from "lucide-react";
 import { dealers, engagementThemes } from "@/data/mockData";
 
 const revenueLabelMap: Record<string, string> = {
@@ -45,7 +45,7 @@ const DealerSnapshot = () => {
               <div className="bg-secondary/50 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-0.5">Revenue Tier</p>
                 <div className="flex items-center gap-1">
-                  <IndianRupee className="w-3.5 h-3.5 text-foreground" />
+                  <Award className="w-3.5 h-3.5 text-card" />
                   <span className="font-bold text-foreground">{dealer.revenueCategory}</span>
                   <span className="text-xs text-muted-foreground">{revenueLabelMap[dealer.revenueCategory]}</span>
                 </div>
