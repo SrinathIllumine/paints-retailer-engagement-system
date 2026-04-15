@@ -45,7 +45,7 @@ const DealerSnapshot = () => {
               <div className="bg-secondary/50 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-0.5">Revenue Tier</p>
                 <div className="flex items-center gap-1">
-                  <Award className="w-3.5 h-3.5 text-card" />
+                  <Award className="w-3.5 h-3.5 text-secondary-foreground" />
                   <span className="font-bold text-foreground">{dealer.revenueCategory}</span>
                   <span className="text-xs text-muted-foreground">{revenueLabelMap[dealer.revenueCategory]}</span>
                 </div>
@@ -63,7 +63,7 @@ const DealerSnapshot = () => {
 
         {/* Customized Engagement Plan */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Customized Engagement Plan</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN</h3>
           <p className="text-xs text-muted-foreground mb-3">Guided discussions tailored for {dealer.name} — choose a theme to begin.</p>
           <div className="space-y-3">
             {engagementThemes.map((theme, i) => {
