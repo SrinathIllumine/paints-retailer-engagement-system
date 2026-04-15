@@ -208,7 +208,7 @@ const EngagementTheme = () => {
                         <div className="flex items-start gap-2">
                           <Quote className="w-4 h-4 text-success shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-xs font-semibold text-success uppercase mb-1">Dealer Story</p>
+                            <p className="text-xs font-semibold text-success uppercase mb-1">RETAILER STORY</p>
                             <p className="text-sm text-foreground/80 leading-relaxed italic">{wi.dealerStory}</p>
                           </div>
                         </div>
