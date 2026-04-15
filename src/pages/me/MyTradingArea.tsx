@@ -244,7 +244,7 @@ const MyTradingArea = () => {
         {showDealerList && (
           <div className="space-y-3 animate-fade-in">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground font-medium">{filteredDealers.length} retailers found</span>
+              <span className="text-sm text-muted-foreground font-medium">{filteredDealers.length} retailer(s) found</span>
               <button onClick={clearFilters} className="text-xs text-primary font-medium">Clear filters</button>
             </div>
             {filteredDealers.map((dealer, i) => (
