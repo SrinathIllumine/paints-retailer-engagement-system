@@ -34,9 +34,9 @@ const Index = () => {
             </div>
             <h2 className="font-display font-bold text-xl text-foreground mb-1">Dealer Intelligence System (for Leadership)</h2>
             <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">
-              Enables leadership of JK to:
-              {"\n"}- have a strategic vision of how dealer networks are operating
-              {"\n"}- view the quality of engagement at the ME level across the system
+              Enables leadership of JK to have:
+              {"\n"}-> strategic vision of dealer networks
+              {"\n"}-> high-quality engagement at ME level
             </p>
             <Button variant="outline" className="w-full">Open Dashboard →</Button>
           </Card>
