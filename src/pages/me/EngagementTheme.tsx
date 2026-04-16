@@ -299,7 +299,7 @@ const EngagementTheme = () => {
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <StickyNote className="w-3.5 h-3.5" />
-            RETAILER NOTES & TAKEAWAYS
+            RETAILER RESPONSE
           </div>
           <p className="text-xs text-muted-foreground -mt-1">Tap to select key takeaways from your discussion.</p>
 
