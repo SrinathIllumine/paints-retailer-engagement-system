@@ -195,7 +195,7 @@ const EngagementTheme = () => {
 
         {/* Discussion Points - all collapsed */}
         <div className="space-y-3">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 uppercase tracking-wider font-extrabold text-card-foreground text-sm">
             <MessageSquare className="w-3.5 h-3.5" />
             CORE DISCUSSION POINTS
           </div>
@@ -247,7 +247,7 @@ const EngagementTheme = () => {
         {/* What-Ifs / Objections - with Best Practices only */}
         {theme.whatIfs.length > 0 && (
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
               <Lightbulb className="w-3.5 h-3.5" />
               What-Ifs &amp; Objections
             </div>
@@ -309,11 +309,11 @@ const EngagementTheme = () => {
 
         {/* Retailer Response */}
         <div className="space-y-3">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
             <StickyNote className="w-3.5 h-3.5" />
-            RETAILER RESPONSE
+            RETAILER ACTION POINTS / GO-FORWARDS
           </div>
-          <p className="text-xs text-muted-foreground -mt-1">Tap to select key takeaways from your discussion.</p>
+          <p className="text-xs text-muted-foreground -mt-1">Select key retailer action points from your discussion.</p>
 
           <div className="flex flex-wrap gap-2">
             {takeaways.map((chip) => {
