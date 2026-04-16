@@ -63,7 +63,6 @@ const DealerSegmentation = () => {
                   <p className="text-sm text-muted-foreground">{dealer.location}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-semibold text-foreground">{dealer.engagementScore}/100</p>
                   <OpennessBadge level={dealer.openness} />
                 </div>
                 <p className="text-xs text-muted-foreground shrink-0 w-24 text-right">{dealer.lastVisit}</p>

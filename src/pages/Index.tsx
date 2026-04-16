@@ -19,20 +19,20 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me")}>
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/area")}>
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
-            <h2 className="font-display font-bold text-xl text-foreground mb-1">Retailer Engagement App (for ME)</h2>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">ME App</h2>
             <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits.</p>
-            <Button variant="field" className="w-full">Open Engagement App →</Button>
+            <Button variant="field" className="w-full">Open ME App →</Button>
           </Card>
 
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/leadership")}>
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Monitor className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
-            <h2 className="font-display font-bold text-xl text-foreground mb-1">Retailer Intelligence System (for Leadership)</h2>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">Leadership App</h2>
             <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">
               {`Enables leadership of JK to have:
 -> strategic vision of retailer networks
