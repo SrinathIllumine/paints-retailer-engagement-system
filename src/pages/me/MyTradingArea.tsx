@@ -2,69 +2,24 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
 import {
   Search,
   MapPin,
-  Play,
-  Map,
   Store,
   ChevronRight,
-  ArrowLeft,
+  MessageSquare,
+  Zap,
 } from "lucide-react";
-import { dealers, type DealerType, type RevenueCategory } from "@/data/mockData";
-
-type DiscoveryMode = "area" | "category" | "revenue" | "map" | null;
-
-const revenueConfig: Record<RevenueCategory, { label: string; range: string }> = {
-  A: { label: "A Category", range: "> ₹2 Cr" },
-  B: { label: "B Category", range: "₹1-2 Cr" },
-  C: { label: "C Category", range: "< ₹1 Cr" },
-};
-
-const puneZones = [
-  { name: "Pune West", dealers: dealers.filter((d) => d.area === "Pune West"), x: 18, y: 46 },
-  { name: "Pune South", dealers: dealers.filter((d) => d.area === "Pune South"), x: 42, y: 80 },
-  { name: "Pune North", dealers: dealers.filter((d) => d.area === "Pune North"), x: 42, y: 12 },
-  { name: "Pune NE", dealers: dealers.filter((d) => d.area === "Pune NE"), x: 78, y: 16 },
-  { name: "Pune SW", dealers: dealers.filter((d) => d.area === "Pune SW"), x: 18, y: 78 },
-];
+import { dealers } from "@/data/mockData";
 
 const MyTradingArea = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [discoveryMode, setDiscoveryMode] = useState<DiscoveryMode>("map"); // Default to map
-  const [selectedArea, setSelectedArea] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<DealerType | null>(null);
-  const [selectedRevenue, setSelectedRevenue] = useState<RevenueCategory | null>(null);
-  const [hoveredZone, setHoveredZone] = useState<string | null>(null);
-  const [mapSelectedZone, setMapSelectedZone] = useState<string | null>(null);
 
-  const areas = useMemo(() => [...new Set(dealers.map((d) => d.area))], []);
-
-  const categoryCounts = useMemo(() => {
-    const counts: Record<DealerType, number> = { new: 0, loyal: 0, inactive: 0, declining: 0 };
-    dealers.forEach((d) => counts[d.type]++);
-    return counts;
-  }, []);
-
-  const revenueCounts = useMemo(() => {
-    const counts: Record<RevenueCategory, number> = { A: 0, B: 0, C: 0 };
-    dealers.forEach((d) => counts[d.revenueCategory]++);
-    return counts;
-  }, []);
-
-  const filteredDealers = useMemo(() => {
-    let result = dealers;
+  const sortedDealers = useMemo(() => {
+    let result = [...dealers].sort((a, b) => a.name.localeCompare(b.name));
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -74,43 +29,41 @@ const MyTradingArea = () => {
           d.dealerCode.toLowerCase().includes(q)
       );
     }
-    if (selectedArea) result = result.filter((d) => d.area === selectedArea);
-    if (selectedCategory) result = result.filter((d) => d.type === selectedCategory);
-    if (selectedRevenue) result = result.filter((d) => d.revenueCategory === selectedRevenue);
     return result;
-  }, [searchQuery, selectedArea, selectedCategory, selectedRevenue]);
-
-  const mapFilteredDealers = useMemo(() => {
-    if (!mapSelectedZone) return [];
-    return dealers.filter((d) => d.area === mapSelectedZone);
-  }, [mapSelectedZone]);
-
-  const showDealerList = searchQuery.trim() || selectedArea || selectedCategory || selectedRevenue;
-
-  const clearFilters = () => {
-    setSelectedArea(null);
-    setSelectedCategory(null);
-    setSelectedRevenue(null);
-    setDiscoveryMode("map");
-    setSearchQuery("");
-    setMapSelectedZone(null);
-  };
-
-  const handleDiscoveryChange = (value: string) => {
-    setSelectedArea(null);
-    setSelectedCategory(null);
-    setSelectedRevenue(null);
-    setSearchQuery("");
-    setMapSelectedZone(null);
-    setDiscoveryMode(value as DiscoveryMode);
-  };
-
-  const jkCenter = { x: 48, y: 46 };
+  }, [searchQuery]);
 
   return (
     <MeLayout title="My Trading Area" showBack>
       <div className="p-4 space-y-4">
-        {/* Global Search */}
+        {/* Top Navigation Cards */}
+        <div className="grid grid-cols-2 gap-3 animate-fade-in">
+          <Card className="p-3 border-primary/30 bg-primary/5 ring-2 ring-primary">
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <MessageSquare className="w-4 h-4 text-primary" />
+              </div>
+              <h3 className="font-display font-bold text-foreground text-xs leading-tight">Proactive Engagement</h3>
+            </div>
+            <p className="text-[10px] text-muted-foreground leading-snug">
+              Build structured discussions with retailers around specific business outcomes
+            </p>
+          </Card>
+
+          <Card className="p-3 opacity-60 cursor-not-allowed relative">
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
+                <Zap className="w-4 h-4 text-warning" />
+              </div>
+              <h3 className="font-display font-bold text-foreground text-xs leading-tight">Flashpoints</h3>
+            </div>
+            <p className="text-[10px] text-muted-foreground leading-snug">
+              Capture & curate best practices, solve day-to-day challenges
+            </p>
+            <span className="absolute top-2 right-2 text-[9px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full font-medium">Soon</span>
+          </Card>
+        </div>
+
+        {/* Search */}
         <div className="relative animate-fade-in">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -121,263 +74,41 @@ const MyTradingArea = () => {
           />
         </div>
 
-        {/* Discover Retailers Dropdown */}
-        <div className="animate-slide-up">
-          <Select value={discoveryMode || ""} onValueChange={handleDiscoveryChange}>
-            <SelectTrigger className="h-12 rounded-xl bg-card border-border/60 text-sm">
-              <SelectValue placeholder="Discover Retailers By..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="area">Search By Market Area</SelectItem>
-              <SelectItem value="category">Search By Category</SelectItem>
-              <SelectItem value="revenue">Search By Revenue</SelectItem>
-              <SelectItem value="map">Map View</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Dynamic Filters based on dropdown */}
-        {discoveryMode === "area" && !selectedArea && !showDealerList && (
-          <div className="space-y-2 animate-fade-in">
-            <h3 className="font-semibold text-foreground text-sm">Select Market Area</h3>
-            {areas.map((area) => (
-              <Card
-                key={area}
-                className="p-3.5 flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform"
-                onClick={() => setSelectedArea(area)}
-              >
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-info" />
-                  <span className="font-medium text-sm text-foreground">{area}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{dealers.filter((d) => d.area === area).length} retailer(s)</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {discoveryMode === "category" && !selectedCategory && !showDealerList && (
-          <div className="space-y-2 animate-fade-in">
-            <h3 className="font-semibold text-foreground text-sm">Select Category</h3>
-            {(["new", "loyal", "inactive", "declining"] as DealerType[]).map((type) => (
-              <Card
-                key={type}
-                className="p-3.5 flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform"
-                onClick={() => setSelectedCategory(type)}
-              >
-                <DealerTypeBadge type={type} />
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{categoryCounts[type]} retailer(s)</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {discoveryMode === "revenue" && !selectedRevenue && !showDealerList && (
-          <div className="space-y-2 animate-fade-in">
-            <h3 className="font-semibold text-foreground text-sm">Select Revenue Tier</h3>
-            {(["A", "B", "C"] as RevenueCategory[]).map((cat) => (
-              <Card
-                key={cat}
-                className="p-3.5 flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform"
-                onClick={() => setSelectedRevenue(cat)}
-              >
-                <div>
-                  <span className="font-semibold text-sm text-foreground">{revenueConfig[cat].label}</span>
-                  <span className="text-xs text-muted-foreground ml-2">{revenueConfig[cat].range}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">{revenueCounts[cat]} retailer(s)</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {/* Interactive Pune Map */}
-        {discoveryMode === "map" && (
-          <div className="animate-fade-in space-y-3">
-            <h3 className="font-semibold text-foreground text-sm">Pune Retailer Map</h3>
-            <Card className="overflow-hidden">
-              <div className="relative bg-secondary/20 h-80">
-                {/* Map grid background */}
-                <div className="absolute inset-0 opacity-20">
-                  <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <ellipse cx="48" cy="46" rx="42" ry="40" fill="none" stroke="hsl(var(--border))" strokeWidth="0.5" strokeDasharray="2,2" />
-                    <line x1="48" y1="5" x2="48" y2="90" stroke="hsl(var(--border))" strokeWidth="0.3" />
-                    <line x1="5" y1="46" x2="90" y2="46" stroke="hsl(var(--border))" strokeWidth="0.3" />
-                  </svg>
-                </div>
-
-                {/* Arrows from JK center to each zone */}
-                <div className="absolute inset-0 z-[5]">
-                  <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <defs>
-                      <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-                        <polygon points="0 0, 6 2, 0 4" fill="hsl(var(--primary))" />
-                      </marker>
-                    </defs>
-                    {puneZones.map((zone) => {
-                      const dx = zone.x - jkCenter.x;
-                      const dy = zone.y - jkCenter.y;
-                      const dist = Math.sqrt(dx * dx + dy * dy);
-                      const startOffset = 7;
-                      const endOffset = 8;
-                      const sx = jkCenter.x + (dx / dist) * startOffset;
-                      const sy = jkCenter.y + (dy / dist) * startOffset;
-                      const ex = zone.x - (dx / dist) * endOffset;
-                      const ey = zone.y - (dy / dist) * endOffset;
-                      return (
-                        <line
-                          key={zone.name}
-                          x1={sx} y1={sy} x2={ex} y2={ey}
-                          stroke="hsl(var(--primary))"
-                          strokeWidth="0.5"
-                          strokeDasharray="2,1.5"
-                          markerEnd="url(#arrowhead)"
-                          opacity="0.5"
-                        />
-                      );
-                    })}
-                  </svg>
-                </div>
-
-                {/* Zone pins - clickable */}
-                {puneZones.map((zone) => (
-                  <div
-                    key={zone.name}
-                    className="absolute cursor-pointer transition-transform hover:scale-110"
-                    style={{ left: `${zone.x}%`, top: `${zone.y}%`, transform: "translate(-50%, -50%)" }}
-                    onMouseEnter={() => setHoveredZone(zone.name)}
-                    onMouseLeave={() => setHoveredZone(null)}
-                    onClick={() => setMapSelectedZone(mapSelectedZone === zone.name ? null : zone.name)}
-                  >
-                    <div className={`relative flex flex-col items-center gap-1.5 ${hoveredZone === zone.name || mapSelectedZone === zone.name ? "z-20" : "z-10"}`}>
-                      <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-colors ${
-                        mapSelectedZone === zone.name
-                          ? "bg-primary text-primary-foreground ring-2 ring-primary/30 ring-offset-2"
-                          : hoveredZone === zone.name
-                            ? "bg-primary text-primary-foreground scale-110"
-                            : "bg-card text-foreground border border-border"
-                      }`}>
-                        {zone.dealers.length}
-                      </div>
-                      <span className={`text-[10px] font-semibold whitespace-nowrap px-2 py-0.5 rounded-md ${
-                        mapSelectedZone === zone.name || hoveredZone === zone.name
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-card/90 text-muted-foreground border border-border/50"
-                      }`}>
-                        {zone.name.replace("Pune ", "")}
-                      </span>
-                    </div>
+        {/* Retailer List */}
+        <div className="space-y-3 animate-fade-in">
+          <span className="text-sm text-muted-foreground font-medium">{sortedDealers.length} retailer(s)</span>
+          {sortedDealers.map((dealer, i) => (
+            <Card
+              key={dealer.id}
+              className="p-4 cursor-pointer active:scale-[0.98] transition-transform animate-slide-up"
+              style={{ animationDelay: `${i * 50}ms`, animationFillMode: "backwards" }}
+              onClick={() => navigate(`/me/dealer/${dealer.id}`)}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-foreground truncate text-sm">{dealer.name}</h3>
+                    <DealerTypeBadge type={dealer.type} />
                   </div>
-                ))}
-
-                {/* JK Center Circle */}
-                <div className="absolute z-[15]" style={{ left: `${jkCenter.x}%`, top: `${jkCenter.y}%`, transform: "translate(-50%, -50%)" }}>
-                  <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-sm shadow-lg border-2 border-primary-foreground/20">
-                    JK
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPin className="w-3 h-3" />
+                    <span>{dealer.location}</span>
+                    <span className="mx-1">-</span>
+                    <span className="font-medium">{dealer.dealerCode}</span>
                   </div>
+                  <p className="text-xs text-muted-foreground mt-1">{dealer.lastVisit}</p>
                 </div>
-              </div>
-              <div className="p-3 border-t border-border/50 bg-card">
-                <p className="text-xs text-muted-foreground text-center">Tap a zone to see retailers in that area - {dealers.length} total retailer(s)</p>
+                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
               </div>
             </Card>
-
-            {/* Retailer list for selected map zone */}
-            {mapSelectedZone && (
-              <div className="space-y-3 animate-fade-in">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-foreground">{mapSelectedZone} - {mapFilteredDealers.length} retailer(s)</span>
-                  <button onClick={() => setMapSelectedZone(null)} className="text-xs text-primary font-medium flex items-center gap-1">
-                    <ArrowLeft className="w-3 h-3" /> Back to map
-                  </button>
-                </div>
-                {mapFilteredDealers.map((dealer, i) => (
-                  <Card
-                    key={dealer.id}
-                    className="p-4 cursor-pointer active:scale-[0.98] transition-transform animate-slide-up"
-                    style={{ animationDelay: `${i * 50}ms`, animationFillMode: "backwards" }}
-                    onClick={() => navigate(`/me/dealer/${dealer.id}`)}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-foreground truncate text-sm">{dealer.name}</h3>
-                          <DealerTypeBadge type={dealer.type} />
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="w-3 h-3" />
-                          <span>{dealer.location}</span>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Retailer List */}
-        {showDealerList && (
-          <div className="space-y-3 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground font-medium">{filteredDealers.length} retailer(s) found</span>
-              <button onClick={clearFilters} className="text-xs text-primary font-medium">Clear filters</button>
+          ))}
+          {sortedDealers.length === 0 && (
+            <div className="text-center py-8">
+              <Store className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">No retailers match your search</p>
             </div>
-            {filteredDealers.map((dealer, i) => (
-              <Card
-                key={dealer.id}
-                className="p-4 cursor-pointer active:scale-[0.98] transition-transform animate-slide-up"
-                style={{ animationDelay: `${i * 50}ms`, animationFillMode: "backwards" }}
-                onClick={() => navigate(`/me/dealer/${dealer.id}`)}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-foreground truncate text-sm">{dealer.name}</h3>
-                      <DealerTypeBadge type={dealer.type} />
-                    </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <MapPin className="w-3 h-3" />
-                      <span>{dealer.location}</span>
-                      <span className="mx-1">-</span>
-                      <span className="font-medium">{dealer.dealerCode}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">{dealer.lastVisit}</p>
-                  </div>
-                  <Button
-                    variant="field"
-                    size="sm"
-                    className="shrink-0 h-9 px-3 rounded-lg text-xs"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/me/dealer/${dealer.id}`);
-                    }}
-                  >
-                    <Play className="w-3.5 h-3.5 mr-1" />
-                    Visit
-                  </Button>
-                </div>
-              </Card>
-            ))}
-            {filteredDealers.length === 0 && (
-              <div className="text-center py-8">
-                <Store className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">No retailers match your search</p>
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </MeLayout>
   );

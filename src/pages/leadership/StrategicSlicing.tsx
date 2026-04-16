@@ -3,8 +3,9 @@ import { Card } from "@/components/ui/card";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
 import OpennessBadge from "@/components/OpennessBadge";
 import { dealers } from "@/data/mockData";
-import { Target, Rocket, TrendingUp, Users } from "lucide-react";
+import { Target, Rocket, TrendingUp, Users, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const strategies = [
   { icon: Rocket, label: "Aligned to JK's Vision", description: "Retailers showing high openness and alignment with JK's multi-product strategy", filter: (d: typeof dealers[0]) => d.openness === "high" },
@@ -15,6 +16,7 @@ const strategies = [
 
 const StrategicSlicing = () => {
   const [active, setActive] = useState(0);
+  const navigate = useNavigate();
   const filtered = dealers.filter(strategies[active].filter);
 
   return (
@@ -52,16 +54,21 @@ const StrategicSlicing = () => {
           </div>
           <div className="divide-y divide-border">
             {filtered.map((dealer) => (
-              <div key={dealer.id} className="p-4 flex items-center gap-4">
+              <button
+                key={dealer.id}
+                className="w-full p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors text-left"
+                onClick={() => navigate(`/leadership/dealer-profile?dealerId=${dealer.id}`)}
+              >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-foreground">{dealer.name}</span>
                     <DealerTypeBadge type={dealer.type} />
                   </div>
-                  <p className="text-sm text-muted-foreground">{dealer.location} - Score: {dealer.engagementScore}</p>
+                  <p className="text-sm text-muted-foreground">{dealer.location}</p>
                 </div>
                 <OpennessBadge level={dealer.openness} />
-              </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+              </button>
             ))}
             {filtered.length === 0 && (
               <p className="p-8 text-center text-muted-foreground">No retailers match this criteria</p>
