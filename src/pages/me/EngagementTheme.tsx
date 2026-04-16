@@ -221,7 +221,7 @@ const EngagementTheme = () => {
                 {isExpanded && (
                   <div className="px-4 pb-4 space-y-3 animate-fade-in">
                     <div className="bg-secondary/40 rounded-lg p-3">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Insight</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
                       <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
                     </div>
                     <Button
