@@ -348,7 +348,7 @@ const EngagementTheme = () => {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
               <Button variant="outline" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
-                Go to Visit Summary
+                Go to Summary              -&gt;
               </Button>
             </>
           )}
