@@ -4,8 +4,8 @@ import { LayoutDashboard, Users, UserCircle, Target, BarChart3, LogOut } from "l
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/leadership" },
-  { icon: Users, label: "Segmentation", path: "/leadership/segmentation" },
-  { icon: UserCircle, label: "Retailer 360°", path: "/leadership/dealer-profile" },
+  { icon: Users, label: "Segments", path: "/leadership/segmentation" },
+  { icon: UserCircle, label: "Retailer Profile", path: "/leadership/dealer-profile" },
   { icon: Target, label: "Strategic", path: "/leadership/targeting" },
   { icon: BarChart3, label: "Analytics", path: "/leadership/analytics" },
 ];
