@@ -151,7 +151,7 @@ const DealerSnapshot = () => {
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Generic Details</h4>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-secondary/50 rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Joining Date</p>
+                      <p className="text-xs text-muted-foreground">Joining Date as JK retailer</p>
                       <p className="text-sm font-semibold text-foreground">{profile.joiningDate}</p>
                     </div>
                     <div className="bg-secondary/50 rounded-lg p-3">
@@ -159,7 +159,7 @@ const DealerSnapshot = () => {
                       <p className="text-sm font-semibold text-foreground">{profile.revenue}</p>
                     </div>
                     <div className="bg-secondary/50 rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Engagements (This Year)</p>
+                      <p className="text-xs text-muted-foreground">Engagements with JK (This Year)</p>
                       <p className="text-sm font-semibold text-foreground">{profile.totalEngagements}</p>
                     </div>
                     <div className="bg-secondary/50 rounded-lg p-3">
