@@ -1,13 +1,12 @@
 import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, UserCircle, Target, BarChart3, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, UserCircle, Target, LogOut } from "lucide-react";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/leadership" },
   { icon: Users, label: "Segments", path: "/leadership/segmentation" },
   { icon: UserCircle, label: "Retailer Profile", path: "/leadership/dealer-profile" },
   { icon: Target, label: "Strategic", path: "/leadership/targeting" },
-  { icon: BarChart3, label: "Analytics", path: "/leadership/analytics" },
 ];
 
 const LeadershipLayout = ({ children }: { children: ReactNode }) => {
@@ -16,7 +15,6 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
       <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-5 border-b border-sidebar-border">
           <h1 className="font-display font-bold text-lg text-sidebar-foreground">JK Cement</h1>
@@ -52,7 +50,6 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-7xl mx-auto p-6">{children}</div>
       </main>

@@ -4,7 +4,7 @@ import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, Edit3, X } from "lucide-react";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, Edit3, X, Phone } from "lucide-react";
 import { dealers, engagementThemes } from "@/data/mockData";
 
 const VisitNotes = () => {
@@ -17,10 +17,7 @@ const VisitNotes = () => {
   );
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
 
-  // Map topics from engagement plan discussion points
   const topicsDiscussed = engagementThemes.flatMap(t => t.discussionPoints.map(dp => dp.title)).join(", ");
-
-  // Map objections from engagement plan what-ifs
   const objectionsRaised = engagementThemes.flatMap(t => t.whatIfs.map(wi => wi.label)).slice(0, 3).join(", ");
 
   const autoNotes = [
@@ -56,7 +53,7 @@ const VisitNotes = () => {
           ))}
         </Card>
 
-        {/* Editable Notes - What We Agreed On */}
+        {/* Editable Notes */}
         <Card className="p-4 space-y-3 animate-slide-up" style={{ animationDelay: "150ms", animationFillMode: "backwards" }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
@@ -96,25 +93,34 @@ const VisitNotes = () => {
           </div>
         </Card>
 
-        {/* WhatsApp Preview Modal */}
+        {/* WhatsApp Preview Modal with contact header */}
         {showWhatsAppPreview && (
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-card rounded-2xl w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl">
-              <div className="p-4 border-b border-border flex items-center justify-between">
-                <h3 className="font-semibold text-foreground text-sm">WhatsApp Preview</h3>
-                <button onClick={() => setShowWhatsAppPreview(false)} className="p-1 text-muted-foreground">
-                  <X className="w-4 h-4" />
+              {/* WhatsApp-style contact header */}
+              <div className="bg-[#075e54] rounded-t-2xl px-4 py-3 flex items-center gap-3">
+                <button onClick={() => setShowWhatsAppPreview(false)} className="text-white/80">
+                  <X className="w-5 h-5" />
                 </button>
+                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <span className="text-white font-bold text-sm">{dealer.name.charAt(0)}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-semibold text-sm truncate">{dealer.name}</p>
+                  <p className="text-white/60 text-xs">online</p>
+                </div>
+                <Phone className="w-4 h-4 text-white/60" />
               </div>
-              <div className="p-4">
-                {/* Chat bubble */}
-                <div className="bg-[#dcf8c6] rounded-lg rounded-tr-none p-3 shadow-sm">
-                  <p className="text-xs text-foreground font-semibold mb-1">{dealer.name}</p>
-                  <p className="text-xs text-foreground/80 whitespace-pre-line leading-relaxed">{whatsAppMessage}</p>
-                  <p className="text-[10px] text-foreground/40 text-right mt-1">Just now ✓✓</p>
+
+              {/* Chat area */}
+              <div className="p-4 bg-[#e5ddd5] min-h-[200px]">
+                <div className="bg-[#dcf8c6] rounded-lg rounded-tr-none p-3 shadow-sm max-w-[90%] ml-auto">
+                  <p className="text-xs text-gray-800 whitespace-pre-line leading-relaxed">{whatsAppMessage}</p>
+                  <p className="text-[10px] text-gray-500 text-right mt-1">Just now ✓✓</p>
                 </div>
               </div>
-              <div className="p-4 border-t border-border space-y-2">
+
+              <div className="p-4 border-t border-border space-y-2 bg-card rounded-b-2xl">
                 <Button variant="field" className="w-full" onClick={() => setShowWhatsAppPreview(false)}>
                   Confirm & Share
                 </Button>

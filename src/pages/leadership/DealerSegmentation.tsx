@@ -27,7 +27,6 @@ const DealerSegmentation = () => {
           <p className="text-sm text-muted-foreground mt-1">Retailers grouped by morphology</p>
         </div>
 
-        {/* Segment cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {segmentationData.map((seg) => (
             <Card
@@ -43,7 +42,6 @@ const DealerSegmentation = () => {
           ))}
         </div>
 
-        {/* Retailer List */}
         <Card className="overflow-hidden">
           <div className="p-4 border-b border-border">
             <h3 className="font-semibold text-foreground">
@@ -55,7 +53,7 @@ const DealerSegmentation = () => {
               <button
                 key={dealer.id}
                 className="w-full p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors text-left"
-                onClick={() => navigate("/leadership/dealer-profile")}
+                onClick={() => navigate(`/leadership/dealer-profile?dealerId=${dealer.id}`)}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

@@ -7,9 +7,9 @@ import { Target, Rocket, TrendingUp, Users } from "lucide-react";
 import { useState } from "react";
 
 const strategies = [
-  { icon: Rocket, label: "Open to New Launches", description: "Retailers showing high openness for new product adoption", filter: (d: typeof dealers[0]) => d.openness === "high" },
-  { icon: TrendingUp, label: "Non-JK with High Potential", description: "New retailers with medium+ openness for conversion", filter: (d: typeof dealers[0]) => d.type === "new" && d.openness !== "low" },
-  { icon: Target, label: "High-Potential Under-Engaged", description: "Retailers with good scores but infrequent visits", filter: (d: typeof dealers[0]) => d.engagementScore > 40 && (d.type === "inactive" || d.type === "declining") },
+  { icon: Rocket, label: "Aligned to JK's Vision", description: "Retailers showing high openness and alignment with JK's multi-product strategy", filter: (d: typeof dealers[0]) => d.openness === "high" },
+  { icon: TrendingUp, label: "Inactive Retailers with Growth Mindset", description: "Inactive retailers showing medium+ openness, ready for re-engagement and conversion", filter: (d: typeof dealers[0]) => d.type === "inactive" && d.openness !== "low" },
+  { icon: Target, label: "Loyal Retailers with Less Growth", description: "Loyal retailers with good scores but limited recent growth activity", filter: (d: typeof dealers[0]) => d.type === "loyal" && d.engagementScore < 90 },
   { icon: Users, label: "All Declining Retailers", description: "Retailers needing immediate intervention", filter: (d: typeof dealers[0]) => d.type === "declining" },
 ];
 

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Login from "./pages/Login.tsx";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import MeEntry from "./pages/me/MeEntry.tsx";
@@ -16,7 +17,6 @@ import Dashboard from "./pages/leadership/Dashboard.tsx";
 import DealerSegmentation from "./pages/leadership/DealerSegmentation.tsx";
 import DealerProfile from "./pages/leadership/DealerProfile.tsx";
 import StrategicSlicing from "./pages/leadership/StrategicSlicing.tsx";
-import EngagementAnalytics from "./pages/leadership/EngagementAnalytics.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +27,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Index />} />
           <Route path="/me" element={<MeEntry />} />
           <Route path="/me/area" element={<MyTradingArea />} />
           <Route path="/me/dealer/:id" element={<DealerSnapshot />} />
@@ -39,7 +40,6 @@ const App = () => (
           <Route path="/leadership/segmentation" element={<DealerSegmentation />} />
           <Route path="/leadership/dealer-profile" element={<DealerProfile />} />
           <Route path="/leadership/targeting" element={<StrategicSlicing />} />
-          <Route path="/leadership/analytics" element={<EngagementAnalytics />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

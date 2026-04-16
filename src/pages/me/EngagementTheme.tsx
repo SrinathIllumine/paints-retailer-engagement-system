@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
@@ -22,7 +22,6 @@ import { engagementThemes, dealers } from "@/data/mockData";
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
-// Strategy suggestions per what-if objection
 const strategySuggestions: Record<string, string[]> = {
   wi1: ["Reach out to architects", "Onboard new contractors in your area", "Start with product demos at local sites"],
   wi2: ["Leverage JK's credit terms", "Start with minimum order quantity", "Use fast-moving SKUs to build cash flow"],
@@ -34,19 +33,30 @@ const strategySuggestions: Record<string, string[]> = {
   wi8: ["Request JK field team for contractor introductions", "Host a painter meet", "Use JK referral network"],
 };
 
-// Positive-only takeaways (no objections/what-ifs)
-const positiveTakeaways = [
-  "Open to trial later",
-  "Interested in contractor connect",
-  "Wants to see display stand",
-  "Agreed to start with limited SKUs",
-  "Requested product samples",
-  "Positive about JK brand",
-  "Excited about loyalty program",
-  "Willing to host painter meet",
-  "Interested in training sessions",
-  "Ready for follow-up visit",
-];
+// Per-theme positive takeaways
+const themePositiveTakeaways: Record<string, string[]> = {
+  et1: [
+    "Open to multi-product trial",
+    "Interested in JK display stand",
+    "Wants to see margin comparison",
+    "Agreed to start with limited SKUs",
+    "Positive about portfolio expansion",
+  ],
+  et2: [
+    "Excited about quick wins strategy",
+    "Interested in contractor connect",
+    "Wants marketing support",
+    "Ready for first order",
+    "Requested product samples",
+  ],
+  et3: [
+    "Willing to host painter meet",
+    "Interested in training sessions",
+    "Excited about loyalty program",
+    "Open to contractor introductions",
+    "Ready for follow-up visit",
+  ],
+};
 
 const EngagementTheme = () => {
   const { themeId, id: dealerId } = useParams();
@@ -55,17 +65,32 @@ const EngagementTheme = () => {
   const dealer = dealers.find((d) => d.id === dealerId) || dealers[0];
   const Icon = themeIcons[theme.icon] || Layers;
 
-  // Find current theme index for sequential navigation
   const currentThemeIndex = engagementThemes.findIndex((t) => t.id === themeId);
   const isLastTheme = currentThemeIndex === engagementThemes.length - 1;
   const nextTheme = !isLastTheme ? engagementThemes[currentThemeIndex + 1] : null;
 
-  const [expandedPoint, setExpandedPoint] = useState<string | null>(theme.discussionPoints[0]?.id || null);
+  // All state is per-theme (resets on themeId change)
+  const [expandedPoint, setExpandedPoint] = useState<string | null>(null); // All collapsed by default
   const [completedPoints, setCompletedPoints] = useState<Set<string>>(new Set());
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
   const [expandedWhatIf, setExpandedWhatIf] = useState<string | null>(null);
+  const [expandedStory, setExpandedStory] = useState<Record<string, boolean>>({});
+  const [expandedStrategy, setExpandedStrategy] = useState<Record<string, boolean>>({});
   const [selectedChips, setSelectedChips] = useState<Set<string>>(new Set());
   const [additionalNotes, setAdditionalNotes] = useState("");
+
+  // Reset all state and scroll to top when theme changes
+  useEffect(() => {
+    setExpandedPoint(null);
+    setCompletedPoints(new Set());
+    setSelectedWhatIfs(new Set());
+    setExpandedWhatIf(null);
+    setExpandedStory({});
+    setExpandedStrategy({});
+    setSelectedChips(new Set());
+    setAdditionalNotes("");
+    window.scrollTo(0, 0);
+  }, [themeId]);
 
   const toggleComplete = (id: string) => {
     const next = new Set(completedPoints);
@@ -95,6 +120,8 @@ const EngagementTheme = () => {
     ? (completedPoints.size / theme.discussionPoints.length) * 100
     : 0;
 
+  const takeaways = themePositiveTakeaways[theme.id] || themePositiveTakeaways.et1;
+
   return (
     <MeLayout title={theme.title} showBack>
       <div className="p-4 space-y-5">
@@ -113,7 +140,7 @@ const EngagementTheme = () => {
           </Card>
         </div>
 
-        {/* Progress */}
+        {/* Progress - per this plan only */}
         <div className="animate-fade-in">
           <div className="flex items-center justify-between text-xs mb-1.5">
             <span className="text-muted-foreground font-medium">{completedPoints.size} of {theme.discussionPoints.length} discussed</span>
@@ -127,7 +154,7 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Discussion Points */}
+        {/* Discussion Points - all collapsed by default */}
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <MessageSquare className="w-3.5 h-3.5" />
@@ -178,26 +205,29 @@ const EngagementTheme = () => {
           })}
         </div>
 
-        {/* What-Ifs / Objections */}
+        {/* What-Ifs / Objections - combined card with collapsible sub-sections */}
         {theme.whatIfs.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               <Lightbulb className="w-3.5 h-3.5" />
               What-Ifs &amp; Objections
             </div>
-            <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises - see how peers have addressed it.</p>
+            <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
             {theme.whatIfs.map((wi) => {
               const isSelected = selectedWhatIfs.has(wi.id);
               const isExpanded = expandedWhatIf === wi.id;
               const suggestions = strategySuggestions[wi.id] || [];
+              const storyOpen = expandedStory[wi.id] || false;
+              const strategyOpen = expandedStrategy[wi.id] || false;
 
               return (
-                <div key={wi.id}>
+                <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
+                  {/* Objection header */}
                   <button
-                    className={`w-full tap-target rounded-xl px-4 py-3 text-left text-sm font-medium transition-all ${
+                    className={`w-full tap-target px-4 py-3 text-left text-sm font-medium transition-all ${
                       isSelected
-                        ? "bg-warning/10 text-warning border border-warning/30"
-                        : "bg-card text-foreground border border-border"
+                        ? "bg-warning/10 text-warning"
+                        : "bg-card text-foreground"
                     }`}
                     onClick={() => toggleWhatIf(wi.id)}
                   >
@@ -212,42 +242,60 @@ const EngagementTheme = () => {
                   </button>
 
                   {isSelected && isExpanded && (
-                    <div className="mt-2 space-y-2 animate-fade-in">
-                      {/* Merged Retailer Success Story */}
-                      <Card className="p-3 border-success/20 bg-success/5">
-                        <div className="flex items-start gap-2">
-                          <BookOpen className="w-4 h-4 text-success shrink-0 mt-0.5" />
-                          <div>
-                            <p className="text-xs font-semibold text-success uppercase mb-1">RETAILER SUCCESS STORY</p>
+                    <div className="px-4 pb-4 space-y-2 animate-fade-in">
+                      {/* Retailer Success Story - collapsed by default */}
+                      <div className="border border-success/20 rounded-lg overflow-hidden">
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 bg-success/5 text-left"
+                          onClick={() => setExpandedStory(prev => ({ ...prev, [wi.id]: !prev[wi.id] }))}
+                        >
+                          <span className="flex items-center gap-2 text-xs font-semibold text-success uppercase">
+                            <BookOpen className="w-3.5 h-3.5" />
+                            Retailer Success Story
+                          </span>
+                          {storyOpen ? <ChevronUp className="w-3.5 h-3.5 text-success" /> : <ChevronDown className="w-3.5 h-3.5 text-success" />}
+                        </button>
+                        {storyOpen && (
+                          <div className="px-3 pb-3 pt-2 bg-success/5 animate-fade-in">
                             <p className="text-sm text-foreground/80 leading-relaxed mb-2">{wi.peerLearning}</p>
                             <p className="text-sm text-foreground/80 leading-relaxed italic border-t border-success/20 pt-2">{wi.dealerStory}</p>
                           </div>
-                        </div>
-                      </Card>
+                        )}
+                      </div>
 
-                      {/* Core Strategy Suggestions */}
+                      {/* Core Strategy Suggestions - collapsed by default */}
                       {suggestions.length > 0 && (
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider px-1">
-                            <Target className="w-3 h-3" />
-                            Core Strategy Suggestions
-                          </div>
-                          {suggestions.map((suggestion, idx) => (
-                            <div key={idx} className="bg-info/5 border border-info/15 rounded-lg px-3 py-2.5 text-sm text-foreground/80">
-                              {suggestion}
+                        <div className="border border-info/20 rounded-lg overflow-hidden">
+                          <button
+                            className="w-full flex items-center justify-between px-3 py-2.5 bg-info/5 text-left"
+                            onClick={() => setExpandedStrategy(prev => ({ ...prev, [wi.id]: !prev[wi.id] }))}
+                          >
+                            <span className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase">
+                              <Target className="w-3.5 h-3.5" />
+                              Core Strategy Suggestions
+                            </span>
+                            {strategyOpen ? <ChevronUp className="w-3.5 h-3.5 text-muted-foreground" /> : <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />}
+                          </button>
+                          {strategyOpen && (
+                            <div className="px-3 pb-3 pt-2 bg-info/5 space-y-1.5 animate-fade-in">
+                              {suggestions.map((suggestion, idx) => (
+                                <div key={idx} className="bg-background/60 border border-info/15 rounded-lg px-3 py-2.5 text-sm text-foreground/80">
+                                  {suggestion}
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          )}
                         </div>
                       )}
                     </div>
                   )}
-                </div>
+                </Card>
               );
             })}
           </div>
         )}
 
-        {/* Retailer Notes & Takeaways - Positive Only */}
+        {/* Retailer Notes & Takeaways - per engagement plan */}
         <div className="space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <StickyNote className="w-3.5 h-3.5" />
@@ -255,9 +303,8 @@ const EngagementTheme = () => {
           </div>
           <p className="text-xs text-muted-foreground -mt-1">Tap to select key takeaways from your discussion.</p>
 
-          {/* Positive Suggestion Chips */}
           <div className="flex flex-wrap gap-2">
-            {positiveTakeaways.map((chip) => {
+            {takeaways.map((chip) => {
               const isSelected = selectedChips.has(chip);
               return (
                 <button
@@ -276,7 +323,6 @@ const EngagementTheme = () => {
             })}
           </div>
 
-          {/* Optional free text */}
           <Textarea
             value={additionalNotes}
             onChange={(e) => setAdditionalNotes(e.target.value)}
