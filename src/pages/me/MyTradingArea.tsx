@@ -35,6 +35,12 @@ const MyTradingArea = () => {
   return (
     <MeLayout title="My Trading Area" showBack>
       <div className="p-4 space-y-4">
+        {/* Welcoming Message */}
+        <div className="animate-fade-in">
+          <p className="text-base text-foreground font-medium">Good to see you 👋</p>
+          <p className="text-sm text-muted-foreground">Let's plan meaningful conversations today.</p>
+        </div>
+
         {/* Top Navigation Cards */}
         <div className="grid grid-cols-2 gap-3 animate-fade-in">
           <Card className="p-3 border-primary/30 bg-primary/5 ring-2 ring-primary">

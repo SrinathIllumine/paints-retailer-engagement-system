@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import {
   ChevronDown,
@@ -24,15 +25,15 @@ const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 // Per-theme best practices (contextual to each objection)
 const bestPracticesMap: Record<string, string[]> = {
   wi1: [
-    "Start with a small trial batch of 10-15 units to test actual demand before committing",
+    "Start with a small trial batch to test actual demand before committing further",
     "Ask 3-4 regular contractors what products they currently source from elsewhere",
     "Place JK products near high-traffic areas in the shop for passive visibility",
     "Track weekly enquiries for 30 days to build a real demand picture",
   ],
   wi2: [
-    "Begin with JK's minimum order quantity to limit initial capital outlay",
-    "Leverage 30-day credit terms to sell before payment is due",
+    "Begin with JK's minimum order quantity to limit initial outlay",
     "Focus on fast-moving SKUs that turn over within 2-3 weeks",
+    "Monitor sell-through rates to guide future ordering decisions",
     "Reinvest initial margins into gradually expanding the range",
   ],
   wi3: [
@@ -42,33 +43,33 @@ const bestPracticesMap: Record<string, string[]> = {
     "Stack vertically using wall-mounted shelving provided by JK",
   ],
   wi4: [
-    "Utilize JK's 90-day buy-back guarantee to eliminate downside risk",
     "Start with the top 3 proven sellers in your market segment",
     "Set a 30-day review checkpoint to assess traction before expanding",
     "Connect with 2-3 nearby retailers who successfully added JK products",
+    "Track customer feedback to build confidence in the product range",
   ],
   wi5: [
     "Position JK as a premium complement, not a replacement for existing brands",
-    "Create a clear price-tier display showing good-better-best options",
-    "Highlight JK's margin advantage of 3-5% over comparable brands",
+    "Create a clear display showing good-better-best options for customers",
     "Let customers choose — more options mean more footfall and higher basket value",
+    "Highlight JK's unique product strengths in conversations with contractors",
   ],
   wi6: [
     "Request free JK product samples for personal testing before stocking",
     "Arrange a contractor application demo at a local site",
-    "Share JK's quality certifications and test reports with skeptical buyers",
+    "Share JK's quality certifications and test reports with enquiring buyers",
     "Start with one product category and validate quality before expanding",
   ],
   wi7: [
-    "Introduce JK's contractor loyalty program which offers 15% better rewards",
     "Organize a hands-on training session for 5-8 key contractors",
-    "Share a side-by-side margin comparison to show contractor benefits",
+    "Share a side-by-side performance comparison to show contractor benefits",
     "Offer exclusive first-access to new JK products through your shop",
+    "Build trust through consistent product quality and availability",
   ],
   wi8: [
     "Request JK field team to introduce you to 8-10 active local contractors",
-    "Host a small painter meet at your shop (JK sponsors refreshments)",
-    "Join JK's contractor referral network for ongoing introductions",
+    "Host a small painter meet at your shop for product awareness",
+    "Build relationships with contractors through regular engagement",
     "Start with one painter meet and grow based on response",
   ],
 };
@@ -76,28 +77,22 @@ const bestPracticesMap: Record<string, string[]> = {
 // Per-theme takeaways (action-oriented outcomes)
 const themePositiveTakeaways: Record<string, string[]> = {
   et1: [
-    "Open to multi-product trial",
-    "Interested in JK display stand",
-    "Wants to see margin comparison",
-    "Agreed to start with limited SKUs",
-    "Test the value proposition with a few contractors",
-    "Agreed to start with 2–3 successful SKUs in my area",
+    "Trial 2–3 relevant SKUs with contractors",
+    "Introduce JK products to existing contractor network",
+    "Test product performance at select customer sites",
+    "Share contractor feedback in next meeting",
   ],
   et2: [
-    "Excited about quick wins strategy",
-    "Interested in contractor connect",
-    "Wants marketing support",
-    "Ready for first order",
-    "Requested product samples for contractor testing",
-    "Will try JK with 2-3 trusted contractors first",
+    "Place initial order of fast-moving SKUs this week",
+    "Connect with 3 local contractors for product trials",
+    "Set up JK product display in high-visibility area",
+    "Share first-month performance review in next visit",
   ],
   et3: [
-    "Willing to host painter meet",
-    "Interested in training sessions",
-    "Excited about loyalty program",
-    "Open to contractor introductions",
-    "Will identify 5 key contractors for JK engagement",
-    "Agreed to organize a small demo session next week",
+    "Identify 5 key contractors for JK engagement",
+    "Organize a hands-on product demo at shop",
+    "Invite painters to upcoming JK meet event",
+    "Collect contractor feedback after first application",
   ],
 };
 
@@ -315,22 +310,18 @@ const EngagementTheme = () => {
           </div>
           <p className="text-xs text-muted-foreground -mt-1">Select key retailer action points from your discussion.</p>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-2">
             {takeaways.map((chip) => {
               const isSelected = selectedChips.has(chip);
               return (
-                <button
+                <label
                   key={chip}
+                  className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
                   onClick={() => toggleChip(chip)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all tap-target ${
-                    isSelected
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "bg-secondary text-muted-foreground border border-border/50 hover:border-primary/30"
-                  }`}
                 >
-                  {isSelected && <span className="mr-1">✓</span>}
-                  {chip}
-                </button>
+                  <Checkbox checked={isSelected} className="mt-0.5" />
+                  <span className="text-sm text-foreground">{chip}</span>
+                </label>
               );
             })}
           </div>
@@ -338,23 +329,28 @@ const EngagementTheme = () => {
           <Textarea
             value={additionalNotes}
             onChange={(e) => setAdditionalNotes(e.target.value)}
-            placeholder="Any additional notes (optional)..."
+            placeholder="Any key critical feedback..."
             className="min-h-[60px] rounded-xl bg-card text-sm"
           />
         </div>
 
         {/* Navigation */}
-        <div className="pt-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
+        <div className="pt-2 space-y-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
           {isLastTheme ? (
             <Button variant="field" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
               Continue to Summary
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
-            <Button variant="field" className="w-full" onClick={() => navigate(`/me/engagement/${dealer.id}/${nextTheme!.id}`)}>
-              Next: {nextTheme!.title}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <>
+              <Button variant="field" className="w-full" onClick={() => navigate(`/me/engagement/${dealer.id}/${nextTheme!.id}`)}>
+                Next: {nextTheme!.title}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
+                Go to Visit Summary
+              </Button>
+            </>
           )}
         </div>
       </div>

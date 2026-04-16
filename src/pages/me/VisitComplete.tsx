@@ -25,7 +25,7 @@ const VisitComplete = () => {
           <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">Next Visit Focus</h3>
           <div className="flex items-center gap-2 bg-info/5 border border-info/20 rounded-lg p-3">
             <ArrowRight className="w-4 h-4 text-info shrink-0" />
-            <p className="text-sm text-foreground">Follow up on JK Paint sample delivery. Confirm trial order quantity.</p>
+            <p className="text-sm text-foreground">Follow up on discussion points and check on retailer's progress with agreed action items.</p>
           </div>
         </Card>
 
