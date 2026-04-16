@@ -37,8 +37,8 @@ const MyTradingArea = () => {
       <div className="p-4 space-y-4">
         {/* Welcoming Message */}
         <div className="animate-fade-in">
-          <p className="text-base text-foreground font-medium">Good to see you 👋</p>
-          <p className="text-sm text-muted-foreground">Let's plan meaningful conversations today.</p>
+          <p className="text-base text-foreground font-medium">Good to see you Manish Kumar 👋</p>
+          <p className="text-sm text-muted-foreground">Let's plan your engagements with retailers today.</p>
         </div>
 
         {/* Top Navigation Cards */}
