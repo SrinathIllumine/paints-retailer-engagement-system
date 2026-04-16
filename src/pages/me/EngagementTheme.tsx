@@ -280,7 +280,7 @@ const EngagementTheme = () => {
                         >
                           <span className="flex items-center gap-2 text-xs font-semibold text-info uppercase">
                             <BookOpen className="w-3.5 h-3.5" />
-                            Best Practices
+                            BEST PRACTICES FOR THE RETAILER
                           </span>
                           {practicesOpen ? <ChevronUp className="w-3.5 h-3.5 text-info" /> : <ChevronDown className="w-3.5 h-3.5 text-info" />}
                         </button>
@@ -329,7 +329,7 @@ const EngagementTheme = () => {
           <Textarea
             value={additionalNotes}
             onChange={(e) => setAdditionalNotes(e.target.value)}
-            placeholder="Any key critical feedback..."
+            placeholder="Any key critical feedback from the retailer..."
             className="min-h-[60px] rounded-xl bg-card text-sm"
           />
         </div>
