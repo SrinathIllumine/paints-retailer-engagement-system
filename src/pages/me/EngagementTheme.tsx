@@ -25,15 +25,15 @@ const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 // Per-theme best practices (contextual to each objection)
 const bestPracticesMap: Record<string, string[]> = {
   wi1: [
-    "Start with a small trial batch of 10-15 units to test actual demand before committing",
+    "Start with a small trial batch to test actual demand before committing further",
     "Ask 3-4 regular contractors what products they currently source from elsewhere",
     "Place JK products near high-traffic areas in the shop for passive visibility",
     "Track weekly enquiries for 30 days to build a real demand picture",
   ],
   wi2: [
-    "Begin with JK's minimum order quantity to limit initial capital outlay",
-    "Leverage 30-day credit terms to sell before payment is due",
+    "Begin with JK's minimum order quantity to limit initial outlay",
     "Focus on fast-moving SKUs that turn over within 2-3 weeks",
+    "Monitor sell-through rates to guide future ordering decisions",
     "Reinvest initial margins into gradually expanding the range",
   ],
   wi3: [
@@ -43,33 +43,33 @@ const bestPracticesMap: Record<string, string[]> = {
     "Stack vertically using wall-mounted shelving provided by JK",
   ],
   wi4: [
-    "Utilize JK's 90-day buy-back guarantee to eliminate downside risk",
     "Start with the top 3 proven sellers in your market segment",
     "Set a 30-day review checkpoint to assess traction before expanding",
     "Connect with 2-3 nearby retailers who successfully added JK products",
+    "Track customer feedback to build confidence in the product range",
   ],
   wi5: [
     "Position JK as a premium complement, not a replacement for existing brands",
-    "Create a clear price-tier display showing good-better-best options",
-    "Highlight JK's margin advantage of 3-5% over comparable brands",
+    "Create a clear display showing good-better-best options for customers",
     "Let customers choose — more options mean more footfall and higher basket value",
+    "Highlight JK's unique product strengths in conversations with contractors",
   ],
   wi6: [
     "Request free JK product samples for personal testing before stocking",
     "Arrange a contractor application demo at a local site",
-    "Share JK's quality certifications and test reports with skeptical buyers",
+    "Share JK's quality certifications and test reports with enquiring buyers",
     "Start with one product category and validate quality before expanding",
   ],
   wi7: [
-    "Introduce JK's contractor loyalty program which offers 15% better rewards",
     "Organize a hands-on training session for 5-8 key contractors",
-    "Share a side-by-side margin comparison to show contractor benefits",
+    "Share a side-by-side performance comparison to show contractor benefits",
     "Offer exclusive first-access to new JK products through your shop",
+    "Build trust through consistent product quality and availability",
   ],
   wi8: [
     "Request JK field team to introduce you to 8-10 active local contractors",
-    "Host a small painter meet at your shop (JK sponsors refreshments)",
-    "Join JK's contractor referral network for ongoing introductions",
+    "Host a small painter meet at your shop for product awareness",
+    "Build relationships with contractors through regular engagement",
     "Start with one painter meet and grow based on response",
   ],
 };

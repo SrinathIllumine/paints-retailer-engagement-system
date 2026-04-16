@@ -13,7 +13,7 @@ const VisitNotes = () => {
   const dealer = dealers.find((d) => d.id === id) || dealers[0];
   const [isEditing, setIsEditing] = useState(false);
   const [editableNotes, setEditableNotes] = useState(
-    "Retailer open to trial order for JK Paint. Requested samples. Agreed to discuss multi-product stocking in next visit."
+    "Retailer is open to exploring JK products with contractors. Agreed to trial and share feedback in next visit."
   );
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
 
