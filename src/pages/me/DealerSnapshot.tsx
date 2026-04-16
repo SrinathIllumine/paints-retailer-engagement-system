@@ -193,7 +193,7 @@ const DealerSnapshot = () => {
                           <span className="text-sm font-medium text-foreground">{meta.label}</span>
                           <div className="flex items-center gap-2">
                             {specialLabel && (
-                              <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">{specialLabel}</span>
+                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium text-primary-foreground bg-[#055136]">{specialLabel}</span>
                             )}
                             <span className="text-sm font-bold text-foreground">{value}%</span>
                           </div>
