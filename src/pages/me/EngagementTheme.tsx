@@ -89,10 +89,10 @@ const themePositiveTakeaways: Record<string, string[]> = {
     "Share first-month performance review in next visit",
   ],
   et3: [
-    "Identify 5 key contractors for JK engagement",
-    "Organize a hands-on product demo at shop",
-    "Invite painters to upcoming JK meet event",
-    "Collect contractor feedback after first application",
+    "My aim is to identify 5 key contractors for JK engagement",
+    "I'll organize a hands-on product demo at shop to gain contractors' and painters' trust.",
+    "We can invite painters to the upcoming JK meet event",
+    "I'll collect contractor feedback after first application to understand more about the product",
   ],
 };
 
