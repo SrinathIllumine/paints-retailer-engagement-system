@@ -1,7 +1,7 @@
 import LeadershipLayout from "@/components/leadership/LeadershipLayout";
 import { Card } from "@/components/ui/card";
 import { kpiData, engagementTrend, segmentationData, objectionBreakdown } from "@/data/mockData";
-import { Users, MessageSquare, Rocket, ArrowUpRight } from "lucide-react";
+import { Users, MessageSquare, TrendingDown, ArrowUpRight } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid, PieChart, Pie, Cell } from "recharts";
 
 const COLORS = ["hsl(0,78%,48%)", "hsl(30,80%,52%)", "hsl(210,80%,52%)", "hsl(152,60%,40%)", "hsl(220,10%,46%)"];
@@ -9,7 +9,7 @@ const COLORS = ["hsl(0,78%,48%)", "hsl(30,80%,52%)", "hsl(210,80%,52%)", "hsl(15
 const kpis = [
   { icon: Users, label: "Total Retailers", value: kpiData.totalRetailers.toLocaleString(), change: "+124 this month", color: "text-info" },
   { icon: MessageSquare, label: "Today's Conversations", value: kpiData.conversationsToday.toString(), change: "66.67% of target", color: "text-success" },
-  { icon: Rocket, label: "Launch Readiness", value: `${kpiData.launchReadiness}%`, change: "JK Paint Ultima", color: "text-primary" },
+  { icon: TrendingDown, label: "Average Monthly Objections", value: "1785", change: "-217 this month", color: "text-success" },
 ];
 
 const Dashboard = () => (
