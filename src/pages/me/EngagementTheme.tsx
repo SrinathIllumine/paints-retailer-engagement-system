@@ -76,28 +76,22 @@ const bestPracticesMap: Record<string, string[]> = {
 // Per-theme takeaways (action-oriented outcomes)
 const themePositiveTakeaways: Record<string, string[]> = {
   et1: [
-    "Open to multi-product trial",
-    "Interested in JK display stand",
-    "Wants to see margin comparison",
-    "Agreed to start with limited SKUs",
-    "Test the value proposition with a few contractors",
-    "Agreed to start with 2–3 successful SKUs in my area",
+    "Trial 2–3 relevant SKUs with contractors",
+    "Introduce JK products to existing contractor network",
+    "Test product performance at select customer sites",
+    "Share contractor feedback in next meeting",
   ],
   et2: [
-    "Excited about quick wins strategy",
-    "Interested in contractor connect",
-    "Wants marketing support",
-    "Ready for first order",
-    "Requested product samples for contractor testing",
-    "Will try JK with 2-3 trusted contractors first",
+    "Place initial order of fast-moving SKUs this week",
+    "Connect with 3 local contractors for product trials",
+    "Set up JK product display in high-visibility area",
+    "Share first-month performance review in next visit",
   ],
   et3: [
-    "Willing to host painter meet",
-    "Interested in training sessions",
-    "Excited about loyalty program",
-    "Open to contractor introductions",
-    "Will identify 5 key contractors for JK engagement",
-    "Agreed to organize a small demo session next week",
+    "Identify 5 key contractors for JK engagement",
+    "Organize a hands-on product demo at shop",
+    "Invite painters to upcoming JK meet event",
+    "Collect contractor feedback after first application",
   ],
 };
 
@@ -315,22 +309,18 @@ const EngagementTheme = () => {
           </div>
           <p className="text-xs text-muted-foreground -mt-1">Select key retailer action points from your discussion.</p>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-2">
             {takeaways.map((chip) => {
               const isSelected = selectedChips.has(chip);
               return (
-                <button
+                <label
                   key={chip}
+                  className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
                   onClick={() => toggleChip(chip)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all tap-target ${
-                    isSelected
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "bg-secondary text-muted-foreground border border-border/50 hover:border-primary/30"
-                  }`}
                 >
-                  {isSelected && <span className="mr-1">✓</span>}
-                  {chip}
-                </button>
+                  <Checkbox checked={isSelected} className="mt-0.5" />
+                  <span className="text-sm text-foreground">{chip}</span>
+                </label>
               );
             })}
           </div>
@@ -338,23 +328,28 @@ const EngagementTheme = () => {
           <Textarea
             value={additionalNotes}
             onChange={(e) => setAdditionalNotes(e.target.value)}
-            placeholder="Any additional notes (optional)..."
+            placeholder="Any key critical feedback..."
             className="min-h-[60px] rounded-xl bg-card text-sm"
           />
         </div>
 
         {/* Navigation */}
-        <div className="pt-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
+        <div className="pt-2 space-y-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
           {isLastTheme ? (
             <Button variant="field" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
               Continue to Summary
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
-            <Button variant="field" className="w-full" onClick={() => navigate(`/me/engagement/${dealer.id}/${nextTheme!.id}`)}>
-              Next: {nextTheme!.title}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <>
+              <Button variant="field" className="w-full" onClick={() => navigate(`/me/engagement/${dealer.id}/${nextTheme!.id}`)}>
+                Next: {nextTheme!.title}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
+                Go to Visit Summary
+              </Button>
+            </>
           )}
         </div>
       </div>
