@@ -83,9 +83,9 @@ const themePositiveTakeaways: Record<string, string[]> = {
     "Will share contractor feedback regarding the new paint in next meeting",
   ],
   et2: [
-    "Place initial order of fast-moving SKUs this week",
-    "Connect with 3 local contractors for product trials",
-    "Set up JK product display in high-visibility area",
+    "I'll place initial order of fast-moving SKUs this week to test the waters",
+    "Connecting with 3 local contractors for product trials will give me some market exposure",
+    "I'll set up JK product display in high-visibility area to gain more attention",
     "Share first-month performance review in next visit",
   ],
   et3: [
