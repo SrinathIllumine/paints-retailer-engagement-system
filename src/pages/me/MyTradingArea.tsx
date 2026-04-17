@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import DealerTypeBadge from "@/components/DealerTypeBadge";
 import {
   Search,
   MapPin,
@@ -41,34 +40,6 @@ const MyTradingArea = () => {
           <p className="text-sm text-muted-foreground">Let's plan your engagements with retailers today.</p>
         </div>
 
-        {/* Top Navigation Cards */}
-        <div className="grid grid-cols-2 gap-3 animate-fade-in">
-          <Card className="p-3 border-primary/30 bg-primary/5 ring-2 ring-primary">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <MessageSquare className="w-4 h-4 text-primary" />
-              </div>
-              <h3 className="font-display font-bold text-foreground text-xs leading-tight">Proactive Engagement</h3>
-            </div>
-            <p className="text-[10px] text-muted-foreground leading-snug">
-              Build structured discussions with retailers around specific business outcomes
-            </p>
-          </Card>
-
-          <Card className="p-3 opacity-60 cursor-not-allowed relative">
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
-                <Zap className="w-4 h-4 text-warning" />
-              </div>
-              <h3 className="font-display font-bold text-foreground text-xs leading-tight">Flashpoints</h3>
-            </div>
-            <p className="text-[10px] text-muted-foreground leading-snug">
-              Capture & curate best practices, solve day-to-day challenges
-            </p>
-            <span className="absolute top-2 right-2 text-[9px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full font-medium">Soon</span>
-          </Card>
-        </div>
-
         {/* Search */}
         <div className="relative animate-fade-in">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -92,10 +63,7 @@ const MyTradingArea = () => {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-foreground truncate text-sm">{dealer.name}</h3>
-                    <DealerTypeBadge type={dealer.type} />
-                  </div>
+                  <h3 className="font-semibold text-foreground truncate text-sm mb-1">{dealer.name}</h3>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="w-3 h-3" />
                     <span>{dealer.location}</span>
@@ -114,6 +82,28 @@ const MyTradingArea = () => {
               <p className="text-sm text-muted-foreground">No retailers match your search</p>
             </div>
           )}
+        </div>
+
+        {/* Bottom Navigation Cards - compact */}
+        <div className="grid grid-cols-2 gap-2 pt-2 animate-fade-in">
+          <Card className="p-2.5 border-primary/30 bg-primary/5">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <MessageSquare className="w-3.5 h-3.5 text-primary" />
+              </div>
+              <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Proactive Engagement</h3>
+            </div>
+          </Card>
+
+          <Card className="p-2.5 opacity-60 cursor-not-allowed relative">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
+                <Zap className="w-3.5 h-3.5 text-warning" />
+              </div>
+              <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Flashpoints</h3>
+            </div>
+            <span className="absolute top-1 right-1 text-[8px] bg-muted text-muted-foreground px-1 py-0.5 rounded-full font-medium">Soon</span>
+          </Card>
         </div>
       </div>
     </MeLayout>
