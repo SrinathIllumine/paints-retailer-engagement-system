@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, UserCircle, Target, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, Target, LogOut } from "lucide-react";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/leadership" },
-  { icon: Users, label: "Segments", path: "/leadership/segmentation" },
-  { icon: UserCircle, label: "Retailer Profile", path: "/leadership/dealer-profile" },
+  { icon: Users, label: "All Retailers", path: "/leadership/all-retailers" },
   { icon: Target, label: "Strategic", path: "/leadership/targeting" },
 ];
 

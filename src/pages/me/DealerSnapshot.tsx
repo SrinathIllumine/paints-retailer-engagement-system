@@ -16,33 +16,33 @@ const revenueLabelMap: Record<string, string> = {
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
-// Mock engagement history data
+// Mock engagement history data — first-person retailer voice
 const engagementHistory = [
   {
     date: "Apr 12, 2026",
     summary: "Discussed multi-product portfolio expansion opportunity",
     actionPoints: [
-      { goal: "Trial product samples at a few contractor sites for quality feedback", bullets: ["Request 3 sample kits from JK", "Identify 2-3 contractor contacts for trial"] },
-      { goal: "Set up a JK compact display stand near the counter", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
+      { goal: "I'll try JK product samples with 2-3 contractors before the next visit", bullets: ["Request 3 sample kits from JK", "Identify 2-3 contractor contacts for trial"] },
+      { goal: "I'll set up a JK compact display stand near my counter this week", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
     ],
-    feedback: ["Need for improvement in packaging during monsoon", "Delivery timelines need to be more predictable"],
+    feedback: ["Packaging feels weak during monsoon handling", "Delivery timelines are not predictable for my planning"],
   },
   {
     date: "Apr 5, 2026",
     summary: "Relationship building and understanding retailer business goals",
     actionPoints: [
-      { goal: "Explore how JK's product range fits into retailer's growth plans", bullets: ["Discuss product categories of interest", "Identify top-selling segments"] },
+      { goal: "My top priority will be to map JK's product range to my growth plans", bullets: ["List product categories of interest", "Identify top-selling segments in my shop"] },
     ],
-    feedback: ["Would appreciate more product knowledge sessions"],
+    feedback: ["I'd appreciate more product knowledge sessions for my staff"],
   },
   {
     date: "Mar 28, 2026",
     summary: "Market intelligence gathering and local demand understanding",
     actionPoints: [
-      { goal: "Share insights on local product demand patterns", bullets: ["Compile demand trends from recent conversations", "Discuss with area manager"] },
-      { goal: "Follow up on delayed delivery escalation", bullets: ["Track shipment status", "Confirm revised delivery date with retailer"] },
+      { goal: "I'll share local demand patterns I'm seeing with the ME next visit", bullets: ["Note demand trends from recent customer conversations", "Discuss with area manager"] },
+      { goal: "I'll follow up on the delayed delivery escalation this week", bullets: ["Track shipment status", "Confirm revised delivery date"] },
     ],
-    feedback: ["Delivery was delayed by 5 days last order", "Would like more frequent ME visits"],
+    feedback: ["My last order was delayed by 5 days — affected my customer commitments", "I'd like more frequent ME visits"],
   },
 ];
 
@@ -91,26 +91,25 @@ const DealerSnapshot = () => {
   return (
     <MeLayout title="Retailer Snapshot" showBack>
       <div className="p-4 space-y-4">
-        {/* Dealer Card */}
-        <Card className="overflow-hidden animate-slide-up">
-          <div className="bg-primary/5 p-4 border-b border-border/50">
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="font-display font-bold text-lg text-foreground">{dealer.name}</h2>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{dealer.location}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">{dealer.dealerCode}</p>
-              </div>
+        {/* Dealer header — plain text, no large card */}
+        <div className="animate-slide-up space-y-3">
+          <div>
+            <h2 className="font-display font-bold text-lg text-foreground">{dealer.name}</h2>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+              <MapPin className="w-3.5 h-3.5" />
+              <span>{dealer.location}</span>
+              <span className="mx-1">·</span>
+              <span>{dealer.dealerCode}</span>
+            </div>
+            <div className="mt-1.5">
               <DealerTypeBadge type={dealer.type} />
             </div>
           </div>
-          <CardContent className="p-4 space-y-3">
-            {/* Profile Details CTA */}
+
+          <div className="grid grid-cols-2 gap-2">
             <Button
               variant="outline"
-              className="w-full justify-between"
+              className="justify-between"
               onClick={() => setShowProfile(true)}
             >
               <span className="flex items-center gap-2">
@@ -120,20 +119,19 @@ const DealerSnapshot = () => {
               <ChevronRight className="w-4 h-4" />
             </Button>
 
-            {/* View Engagement History CTA */}
             <Button
               variant="outline"
-              className="w-full justify-between"
+              className="justify-between"
               onClick={() => setShowHistory(true)}
             >
               <span className="flex items-center gap-2">
                 <History className="w-4 h-4 text-primary" />
-                View Engagement History
+                Engagement History
               </span>
               <ChevronRight className="w-4 h-4" />
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Profile Details Modal */}
         {showProfile && (
@@ -207,34 +205,26 @@ const DealerSnapshot = () => {
                   })}
                 </div>
 
-                {/* Retailer Mindset */}
+                {/* Retailer Mindset — only the active mode */}
                 <div className="space-y-2">
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Retailer Mindset</h4>
                   {(() => {
-                    const mindsetOptions = [
-                      { key: "Growth mode", desc: "Retailer is open to new initiatives and improvement opportunities.", cls: "bg-success/10 text-success border-success/30" },
-                      { key: "Exploring mode", desc: "Retailer is curious and willing to try new ideas selectively.", cls: "bg-info/10 text-info border-info/30" },
-                      { key: "Stable mode", desc: "Retailer prefers consistency and continues with existing practices.", cls: "bg-warning/10 text-warning border-warning/30" },
-                      { key: "Disengaged mode", desc: "Retailer currently shows low interest in change or new ideas.", cls: "bg-muted text-muted-foreground border-border" },
-                    ];
+                    const mindsetMeta: Record<string, { desc: string; cls: string }> = {
+                      "Growth mode": { desc: "Retailer is open to new initiatives and improvement opportunities.", cls: "bg-success/10 text-success border-success/30" },
+                      "Exploring mode": { desc: "Retailer is curious and willing to try new ideas selectively.", cls: "bg-info/10 text-info border-info/30" },
+                      "Stable mode": { desc: "Retailer prefers consistency and continues with existing practices.", cls: "bg-warning/10 text-warning border-warning/30" },
+                      "Disengaged mode": { desc: "Retailer currently shows low interest in change or new ideas.", cls: "bg-muted text-muted-foreground border-border" },
+                    };
+                    const active = mindsetMeta[profile.mindset];
+                    if (!active) return null;
                     return (
-                      <div className="space-y-2">
-                        {mindsetOptions.map((m) => {
-                          const isActive = profile.mindset === m.key;
-                          return (
-                            <div
-                              key={m.key}
-                              className={`rounded-xl px-3 py-2.5 border ${isActive ? m.cls : "bg-secondary/30 text-muted-foreground border-border/50 opacity-60"}`}
-                            >
-                              <div className="flex items-center gap-2">
-                                <span className={`w-2 h-2 rounded-full ${isActive ? "bg-current" : "bg-muted-foreground/30"}`} />
-                                <p className="text-sm font-semibold">{m.key}</p>
-                                {isActive && <span className="ml-auto text-[10px] uppercase tracking-wider font-bold">Current</span>}
-                              </div>
-                              <p className="text-xs mt-1 opacity-80 leading-snug">{m.desc}</p>
-                            </div>
-                          );
-                        })}
+                      <div className={`rounded-xl px-3 py-2.5 border ${active.cls}`}>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-current" />
+                          <p className="text-sm font-semibold">{profile.mindset}</p>
+                          <span className="ml-auto text-[10px] uppercase tracking-wider font-bold">Current</span>
+                        </div>
+                        <p className="text-xs mt-1 opacity-80 leading-snug">{active.desc}</p>
                       </div>
                     );
                   })()}
@@ -317,8 +307,7 @@ const DealerSnapshot = () => {
 
         {/* Customized Engagement Plan */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN – {dealer.name}</h3>
-          <p className="text-xs text-muted-foreground mb-3">Guided discussions tailored for {dealer.name} — choose a theme to begin.</p>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN</h3>
           <div className="space-y-3">
             {engagementThemes.map((theme, i) => {
               const Icon = themeIcons[theme.icon] || Layers;

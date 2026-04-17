@@ -29,8 +29,8 @@ const VisitComplete = () => {
           </div>
         </Card>
 
-        <Button variant="field" className="w-full mt-4" onClick={() => navigate("/me/area")}>
-          Back to My Trading Area
+        <Button variant="field" className="w-full mt-4" onClick={() => navigate("/")}>
+          Back to Home
         </Button>
       </div>
     </MeLayout>

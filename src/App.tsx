@@ -12,8 +12,7 @@ import EngagementTheme from "./pages/me/EngagementTheme.tsx";
 import VisitNotes from "./pages/me/VisitNotes.tsx";
 import VisitComplete from "./pages/me/VisitComplete.tsx";
 import Dashboard from "./pages/leadership/Dashboard.tsx";
-import DealerSegmentation from "./pages/leadership/DealerSegmentation.tsx";
-import DealerProfile from "./pages/leadership/DealerProfile.tsx";
+import AllRetailers from "./pages/leadership/AllRetailers.tsx";
 import StrategicSlicing from "./pages/leadership/StrategicSlicing.tsx";
 
 const queryClient = new QueryClient();
@@ -33,8 +32,10 @@ const App = () => (
           <Route path="/me/notes/:id" element={<VisitNotes />} />
           <Route path="/me/complete/:id" element={<VisitComplete />} />
           <Route path="/leadership" element={<Dashboard />} />
-          <Route path="/leadership/segmentation" element={<DealerSegmentation />} />
-          <Route path="/leadership/dealer-profile" element={<DealerProfile />} />
+          <Route path="/leadership/all-retailers" element={<AllRetailers />} />
+          {/* Backwards-compatible aliases */}
+          <Route path="/leadership/segmentation" element={<AllRetailers />} />
+          <Route path="/leadership/dealer-profile" element={<AllRetailers />} />
           <Route path="/leadership/targeting" element={<StrategicSlicing />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

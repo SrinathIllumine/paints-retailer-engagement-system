@@ -304,6 +304,6 @@ export const objectionBreakdown = [
   { name: "No demand", value: 28 },
   { name: "Working capital", value: 22 },
   { name: "No space", value: 18 },
-  { name: "Other brands", value: 17 },
+  { name: "Competition from other brands", value: 17 },
   { name: "Won't work", value: 15 },
 ];

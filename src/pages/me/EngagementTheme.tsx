@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import {
   ChevronDown,
   ChevronUp,
   CheckCircle2,
@@ -107,19 +115,25 @@ const EngagementTheme = () => {
   const isLastTheme = currentThemeIndex === engagementThemes.length - 1;
   const nextTheme = !isLastTheme ? engagementThemes[currentThemeIndex + 1] : null;
 
-  const [expandedPoint, setExpandedPoint] = useState<string | null>(null);
   const [completedPoints, setCompletedPoints] = useState<Set<string>>(new Set());
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
-  const [expandedWhatIf, setExpandedWhatIf] = useState<string | null>(null);
   const [expandedBestPractices, setExpandedBestPractices] = useState<Record<string, boolean>>({});
   const [selectedChips, setSelectedChips] = useState<Set<string>>(new Set());
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
-    setExpandedPoint(null);
+    if (!carouselApi) return;
+    const onSelect = () => setActiveSlide(carouselApi.selectedScrollSnap());
+    onSelect();
+    carouselApi.on("select", onSelect);
+    return () => { carouselApi.off("select", onSelect); };
+  }, [carouselApi]);
+
+  useEffect(() => {
     setCompletedPoints(new Set());
     setSelectedWhatIfs(new Set());
-    setExpandedWhatIf(null);
     setExpandedBestPractices({});
     setSelectedChips(new Set());
     setAdditionalNotes("");
@@ -136,10 +150,10 @@ const EngagementTheme = () => {
     const next = new Set(selectedWhatIfs);
     if (next.has(id)) {
       next.delete(id);
-      if (expandedWhatIf === id) setExpandedWhatIf(null);
     } else {
       next.add(id);
-      setExpandedWhatIf(id);
+      // Best practices open by default for newly selected objection
+      setExpandedBestPractices(prev => ({ ...prev, [id]: true }));
     }
     setSelectedWhatIfs(next);
   };
@@ -159,19 +173,15 @@ const EngagementTheme = () => {
   return (
     <MeLayout title={theme.title} showBack>
       <div className="p-4 space-y-5">
-        {/* Theme Header */}
-        <div className="animate-slide-up">
-          <Card className={`p-4 border-${theme.color}/30 bg-${theme.color}/5`}>
-            <div className="flex items-start gap-3">
-              <div className={`w-12 h-12 rounded-xl bg-${theme.color}/10 flex items-center justify-center shrink-0`}>
-                <Icon className={`w-6 h-6 text-${theme.color}`} />
-              </div>
-              <div>
-                <h2 className="font-display font-bold text-foreground text-base leading-snug">{theme.title}</h2>
-                <p className="text-xs text-muted-foreground mt-1">Conversation with {dealer.name}</p>
-              </div>
-            </div>
-          </Card>
+        {/* Theme Header — plain text, no red */}
+        <div className="animate-slide-up flex items-start gap-3">
+          <div className={`w-11 h-11 rounded-xl bg-${theme.color}/10 flex items-center justify-center shrink-0`}>
+            <Icon className={`w-5 h-5 text-${theme.color}`} />
+          </div>
+          <div>
+            <h2 className="font-display font-bold text-foreground text-base leading-snug">{theme.title}</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">Conversation with {dealer.name}</p>
+          </div>
         </div>
 
         {/* Progress */}
@@ -188,55 +198,71 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Discussion Points - all collapsed */}
+        {/* Discussion Points - horizontal swipe carousel */}
         <div className="space-y-3">
-          <div className="flex items-center gap-1.5 uppercase tracking-wider font-extrabold text-card-foreground text-sm">
-            <MessageSquare className="w-3.5 h-3.5" />
-            CORE DISCUSSION POINTS
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 uppercase tracking-wider font-extrabold text-card-foreground text-sm">
+              <MessageSquare className="w-3.5 h-3.5" />
+              CORE DISCUSSION POINTS
+            </div>
+            <span className="text-xs text-muted-foreground font-medium">
+              {activeSlide + 1} / {theme.discussionPoints.length}
+            </span>
           </div>
-          {theme.discussionPoints.map((point, i) => {
-            const isExpanded = expandedPoint === point.id;
-            const isDone = completedPoints.has(point.id);
 
-            return (
-              <Card
-                key={point.id}
-                className={`overflow-hidden transition-all animate-slide-up ${isDone ? "border-success/40 bg-success/5" : ""}`}
-                style={{ animationDelay: `${i * 60}ms`, animationFillMode: "backwards" }}
-              >
-                <button
-                  className="w-full p-4 flex items-start gap-3 tap-target text-left"
-                  onClick={() => setExpandedPoint(isExpanded ? null : point.id)}
-                >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isDone ? "bg-success text-success-foreground" : "bg-secondary text-muted-foreground"}`}>
-                    {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-sm font-bold">{i + 1}</span>}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
-                    <p className="mt-0.5 line-clamp-2 text-base font-extrabold font-mono text-muted-foreground">{point.description}</p>
-                  </div>
-                  {isExpanded ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0 mt-1" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />}
-                </button>
+          <Carousel setApi={setCarouselApi} opts={{ align: "start" }} className="w-full">
+            <CarouselContent>
+              {theme.discussionPoints.map((point, i) => {
+                const isDone = completedPoints.has(point.id);
+                return (
+                  <CarouselItem key={point.id} className="basis-full">
+                    <Card className={`overflow-hidden transition-all ${isDone ? "border-success/40 bg-success/5" : ""}`}>
+                      <div className="p-4 space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isDone ? "bg-success text-success-foreground" : "bg-secondary text-muted-foreground"}`}>
+                            {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-sm font-bold">{i + 1}</span>}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
+                            <p className="mt-0.5 text-sm text-muted-foreground leading-relaxed">{point.description}</p>
+                          </div>
+                        </div>
 
-                {isExpanded && (
-                  <div className="px-4 pb-4 space-y-3 animate-fade-in">
-                    <div className="bg-secondary/40 rounded-lg p-3">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
-                      <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
-                    </div>
-                    <Button
-                      variant={isDone ? "secondary" : "field"}
-                      size="sm"
-                      className="w-full"
-                      onClick={() => toggleComplete(point.id)}
-                    >
-                      {isDone ? "Mark as Not Discussed" : "Mark as Discussed ✓"}
-                    </Button>
-                  </div>
-                )}
-              </Card>
-            );
-          })}
+                        {/* USEFUL INSIGHTS — always visible & open */}
+                        <div className="bg-secondary/40 rounded-lg p-3">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
+                          <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
+                        </div>
+
+                        <Button
+                          variant={isDone ? "secondary" : "field"}
+                          size="sm"
+                          className="w-full"
+                          onClick={() => toggleComplete(point.id)}
+                        >
+                          {isDone ? "Mark as Not Discussed" : "Mark as Discussed ✓"}
+                        </Button>
+                      </div>
+                    </Card>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+            <div className="flex items-center justify-center gap-2 mt-3">
+              <CarouselPrevious className="static translate-y-0" />
+              <div className="flex gap-1.5">
+                {theme.discussionPoints.map((_, i) => (
+                  <button
+                    key={i}
+                    aria-label={`Go to point ${i + 1}`}
+                    onClick={() => carouselApi?.scrollTo(i)}
+                    className={`h-1.5 rounded-full transition-all ${i === activeSlide ? `w-5 bg-${theme.color}` : "w-1.5 bg-muted"}`}
+                  />
+                ))}
+              </div>
+              <CarouselNext className="static translate-y-0" />
+            </div>
+          </Carousel>
         </div>
 
         {/* What-Ifs / Objections - with Best Practices only */}
@@ -249,9 +275,8 @@ const EngagementTheme = () => {
             <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
             {theme.whatIfs.map((wi) => {
               const isSelected = selectedWhatIfs.has(wi.id);
-              const isExpanded = expandedWhatIf === wi.id;
               const practices = bestPracticesMap[wi.id] || [];
-              const practicesOpen = expandedBestPractices[wi.id] || false;
+              const practicesOpen = expandedBestPractices[wi.id] !== false; // default open
 
               return (
                 <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
@@ -271,12 +296,12 @@ const EngagementTheme = () => {
                     </span>
                   </button>
 
-                  {isSelected && isExpanded && practices.length > 0 && (
+                  {isSelected && practices.length > 0 && (
                     <div className="px-4 pb-4 space-y-2 animate-fade-in">
                       <div className="border border-info/20 rounded-lg overflow-hidden">
                         <button
                           className="w-full flex items-center justify-between px-3 py-2.5 bg-info/5 text-left"
-                          onClick={() => setExpandedBestPractices(prev => ({ ...prev, [wi.id]: !prev[wi.id] }))}
+                          onClick={() => setExpandedBestPractices(prev => ({ ...prev, [wi.id]: prev[wi.id] === false ? true : false }))}
                         >
                           <span className="flex items-center gap-2 text-xs font-semibold text-info uppercase">
                             <BookOpen className="w-3.5 h-3.5" />
