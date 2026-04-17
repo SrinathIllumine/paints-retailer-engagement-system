@@ -213,7 +213,7 @@ const EngagementTheme = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
-                    <p className="mt-0.5 line-clamp-2 text-base font-extrabold font-sans text-muted-foreground">{point.description}</p>
+                    <p className="mt-0.5 line-clamp-2 text-base font-extrabold font-mono text-muted-foreground">{point.description}</p>
                   </div>
                   {isExpanded ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0 mt-1" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />}
                 </button>
