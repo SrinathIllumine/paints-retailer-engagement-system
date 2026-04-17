@@ -8,10 +8,50 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const strategies = [
-  { icon: Rocket, label: "Aligned to JK's Vision", description: "Retailers showing high openness and alignment with JK's multi-product strategy", filter: (d: typeof dealers[0]) => d.openness === "high" },
-  { icon: TrendingUp, label: "Inactive Retailers with Growth Mindset", description: "Inactive retailers showing medium+ openness, ready for re-engagement and conversion", filter: (d: typeof dealers[0]) => d.type === "inactive" && d.openness !== "low" },
-  { icon: Target, label: "Loyal Retailers with Less Growth", description: "Loyal retailers with good scores but limited recent growth activity", filter: (d: typeof dealers[0]) => d.type === "loyal" && d.engagementScore < 90 },
-  { icon: Users, label: "All Declining Retailers", description: "Retailers needing immediate intervention", filter: (d: typeof dealers[0]) => d.type === "declining" },
+  {
+    icon: Rocket,
+    label: "Aligned to JK's Vision",
+    description: "Retailers showing high openness and alignment with JK's multi-product strategy",
+    filter: (d: typeof dealers[0]) => d.openness === "high",
+    actionPoints: [
+      "Invest in deeper engagement programs to convert alignment into long-term advocacy",
+      "Use these retailers as pilot partners for new product introductions and feedback loops",
+      "Recognize and showcase their stories to build aspiration across the network",
+    ],
+  },
+  {
+    icon: TrendingUp,
+    label: "Inactive Retailers with Growth Mindset",
+    description: "Inactive retailers showing medium+ openness, ready for re-engagement and conversion",
+    filter: (d: typeof dealers[0]) => d.type === "inactive" && d.openness !== "low",
+    actionPoints: [
+      "Design a structured re-engagement journey focused on listening before pitching",
+      "Pair them with experienced MEs who can rebuild trust over multiple visits",
+      "Identify root causes of inactivity at a regional level to inform supply and service decisions",
+    ],
+  },
+  {
+    icon: Target,
+    label: "Loyal Retailers with Less Growth",
+    description: "Loyal retailers with good scores but limited recent growth activity",
+    filter: (d: typeof dealers[0]) => d.type === "loyal" && d.engagementScore < 90,
+    actionPoints: [
+      "Explore underlying barriers — capital, space, or contractor pull — through structured conversations",
+      "Co-create category expansion plans rather than pushing volume targets",
+      "Strengthen the loyalty proposition with knowledge programs and recognition",
+    ],
+  },
+  {
+    icon: Users,
+    label: "All Declining Retailers",
+    description: "Retailers needing immediate intervention",
+    filter: (d: typeof dealers[0]) => d.type === "declining",
+    actionPoints: [
+      "Prioritize a leadership-led listening tour to understand systemic issues",
+      "Map decline patterns against region, ME, and product mix to spot common drivers",
+      "Avoid transactional discounts — focus on relationship and service recovery",
+    ],
+  },
 ];
 
 const StrategicSlicing = () => {
