@@ -210,14 +210,34 @@ const DealerSnapshot = () => {
                 {/* Retailer Mindset */}
                 <div className="space-y-2">
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Retailer Mindset</h4>
-                  <div className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                    profile.mindset === "Growth mode" ? "bg-success/10 text-success" :
-                    profile.mindset === "Exploring mode" ? "bg-info/10 text-info" :
-                    profile.mindset === "Stable mode" ? "bg-warning/10 text-warning" :
-                    "bg-muted text-muted-foreground"
-                  }`}>
-                    {profile.mindset}
-                  </div>
+                  {(() => {
+                    const mindsetOptions = [
+                      { key: "Growth mode", desc: "Retailer is open to new initiatives and improvement opportunities.", cls: "bg-success/10 text-success border-success/30" },
+                      { key: "Exploring mode", desc: "Retailer is curious and willing to try new ideas selectively.", cls: "bg-info/10 text-info border-info/30" },
+                      { key: "Stable mode", desc: "Retailer prefers consistency and continues with existing practices.", cls: "bg-warning/10 text-warning border-warning/30" },
+                      { key: "Disengaged mode", desc: "Retailer currently shows low interest in change or new ideas.", cls: "bg-muted text-muted-foreground border-border" },
+                    ];
+                    return (
+                      <div className="space-y-2">
+                        {mindsetOptions.map((m) => {
+                          const isActive = profile.mindset === m.key;
+                          return (
+                            <div
+                              key={m.key}
+                              className={`rounded-xl px-3 py-2.5 border ${isActive ? m.cls : "bg-secondary/30 text-muted-foreground border-border/50 opacity-60"}`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className={`w-2 h-2 rounded-full ${isActive ? "bg-current" : "bg-muted-foreground/30"}`} />
+                                <p className="text-sm font-semibold">{m.key}</p>
+                                {isActive && <span className="ml-auto text-[10px] uppercase tracking-wider font-bold">Current</span>}
+                              </div>
+                              <p className="text-xs mt-1 opacity-80 leading-snug">{m.desc}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
@@ -297,7 +317,7 @@ const DealerSnapshot = () => {
 
         {/* Customized Engagement Plan */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-1 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN – {dealer.name}</h3>
           <p className="text-xs text-muted-foreground mb-3">Guided discussions tailored for {dealer.name} — choose a theme to begin.</p>
           <div className="space-y-3">
             {engagementThemes.map((theme, i) => {
