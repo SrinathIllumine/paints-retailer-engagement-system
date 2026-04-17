@@ -71,8 +71,7 @@ const VisitNotes = () => {
     const bullets: string[] = [];
     Object.values(stored).forEach((t) => t?.actionPoints?.forEach((a) => bullets.push(a)));
     if (bullets.length === 0) {
-      bullets.push("Retailer is open to exploring JK products with contractors");
-      bullets.push("Agreed to trial and share feedback in the next visit");
+      bullets.push("No actions items from the retailer");
     }
     return bullets;
   }, [stored]);
@@ -81,7 +80,7 @@ const VisitNotes = () => {
     const bullets: string[] = [];
     Object.values(stored).forEach((t) => t?.feedback?.forEach((f) => bullets.push(f)));
     if (bullets.length === 0) {
-      bullets.push("Wants more predictable delivery timelines");
+      bullets.push("No key critical feedback from the retailer");
     }
     return bullets;
   }, [stored]);
