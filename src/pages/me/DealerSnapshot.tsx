@@ -91,26 +91,25 @@ const DealerSnapshot = () => {
   return (
     <MeLayout title="Retailer Snapshot" showBack>
       <div className="p-4 space-y-4">
-        {/* Dealer Card */}
-        <Card className="overflow-hidden animate-slide-up">
-          <div className="bg-primary/5 p-4 border-b border-border/50">
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="font-display font-bold text-lg text-foreground">{dealer.name}</h2>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{dealer.location}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">{dealer.dealerCode}</p>
-              </div>
+        {/* Dealer header — plain text, no large card */}
+        <div className="animate-slide-up space-y-3">
+          <div>
+            <h2 className="font-display font-bold text-lg text-foreground">{dealer.name}</h2>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+              <MapPin className="w-3.5 h-3.5" />
+              <span>{dealer.location}</span>
+              <span className="mx-1">·</span>
+              <span>{dealer.dealerCode}</span>
+            </div>
+            <div className="mt-1.5">
               <DealerTypeBadge type={dealer.type} />
             </div>
           </div>
-          <CardContent className="p-4 space-y-3">
-            {/* Profile Details CTA */}
+
+          <div className="grid grid-cols-2 gap-2">
             <Button
               variant="outline"
-              className="w-full justify-between"
+              className="justify-between"
               onClick={() => setShowProfile(true)}
             >
               <span className="flex items-center gap-2">
@@ -120,20 +119,19 @@ const DealerSnapshot = () => {
               <ChevronRight className="w-4 h-4" />
             </Button>
 
-            {/* View Engagement History CTA */}
             <Button
               variant="outline"
-              className="w-full justify-between"
+              className="justify-between"
               onClick={() => setShowHistory(true)}
             >
               <span className="flex items-center gap-2">
                 <History className="w-4 h-4 text-primary" />
-                View Engagement History
+                Engagement History
               </span>
               <ChevronRight className="w-4 h-4" />
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Profile Details Modal */}
         {showProfile && (
