@@ -88,6 +88,19 @@ const StrategicSlicing = () => {
           ))}
         </div>
 
+        {/* Leadership action points for the selected segment */}
+        <Card className="p-5 bg-info/5 border-info/20">
+          <h3 className="font-semibold text-foreground mb-3">Recommended Leadership Actions</h3>
+          <ul className="space-y-2">
+            {strategies[active].actionPoints.map((ap, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
+                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                <span>{ap}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
         <Card className="overflow-hidden">
           <div className="p-4 border-b border-border">
             <h3 className="font-semibold text-foreground">{strategies[active].label} ({filtered.length})</h3>
@@ -97,7 +110,7 @@ const StrategicSlicing = () => {
               <button
                 key={dealer.id}
                 className="w-full p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors text-left"
-                onClick={() => navigate(`/leadership/dealer-profile?dealerId=${dealer.id}`)}
+                onClick={() => navigate(`/leadership/all-retailers`)}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
