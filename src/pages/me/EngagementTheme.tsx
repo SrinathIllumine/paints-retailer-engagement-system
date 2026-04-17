@@ -77,7 +77,7 @@ const bestPracticesMap: Record<string, string[]> = {
 // Per-theme takeaways (action-oriented outcomes)
 const themePositiveTakeaways: Record<string, string[]> = {
   et1: [
-    "I'll trial 2–3 relevant SKUs with contractors before the next meeting to see if it works for me",
+    "I'll try 2–3 relevant SKUs with contractors before the next meeting to see if it works for me",
     "I'll introduce JK products to existing contractor network and get their feedback",
     "To test product performance at select customer sites will be my top priority",
     "Will share contractor feedback regarding the new paint in next meeting",
