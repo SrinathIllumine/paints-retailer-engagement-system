@@ -115,19 +115,25 @@ const EngagementTheme = () => {
   const isLastTheme = currentThemeIndex === engagementThemes.length - 1;
   const nextTheme = !isLastTheme ? engagementThemes[currentThemeIndex + 1] : null;
 
-  const [expandedPoint, setExpandedPoint] = useState<string | null>(null);
   const [completedPoints, setCompletedPoints] = useState<Set<string>>(new Set());
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
-  const [expandedWhatIf, setExpandedWhatIf] = useState<string | null>(null);
   const [expandedBestPractices, setExpandedBestPractices] = useState<Record<string, boolean>>({});
   const [selectedChips, setSelectedChips] = useState<Set<string>>(new Set());
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
-    setExpandedPoint(null);
+    if (!carouselApi) return;
+    const onSelect = () => setActiveSlide(carouselApi.selectedScrollSnap());
+    onSelect();
+    carouselApi.on("select", onSelect);
+    return () => { carouselApi.off("select", onSelect); };
+  }, [carouselApi]);
+
+  useEffect(() => {
     setCompletedPoints(new Set());
     setSelectedWhatIfs(new Set());
-    setExpandedWhatIf(null);
     setExpandedBestPractices({});
     setSelectedChips(new Set());
     setAdditionalNotes("");
