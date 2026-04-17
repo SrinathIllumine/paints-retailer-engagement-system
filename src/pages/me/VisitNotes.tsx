@@ -46,7 +46,7 @@ const VisitNotes = () => {
                 <note.icon className="w-4 h-4 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{note.label}</p>
+                <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">{note.label}</p>
                 <p className="text-sm text-foreground mt-0.5">{note.value}</p>
               </div>
             </div>
@@ -58,7 +58,7 @@ const VisitNotes = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-success" />
-              <h3 className="text-sm font-semibold text-foreground">What We Agreed On</h3>
+              <h3 className="text-sm font-semibold text-foreground">ACTION POINTS / GO-FORWARDS</h3>
             </div>
             <button onClick={() => setIsEditing(!isEditing)} className="text-xs text-primary font-medium flex items-center gap-1">
               <Edit3 className="w-3 h-3" />
