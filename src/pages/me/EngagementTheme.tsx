@@ -147,15 +147,15 @@ const EngagementTheme = () => {
   };
 
   const toggleWhatIf = (id: string) => {
-    const next = new Set(selectedWhatIfs);
-    if (next.has(id)) {
-      next.delete(id);
+    // Only one objection's Best Practices visible at a time
+    if (selectedWhatIfs.has(id)) {
+      setSelectedWhatIfs(new Set());
+      setExpandedBestPractices({});
     } else {
-      next.add(id);
-      // Best practices open by default for newly selected objection
-      setExpandedBestPractices(prev => ({ ...prev, [id]: true }));
+      setSelectedWhatIfs(new Set([id]));
+      // Best practices open by default for the newly selected objection only
+      setExpandedBestPractices({ [id]: true });
     }
-    setSelectedWhatIfs(next);
   };
 
   const toggleChip = (chip: string) => {

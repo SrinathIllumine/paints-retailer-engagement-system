@@ -17,12 +17,12 @@ import {
 } from "@/components/ui/dialog";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
 import OpennessBadge from "@/components/OpennessBadge";
-import { dealers, DealerType } from "@/data/mockData";
-import { Users, ChevronRight, MapPin, Calendar, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { dealers, DealerType, objectionBreakdown } from "@/data/mockData";
+import { Users, ChevronRight, MapPin, Calendar, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, Lightbulb, TrendingUp } from "lucide-react";
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from "recharts";
 
 const regionOptions = [
-  { value: "overall", label: "Overall", enabled: true },
+  { value: "overall", label: "Overall", enabled: false },
   { value: "MH", label: "MH (Maharashtra)", enabled: true },
   { value: "Mumbai", label: "Mumbai", enabled: false },
   { value: "Delhi", label: "Delhi", enabled: false },
@@ -78,25 +78,72 @@ const engagementHistory = [
   },
 ];
 
+type CategoryFilter = "all" | DealerType;
+
 const AllRetailers = () => {
-  const [region, setRegion] = useState<string>("overall");
+  const [region, setRegion] = useState<string>("MH");
+  const [category, setCategory] = useState<CategoryFilter>("all");
   const [selectedDealerId, setSelectedDealerId] = useState<string | null>(null);
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
 
-  // For now all dealers are MH. "Overall" and "MH" both show all.
-  const filteredDealers = useMemo(() => {
-    if (region === "overall" || region === "MH") return dealers;
+  // For now all dealers are MH. "Overall" disabled; "MH" shows all.
+  const regionDealers = useMemo(() => {
+    if (region === "MH") return dealers;
     return [];
   }, [region]);
 
+  const filteredDealers = useMemo(() => {
+    if (category === "all") return regionDealers;
+    return regionDealers.filter((d) => d.type === category);
+  }, [regionDealers, category]);
+
   const summary = useMemo(() => {
     return segmentMeta.map((s) => {
-      const count = filteredDealers.filter((d) => d.type === s.type).length;
-      const total = filteredDealers.length || 1;
+      const count = regionDealers.filter((d) => d.type === s.type).length;
+      const total = regionDealers.length || 1;
       const pct = Math.round((count / total) * 100);
       return { ...s, count, pct };
     });
+  }, [regionDealers]);
+
+  // Aggregate attribute metrics across the filtered set
+  const aggregateAttributes = useMemo(() => {
+    if (filteredDealers.length === 0) return [];
+    const sums = { "JK Alignment": 0, "Value Prop": 0, "Market Awareness": 0, "Openness": 0, "Growth Potential": 0 } as Record<string, number>;
+    filteredDealers.forEach((d) => {
+      radarDataForDealer(d).forEach((r) => { sums[r.attribute] += r.value; });
+    });
+    return Object.entries(sums).map(([attribute, total]) => ({
+      attribute,
+      value: Math.round(total / filteredDealers.length),
+    }));
   }, [filteredDealers]);
+
+  // Synthesized insights based on region + category
+  const synthesizedInsights = useMemo(() => {
+    const regionLabel = region === "MH" ? "MH" : "this region";
+    const segLabel = category === "all" ? "retailers" : `${category} retailers`;
+    if (filteredDealers.length === 0) return [];
+    const openness = aggregateAttributes.find((a) => a.attribute === "Openness")?.value ?? 0;
+    const valueProp = aggregateAttributes.find((a) => a.attribute === "Value Prop")?.value ?? 0;
+    const alignment = aggregateAttributes.find((a) => a.attribute === "JK Alignment")?.value ?? 0;
+    const insights: string[] = [];
+    if (openness >= 60 && valueProp < 60) {
+      insights.push(`${segLabel} in ${regionLabel} show high openness but lower understanding of the value proposition — a clear opportunity for targeted product knowledge sessions.`);
+    }
+    if (alignment >= 70) {
+      insights.push(`Alignment to JK is strong among ${segLabel} in ${regionLabel} — consider deeper co-creation on category expansion.`);
+    } else {
+      insights.push(`Alignment to JK is moderate — invest in story-led engagement to convert intent into advocacy.`);
+    }
+    if (category === "inactive" || category === "declining") {
+      insights.push(`Pattern suggests systemic friction (delivery, service) — a regional listening review is recommended before pushing volume.`);
+    }
+    if (insights.length === 0) {
+      insights.push(`${segLabel} in ${regionLabel} sit in a balanced zone — focus on selective deepening rather than broad initiatives.`);
+    }
+    return insights;
+  }, [filteredDealers, aggregateAttributes, region, category]);
 
   const selectedDealer = selectedDealerId ? dealers.find((d) => d.id === selectedDealerId) : null;
 
@@ -108,7 +155,7 @@ const AllRetailers = () => {
             <h1 className="font-display font-bold text-2xl text-foreground">All Retailers</h1>
             <p className="text-sm text-muted-foreground mt-1">Unified view of retailer morphologies and profiles</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm text-muted-foreground">Region</span>
             <Select value={region} onValueChange={setRegion}>
               <SelectTrigger className="w-56">
@@ -117,9 +164,23 @@ const AllRetailers = () => {
               <SelectContent>
                 {regionOptions.map((r) => (
                   <SelectItem key={r.value} value={r.value} disabled={!r.enabled}>
-                    {r.label}{!r.enabled && " (coming soon)"}
+                    {r.label}{!r.enabled && " — Coming soon"}
                   </SelectItem>
                 ))}
+              </SelectContent>
+            </Select>
+
+            <span className="text-sm text-muted-foreground ml-2">Category</span>
+            <Select value={category} onValueChange={(v) => setCategory(v as CategoryFilter)}>
+              <SelectTrigger className="w-44">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All categories</SelectItem>
+                <SelectItem value="loyal">Loyal</SelectItem>
+                <SelectItem value="new">New</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="declining">Declining</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -128,7 +189,11 @@ const AllRetailers = () => {
         {/* Morphology summary */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {summary.map((seg) => (
-            <Card key={seg.type} className={`p-4 border ${seg.cls}`}>
+            <Card
+              key={seg.type}
+              className={`p-4 border cursor-pointer transition-all ${seg.cls} ${category === seg.type ? "ring-2 ring-foreground/20" : "hover:opacity-90"}`}
+              onClick={() => setCategory(category === seg.type ? "all" : seg.type)}
+            >
               <Users className="w-5 h-5 mb-2" />
               <p className="font-bold text-2xl">{seg.count.toLocaleString()}</p>
               <p className="text-sm font-medium">{seg.label} Retailers</p>
@@ -137,10 +202,71 @@ const AllRetailers = () => {
           ))}
         </div>
 
+        {/* Region-based insights panel */}
+        {regionDealers.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Top objections */}
+            <Card className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <AlertTriangle className="w-4 h-4 text-warning" />
+                <h3 className="font-semibold text-foreground">Top Objections</h3>
+              </div>
+              <ul className="space-y-2">
+                {objectionBreakdown.slice(0, 5).map((o) => (
+                  <li key={o.name} className="flex items-center justify-between text-sm">
+                    <span className="text-foreground/80">{o.name}</span>
+                    <span className="font-semibold text-foreground">{o.value}%</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            {/* Aggregated attribute metrics */}
+            <Card className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="w-4 h-4 text-info" />
+                <h3 className="font-semibold text-foreground">Attribute Metrics</h3>
+              </div>
+              <div className="space-y-2">
+                {aggregateAttributes.map((a) => (
+                  <div key={a.attribute}>
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-muted-foreground">{a.attribute}</span>
+                      <span className="font-semibold text-foreground">{a.value}%</span>
+                    </div>
+                    <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+                      <div className="h-full bg-primary/70 rounded-full" style={{ width: `${a.value}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {/* Synthesized insights */}
+            <Card className="p-4 bg-info/5 border-info/20">
+              <div className="flex items-center gap-2 mb-3">
+                <Lightbulb className="w-4 h-4 text-info" />
+                <h3 className="font-semibold text-foreground">Leadership Insights</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-foreground/85">
+                {synthesizedInsights.map((s, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+        )}
+
         {/* Retailer list */}
         <Card className="overflow-hidden">
-          <div className="p-4 border-b border-border">
+          <div className="p-4 border-b border-border flex items-center justify-between">
             <h3 className="font-semibold text-foreground">All Retailers ({filteredDealers.length})</h3>
+            {category !== "all" && (
+              <button className="text-xs text-primary font-medium" onClick={() => setCategory("all")}>Clear category filter</button>
+            )}
           </div>
           <div className="divide-y divide-border">
             {filteredDealers.map((dealer) => (
@@ -164,7 +290,7 @@ const AllRetailers = () => {
               </button>
             ))}
             {filteredDealers.length === 0 && (
-              <p className="p-8 text-center text-muted-foreground">No retailer data for this region yet.</p>
+              <p className="p-8 text-center text-muted-foreground">No retailers match the selected filters.</p>
             )}
           </div>
         </Card>

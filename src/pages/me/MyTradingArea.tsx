@@ -33,7 +33,7 @@ const MyTradingArea = () => {
 
   return (
     <MeLayout title="My Trading Area" showBack>
-      <div className="p-4 space-y-4">
+      <div className="p-4 pb-2 space-y-4">
         {/* Welcoming Message */}
         <div className="animate-fade-in">
           <p className="text-base text-foreground font-medium">Good to see you Manish Kumar 👋</p>
@@ -83,24 +83,32 @@ const MyTradingArea = () => {
             </div>
           )}
         </div>
+      </div>
 
-        {/* Bottom Navigation Cards - compact */}
-        <div className="grid grid-cols-2 gap-2 pt-2 animate-fade-in">
+      {/* Frozen footer cards — stay anchored at the bottom of the viewport */}
+      <div className="sticky bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3">
+        <div className="grid grid-cols-2 gap-2">
           <Card className="p-2.5 border-primary/30 bg-primary/5">
-            <div className="flex items-center gap-2">
+            <div className="flex items-start gap-2">
               <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                 <MessageSquare className="w-3.5 h-3.5 text-primary" />
               </div>
-              <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Proactive Engagement</h3>
+              <div className="min-w-0">
+                <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Proactive Engagement</h3>
+                <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">Build structured discussions with retailers around specific business outcomes</p>
+              </div>
             </div>
           </Card>
 
           <Card className="p-2.5 opacity-60 cursor-not-allowed relative">
-            <div className="flex items-center gap-2">
+            <div className="flex items-start gap-2">
               <div className="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
                 <Zap className="w-3.5 h-3.5 text-warning" />
               </div>
-              <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Flashpoints</h3>
+              <div className="min-w-0 pr-8">
+                <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Flashpoints</h3>
+                <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">Capture &amp; curate best practices, solve day-to-day challenges</p>
+              </div>
             </div>
             <span className="absolute top-1 right-1 text-[8px] bg-muted text-muted-foreground px-1 py-0.5 rounded-full font-medium">Soon</span>
           </Card>
