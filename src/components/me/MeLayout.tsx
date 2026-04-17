@@ -41,7 +41,7 @@ const MeLayout = ({ children, title, showBack = false }: MeLayoutProps) => {
           </button>
         )}
       </header>
-      <main className="flex-1 overflow-hidden flex flex-col min-h-0">{children}</main>
+      <main className="flex-1 overflow-y-auto flex flex-col min-h-0">{children}</main>
     </div>
   );
 };
