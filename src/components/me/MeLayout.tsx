@@ -15,19 +15,28 @@ const MeLayout = ({ children, title, showBack = false }: MeLayoutProps) => {
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto flex flex-col">
       {/* Mobile Header */}
-      <header className="sticky top-0 z-50 bg-primary px-4 py-3 flex items-center gap-3 shadow-md">
+      <header className="sticky top-0 z-50 bg-sidebar text-sidebar-foreground px-4 py-3 flex items-center gap-3 shadow-md border-b border-sidebar-border">
         {showBack ? (
-          <button onClick={() => navigate(-1)} className="p-1 text-primary-foreground">
+          <button
+            onClick={() => {
+              if (title === "My Trading Area") {
+                navigate("/");
+              } else {
+                navigate(-1);
+              }
+            }}
+            className="p-1 text-sidebar-foreground"
+          >
             <ArrowLeft className="w-6 h-6" />
           </button>
         ) : (
-          <div className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-            <User className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-full bg-sidebar-foreground/15 flex items-center justify-center">
+            <User className="w-4 h-4 text-sidebar-foreground" />
           </div>
         )}
-        <h1 className="text-primary-foreground font-display font-semibold text-lg flex-1 truncate">{title}</h1>
-        {!showBack && location.pathname !== "/" && (
-          <button onClick={() => navigate("/me")} className="p-1 text-primary-foreground">
+        <h1 className="text-sidebar-foreground font-display font-semibold text-lg flex-1 truncate">{title}</h1>
+        {location.pathname !== "/" && (
+          <button onClick={() => navigate("/")} className="p-1 text-sidebar-foreground" aria-label="Home">
             <Home className="w-5 h-5" />
           </button>
         )}
