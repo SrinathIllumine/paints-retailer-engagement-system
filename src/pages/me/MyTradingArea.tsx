@@ -85,7 +85,7 @@ const MyTradingArea = () => {
         </div>
       </div>
 
-      {/* Frozen footer cards — stay anchored at the bottom of the viewport */}
+      {/* Frozen footer cards - stay anchored at the bottom of the viewport */}
       <div className="sticky bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3">
         <div className="grid grid-cols-2 gap-2">
           <Card className="p-2.5 border-primary/30 bg-primary/5">

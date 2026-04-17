@@ -74,7 +74,7 @@ const engagementHistory = [
       { goal: "I'll share local pricing observations with the area manager this week", bullets: ["Compile pricing from 3 nearby competitors", "Submit report to area manager"] },
       { goal: "I'll follow up on the delayed delivery escalation", bullets: ["Track shipment status", "Confirm revised delivery date"] },
     ],
-    feedback: ["My last order was delayed by 5 days — affected my customer commitments", "I'd like more frequent ME visits"],
+    feedback: ["My last order was delayed by 5 days - affected my customer commitments", "I'd like more frequent ME visits"],
   },
 ];
 
@@ -129,18 +129,18 @@ const AllRetailers = () => {
     const alignment = aggregateAttributes.find((a) => a.attribute === "JK Alignment")?.value ?? 0;
     const insights: string[] = [];
     if (openness >= 60 && valueProp < 60) {
-      insights.push(`${segLabel} in ${regionLabel} show high openness but lower understanding of the value proposition — a clear opportunity for targeted product knowledge sessions.`);
+      insights.push(`${segLabel} in ${regionLabel} show high openness but lower understanding of the value proposition - a clear opportunity for targeted product knowledge sessions.`);
     }
     if (alignment >= 70) {
-      insights.push(`Alignment to JK is strong among ${segLabel} in ${regionLabel} — consider deeper co-creation on category expansion.`);
+      insights.push(`Alignment to JK is strong among ${segLabel} in ${regionLabel} - consider deeper co-creation on category expansion.`);
     } else {
-      insights.push(`Alignment to JK is moderate — invest in story-led engagement to convert intent into advocacy.`);
+      insights.push(`Alignment to JK is moderate - invest in story-led engagement to convert intent into advocacy.`);
     }
     if (category === "inactive" || category === "declining") {
-      insights.push(`Pattern suggests systemic friction (delivery, service) — a regional listening review is recommended before pushing volume.`);
+      insights.push(`Pattern suggests systemic friction (delivery, service) - a regional listening review is recommended before pushing volume.`);
     }
     if (insights.length === 0) {
-      insights.push(`${segLabel} in ${regionLabel} sit in a balanced zone — focus on selective deepening rather than broad initiatives.`);
+      insights.push(`${segLabel} in ${regionLabel} sit in a balanced zone - focus on selective deepening rather than broad initiatives.`);
     }
     return insights;
   }, [filteredDealers, aggregateAttributes, region, category]);
@@ -164,7 +164,7 @@ const AllRetailers = () => {
               <SelectContent>
                 {regionOptions.map((r) => (
                   <SelectItem key={r.value} value={r.value} disabled={!r.enabled}>
-                    {r.label}{!r.enabled && " — Coming soon"}
+                    {r.label}{!r.enabled && " - Coming soon"}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -304,7 +304,7 @@ const AllRetailers = () => {
                   <DialogTitle className="font-display text-xl">Retailer Profile</DialogTitle>
                 </DialogHeader>
 
-                {/* Header — plain text, no large card, no red */}
+                {/* Header - plain text, no large card, no red */}
                 <div className="space-y-1 pb-2 border-b">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="font-display font-bold text-xl text-foreground">{selectedDealer.name}</h2>
@@ -339,7 +339,7 @@ const AllRetailers = () => {
                     </div>
                   </Card>
 
-                  {/* Engagement Timeline — same as ME app */}
+                  {/* Engagement Timeline - same as ME app */}
                   <Card className="p-4">
                     <h3 className="font-semibold text-foreground mb-3">Engagement Timeline</h3>
                     <div className="space-y-4">
@@ -403,11 +403,11 @@ const AllRetailers = () => {
                   <ul className="space-y-1.5 text-sm text-foreground/85">
                     <li className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                      High openness paired with moderate value-proposition understanding — opportunity for targeted product knowledge sessions.
+                      High openness paired with moderate value-proposition understanding - opportunity for targeted product knowledge sessions.
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                      Repeated feedback on delivery predictability — consider regional supply review.
+                      Repeated feedback on delivery predictability - consider regional supply review.
                     </li>
                   </ul>
                 </Card>
