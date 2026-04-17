@@ -336,22 +336,33 @@ const EngagementTheme = () => {
 
         {/* Navigation */}
         <div className="pt-2 space-y-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
-          {isLastTheme ? (
-            <Button variant="field" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
-              Continue to Summary
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          ) : (
-            <>
-              <Button variant="field" className="w-full" onClick={() => navigate(`/me/engagement/${dealer.id}/${nextTheme!.id}`)}>
-                Next: {nextTheme!.title}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button variant="outline" className="w-full" onClick={() => navigate(`/me/notes/${dealer.id}`)}>
-                Go to Summary              -&gt;
-              </Button>
-            </>
-          )}
+          <Button
+            variant="field"
+            className="w-full"
+            onClick={() => {
+              try {
+                const key = `visitData:${dealer.id}`;
+                const existing = JSON.parse(sessionStorage.getItem(key) || "{}");
+                const themesData = existing.themes || {};
+                themesData[theme.id] = {
+                  themeTitle: theme.title,
+                  discussedPoints: theme.discussionPoints
+                    .filter((p) => completedPoints.has(p.id))
+                    .map((p) => p.title),
+                  objections: theme.whatIfs
+                    .filter((w) => selectedWhatIfs.has(w.id))
+                    .map((w) => w.label),
+                  actionPoints: Array.from(selectedChips),
+                  feedback: additionalNotes.trim() ? [additionalNotes.trim()] : [],
+                };
+                sessionStorage.setItem(key, JSON.stringify({ ...existing, themes: themesData }));
+              } catch {}
+              navigate(`/me/notes/${dealer.id}`);
+            }}
+          >
+            Save and Go to Summary Page
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
         </div>
       </div>
     </MeLayout>
