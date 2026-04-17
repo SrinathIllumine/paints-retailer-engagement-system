@@ -275,9 +275,8 @@ const EngagementTheme = () => {
             <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
             {theme.whatIfs.map((wi) => {
               const isSelected = selectedWhatIfs.has(wi.id);
-              const isExpanded = expandedWhatIf === wi.id;
               const practices = bestPracticesMap[wi.id] || [];
-              const practicesOpen = expandedBestPractices[wi.id] || false;
+              const practicesOpen = expandedBestPractices[wi.id] !== false; // default open
 
               return (
                 <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
@@ -297,7 +296,7 @@ const EngagementTheme = () => {
                     </span>
                   </button>
 
-                  {isSelected && isExpanded && practices.length > 0 && (
+                  {isSelected && practices.length > 0 && (
                     <div className="px-4 pb-4 space-y-2 animate-fade-in">
                       <div className="border border-info/20 rounded-lg overflow-hidden">
                         <button
