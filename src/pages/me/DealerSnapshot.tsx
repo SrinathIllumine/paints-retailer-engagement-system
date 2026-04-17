@@ -16,7 +16,7 @@ const revenueLabelMap: Record<string, string> = {
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
-// Mock engagement history data — first-person retailer voice
+// Mock engagement history data - first-person retailer voice
 const engagementHistory = [
   {
     date: "Apr 12, 2026",
@@ -42,7 +42,7 @@ const engagementHistory = [
       { goal: "I'll share local demand patterns I'm seeing with the ME next visit", bullets: ["Note demand trends from recent customer conversations", "Discuss with area manager"] },
       { goal: "I'll follow up on the delayed delivery escalation this week", bullets: ["Track shipment status", "Confirm revised delivery date"] },
     ],
-    feedback: ["My last order was delayed by 5 days — affected my customer commitments", "I'd like more frequent ME visits"],
+    feedback: ["My last order was delayed by 5 days - affected my customer commitments", "I'd like more frequent ME visits"],
   },
 ];
 
@@ -91,7 +91,7 @@ const DealerSnapshot = () => {
   return (
     <MeLayout title="Retailer Snapshot" showBack>
       <div className="p-4 space-y-4">
-        {/* Dealer header — plain text, no large card */}
+        {/* Dealer header - plain text, no large card */}
         <div className="animate-slide-up space-y-3">
           <div>
             <h2 className="font-display font-bold text-lg text-foreground">{dealer.name}</h2>
@@ -205,7 +205,7 @@ const DealerSnapshot = () => {
                   })}
                 </div>
 
-                {/* Retailer Mindset — only the active mode */}
+                {/* Retailer Mindset - only the active mode */}
                 <div className="space-y-2">
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Retailer Mindset</h4>
                   {(() => {

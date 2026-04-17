@@ -59,7 +59,7 @@ const bestPracticesMap: Record<string, string[]> = {
   wi5: [
     "Position JK as a premium complement, not a replacement for existing brands",
     "Create a clear display showing good-better-best options for customers",
-    "Let customers choose — more options mean more footfall and higher basket value",
+    "Let customers choose - more options mean more footfall and higher basket value",
     "Highlight JK's unique product strengths in conversations with contractors",
   ],
   wi6: [
@@ -173,7 +173,7 @@ const EngagementTheme = () => {
   return (
     <MeLayout title={theme.title} showBack>
       <div className="p-4 space-y-5">
-        {/* Theme Header — plain text, no red */}
+        {/* Theme Header - plain text, no red */}
         <div className="animate-slide-up flex items-start gap-3">
           <div className={`w-11 h-11 rounded-xl bg-${theme.color}/10 flex items-center justify-center shrink-0`}>
             <Icon className={`w-5 h-5 text-${theme.color}`} />
@@ -228,7 +228,7 @@ const EngagementTheme = () => {
                           </div>
                         </div>
 
-                        {/* USEFUL INSIGHTS — always visible & open */}
+                        {/* USEFUL INSIGHTS - always visible & open */}
                         <div className="bg-secondary/40 rounded-lg p-3">
                           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
                           <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>

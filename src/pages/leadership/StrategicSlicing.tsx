@@ -43,7 +43,7 @@ const strategies = [
     description: "Loyal retailers with good scores but limited recent growth activity",
     filter: (d: typeof dealers[0]) => d.type === "loyal" && d.engagementScore < 90,
     actionPoints: [
-      "Explore underlying barriers — capital, space, or contractor pull — through structured conversations",
+      "Explore underlying barriers - capital, space, or contractor pull - through structured conversations",
       "Co-create category expansion plans rather than pushing volume targets",
       "Strengthen the loyalty proposition with knowledge programs and recognition",
     ],
@@ -56,7 +56,7 @@ const strategies = [
     actionPoints: [
       "Prioritize a leadership-led listening tour to understand systemic issues",
       "Map decline patterns against region, ME, and product mix to spot common drivers",
-      "Avoid transactional discounts — focus on relationship and service recovery",
+      "Avoid transactional discounts - focus on relationship and service recovery",
     ],
   },
 ];
@@ -167,7 +167,7 @@ const StrategicSlicing = () => {
           </div>
         </Card>
 
-        {/* Retailer profile popup — same pattern as All Retailers */}
+        {/* Retailer profile popup - same pattern as All Retailers */}
         <Dialog open={!!selectedDealer} onOpenChange={(o) => !o && setSelectedDealerId(null)}>
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             {selectedDealer && (
