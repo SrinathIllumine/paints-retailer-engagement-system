@@ -16,33 +16,33 @@ const revenueLabelMap: Record<string, string> = {
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
-// Mock engagement history data
+// Mock engagement history data — first-person retailer voice
 const engagementHistory = [
   {
     date: "Apr 12, 2026",
     summary: "Discussed multi-product portfolio expansion opportunity",
     actionPoints: [
-      { goal: "Trial product samples at a few contractor sites for quality feedback", bullets: ["Request 3 sample kits from JK", "Identify 2-3 contractor contacts for trial"] },
-      { goal: "Set up a JK compact display stand near the counter", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
+      { goal: "I'll try JK product samples with 2-3 contractors before the next visit", bullets: ["Request 3 sample kits from JK", "Identify 2-3 contractor contacts for trial"] },
+      { goal: "I'll set up a JK compact display stand near my counter this week", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
     ],
-    feedback: ["Need for improvement in packaging during monsoon", "Delivery timelines need to be more predictable"],
+    feedback: ["Packaging feels weak during monsoon handling", "Delivery timelines are not predictable for my planning"],
   },
   {
     date: "Apr 5, 2026",
     summary: "Relationship building and understanding retailer business goals",
     actionPoints: [
-      { goal: "Explore how JK's product range fits into retailer's growth plans", bullets: ["Discuss product categories of interest", "Identify top-selling segments"] },
+      { goal: "My top priority will be to map JK's product range to my growth plans", bullets: ["List product categories of interest", "Identify top-selling segments in my shop"] },
     ],
-    feedback: ["Would appreciate more product knowledge sessions"],
+    feedback: ["I'd appreciate more product knowledge sessions for my staff"],
   },
   {
     date: "Mar 28, 2026",
     summary: "Market intelligence gathering and local demand understanding",
     actionPoints: [
-      { goal: "Share insights on local product demand patterns", bullets: ["Compile demand trends from recent conversations", "Discuss with area manager"] },
-      { goal: "Follow up on delayed delivery escalation", bullets: ["Track shipment status", "Confirm revised delivery date with retailer"] },
+      { goal: "I'll share local demand patterns I'm seeing with the ME next visit", bullets: ["Note demand trends from recent customer conversations", "Discuss with area manager"] },
+      { goal: "I'll follow up on the delayed delivery escalation this week", bullets: ["Track shipment status", "Confirm revised delivery date"] },
     ],
-    feedback: ["Delivery was delayed by 5 days last order", "Would like more frequent ME visits"],
+    feedback: ["My last order was delayed by 5 days — affected my customer commitments", "I'd like more frequent ME visits"],
   },
 ];
 
