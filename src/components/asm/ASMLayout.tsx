@@ -5,7 +5,7 @@ import { LayoutDashboard, Map as MapIcon, CalendarRange, LogOut } from "lucide-r
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard",         path: "/asm" },
   { icon: MapIcon,         label: "MEs Area Snapshot", path: "/asm/area-snapshot" },
-  { icon: CalendarRange,   label: "MEs Weekly Snapshot", path: "/asm/weekly-snapshot" },
+  { icon: CalendarRange,   label: "MEs Periodic Snapshot", path: "/asm/weekly-snapshot" },
 ];
 
 const ASMLayout = ({ children }: { children: ReactNode }) => {
