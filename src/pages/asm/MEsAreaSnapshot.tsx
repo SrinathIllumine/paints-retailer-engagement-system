@@ -22,10 +22,16 @@ const tagCls: Record<Tag, string> = {
   Medium: "bg-warning/15 text-warning",
   High: "bg-destructive/15 text-destructive",
 };
+const tagLabel: Record<Tag, string> = {
+  Low: "High Coverage",
+  Medium: "Medium Coverage",
+  High: "Low Coverage",
+};
+
 const tagHelp: Record<Tag, string> = {
-  Low: "Low concentration - visits are spread across the mapped retailer base.",
-  Medium: "Medium concentration - some skew toward a smaller set of retailers.",
-  High: "High concentration - majority of visits go to a small subset (Pareto skew).",
+  Low: "High coverage - visits are spread across the mapped retailer base.",
+  Medium: "Medium coverage - some skew toward a smaller set of retailers.",
+  High: "Low coverage - majority of visits go to a small subset (Pareto skew).",
 };
 
 const MEsAreaSnapshot = () => {
@@ -62,11 +68,11 @@ const MEsAreaSnapshot = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <span className="text-xs text-muted-foreground inline-flex items-center gap-1 cursor-help">
-                  <Info className="w-3.5 h-3.5" />Concentration tag
+                  <Info className="w-3.5 h-3.5" />Coverage status
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs text-xs">
-                Concentration tag is derived from how many of the recent visits cluster around the top 5 mapped retailers.
+                Coverage status is derived from how many of the recent visits cluster around the top 5 mapped retailers. High concentration implies low coverage.
               </TooltipContent>
             </Tooltip>
           </div>
@@ -87,7 +93,7 @@ const MEsAreaSnapshot = () => {
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tagCls[tag]}`}>{tag} concentration</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tagCls[tag]}`}>{tagLabel[tag]}</span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs text-xs">{tagHelp[tag]}</TooltipContent>
                   </Tooltip>
