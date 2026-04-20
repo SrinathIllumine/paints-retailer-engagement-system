@@ -58,7 +58,7 @@ const MEProfileDialog = ({ meId, context = "coverage", onClose }: Props) => {
             <p className="font-display font-bold text-lg">{me.topRetailerConcentration}%</p>
           </Card>
           <Card className="p-3">
-            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Attribute Uplift</p>
+            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailer Attributes Uplift</p>
             <p className="font-display font-bold text-lg">+{me.attributesUplift}%</p>
           </Card>
         </div>
