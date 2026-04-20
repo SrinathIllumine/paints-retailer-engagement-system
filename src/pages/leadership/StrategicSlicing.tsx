@@ -42,7 +42,7 @@ const strategies = [
     filter: (d: typeof dealers[0]) => d.type === "loyal" && d.engagementScore < 90,
     actionPoints: [
       "Loyalty without growth often indicates capital or contractor-pull constraints",
-      "Engagement quality plateauing - may benefit from fresh narrative or peer formats",
+      "Engagement quality flattening for loyal retailers",
     ],
   },
   {
