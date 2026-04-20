@@ -137,7 +137,7 @@ const AllRetailers = () => {
       insights.push(`There is scope for improvement in Market Awareness attribute among ${segLabel}`);
     }
     if (category === "inactive" || category === "declining") {
-      insights.push(`Pattern suggests systemic friction (delivery, service) - a regional listening review is recommended before pushing volume.`);
+      insights.push(`Pattern suggests systemic friction (delivery, service)`);
     }
     if (insights.length === 0) {
       insights.push(`${segLabel.charAt(0).toUpperCase() + segLabel.slice(1)} in ${regionLabel} sit in a balanced zone - focus on selective deepening rather than broad initiatives.`);
