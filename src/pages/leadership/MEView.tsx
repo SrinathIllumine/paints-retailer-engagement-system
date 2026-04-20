@@ -148,7 +148,7 @@ const MEView = () => {
           <SectionCard
             icon={TrendingUp}
             title="Dimension Uplift Contributors"
-            story="MEs whose retailers show measurable improvement in JK Alignment, Value Prop, Market Awareness or Openness."
+            story="MEs whose retailers show measurable improvement in JK Alignment, Value Prop, Market Awareness, Growth Potential or Openness."
           >
             {dimensionUpliftMEs.map(({ me, note }) => (
               <MERow key={me.id} name={me.name} area={me.area} note={note} onClick={() => setSelected({ id: me.id, ctx: "uplift" })} />
