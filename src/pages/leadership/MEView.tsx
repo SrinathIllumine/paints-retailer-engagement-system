@@ -95,7 +95,7 @@ const MEView = () => {
           <SectionCard
             icon={Target}
             title="Focused Coverage Patterns"
-            story="MEs concentrating most of their visits on a small set of retailers - useful to spot Pareto skew."
+            story="MEs concentrating most of their visits on a small set of retailers."
           >
             {focusedCoverageMEs.map(({ me, note }) => (
               <MERow key={me.id} name={me.name} area={me.area} note={note} onClick={() => setSelected({ id: me.id, ctx: "coverage" })} />
