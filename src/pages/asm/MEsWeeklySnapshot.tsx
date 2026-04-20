@@ -44,7 +44,7 @@ const MEsWeeklySnapshot = () => {
       <div className="space-y-6">
         <div className="flex items-end justify-between flex-wrap gap-3">
           <div>
-            <h1 className="font-display font-bold text-2xl text-foreground">MEs Weekly Snapshot</h1>
+            <h1 className="font-display font-bold text-2xl text-foreground">MEs Periodic Snapshot</h1>
             <p className="text-sm text-muted-foreground mt-1">ME engagement quality contextualised to time period.</p>
           </div>
           <Tabs value={win} onValueChange={(v) => setWin(v as Window)}>
