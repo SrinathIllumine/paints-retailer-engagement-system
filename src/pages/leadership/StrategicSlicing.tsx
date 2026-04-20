@@ -32,7 +32,7 @@ const strategies = [
     filter: (d: typeof dealers[0]) => d.type === "inactive" && d.openness !== "low",
     actionPoints: [
       "Inactivity here pairs with openness - signals friction, not disinterest",
-      "Repeated objections concentrate on service - worth a regional listening review",
+      "Repeated objections concentrate on service",
     ],
   },
   {
