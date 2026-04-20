@@ -13,6 +13,37 @@ import {
 } from "lucide-react";
 import { dealers } from "@/data/mockData";
 
+const FixedFooter = () => (
+  <div className="px-4 py-3">
+    <div className="grid grid-cols-2 gap-2">
+      <Card className="p-2.5 border-primary/30 bg-primary/5">
+        <div className="flex items-start gap-2">
+          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+            <MessageSquare className="w-3.5 h-3.5 text-primary" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Proactive Engagement</h3>
+            <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">Build structured discussions with retailers around specific business outcomes</p>
+          </div>
+        </div>
+      </Card>
+
+      <Card className="p-2.5 opacity-60 cursor-not-allowed relative">
+        <div className="flex items-start gap-2">
+          <div className="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
+            <Zap className="w-3.5 h-3.5 text-warning" />
+          </div>
+          <div className="min-w-0 pr-8">
+            <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Flashpoints</h3>
+            <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">Capture &amp; curate best practices, solve day-to-day challenges</p>
+          </div>
+        </div>
+        <span className="absolute top-1 right-1 text-[8px] bg-muted text-muted-foreground px-1 py-0.5 rounded-full font-medium">Soon</span>
+      </Card>
+    </div>
+  </div>
+);
+
 const MyTradingArea = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +63,7 @@ const MyTradingArea = () => {
   }, [searchQuery]);
 
   return (
-    <MeLayout title="My Trading Area" showBack>
+    <MeLayout title="My Trading Area" showBack footer={<FixedFooter />}>
       <div className="p-4 pb-2 space-y-4">
         {/* Welcoming Message */}
         <div className="animate-fade-in">
@@ -82,36 +113,6 @@ const MyTradingArea = () => {
               <p className="text-sm text-muted-foreground">No retailers match your search</p>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Frozen footer cards - stay anchored at the bottom of the viewport */}
-      <div className="sticky bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3">
-        <div className="grid grid-cols-2 gap-2">
-          <Card className="p-2.5 border-primary/30 bg-primary/5">
-            <div className="flex items-start gap-2">
-              <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <MessageSquare className="w-3.5 h-3.5 text-primary" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Proactive Engagement</h3>
-                <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">Build structured discussions with retailers around specific business outcomes</p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-2.5 opacity-60 cursor-not-allowed relative">
-            <div className="flex items-start gap-2">
-              <div className="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
-                <Zap className="w-3.5 h-3.5 text-warning" />
-              </div>
-              <div className="min-w-0 pr-8">
-                <h3 className="font-display font-bold text-foreground text-[11px] leading-tight">Flashpoints</h3>
-                <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">Capture &amp; curate best practices, solve day-to-day challenges</p>
-              </div>
-            </div>
-            <span className="absolute top-1 right-1 text-[8px] bg-muted text-muted-foreground px-1 py-0.5 rounded-full font-medium">Soon</span>
-          </Card>
         </div>
       </div>
     </MeLayout>

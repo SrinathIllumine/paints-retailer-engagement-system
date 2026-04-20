@@ -242,14 +242,14 @@ const AllRetailers = () => {
               </div>
             </Card>
 
-            {/* Synthesized insights */}
+            {/* Insights for Leadership - 1-2 crisp data-driven insights */}
             <Card className="p-4 bg-info/5 border-info/20">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb className="w-4 h-4 text-info" />
-                <h3 className="font-semibold text-foreground">Leadership Insights</h3>
+                <h3 className="font-semibold text-foreground">Insights for Leadership</h3>
               </div>
               <ul className="space-y-2 text-sm text-foreground/85">
-                {synthesizedInsights.map((s, i) => (
+                {synthesizedInsights.slice(0, 2).map((s, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
                     <span>{s}</span>
@@ -397,17 +397,17 @@ const AllRetailers = () => {
                   </Card>
                 </div>
 
-                {/* Insights */}
+                {/* Insights for Leadership - retailer-specific */}
                 <Card className="p-4 bg-info/5 border-info/20">
-                  <h3 className="font-semibold text-foreground mb-2">Leadership Insights</h3>
+                  <h3 className="font-semibold text-foreground mb-2">Insights for Leadership</h3>
                   <ul className="space-y-1.5 text-sm text-foreground/85">
                     <li className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                      High openness paired with moderate value-proposition understanding - opportunity for targeted product knowledge sessions.
+                      High openness with moderate value-prop understanding - signals knowledge gap, not intent gap.
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                      Repeated feedback on delivery predictability - consider regional supply review.
+                      Recurring delivery feedback across visits - worth pattern-checking at regional level.
                     </li>
                   </ul>
                 </Card>

@@ -21,9 +21,8 @@ const strategies = [
     description: "Retailers showing high openness and alignment with JK's multi-product strategy",
     filter: (d: typeof dealers[0]) => d.openness === "high",
     actionPoints: [
-      "Invest in deeper engagement programs to convert alignment into long-term advocacy",
-      "Use these retailers as pilot partners for new product introductions and feedback loops",
-      "Recognize and showcase their stories to build aspiration across the network",
+      "High alignment cluster - data shows readiness for co-creation, not push",
+      "Stories from these retailers can shape narrative for adjacent segments",
     ],
   },
   {
@@ -32,9 +31,8 @@ const strategies = [
     description: "Inactive retailers showing medium+ openness, ready for re-engagement and conversion",
     filter: (d: typeof dealers[0]) => d.type === "inactive" && d.openness !== "low",
     actionPoints: [
-      "Design a structured re-engagement journey focused on listening before pitching",
-      "Pair them with experienced MEs who can rebuild trust over multiple visits",
-      "Identify root causes of inactivity at a regional level to inform supply and service decisions",
+      "Inactivity here pairs with openness - signals friction, not disinterest",
+      "Repeated objections concentrate on service - worth a regional listening review",
     ],
   },
   {
@@ -43,9 +41,8 @@ const strategies = [
     description: "Loyal retailers with good scores but limited recent growth activity",
     filter: (d: typeof dealers[0]) => d.type === "loyal" && d.engagementScore < 90,
     actionPoints: [
-      "Explore underlying barriers - capital, space, or contractor pull - through structured conversations",
-      "Co-create category expansion plans rather than pushing volume targets",
-      "Strengthen the loyalty proposition with knowledge programs and recognition",
+      "Loyalty without growth often indicates capital or contractor-pull constraints",
+      "Engagement quality plateauing - may benefit from fresh narrative or peer formats",
     ],
   },
   {
@@ -54,9 +51,8 @@ const strategies = [
     description: "Retailers needing immediate intervention",
     filter: (d: typeof dealers[0]) => d.type === "declining",
     actionPoints: [
-      "Prioritize a leadership-led listening tour to understand systemic issues",
-      "Map decline patterns against region, ME, and product mix to spot common drivers",
-      "Avoid transactional discounts - focus on relationship and service recovery",
+      "Decline pattern correlates with delivery and service signals across regions",
+      "Recovery historically tracks better with relationship cadence than transactional offers",
     ],
   },
 ];
@@ -126,13 +122,13 @@ const StrategicSlicing = () => {
           ))}
         </div>
 
-        {/* Leadership action points for the selected segment */}
+        {/* Insights for Leadership - 1-2 crisp data-driven observations */}
         <Card className="p-5 bg-info/5 border-info/20">
-          <h3 className="font-semibold text-foreground mb-3">Recommended Leadership Actions</h3>
+          <h3 className="font-semibold text-foreground mb-3">Insights for Leadership</h3>
           <ul className="space-y-2">
-            {strategies[active].actionPoints.map((ap, i) => (
+            {strategies[active].actionPoints.slice(0, 2).map((ap, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
-                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-info mt-2 shrink-0" />
                 <span>{ap}</span>
               </li>
             ))}

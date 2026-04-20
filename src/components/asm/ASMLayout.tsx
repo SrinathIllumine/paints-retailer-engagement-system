@@ -1,15 +1,14 @@
 import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, Target, Briefcase, LogOut } from "lucide-react";
+import { LayoutDashboard, Map as MapIcon, CalendarRange, LogOut } from "lucide-react";
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/leadership" },
-  { icon: Users, label: "All Retailers", path: "/leadership/all-retailers" },
-  { icon: Target, label: "Strategic", path: "/leadership/targeting" },
-  { icon: Briefcase, label: "ME View", path: "/leadership/me-view" },
+  { icon: LayoutDashboard, label: "Dashboard",         path: "/asm" },
+  { icon: MapIcon,         label: "MEs Area Snapshot", path: "/asm/area-snapshot" },
+  { icon: CalendarRange,   label: "MEs Weekly Snapshot", path: "/asm/weekly-snapshot" },
 ];
 
-const LeadershipLayout = ({ children }: { children: ReactNode }) => {
+const ASMLayout = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,7 +17,7 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
       <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-5 border-b border-sidebar-border">
           <h1 className="font-display font-bold text-lg text-sidebar-foreground">JK Cement</h1>
-          <p className="text-xs text-sidebar-foreground/60 mt-0.5">Retailer Intelligence System</p>
+          <p className="text-xs text-sidebar-foreground/60 mt-0.5">ASM Analytics</p>
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {navItems.map((item) => {
@@ -57,4 +56,4 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default LeadershipLayout;
+export default ASMLayout;

@@ -14,6 +14,10 @@ import VisitComplete from "./pages/me/VisitComplete.tsx";
 import Dashboard from "./pages/leadership/Dashboard.tsx";
 import AllRetailers from "./pages/leadership/AllRetailers.tsx";
 import StrategicSlicing from "./pages/leadership/StrategicSlicing.tsx";
+import MEView from "./pages/leadership/MEView.tsx";
+import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
+import MEsAreaSnapshot from "./pages/asm/MEsAreaSnapshot.tsx";
+import MEsWeeklySnapshot from "./pages/asm/MEsWeeklySnapshot.tsx";
 
 const queryClient = new QueryClient();
 
@@ -33,10 +37,15 @@ const App = () => (
           <Route path="/me/complete/:id" element={<VisitComplete />} />
           <Route path="/leadership" element={<Dashboard />} />
           <Route path="/leadership/all-retailers" element={<AllRetailers />} />
+          <Route path="/leadership/me-view" element={<MEView />} />
           {/* Backwards-compatible aliases */}
           <Route path="/leadership/segmentation" element={<AllRetailers />} />
           <Route path="/leadership/dealer-profile" element={<AllRetailers />} />
           <Route path="/leadership/targeting" element={<StrategicSlicing />} />
+          {/* ASM Analytics App */}
+          <Route path="/asm" element={<ASMDashboard />} />
+          <Route path="/asm/area-snapshot" element={<MEsAreaSnapshot />} />
+          <Route path="/asm/weekly-snapshot" element={<MEsWeeklySnapshot />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
