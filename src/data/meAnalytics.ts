@@ -106,7 +106,7 @@ export const objectionRootCauses: Record<string, string[]> = {
   ],
   "Won't work": [
     "Dominated by retailers with low openness scores",
-    "Few peer success stories shared by MEs",
+    "Fewer retailer success stories shared by MEs",
     "Limited follow-through on agreed pilot actions",
   ],
 };
