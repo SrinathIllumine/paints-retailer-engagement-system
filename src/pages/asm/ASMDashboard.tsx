@@ -148,9 +148,9 @@ const ASMDashboard = () => {
         {/* Header */}
         <div className="flex items-end justify-between flex-wrap gap-3">
           <div>
-            <h1 className="font-display font-bold text-2xl text-foreground">ASM Dashboard</h1>
+            <h1 className="font-display font-bold text-2xl text-foreground">Raj Kumar's Dashboard</h1>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5" />{asmMetrics.region} · {asmMetrics.mesUnder} MEs under this ASM
+              <MapPin className="w-3.5 h-3.5" />{asmMetrics.region} · {asmMetrics.mesUnder} MEs under Raj Kumar
             </p>
           </div>
           <Tabs value={window} onValueChange={(v) => setWindow(v as Window)}>
