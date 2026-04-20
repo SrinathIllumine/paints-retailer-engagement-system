@@ -25,7 +25,7 @@ const engagementHistory = [
       { goal: "I'll try JK product samples with 2-3 contractors before the next visit", bullets: ["Request 3 sample kits from JK", "Identify 2-3 contractor contacts for trial"] },
       { goal: "I'll set up a JK compact display stand near my counter this week", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
     ],
-    feedback: ["Packaging feels weak during monsoon handling", "Delivery timelines are not predictable for my planning"],
+    feedback: ["Packaging feels weak during monsoon handling", "Customers are interested more on competitor brands for paints"],
   },
   {
     date: "Apr 5, 2026",
