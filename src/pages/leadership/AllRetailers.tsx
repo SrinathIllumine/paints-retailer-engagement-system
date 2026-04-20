@@ -140,7 +140,7 @@ const AllRetailers = () => {
       insights.push(`Pattern suggests systemic friction (delivery, service) - a regional listening review is recommended before pushing volume.`);
     }
     if (insights.length === 0) {
-      insights.push(`${segLabel} in ${regionLabel} sit in a balanced zone - focus on selective deepening rather than broad initiatives.`);
+      insights.push(`${segLabel.charAt(0).toUpperCase() + segLabel.slice(1)} in ${regionLabel} sit in a balanced zone - focus on selective deepening rather than broad initiatives.`);
     }
     return insights;
   }, [filteredDealers, aggregateAttributes, region, category]);
