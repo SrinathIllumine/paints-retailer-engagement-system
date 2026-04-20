@@ -129,12 +129,12 @@ const AllRetailers = () => {
     const alignment = aggregateAttributes.find((a) => a.attribute === "JK Alignment")?.value ?? 0;
     const insights: string[] = [];
     if (openness >= 60 && valueProp < 60) {
-      insights.push(`${segLabel} in ${regionLabel} show high openness but lower understanding of the value proposition - a clear opportunity for targeted product knowledge sessions.`);
+      insights.push(`${segLabel} in ${regionLabel} show high openness but lower understanding of the value proposition `);
     }
     if (alignment >= 70) {
       insights.push(`Alignment to JK is strong among ${segLabel} in ${regionLabel} - consider deeper co-creation on category expansion.`);
     } else {
-      insights.push(`Alignment to JK is moderate - invest in story-led engagement to convert intent into advocacy.`);
+      insights.push(`There is scope for improvement in Market Awareness attribute among ${segLabel}`);
     }
     if (category === "inactive" || category === "declining") {
       insights.push(`Pattern suggests systemic friction (delivery, service) - a regional listening review is recommended before pushing volume.`);
