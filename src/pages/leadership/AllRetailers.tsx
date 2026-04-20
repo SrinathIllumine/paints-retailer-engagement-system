@@ -129,7 +129,7 @@ const AllRetailers = () => {
     const alignment = aggregateAttributes.find((a) => a.attribute === "JK Alignment")?.value ?? 0;
     const insights: string[] = [];
     if (openness >= 60 && valueProp < 60) {
-      insights.push(`${segLabel} in ${regionLabel} show high openness but lower understanding of the value proposition `);
+      insights.push(`${segLabel.charAt(0).toUpperCase() + segLabel.slice(1)} in ${regionLabel} show high openness but lower understanding of the value proposition`);
     }
     if (alignment >= 70) {
       insights.push(`Alignment to JK is strong among ${segLabel} in ${regionLabel} - consider deeper co-creation on category expansion.`);
