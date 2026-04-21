@@ -1,10 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, Edit3, X, Phone, Calendar, User, Store } from "lucide-react";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store } from "lucide-react";
 import { dealers } from "@/data/mockData";
 
 type ThemeData = {
@@ -85,20 +84,11 @@ const VisitNotes = () => {
     return bullets;
   }, [stored]);
 
-  const [isEditingActions, setIsEditingActions] = useState(false);
-  const [actionPointsText, setActionPointsText] = useState("");
-  const [isEditingFeedback, setIsEditingFeedback] = useState(false);
-  const [feedbackText, setFeedbackText] = useState("");
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
   const visitDate = useMemo(() => formatToday(), []);
 
-  useEffect(() => {
-    setActionPointsText(initialActionPoints.join("\n"));
-    setFeedbackText(initialFeedback.join("\n"));
-  }, [initialActionPoints, initialFeedback]);
-
-  const actionPointsList = actionPointsText.split("\n").map((s) => s.trim()).filter(Boolean);
-  const feedbackList = feedbackText.split("\n").map((s) => s.trim()).filter(Boolean);
+  const actionPointsList = initialActionPoints;
+  const feedbackList = initialFeedback;
 
   const bulletsToText = (arr: string[]) => arr.map((b) => `• ${b}`).join("\n");
 
@@ -156,7 +146,8 @@ ${bulletsToText(feedbackList)}
           </div>
         </Card>
 
-        <Card className="p-4 space-y-4 animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
+        <Card className="p-4 space-y-5 animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
+          {/* Topics Discussed */}
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
               <MessageSquare className="w-4 h-4 text-muted-foreground" />
@@ -174,6 +165,7 @@ ${bulletsToText(feedbackList)}
             </div>
           </div>
 
+          {/* Objections Raised */}
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
               <AlertTriangle className="w-4 h-4 text-muted-foreground" />
@@ -190,70 +182,48 @@ ${bulletsToText(feedbackList)}
               </ul>
             </div>
           </div>
-        </Card>
 
-        {/* Editable Action Points */}
-        <Card className="p-4 space-y-3 animate-slide-up" style={{ animationDelay: "150ms", animationFillMode: "backwards" }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
+          {/* Action Points / Go-Forwards (read-only) */}
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-4 h-4 text-success" />
-              <h3 className="text-sm font-semibold text-foreground">ACTION POINTS / GO-FORWARDS</h3>
             </div>
-            <button onClick={() => setIsEditingActions(!isEditingActions)} className="text-xs text-primary font-medium flex items-center gap-1">
-              <Edit3 className="w-3 h-3" />
-              {isEditingActions ? "Done" : "Edit"}
-            </button>
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Action Points / Go-Forwards</p>
+              <ul className="mt-1.5 space-y-1">
+                {actionPointsList.map((a, i) => (
+                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-success mt-1.5 shrink-0" />
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          {isEditingActions ? (
-            <Textarea
-              value={actionPointsText}
-              onChange={(e) => setActionPointsText(e.target.value)}
-              className="min-h-[100px] rounded-xl text-sm"
-              placeholder="One action point per line..."
-            />
-          ) : (
-            <ul className="bg-secondary/30 rounded-lg p-3 space-y-1.5">
-              {actionPointsList.map((a, i) => (
-                <li key={i} className="text-sm text-foreground/85 flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-success mt-1.5 shrink-0" />
-                  <span>{a}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
 
-        {/* Editable Key Critical Feedback */}
-        <Card className="p-4 space-y-3 animate-slide-up" style={{ animationDelay: "175ms", animationFillMode: "backwards" }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
+          {/* Key Critical Feedback (read-only) */}
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
               <MessageSquare className="w-4 h-4 text-info" />
-              <h3 className="text-sm font-semibold text-foreground">KEY CRITICAL FEEDBACK</h3>
             </div>
-            <button onClick={() => setIsEditingFeedback(!isEditingFeedback)} className="text-xs text-primary font-medium flex items-center gap-1">
-              <Edit3 className="w-3 h-3" />
-              {isEditingFeedback ? "Done" : "Edit"}
-            </button>
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Key Critical Feedback</p>
+              <ul className="mt-1.5 space-y-1">
+                {feedbackList.length > 0 ? feedbackList.map((f, i) => (
+                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                )) : (
+                  <li className="text-sm text-muted-foreground italic">No critical feedback noted.</li>
+                )}
+              </ul>
+            </div>
           </div>
-          {isEditingFeedback ? (
-            <Textarea
-              value={feedbackText}
-              onChange={(e) => setFeedbackText(e.target.value)}
-              className="min-h-[80px] rounded-xl text-sm"
-              placeholder="One feedback point per line..."
-            />
-          ) : (
-            <ul className="bg-info/5 border border-info/20 rounded-lg p-3 space-y-1.5">
-              {feedbackList.length > 0 ? feedbackList.map((f, i) => (
-                <li key={i} className="text-sm text-foreground/85 flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                  <span>{f}</span>
-                </li>
-              )) : (
-                <li className="text-sm text-muted-foreground italic">No critical feedback noted.</li>
-              )}
-            </ul>
-          )}
+
+          <p className="text-xs text-muted-foreground italic pt-1">
+            To edit Action Points or Critical Feedback, go back to the previous step.
+          </p>
         </Card>
 
         {/* Share via WhatsApp */}
