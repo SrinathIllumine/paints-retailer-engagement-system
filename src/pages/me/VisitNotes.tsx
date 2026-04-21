@@ -1,10 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, Edit3, X, Phone, Calendar, User, Store } from "lucide-react";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store } from "lucide-react";
 import { dealers } from "@/data/mockData";
 
 type ThemeData = {
