@@ -147,8 +147,8 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
             <thead>
               <tr className="text-xs text-muted-foreground border-b">
                 <th className="text-left font-medium py-2">Retailer</th>
-                <th className="text-right font-medium py-2">Engagements in that period ({periodShort})</th>
-                <th className="text-right font-medium py-2">Objections in that period</th>
+                <th className="text-right font-medium py-2">Engagements in the period ({periodShort})</th>
+                <th className="text-right font-medium py-2">Objections in the period</th>
                 <th className="text-right font-medium py-2">Last visited</th>
               </tr>
             </thead>
