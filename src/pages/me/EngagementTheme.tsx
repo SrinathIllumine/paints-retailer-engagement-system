@@ -270,7 +270,7 @@ const EngagementTheme = () => {
           <div className="space-y-3">
             <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
               <Lightbulb className="w-3.5 h-3.5" />
-              What-Ifs &amp; Objections
+              WHAT-IFS &amp; HANDLING OBJECTIONS
             </div>
             <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
             {theme.whatIfs.map((wi) => {
