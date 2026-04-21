@@ -9,7 +9,7 @@ const COLORS = ["hsl(0,78%,48%)", "hsl(30,80%,52%)", "hsl(210,80%,52%)", "hsl(15
 const kpis = [
   { icon: Users, label: "Total Retailers", value: kpiData.totalRetailers.toLocaleString(), change: "+124 this month", color: "text-info" },
   { icon: MessageSquare, label: "Today's Conversations", value: kpiData.conversationsToday.toString(), change: "66.67% of target", color: "text-success" },
-  { icon: TrendingDown, label: "Average Monthly Objections", value: "1785", change: "-217 this month", color: "text-success" },
+  { icon: TrendingDown, label: "Average Monthly Objections per Retailer", value: "8", change: "Decreased by 1 this month", color: "text-success" },
 ];
 
 const Dashboard = () => (
