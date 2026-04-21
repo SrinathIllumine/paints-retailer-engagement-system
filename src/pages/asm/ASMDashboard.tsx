@@ -119,9 +119,42 @@ const ObjectionIntelligenceView = ({
   );
 };
 
+const ENGAGEMENT_TYPES = ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] as const;
+type EngagementType = typeof ENGAGEMENT_TYPES[number];
+
+interface MERow {
+  meId: string;
+  meName: string;
+  area: string;
+  engagements: number;
+  objections: number;
+  majorObjection: string;
+  coveredTypes: EngagementType[];
+}
+
+const meRows: MERow[] = [
+  { meId: "me1", meName: "Ravi Kumar",     area: "Pune West",  engagements: 168, objections: 22, majorObjection: "No demand in my area", coveredTypes: ["JK alignment", "Value proposition"] },
+  { meId: "me2", meName: "Sunil Sharma",   area: "Pune NE",    engagements: 184, objections: 11, majorObjection: "No space",             coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness"] },
+  { meId: "me3", meName: "Anita Deshmukh", area: "Pune South", engagements: 152, objections: 38, majorObjection: "Working capital",      coveredTypes: ["JK alignment"] },
+  { meId: "me4", meName: "Vikas Patil",    area: "Pune SW",    engagements: 196, objections: 8,  majorObjection: "No space",             coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] },
+  { meId: "me5", meName: "Priya Nair",     area: "Pune North", engagements: 141, objections: 17, majorObjection: "No demand in my area", coveredTypes: ["JK alignment", "Value proposition", "Market awareness"] },
+];
+
+const coveragePct = (covered: EngagementType[]) => Math.round((covered.length / ENGAGEMENT_TYPES.length) * 100);
+
+const PctCell = ({ value }: { value: number }) => {
+  const tone =
+    value >= 70 ? "bg-success/15 text-success" :
+    value >= 45 ? "bg-info/15 text-info" :
+    "bg-warning/15 text-warning";
+  return <span className={`inline-block min-w-[42px] text-center text-xs px-2 py-0.5 rounded-full font-medium ${tone}`}>{value}%</span>;
+};
+
 const ASMDashboard = () => {
   const [window, setWindow] = useState<Window>("30d");
   const [activeObjection, setActiveObjection] = useState<string | null>(null);
+  const [selectedMe, setSelectedMe] = useState<string | null>(null);
+  const [coverageDetail, setCoverageDetail] = useState<MERow | null>(null);
 
   const m = useMemo(() => asmMetrics.windows[window], [window]);
 
