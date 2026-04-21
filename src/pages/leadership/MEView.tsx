@@ -16,9 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import MEProfileDialog from "@/components/leadership/MEProfileDialog";
 import { marketingExecutives } from "@/data/meAnalytics";
-import { Info } from "lucide-react";
+import { Info, MousePointerClick, Check, X } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface StateInfo {
