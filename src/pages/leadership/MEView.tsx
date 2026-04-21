@@ -150,7 +150,7 @@ const MEView = () => {
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs text-xs">
-                Types of engagements covered (%) = engagement topics actually discussed by MEs, out of the {ENGAGEMENT_TYPES.length} tracked types ({ENGAGEMENT_TYPES.join(", ")}).
+                Types of retailer attributes covered (%) = engagement topics actually discussed by MEs, out of the {ENGAGEMENT_TYPES.length} tracked types ({ENGAGEMENT_TYPES.join(", ")}).
               </TooltipContent>
             </Tooltip>
           </div>
@@ -169,7 +169,7 @@ const MEView = () => {
               <p className="font-display font-bold text-base leading-tight mt-0.5">{totals.majorObjection}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Types of engagements covered</p>
+              <p className="text-xs text-muted-foreground">Types of retailer attributes covered</p>
               <p className="font-display font-bold text-lg">{totals.coveragePctAvg}%</p>
             </div>
           </div>
@@ -189,7 +189,7 @@ const MEView = () => {
                   <TableHead>ME</TableHead>
                   <TableHead className="text-right">Engagements (30d)</TableHead>
                   <TableHead className="text-right">Objections (30d)</TableHead>
-                  <TableHead className="text-center">Types of engagements covered (%)</TableHead>
+                  <TableHead className="text-center">Types of retailer attributes covered (%)</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -222,12 +222,12 @@ const MEView = () => {
       <Dialog open={!!coverageDetail} onOpenChange={(o) => !o && setCoverageDetail(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-display text-lg">Engagement types covered</DialogTitle>
+            <DialogTitle className="font-display text-lg">Retailer attributes covered</DialogTitle>
           </DialogHeader>
           {coverageDetail && (
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                {coverageDetail.meName} · {coveragePct(coverageDetail.coveredTypes)}% of engagement types covered ({coverageDetail.coveredTypes.length}/{ENGAGEMENT_TYPES.length})
+                {coverageDetail.meName} · {coveragePct(coverageDetail.coveredTypes)}% of retailer attributes covered ({coverageDetail.coveredTypes.length}/{ENGAGEMENT_TYPES.length})
               </p>
               <ul className="divide-y divide-border border border-border rounded-lg overflow-hidden">
                 {ENGAGEMENT_TYPES.map((t) => {
