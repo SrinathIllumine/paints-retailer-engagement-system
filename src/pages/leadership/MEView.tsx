@@ -66,16 +66,16 @@ const MEView = () => {
     <LeadershipLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="font-display font-bold text-2xl text-foreground">ME View</h1>
+          <h1 className="font-display font-bold text-2xl text-foreground">State-wise View</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Region-wise visibility into ME engagement effectiveness with retailers
+            State-wise visibility into ME engagement effectiveness with retailers
           </p>
         </div>
 
         {/* Region snapshot */}
         <Card className="p-4 bg-info/5 border-info/20">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-            <span className="text-foreground/80"><span className="text-muted-foreground">Region:</span> <span className="font-semibold">Maharashtra</span></span>
+            <span className="text-foreground/80"><span className="text-muted-foreground">State:</span> <span className="font-semibold">Maharashtra</span></span>
             <span className="text-foreground/80"><span className="text-muted-foreground">MEs in view:</span> <span className="font-semibold">{marketingExecutives.length}</span></span>
             <span className="text-foreground/80"><span className="text-muted-foreground">Retailers covered:</span> <span className="font-semibold">{dealers.length * 30}</span></span>
             <Tooltip>
