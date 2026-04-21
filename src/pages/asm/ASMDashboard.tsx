@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Users, MessageSquare, Store, Sparkles, AlertTriangle, MapPin } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip as RTooltip, ResponsiveContainer } from "recharts";
-import { asmMetrics, marketingExecutives, objectionRootCauses } from "@/data/meAnalytics";
+import { asmMetrics, marketingExecutives } from "@/data/meAnalytics";
 import { dealers, objectionBreakdown } from "@/data/mockData";
 
 const COLORS = ["hsl(0,78%,48%)", "hsl(30,80%,52%)", "hsl(210,80%,52%)", "hsl(152,60%,40%)", "hsl(220,10%,46%)"];
