@@ -38,6 +38,9 @@ const states: StateInfo[] = [
   { name: "Rajasthan",     enabled: false, asms: 1, mes: 16, totalRetailers: 1490 },
 ];
 
+const ENGAGEMENT_TYPES = ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] as const;
+type EngagementType = typeof ENGAGEMENT_TYPES[number];
+
 interface Row {
   asm: string;
   area: string;
@@ -45,16 +48,19 @@ interface Row {
   meName: string;
   engagements: number;
   objections: number;
-  coverage: { jkAlignment: number; valueProp: number; marketAwareness: number; openness: number; growthPotential: number };
+  majorObjection: string;
+  coveredTypes: EngagementType[];
 }
 
 const rows: Row[] = [
-  { asm: "Raj Kumar",   area: "Pune West",  meId: "me1", meName: "Ravi Kumar",     engagements: 168, objections: 22, coverage: { jkAlignment: 72, valueProp: 58, marketAwareness: 41, openness: 36, growthPotential: 28 } },
-  { asm: "Raj Kumar",   area: "Pune NE",    meId: "me2", meName: "Sunil Sharma",   engagements: 184, objections: 11, coverage: { jkAlignment: 81, valueProp: 74, marketAwareness: 62, openness: 55, growthPotential: 48 } },
-  { asm: "Raj Kumar",   area: "Pune South", meId: "me3", meName: "Anita Deshmukh", engagements: 152, objections: 38, coverage: { jkAlignment: 54, valueProp: 41, marketAwareness: 32, openness: 27, growthPotential: 19 } },
-  { asm: "Anil Joshi",  area: "Pune SW",    meId: "me4", meName: "Vikas Patil",    engagements: 196, objections: 8,  coverage: { jkAlignment: 88, valueProp: 79, marketAwareness: 71, openness: 64, growthPotential: 57 } },
-  { asm: "Anil Joshi",  area: "Pune North", meId: "me5", meName: "Priya Nair",     engagements: 141, objections: 17, coverage: { jkAlignment: 66, valueProp: 52, marketAwareness: 47, openness: 42, growthPotential: 33 } },
+  { asm: "Raj Kumar",   area: "Pune West",  meId: "me1", meName: "Ravi Kumar",     engagements: 168, objections: 22, majorObjection: "No demand in my area",       coveredTypes: ["JK alignment", "Value proposition"] },
+  { asm: "Raj Kumar",   area: "Pune NE",    meId: "me2", meName: "Sunil Sharma",   engagements: 184, objections: 11, majorObjection: "No space",                   coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness"] },
+  { asm: "Raj Kumar",   area: "Pune South", meId: "me3", meName: "Anita Deshmukh", engagements: 152, objections: 38, majorObjection: "Working capital",            coveredTypes: ["JK alignment"] },
+  { asm: "Anil Joshi",  area: "Pune SW",    meId: "me4", meName: "Vikas Patil",    engagements: 196, objections: 8,  majorObjection: "No space",                   coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] },
+  { asm: "Anil Joshi",  area: "Pune North", meId: "me5", meName: "Priya Nair",     engagements: 141, objections: 17, majorObjection: "No demand in my area",       coveredTypes: ["JK alignment", "Value proposition", "Market awareness"] },
 ];
+
+const coveragePct = (covered: EngagementType[]) => Math.round((covered.length / ENGAGEMENT_TYPES.length) * 100);
 
 const PctCell = ({ value }: { value: number }) => {
   const tone =
