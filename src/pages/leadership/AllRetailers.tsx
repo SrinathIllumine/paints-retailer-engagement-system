@@ -189,9 +189,19 @@ const AllRetailers = () => {
         {/* Morphology summary */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {summary.map((seg) => {
-            let pctLabel = "12% of total";
-            if (seg.type === "loyal") pctLabel = "38% of total";
-            else if (seg.type === "new" || seg.type === "inactive") pctLabel = "25% of total";
+            // Hardcoded display values for top cards
+            const displayCounts: Record<DealerType, number> = {
+              loyal: 1900,
+              new: 1250,
+              inactive: 1250,
+              declining: 600,
+            };
+            const displayPercentages: Record<DealerType, string> = {
+              loyal: "38% of total",
+              new: "25% of total",
+              inactive: "25% of total",
+              declining: "12% of total",
+            };
 
             return (
               <Card
@@ -200,9 +210,9 @@ const AllRetailers = () => {
                 onClick={() => setCategory(category === seg.type ? "all" : seg.type)}
               >
                 <Users className="w-5 h-5 mb-2" />
-                <p className="font-bold text-2xl">{seg.count.toLocaleString()}</p>
+                <p className="font-bold text-2xl">{displayCounts[seg.type].toLocaleString()}</p>
                 <p className="text-sm font-medium">{seg.label} Retailers</p>
-                <p className="text-xs opacity-70">{pctLabel}</p>
+                <p className="text-xs opacity-70">{displayPercentages[seg.type]}</p>
               </Card>
             );
           })}
