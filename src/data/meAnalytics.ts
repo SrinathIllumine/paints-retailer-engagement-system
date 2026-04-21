@@ -19,11 +19,11 @@ export interface MarketingExecutive {
 }
 
 export const marketingExecutives: MarketingExecutive[] = [
-  { id: "me1", name: "Ravi Kumar",     region: "MH", area: "Pune West", mappedRetailers: 42, visitsLast30d: 58, uniqueRetailersVisited: 18, topRetailerConcentration: 62, inactiveActivated: 4, objectionHeavyPairs: 2, attributesUplift: 14 },
-  { id: "me2", name: "Sunil Sharma",   region: "MH", area: "Pune NE",   mappedRetailers: 38, visitsLast30d: 64, uniqueRetailersVisited: 32, topRetailerConcentration: 28, inactiveActivated: 6, objectionHeavyPairs: 1, attributesUplift: 18 },
-  { id: "me3", name: "Anita Deshmukh", region: "MH", area: "Pune South",mappedRetailers: 45, visitsLast30d: 52, uniqueRetailersVisited: 14, topRetailerConcentration: 71, inactiveActivated: 1, objectionHeavyPairs: 4, attributesUplift: 6 },
-  { id: "me4", name: "Vikas Patil",    region: "MH", area: "Pune SW",   mappedRetailers: 40, visitsLast30d: 71, uniqueRetailersVisited: 36, topRetailerConcentration: 22, inactiveActivated: 5, objectionHeavyPairs: 0, attributesUplift: 21 },
-  { id: "me5", name: "Priya Nair",     region: "MH", area: "Pune North",mappedRetailers: 36, visitsLast30d: 49, uniqueRetailersVisited: 22, topRetailerConcentration: 44, inactiveActivated: 3, objectionHeavyPairs: 2, attributesUplift: 11 },
+  { id: "me1", name: "Ravi Kumar",     region: "MH", area: "Pune West", mappedRetailers: 205, visitsLast30d: 168, uniqueRetailersVisited: 92,  topRetailerConcentration: 62, inactiveActivated: 4, objectionHeavyPairs: 2, attributesUplift: 14 },
+  { id: "me2", name: "Sunil Sharma",   region: "MH", area: "Pune NE",   mappedRetailers: 198, visitsLast30d: 184, uniqueRetailersVisited: 142, topRetailerConcentration: 28, inactiveActivated: 6, objectionHeavyPairs: 1, attributesUplift: 18 },
+  { id: "me3", name: "Anita Deshmukh", region: "MH", area: "Pune South",mappedRetailers: 212, visitsLast30d: 152, uniqueRetailersVisited: 71,  topRetailerConcentration: 71, inactiveActivated: 1, objectionHeavyPairs: 4, attributesUplift: 6 },
+  { id: "me4", name: "Vikas Patil",    region: "MH", area: "Pune SW",   mappedRetailers: 201, visitsLast30d: 196, uniqueRetailersVisited: 156, topRetailerConcentration: 22, inactiveActivated: 5, objectionHeavyPairs: 0, attributesUplift: 21 },
+  { id: "me5", name: "Priya Nair",     region: "MH", area: "Pune North",mappedRetailers: 192, visitsLast30d: 141, uniqueRetailersVisited: 104, topRetailerConcentration: 44, inactiveActivated: 3, objectionHeavyPairs: 2, attributesUplift: 11 },
 ];
 
 // MEs whose visit pattern is concentrated on a few top retailers (Pareto / focused coverage)
@@ -75,10 +75,11 @@ export const dimensionUpliftMEs = marketingExecutives
 export const asmMetrics = {
   region: "Maharashtra",
   mesUnder: marketingExecutives.length,
+  totalRetailersInRegion: 1085,
   windows: {
-    "7d":  { totalRetailersMet: 142, active: 98,  inactive: 44, newAdded: 6,  conversations: 198 },
-    "30d": { totalRetailersMet: 412, active: 286, inactive: 126, newAdded: 21, conversations: 612 },
-    "90d": { totalRetailersMet: 781, active: 542, inactive: 239, newAdded: 58, conversations: 1428 },
+    "7d":  { totalRetailersMet: 218, active: 168, inactive: 50,  newAdded: 6,  conversations: 312 },
+    "30d": { totalRetailersMet: 565, active: 412, inactive: 153, newAdded: 21, conversations: 841 },
+    "90d": { totalRetailersMet: 902, active: 698, inactive: 204, newAdded: 58, conversations: 1968 },
   },
 };
 

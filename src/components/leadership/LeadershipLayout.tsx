@@ -6,7 +6,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/leadership" },
   { icon: Users, label: "All Retailers", path: "/leadership/all-retailers" },
   { icon: Target, label: "Strategic", path: "/leadership/targeting" },
-  { icon: Briefcase, label: "ME View", path: "/leadership/me-view" },
+  { icon: Briefcase, label: "State-wise View", path: "/leadership/me-view" },
 ];
 
 const LeadershipLayout = ({ children }: { children: ReactNode }) => {

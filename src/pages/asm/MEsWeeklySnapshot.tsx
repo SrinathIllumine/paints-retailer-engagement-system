@@ -99,7 +99,7 @@ const MEsWeeklySnapshot = () => {
         </Card>
       </div>
 
-      <MEProfileDialog meId={selected} context="uplift" onClose={() => setSelected(null)} />
+      <MEProfileDialog meId={selected} context="uplift" period={win} onClose={() => setSelected(null)} />
     </ASMLayout>
   );
 };
