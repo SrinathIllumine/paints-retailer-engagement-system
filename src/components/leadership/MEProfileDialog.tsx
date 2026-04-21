@@ -68,10 +68,14 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
   const uplift = Math.round(me.attributesUplift * (period === "30d" ? 1 : period === "7d" ? 0.5 : 1.4));
 
   const objections = meObjections[me.id] ?? [];
+  const periodShort = period === "7d" ? "7D" : period === "90d" ? "90D" : "30D";
   // Recently engaged retailers with per-retailer engagement counts
+  const lastVisitedDays = ["2 days ago", "4 days ago", "6 days ago", "1 week ago", "2 weeks ago"];
   const recent = dealers.slice(0, 5).map((d, i) => ({
     dealer: d,
     engagements: 6 - i + (i % 2),
+    objections: (i % 3),
+    lastVisited: lastVisitedDays[i],
   }));
 
   return (
