@@ -68,10 +68,14 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
   const uplift = Math.round(me.attributesUplift * (period === "30d" ? 1 : period === "7d" ? 0.5 : 1.4));
 
   const objections = meObjections[me.id] ?? [];
+  const periodShort = period === "7d" ? "7D" : period === "90d" ? "90D" : "30D";
   // Recently engaged retailers with per-retailer engagement counts
+  const lastVisitedDays = ["2 days ago", "4 days ago", "6 days ago", "1 week ago", "2 weeks ago"];
   const recent = dealers.slice(0, 5).map((d, i) => ({
     dealer: d,
     engagements: 6 - i + (i % 2),
+    objections: (i % 3),
+    lastVisited: lastVisitedDays[i],
   }));
 
   return (
@@ -143,16 +147,18 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
             <thead>
               <tr className="text-xs text-muted-foreground border-b">
                 <th className="text-left font-medium py-2">Retailer</th>
-                <th className="text-left font-medium py-2">Area</th>
-                <th className="text-right font-medium py-2">Engagements</th>
+                <th className="text-right font-medium py-2">Engagements in that period ({periodShort})</th>
+                <th className="text-right font-medium py-2">Objections in that period</th>
+                <th className="text-right font-medium py-2">Last visited</th>
               </tr>
             </thead>
             <tbody>
-              {recent.map(({ dealer, engagements }) => (
+              {recent.map(({ dealer, engagements, objections: obj, lastVisited }) => (
                 <tr key={dealer.id} className="border-b last:border-b-0">
                   <td className="py-2 text-foreground/85">{dealer.name}</td>
-                  <td className="py-2 text-muted-foreground">{dealer.area}</td>
                   <td className="py-2 text-right font-semibold">{engagements}</td>
+                  <td className="py-2 text-right font-semibold">{obj}</td>
+                  <td className="py-2 text-right text-muted-foreground">{lastVisited}</td>
                 </tr>
               ))}
             </tbody>

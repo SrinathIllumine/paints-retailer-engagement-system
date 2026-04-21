@@ -16,9 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import MEProfileDialog from "@/components/leadership/MEProfileDialog";
 import { marketingExecutives } from "@/data/meAnalytics";
-import { Info } from "lucide-react";
+import { Info, MousePointerClick, Check, X } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface StateInfo {
@@ -37,6 +38,9 @@ const states: StateInfo[] = [
   { name: "Rajasthan",     enabled: false, asms: 1, mes: 16, totalRetailers: 1490 },
 ];
 
+const ENGAGEMENT_TYPES = ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] as const;
+type EngagementType = typeof ENGAGEMENT_TYPES[number];
+
 interface Row {
   asm: string;
   area: string;
@@ -44,16 +48,19 @@ interface Row {
   meName: string;
   engagements: number;
   objections: number;
-  coverage: { jkAlignment: number; valueProp: number; marketAwareness: number; openness: number; growthPotential: number };
+  majorObjection: string;
+  coveredTypes: EngagementType[];
 }
 
 const rows: Row[] = [
-  { asm: "Raj Kumar",   area: "Pune West",  meId: "me1", meName: "Ravi Kumar",     engagements: 168, objections: 22, coverage: { jkAlignment: 72, valueProp: 58, marketAwareness: 41, openness: 36, growthPotential: 28 } },
-  { asm: "Raj Kumar",   area: "Pune NE",    meId: "me2", meName: "Sunil Sharma",   engagements: 184, objections: 11, coverage: { jkAlignment: 81, valueProp: 74, marketAwareness: 62, openness: 55, growthPotential: 48 } },
-  { asm: "Raj Kumar",   area: "Pune South", meId: "me3", meName: "Anita Deshmukh", engagements: 152, objections: 38, coverage: { jkAlignment: 54, valueProp: 41, marketAwareness: 32, openness: 27, growthPotential: 19 } },
-  { asm: "Anil Joshi",  area: "Pune SW",    meId: "me4", meName: "Vikas Patil",    engagements: 196, objections: 8,  coverage: { jkAlignment: 88, valueProp: 79, marketAwareness: 71, openness: 64, growthPotential: 57 } },
-  { asm: "Anil Joshi",  area: "Pune North", meId: "me5", meName: "Priya Nair",     engagements: 141, objections: 17, coverage: { jkAlignment: 66, valueProp: 52, marketAwareness: 47, openness: 42, growthPotential: 33 } },
+  { asm: "Raj Kumar",   area: "Pune West",  meId: "me1", meName: "Ravi Kumar",     engagements: 168, objections: 22, majorObjection: "No demand in my area",       coveredTypes: ["JK alignment", "Value proposition"] },
+  { asm: "Raj Kumar",   area: "Pune NE",    meId: "me2", meName: "Sunil Sharma",   engagements: 184, objections: 11, majorObjection: "No space",                   coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness"] },
+  { asm: "Raj Kumar",   area: "Pune South", meId: "me3", meName: "Anita Deshmukh", engagements: 152, objections: 38, majorObjection: "Working capital",            coveredTypes: ["JK alignment"] },
+  { asm: "Anil Joshi",  area: "Pune SW",    meId: "me4", meName: "Vikas Patil",    engagements: 196, objections: 8,  majorObjection: "No space",                   coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] },
+  { asm: "Anil Joshi",  area: "Pune North", meId: "me5", meName: "Priya Nair",     engagements: 141, objections: 17, majorObjection: "No demand in my area",       coveredTypes: ["JK alignment", "Value proposition", "Market awareness"] },
 ];
+
+const coveragePct = (covered: EngagementType[]) => Math.round((covered.length / ENGAGEMENT_TYPES.length) * 100);
 
 const PctCell = ({ value }: { value: number }) => {
   const tone =
@@ -66,24 +73,26 @@ const PctCell = ({ value }: { value: number }) => {
 const MEView = () => {
   const [stateName, setStateName] = useState<string>("Maharashtra");
   const [selected, setSelected] = useState<string | null>(null);
+  const [coverageDetail, setCoverageDetail] = useState<Row | null>(null);
 
   const currentState = useMemo(() => states.find((s) => s.name === stateName)!, [stateName]);
 
   const totals = useMemo(() => {
     const engagements = rows.reduce((a, r) => a + r.engagements, 0);
     const objections = rows.reduce((a, r) => a + r.objections, 0);
-    const avg = (k: keyof Row["coverage"]) => Math.round(rows.reduce((a, r) => a + r.coverage[k], 0) / rows.length);
-    return {
-      engagements,
-      objections,
-      coverage: {
-        jkAlignment: avg("jkAlignment"),
-        valueProp: avg("valueProp"),
-        marketAwareness: avg("marketAwareness"),
-        openness: avg("openness"),
-        growthPotential: avg("growthPotential"),
-      },
-    };
+    // Major objection: highest occurring across rows
+    const objCounts = rows.reduce<Record<string, number>>((acc, r) => {
+      acc[r.majorObjection] = (acc[r.majorObjection] ?? 0) + r.objections;
+      return acc;
+    }, {});
+    const majorObjection = Object.entries(objCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—";
+    // Consolidated coverage: union of covered types across MEs / total types
+    const covered = new Set<EngagementType>();
+    rows.forEach((r) => r.coveredTypes.forEach((t) => covered.add(t)));
+    const coveragePctAvg = Math.round(
+      rows.reduce((a, r) => a + coveragePct(r.coveredTypes), 0) / rows.length
+    );
+    return { engagements, objections, majorObjection, coveragePctAvg };
   }, []);
 
   return (
@@ -141,39 +150,27 @@ const MEView = () => {
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs text-xs">
-                Coverage % shows how often each engagement type was actually covered in ME conversations during the period.
+                Types of engagements covered (%) = engagement topics actually discussed by MEs, out of the {ENGAGEMENT_TYPES.length} tracked types ({ENGAGEMENT_TYPES.join(", ")}).
               </TooltipContent>
             </Tooltip>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Total engagements</p>
+              <p className="text-xs text-muted-foreground">Total engagements (30D)</p>
               <p className="font-display font-bold text-lg">{totals.engagements.toLocaleString()}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Total objections</p>
+              <p className="text-xs text-muted-foreground">Total objections (30D)</p>
               <p className="font-display font-bold text-lg">{totals.objections.toLocaleString()}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">JK alignment</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.jkAlignment}%</p>
+              <p className="text-xs text-muted-foreground">Major objection in the state</p>
+              <p className="font-display font-bold text-base leading-tight mt-0.5">{totals.majorObjection}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Value proposition</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.valueProp}%</p>
-            </div>
-            <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Market awareness</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.marketAwareness}%</p>
-            </div>
-            <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Openness</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.openness}%</p>
-            </div>
-            <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Growth potential</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.growthPotential}%</p>
+              <p className="text-xs text-muted-foreground">Types of engagements covered</p>
+              <p className="font-display font-bold text-lg">{totals.coveragePctAvg}%</p>
             </div>
           </div>
         </Card>
@@ -189,30 +186,29 @@ const MEView = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>ASM</TableHead>
-                  <TableHead>Area covered</TableHead>
                   <TableHead>ME</TableHead>
                   <TableHead className="text-right">Engagements (30d)</TableHead>
                   <TableHead className="text-right">Objections (30d)</TableHead>
-                  <TableHead className="text-center">JK alignment</TableHead>
-                  <TableHead className="text-center">Value prop</TableHead>
-                  <TableHead className="text-center">Market awareness</TableHead>
-                  <TableHead className="text-center">Openness</TableHead>
-                  <TableHead className="text-center">Growth potential</TableHead>
+                  <TableHead className="text-center">Types of engagements covered (%)</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rows.map((r) => (
-                  <TableRow key={r.meId} className="cursor-pointer" onClick={() => setSelected(r.meId)}>
-                    <TableCell className="font-medium">{r.asm}</TableCell>
-                    <TableCell className="text-muted-foreground">{r.area}</TableCell>
-                    <TableCell>{r.meName}</TableCell>
-                    <TableCell className="text-right font-semibold">{r.engagements}</TableCell>
-                    <TableCell className="text-right font-semibold">{r.objections}</TableCell>
-                    <TableCell className="text-center"><PctCell value={r.coverage.jkAlignment} /></TableCell>
-                    <TableCell className="text-center"><PctCell value={r.coverage.valueProp} /></TableCell>
-                    <TableCell className="text-center"><PctCell value={r.coverage.marketAwareness} /></TableCell>
-                    <TableCell className="text-center"><PctCell value={r.coverage.openness} /></TableCell>
-                    <TableCell className="text-center"><PctCell value={r.coverage.growthPotential} /></TableCell>
+                  <TableRow key={r.meId}>
+                    <TableCell className="font-medium cursor-pointer" onClick={() => setSelected(r.meId)}>{r.asm}</TableCell>
+                    <TableCell className="cursor-pointer" onClick={() => setSelected(r.meId)}>{r.meName}</TableCell>
+                    <TableCell className="text-right font-semibold cursor-pointer" onClick={() => setSelected(r.meId)}>{r.engagements}</TableCell>
+                    <TableCell className="text-right font-semibold cursor-pointer" onClick={() => setSelected(r.meId)}>{r.objections}</TableCell>
+                    <TableCell className="text-center">
+                      <button
+                        onClick={() => setCoverageDetail(r)}
+                        className="inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+                        title="Click to see breakdown"
+                      >
+                        <PctCell value={coveragePct(r.coveredTypes)} />
+                        <MousePointerClick className="w-3.5 h-3.5 text-muted-foreground" />
+                      </button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -222,6 +218,40 @@ const MEView = () => {
       </div>
 
       <MEProfileDialog meId={selected} context="uplift" onClose={() => setSelected(null)} />
+
+      <Dialog open={!!coverageDetail} onOpenChange={(o) => !o && setCoverageDetail(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-lg">Engagement types covered</DialogTitle>
+          </DialogHeader>
+          {coverageDetail && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                {coverageDetail.meName} · {coveragePct(coverageDetail.coveredTypes)}% of engagement types covered ({coverageDetail.coveredTypes.length}/{ENGAGEMENT_TYPES.length})
+              </p>
+              <ul className="divide-y divide-border border border-border rounded-lg overflow-hidden">
+                {ENGAGEMENT_TYPES.map((t) => {
+                  const covered = coverageDetail.coveredTypes.includes(t);
+                  return (
+                    <li key={t} className="flex items-center justify-between px-3 py-2 text-sm">
+                      <span className="text-foreground/85">{t}</span>
+                      {covered ? (
+                        <span className="inline-flex items-center gap-1 text-success text-xs font-medium">
+                          <Check className="w-3.5 h-3.5" /> Covered
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-muted-foreground text-xs font-medium">
+                          <X className="w-3.5 h-3.5" /> Not covered
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </LeadershipLayout>
   );
 };
