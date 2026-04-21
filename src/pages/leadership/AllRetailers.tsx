@@ -188,18 +188,24 @@ const AllRetailers = () => {
 
         {/* Morphology summary */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {summary.map((seg) => (
-            <Card
-              key={seg.type}
-              className={`p-4 border cursor-pointer transition-all ${seg.cls} ${category === seg.type ? "ring-2 ring-foreground/20" : "hover:opacity-90"}`}
-              onClick={() => setCategory(category === seg.type ? "all" : seg.type)}
-            >
-              <Users className="w-5 h-5 mb-2" />
-              <p className="font-bold text-2xl">{seg.count.toLocaleString()}</p>
-              <p className="text-sm font-medium">{seg.label} Retailers</p>
-              <p className="text-xs opacity-70">12% of total</p>
-            </Card>
-          ))}
+          {summary.map((seg) => {
+            let pctLabel = "12% of total";
+            if (seg.type === "loyal") pctLabel = "38% of total";
+            else if (seg.type === "new" || seg.type === "inactive") pctLabel = "25% of total";
+
+            return (
+              <Card
+                key={seg.type}
+                className={`p-4 border cursor-pointer transition-all ${seg.cls} ${category === seg.type ? "ring-2 ring-foreground/20" : "hover:opacity-90"}`}
+                onClick={() => setCategory(category === seg.type ? "all" : seg.type)}
+              >
+                <Users className="w-5 h-5 mb-2" />
+                <p className="font-bold text-2xl">{seg.count.toLocaleString()}</p>
+                <p className="text-sm font-medium">{seg.label} Retailers</p>
+                <p className="text-xs opacity-70">{pctLabel}</p>
+              </Card>
+            );
+          })}
         </div>
 
         {/* Region-based insights panel */}
