@@ -122,19 +122,6 @@ const StrategicSlicing = () => {
           ))}
         </div>
 
-        {/* Insights for Leadership - 1-2 crisp data-driven observations */}
-        <Card className="p-5 bg-info/5 border-info/20">
-          <h3 className="font-semibold text-foreground mb-3">Insights for Leadership</h3>
-          <ul className="space-y-2">
-            {strategies[active].actionPoints.slice(0, 2).map((ap, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
-                <span className="w-1.5 h-1.5 rounded-full bg-info mt-2 shrink-0" />
-                <span>{ap}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-
         <Card className="overflow-hidden">
           <div className="p-4 border-b border-border">
             <h3 className="font-semibold text-foreground">{strategies[active].label} ({filtered.length})</h3>

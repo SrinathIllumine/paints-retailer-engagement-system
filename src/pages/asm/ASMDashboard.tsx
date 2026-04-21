@@ -4,10 +4,19 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Users, MessageSquare, Store, Sparkles, AlertTriangle, MapPin } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Users, MessageSquare, Store, Sparkles, AlertTriangle, MapPin, MousePointerClick, Check, X, UserCircle2 } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip as RTooltip, ResponsiveContainer } from "recharts";
 import { asmMetrics, marketingExecutives } from "@/data/meAnalytics";
 import { dealers, objectionBreakdown } from "@/data/mockData";
+import MEProfileDialog from "@/components/leadership/MEProfileDialog";
 
 const COLORS = ["hsl(0,78%,48%)", "hsl(30,80%,52%)", "hsl(210,80%,52%)", "hsl(152,60%,40%)", "hsl(220,10%,46%)"];
 type Window = "7d" | "30d" | "90d";
@@ -110,9 +119,42 @@ const ObjectionIntelligenceView = ({
   );
 };
 
+const ENGAGEMENT_TYPES = ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] as const;
+type EngagementType = typeof ENGAGEMENT_TYPES[number];
+
+interface MERow {
+  meId: string;
+  meName: string;
+  area: string;
+  engagements: number;
+  objections: number;
+  majorObjection: string;
+  coveredTypes: EngagementType[];
+}
+
+const meRows: MERow[] = [
+  { meId: "me1", meName: "Ravi Kumar",     area: "Pune West",  engagements: 168, objections: 22, majorObjection: "No demand in my area", coveredTypes: ["JK alignment", "Value proposition"] },
+  { meId: "me2", meName: "Sunil Sharma",   area: "Pune NE",    engagements: 184, objections: 11, majorObjection: "No space",             coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness"] },
+  { meId: "me3", meName: "Anita Deshmukh", area: "Pune South", engagements: 152, objections: 38, majorObjection: "Working capital",      coveredTypes: ["JK alignment"] },
+  { meId: "me4", meName: "Vikas Patil",    area: "Pune SW",    engagements: 196, objections: 8,  majorObjection: "No space",             coveredTypes: ["JK alignment", "Value proposition", "Market awareness", "Openness", "Growth potential"] },
+  { meId: "me5", meName: "Priya Nair",     area: "Pune North", engagements: 141, objections: 17, majorObjection: "No demand in my area", coveredTypes: ["JK alignment", "Value proposition", "Market awareness"] },
+];
+
+const coveragePct = (covered: EngagementType[]) => Math.round((covered.length / ENGAGEMENT_TYPES.length) * 100);
+
+const PctCell = ({ value }: { value: number }) => {
+  const tone =
+    value >= 70 ? "bg-success/15 text-success" :
+    value >= 45 ? "bg-info/15 text-info" :
+    "bg-warning/15 text-warning";
+  return <span className={`inline-block min-w-[42px] text-center text-xs px-2 py-0.5 rounded-full font-medium ${tone}`}>{value}%</span>;
+};
+
 const ASMDashboard = () => {
   const [window, setWindow] = useState<Window>("30d");
   const [activeObjection, setActiveObjection] = useState<string | null>(null);
+  const [selectedMe, setSelectedMe] = useState<string | null>(null);
+  const [coverageDetail, setCoverageDetail] = useState<MERow | null>(null);
 
   const m = useMemo(() => asmMetrics.windows[window], [window]);
 
@@ -198,9 +240,95 @@ const ASMDashboard = () => {
             ))}
           </div>
         </Card>
+
+        {/* ME engagement breakdown - reused from State-wise View */}
+        <Card className="overflow-hidden">
+          <div className="p-4 border-b border-border">
+            <h3 className="font-semibold text-foreground">ME engagement breakdown</h3>
+            <p className="text-xs text-muted-foreground">Last 30 days · click any row to see ME profile</p>
+          </div>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ME</TableHead>
+                  <TableHead className="text-right">Engagements (30d)</TableHead>
+                  <TableHead className="text-right">Objections (30d)</TableHead>
+                  <TableHead className="text-center">Types of retailer attributes covered (%)</TableHead>
+                  <TableHead className="text-center">Visit ME Profile</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {meRows.map((r) => (
+                  <TableRow key={r.meId}>
+                    <TableCell className="cursor-pointer font-medium" onClick={() => setSelectedMe(r.meId)}>{r.meName}</TableCell>
+                    <TableCell className="text-right font-semibold cursor-pointer" onClick={() => setSelectedMe(r.meId)}>{r.engagements}</TableCell>
+                    <TableCell className="text-right font-semibold cursor-pointer" onClick={() => setSelectedMe(r.meId)}>{r.objections}</TableCell>
+                    <TableCell className="text-center">
+                      <button
+                        onClick={() => setCoverageDetail(r)}
+                        className="inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+                        title="Click to see breakdown"
+                      >
+                        <PctCell value={coveragePct(r.coveredTypes)} />
+                        <MousePointerClick className="w-3.5 h-3.5 text-muted-foreground" />
+                      </button>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <button
+                        onClick={() => setSelectedMe(r.meId)}
+                        className="inline-flex items-center gap-1 text-primary hover:opacity-80 transition-opacity text-xs font-medium"
+                        title="Open ME profile"
+                      >
+                        <UserCircle2 className="w-4 h-4" />
+                        View
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
       </div>
 
       <ObjectionIntelligenceView objection={activeObjection} onClose={() => setActiveObjection(null)} />
+
+      <MEProfileDialog meId={selectedMe} context="uplift" onClose={() => setSelectedMe(null)} />
+
+      <Dialog open={!!coverageDetail} onOpenChange={(o) => !o && setCoverageDetail(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-lg">Retailer attributes covered</DialogTitle>
+          </DialogHeader>
+          {coverageDetail && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                {coverageDetail.meName} · {coveragePct(coverageDetail.coveredTypes)}% of retailer attributes covered ({coverageDetail.coveredTypes.length}/{ENGAGEMENT_TYPES.length})
+              </p>
+              <ul className="divide-y divide-border border border-border rounded-lg overflow-hidden">
+                {ENGAGEMENT_TYPES.map((t) => {
+                  const covered = coverageDetail.coveredTypes.includes(t);
+                  return (
+                    <li key={t} className="flex items-center justify-between px-3 py-2 text-sm">
+                      <span className="text-foreground/85">{t}</span>
+                      {covered ? (
+                        <span className="inline-flex items-center gap-1 text-success text-xs font-medium">
+                          <Check className="w-3.5 h-3.5" /> Covered
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-muted-foreground text-xs font-medium">
+                          <X className="w-3.5 h-3.5" /> Not covered
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </ASMLayout>
   );
 };

@@ -19,7 +19,7 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import MEProfileDialog from "@/components/leadership/MEProfileDialog";
 import { marketingExecutives } from "@/data/meAnalytics";
-import { Info, MousePointerClick, Check, X } from "lucide-react";
+import { Info, MousePointerClick, Check, X, UserCircle2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface StateInfo {
@@ -190,6 +190,7 @@ const MEView = () => {
                   <TableHead className="text-right">Engagements (30d)</TableHead>
                   <TableHead className="text-right">Objections (30d)</TableHead>
                   <TableHead className="text-center">Types of retailer attributes covered (%)</TableHead>
+                  <TableHead className="text-center">Visit ME Profile</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -207,6 +208,16 @@ const MEView = () => {
                       >
                         <PctCell value={coveragePct(r.coveredTypes)} />
                         <MousePointerClick className="w-3.5 h-3.5 text-muted-foreground" />
+                      </button>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <button
+                        onClick={() => setSelected(r.meId)}
+                        className="inline-flex items-center gap-1 text-primary hover:opacity-80 transition-opacity text-xs font-medium"
+                        title="Open ME profile"
+                      >
+                        <UserCircle2 className="w-4 h-4" />
+                        View
                       </button>
                     </TableCell>
                   </TableRow>

@@ -64,6 +64,7 @@ export const dealers: Dealer[] = [
   { id: "6", name: "Patel & Sons Hardware", location: "Pune NE, MH", type: "new", engagementScore: 55, openness: "high", lastVisit: "Last visited: 3 days ago", lastOutcome: "First meeting – willing to explore JK products", area: "Pune NE", dealerCode: "PSH-006", revenueCategory: "B", lat: 18.490, lng: 73.920 },
   { id: "7", name: "Singh Building Centre", location: "Pune SW, MH", type: "declining", engagementScore: 35, openness: "medium", lastVisit: "Last weeks ago", lastOutcome: "Needs more engagement attention", area: "Pune SW", dealerCode: "SBC-007", revenueCategory: "B", lat: 18.560, lng: 73.810 },
   { id: "8", name: "Mahalaxmi Traders", location: "Pune SW, MH", type: "loyal", engagementScore: 78, openness: "high", lastVisit: "Last visited: 4 days ago", lastOutcome: "Strong relationship – regular engagement", area: "Pune SW", dealerCode: "MT-008", revenueCategory: "A", lat: 18.490, lng: 73.820 },
+  { id: "9", name: "Deshpande Hardware Stores", location: "Pune North, MH", type: "inactive", engagementScore: 38, openness: "medium", lastVisit: "Last visited: 5 weeks ago", lastOutcome: "Open to re-engagement – cited service gaps", area: "Pune North", dealerCode: "DHS-009", revenueCategory: "B", lat: 18.580, lng: 73.860 },
 ];
 
 export const engagementThemes: EngagementTheme[] = [
@@ -305,5 +306,5 @@ export const objectionBreakdown = [
   { name: "Working capital", value: 22 },
   { name: "No space", value: 18 },
   { name: "Competition from other brands", value: 17 },
-  { name: "Won't work", value: 15 },
+  { name: "Poor Product Quality", value: 15 },
 ];
