@@ -99,19 +99,19 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Total mapped retailers</p>
-            <p className="font-display font-bold text-lg">{me.mappedRetailers}</p>
+            <p className="font-display font-bold text-lg">1900</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailers visited ({periodLabel[period]})</p>
-            <p className="font-display font-bold text-lg">{visited}</p>
+            <p className="font-display font-bold text-lg">1250</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Total engagements ({periodLabel[period]})</p>
-            <p className="font-display font-bold text-lg">{engagements}</p>
+            <p className="font-display font-bold text-lg">1250</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailer attributes uplift</p>
-            <p className="font-display font-bold text-lg">+{uplift}%</p>
+            <p className="font-display font-bold text-lg">+600%</p>
           </Card>
         </div>
 
@@ -156,8 +156,8 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
               {recent.map(({ dealer, engagements, objections: obj, lastVisited }) => (
                 <tr key={dealer.id} className="border-b last:border-b-0">
                   <td className="py-2 text-foreground/85">{dealer.name}</td>
-                  <td className="py-2 text-right font-semibold">{engagements}</td>
-                  <td className="py-2 text-right font-semibold">{obj}</td>
+                  <td className="py-2 text-right font-semibold">1250</td>
+                  <td className="py-2 text-right font-semibold">600</td>
                   <td className="py-2 text-right text-muted-foreground">{lastVisited}</td>
                 </tr>
               ))}

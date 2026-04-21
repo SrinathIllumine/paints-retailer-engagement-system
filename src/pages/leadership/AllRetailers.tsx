@@ -197,7 +197,7 @@ const AllRetailers = () => {
               <Users className="w-5 h-5 mb-2" />
               <p className="font-bold text-2xl">{seg.count.toLocaleString()}</p>
               <p className="text-sm font-medium">{seg.label} Retailers</p>
-              <p className="text-xs opacity-70">{seg.pct}% of total</p>
+              <p className="text-xs opacity-70">12% of total</p>
             </Card>
           ))}
         </div>
