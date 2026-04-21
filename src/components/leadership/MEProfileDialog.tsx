@@ -96,22 +96,23 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
           </div>
         </div>
 
+        {(() => null)()}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Total mapped retailers</p>
-            <p className="font-display font-bold text-lg">1900</p>
+            <p className="font-display font-bold text-lg">200</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailers visited ({periodLabel[period]})</p>
-            <p className="font-display font-bold text-lg">1250</p>
+            <p className="font-display font-bold text-lg">{Math.min(visited, 200)}</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Total engagements ({periodLabel[period]})</p>
-            <p className="font-display font-bold text-lg">1250</p>
+            <p className="font-display font-bold text-lg">{engagements}</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailer attributes uplift</p>
-            <p className="font-display font-bold text-lg">+600%</p>
+            <p className="font-display font-bold text-lg">+{Math.max(5, Math.min(30, uplift))}%</p>
           </Card>
         </div>
 
@@ -153,11 +154,11 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
               </tr>
             </thead>
             <tbody>
-              {recent.map(({ dealer, engagements, objections: obj, lastVisited }) => (
+              {recent.map(({ dealer, engagements: eng, objections: obj, lastVisited }) => (
                 <tr key={dealer.id} className="border-b last:border-b-0">
                   <td className="py-2 text-foreground/85">{dealer.name}</td>
-                  <td className="py-2 text-right font-semibold">1250</td>
-                  <td className="py-2 text-right font-semibold">600</td>
+                  <td className="py-2 text-right font-semibold">{eng}</td>
+                  <td className="py-2 text-right font-semibold">{obj}</td>
                   <td className="py-2 text-right text-muted-foreground">{lastVisited}</td>
                 </tr>
               ))}
