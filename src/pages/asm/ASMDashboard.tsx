@@ -120,7 +120,7 @@ const ASMDashboard = () => {
     { icon: Users,         label: "Number of MEs",                value: asmMetrics.mesUnder },
     { icon: Store,         label: "Total retailers in the region", value: asmMetrics.totalRetailersInRegion },
     { icon: Sparkles,      label: "Retailers met by the MEs",     value: m.totalRetailersMet },
-    { icon: MessageSquare, label: "Conversations logged",         value: m.conversations },
+    { icon: MessageSquare, label: "Total engagements with retailers",         value: m.conversations },
   ];
 
   return (
