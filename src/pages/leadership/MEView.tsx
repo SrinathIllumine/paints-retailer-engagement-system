@@ -31,7 +31,7 @@ interface StateInfo {
 }
 
 const states: StateInfo[] = [
-  { name: "Maharashtra",   enabled: true,  asms: 7, mes: 50, totalRetailers: 1250 },
+  { name: "Maharashtra",   enabled: true,  asms: 1900, mes: 1250, totalRetailers: 1250 },
   { name: "Gujarat",       enabled: false, asms: 600, mes: 18, totalRetailers: 1640 },
   { name: "Karnataka",     enabled: false, asms: 2, mes: 22, totalRetailers: 1880 },
   { name: "Tamil Nadu",    enabled: false, asms: 2, mes: 24, totalRetailers: 2120 },
