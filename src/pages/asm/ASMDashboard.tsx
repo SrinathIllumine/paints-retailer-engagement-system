@@ -4,10 +4,19 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Users, MessageSquare, Store, Sparkles, AlertTriangle, MapPin } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Users, MessageSquare, Store, Sparkles, AlertTriangle, MapPin, MousePointerClick, Check, X, UserCircle2 } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip as RTooltip, ResponsiveContainer } from "recharts";
 import { asmMetrics, marketingExecutives } from "@/data/meAnalytics";
 import { dealers, objectionBreakdown } from "@/data/mockData";
+import MEProfileDialog from "@/components/leadership/MEProfileDialog";
 
 const COLORS = ["hsl(0,78%,48%)", "hsl(30,80%,52%)", "hsl(210,80%,52%)", "hsl(152,60%,40%)", "hsl(220,10%,46%)"];
 type Window = "7d" | "30d" | "90d";
