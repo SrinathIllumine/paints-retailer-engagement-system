@@ -198,134 +198,145 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Discussion Points - horizontal swipe carousel */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 uppercase tracking-wider font-extrabold text-card-foreground text-sm">
-              <MessageSquare className="w-3.5 h-3.5" />
-              CORE DISCUSSION POINTS
+        {/* Combined: Core Discussion Points + Handle Objections */}
+        <Card className="p-4 space-y-5">
+          {/* Core Discussion Points - horizontal swipe carousel */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 uppercase tracking-wider font-extrabold text-card-foreground text-sm">
+                <MessageSquare className="w-3.5 h-3.5" />
+                CORE DISCUSSION POINTS
+              </div>
+              <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
+                {activeSlide + 1} / {theme.discussionPoints.length}
+                <span className="hidden sm:inline">· swipe</span>
+                <ArrowRight className="w-3 h-3 animate-pulse" />
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground font-medium">
-              {activeSlide + 1} / {theme.discussionPoints.length}
-            </span>
+
+            <div className="relative">
+              <Carousel setApi={setCarouselApi} opts={{ align: "start" }} className="w-full">
+                <CarouselContent className="-ml-2">
+                  {theme.discussionPoints.map((point, i) => {
+                    const isDone = completedPoints.has(point.id);
+                    return (
+                      <CarouselItem key={point.id} className="pl-2 basis-[88%] sm:basis-[92%]">
+                        <Card className={`overflow-hidden transition-all ${isDone ? "border-success/40 bg-success/5" : ""}`}>
+                          <div className="p-4 space-y-3">
+                            <div className="flex items-start gap-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isDone ? "bg-success text-success-foreground" : "bg-secondary text-muted-foreground"}`}>
+                                {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-sm font-bold">{i + 1}</span>}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
+                                <p className="mt-0.5 text-sm text-muted-foreground leading-relaxed">{point.description}</p>
+                              </div>
+                            </div>
+
+                            {/* USEFUL INSIGHTS - always visible & open */}
+                            <div className="bg-secondary/40 rounded-lg p-3">
+                              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
+                              <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
+                            </div>
+
+                            <Button
+                              variant={isDone ? "secondary" : "field"}
+                              size="sm"
+                              className="w-full"
+                              onClick={() => toggleComplete(point.id)}
+                            >
+                              {isDone ? "Mark as Not Discussed" : "Mark as Discussed ✓"}
+                            </Button>
+                          </div>
+                        </Card>
+                      </CarouselItem>
+                    );
+                  })}
+                </CarouselContent>
+                {/* Right gradient fade hint */}
+                <div className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-card to-transparent rounded-r-lg" />
+              </Carousel>
+
+              <div className="flex items-center justify-center gap-2 mt-3">
+                <CarouselPrevious className="static translate-y-0" />
+                <div className="flex gap-1.5">
+                  {theme.discussionPoints.map((_, i) => (
+                    <button
+                      key={i}
+                      aria-label={`Go to point ${i + 1}`}
+                      onClick={() => carouselApi?.scrollTo(i)}
+                      className={`h-1.5 rounded-full transition-all ${i === activeSlide ? `w-5 bg-${theme.color}` : "w-1.5 bg-muted"}`}
+                    />
+                  ))}
+                </div>
+                <CarouselNext className="static translate-y-0" />
+              </div>
+              <p className="text-[11px] text-center text-muted-foreground mt-1">Swipe left or right to see more discussion points</p>
+            </div>
           </div>
 
-          <Carousel setApi={setCarouselApi} opts={{ align: "start" }} className="w-full">
-            <CarouselContent>
-              {theme.discussionPoints.map((point, i) => {
-                const isDone = completedPoints.has(point.id);
+          {/* Handle Objections - hidden until at least one point marked as Discussed */}
+          {theme.whatIfs.length > 0 && completedPoints.size > 0 && (
+            <div className="space-y-3 pt-4 border-t border-border animate-fade-in">
+              <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
+                <Lightbulb className="w-3.5 h-3.5" />
+                HANDLE OBJECTIONS
+              </div>
+              <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
+              {theme.whatIfs.map((wi) => {
+                const isSelected = selectedWhatIfs.has(wi.id);
+                const practices = bestPracticesMap[wi.id] || [];
+                const practicesOpen = expandedBestPractices[wi.id] !== false; // default open
+
                 return (
-                  <CarouselItem key={point.id} className="basis-full">
-                    <Card className={`overflow-hidden transition-all ${isDone ? "border-success/40 bg-success/5" : ""}`}>
-                      <div className="p-4 space-y-3">
-                        <div className="flex items-start gap-3">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isDone ? "bg-success text-success-foreground" : "bg-secondary text-muted-foreground"}`}>
-                            {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-sm font-bold">{i + 1}</span>}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
-                            <p className="mt-0.5 text-sm text-muted-foreground leading-relaxed">{point.description}</p>
-                          </div>
-                        </div>
+                  <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
+                    <button
+                      className={`w-full tap-target px-4 py-3 text-left text-sm font-medium transition-all ${
+                        isSelected ? "bg-warning/10 text-warning" : "bg-card text-foreground"
+                      }`}
+                      onClick={() => toggleWhatIf(wi.id)}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? "border-warning bg-warning text-warning-foreground" : "border-muted-foreground/30"
+                        }`}>
+                          {isSelected && <CheckCircle2 className="w-3 h-3" />}
+                        </span>
+                        {wi.label}
+                      </span>
+                    </button>
 
-                        {/* USEFUL INSIGHTS - always visible & open */}
-                        <div className="bg-secondary/40 rounded-lg p-3">
-                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
-                          <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
+                    {isSelected && practices.length > 0 && (
+                      <div className="px-4 pb-4 space-y-2 animate-fade-in">
+                        <div className="border border-info/20 rounded-lg overflow-hidden">
+                          <button
+                            className="w-full flex items-center justify-between px-3 py-2.5 bg-info/5 text-left"
+                            onClick={() => setExpandedBestPractices(prev => ({ ...prev, [wi.id]: prev[wi.id] === false ? true : false }))}
+                          >
+                            <span className="flex items-center gap-2 text-xs font-semibold text-info uppercase">
+                              <BookOpen className="w-3.5 h-3.5" />
+                              BEST PRACTICES FOR THE RETAILER
+                            </span>
+                            {practicesOpen ? <ChevronUp className="w-3.5 h-3.5 text-info" /> : <ChevronDown className="w-3.5 h-3.5 text-info" />}
+                          </button>
+                          {practicesOpen && (
+                            <div className="px-3 pb-3 pt-2 bg-info/5 space-y-1.5 animate-fade-in max-h-48 overflow-y-auto">
+                              {practices.map((practice, idx) => (
+                                <div key={idx} className="bg-background/60 border border-info/15 rounded-lg px-3 py-2.5 text-sm text-foreground/80">
+                                  {practice}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-
-                        <Button
-                          variant={isDone ? "secondary" : "field"}
-                          size="sm"
-                          className="w-full"
-                          onClick={() => toggleComplete(point.id)}
-                        >
-                          {isDone ? "Mark as Not Discussed" : "Mark as Discussed ✓"}
-                        </Button>
                       </div>
-                    </Card>
-                  </CarouselItem>
+                    )}
+                  </Card>
                 );
               })}
-            </CarouselContent>
-            <div className="flex items-center justify-center gap-2 mt-3">
-              <CarouselPrevious className="static translate-y-0" />
-              <div className="flex gap-1.5">
-                {theme.discussionPoints.map((_, i) => (
-                  <button
-                    key={i}
-                    aria-label={`Go to point ${i + 1}`}
-                    onClick={() => carouselApi?.scrollTo(i)}
-                    className={`h-1.5 rounded-full transition-all ${i === activeSlide ? `w-5 bg-${theme.color}` : "w-1.5 bg-muted"}`}
-                  />
-                ))}
-              </div>
-              <CarouselNext className="static translate-y-0" />
             </div>
-          </Carousel>
-        </div>
-
-        {/* What-Ifs / Objections - with Best Practices only */}
-        {theme.whatIfs.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
-              <Lightbulb className="w-3.5 h-3.5" />
-              WHAT-IFS &amp; HANDLE OBJECTIONS
-            </div>
-            <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
-            {theme.whatIfs.map((wi) => {
-              const isSelected = selectedWhatIfs.has(wi.id);
-              const practices = bestPracticesMap[wi.id] || [];
-              const practicesOpen = expandedBestPractices[wi.id] !== false; // default open
-
-              return (
-                <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
-                  <button
-                    className={`w-full tap-target px-4 py-3 text-left text-sm font-medium transition-all ${
-                      isSelected ? "bg-warning/10 text-warning" : "bg-card text-foreground"
-                    }`}
-                    onClick={() => toggleWhatIf(wi.id)}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
-                        isSelected ? "border-warning bg-warning text-warning-foreground" : "border-muted-foreground/30"
-                      }`}>
-                        {isSelected && <CheckCircle2 className="w-3 h-3" />}
-                      </span>
-                      {wi.label}
-                    </span>
-                  </button>
-
-                  {isSelected && practices.length > 0 && (
-                    <div className="px-4 pb-4 space-y-2 animate-fade-in">
-                      <div className="border border-info/20 rounded-lg overflow-hidden">
-                        <button
-                          className="w-full flex items-center justify-between px-3 py-2.5 bg-info/5 text-left"
-                          onClick={() => setExpandedBestPractices(prev => ({ ...prev, [wi.id]: prev[wi.id] === false ? true : false }))}
-                        >
-                          <span className="flex items-center gap-2 text-xs font-semibold text-info uppercase">
-                            <BookOpen className="w-3.5 h-3.5" />
-                            BEST PRACTICES FOR THE RETAILER
-                          </span>
-                          {practicesOpen ? <ChevronUp className="w-3.5 h-3.5 text-info" /> : <ChevronDown className="w-3.5 h-3.5 text-info" />}
-                        </button>
-                        {practicesOpen && (
-                          <div className="px-3 pb-3 pt-2 bg-info/5 space-y-1.5 animate-fade-in max-h-48 overflow-y-auto">
-                            {practices.map((practice, idx) => (
-                              <div key={idx} className="bg-background/60 border border-info/15 rounded-lg px-3 py-2.5 text-sm text-foreground/80">
-                                {practice}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Card>
-              );
-            })}
-          </div>
-        )}
+          )}
+        </Card>
 
         {/* Retailer Response */}
         <div className="space-y-3">
