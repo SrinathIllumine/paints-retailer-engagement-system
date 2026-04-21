@@ -88,7 +88,7 @@ const MEsAreaSnapshot = () => {
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-foreground">{m.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {m.area} · {m.uniqueRetailersVisited}/{m.mappedRetailers} retailers · +{m.attributesUplift}% uplift
+                      {m.area} · {m.uniqueRetailersVisited}/{m.mappedRetailers} retailers · +{m.attributesUplift}% retailer attributes uplift
                     </p>
                   </div>
                   <Tooltip>
