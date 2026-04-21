@@ -255,22 +255,22 @@ const EngagementTheme = () => {
                 </CarouselContent>
                 {/* Right gradient fade hint */}
                 <div className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-card to-transparent rounded-r-lg" />
-              </Carousel>
 
-              <div className="flex items-center justify-center gap-2 mt-3">
-                <CarouselPrevious className="static translate-y-0" />
-                <div className="flex gap-1.5">
-                  {theme.discussionPoints.map((_, i) => (
-                    <button
-                      key={i}
-                      aria-label={`Go to point ${i + 1}`}
-                      onClick={() => carouselApi?.scrollTo(i)}
-                      className={`h-1.5 rounded-full transition-all ${i === activeSlide ? `w-5 bg-${theme.color}` : "w-1.5 bg-muted"}`}
-                    />
-                  ))}
+                <div className="flex items-center justify-center gap-2 mt-3">
+                  <CarouselPrevious className="static translate-y-0" />
+                  <div className="flex gap-1.5">
+                    {theme.discussionPoints.map((_, i) => (
+                      <button
+                        key={i}
+                        aria-label={`Go to point ${i + 1}`}
+                        onClick={() => carouselApi?.scrollTo(i)}
+                        className={`h-1.5 rounded-full transition-all ${i === activeSlide ? `w-5 bg-${theme.color}` : "w-1.5 bg-muted"}`}
+                      />
+                    ))}
+                  </div>
+                  <CarouselNext className="static translate-y-0" />
                 </div>
-                <CarouselNext className="static translate-y-0" />
-              </div>
+              </Carousel>
               <p className="text-[11px] text-center text-muted-foreground mt-1">Swipe left or right to see more discussion points</p>
             </div>
           </div>
