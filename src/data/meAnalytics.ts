@@ -105,7 +105,7 @@ export const objectionRootCauses: Record<string, string[]> = {
     "Low coverage of differentiation conversations in visit notes",
     "Few proof-points or trial samples shared in recent visits",
   ],
-  "Won't work": [
+  "Poor Product Quality": [
     "Dominated by retailers with low openness scores",
     "Fewer retailer success stories shared by MEs",
     "Limited follow-through on agreed pilot actions",

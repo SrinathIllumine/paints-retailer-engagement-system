@@ -34,7 +34,7 @@ const segmentMeta: { type: DealerType; label: string; cls: string }[] = [
   { type: "loyal", label: "Loyal", cls: "bg-success/10 text-success border-success/20" },
   { type: "new", label: "New", cls: "bg-info/10 text-info border-info/20" },
   { type: "inactive", label: "Inactive", cls: "bg-warning/10 text-warning border-warning/20" },
-  { type: "declining", label: "Declining", cls: "bg-destructive/10 text-destructive border-destructive/20" },
+  { type: "declining", label: "Declining", cls: "bg-warning/10 text-warning border-warning/20" },
 ];
 
 const radarDataForDealer = (dealer: typeof dealers[0]) => [
@@ -242,21 +242,6 @@ const AllRetailers = () => {
               </div>
             </Card>
 
-            {/* Insights for Leadership - 1-2 crisp data-driven insights */}
-            <Card className="p-4 bg-info/5 border-info/20">
-              <div className="flex items-center gap-2 mb-3">
-                <Lightbulb className="w-4 h-4 text-info" />
-                <h3 className="font-semibold text-foreground">Insights for Leadership</h3>
-              </div>
-              <ul className="space-y-2 text-sm text-foreground/85">
-                {synthesizedInsights.slice(0, 2).map((s, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                    <span>{s}</span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
           </div>
         )}
 
@@ -396,21 +381,6 @@ const AllRetailers = () => {
                     </div>
                   </Card>
                 </div>
-
-                {/* Insights for Leadership - retailer-specific */}
-                <Card className="p-4 bg-info/5 border-info/20">
-                  <h3 className="font-semibold text-foreground mb-2">Insights for Leadership</h3>
-                  <ul className="space-y-1.5 text-sm text-foreground/85">
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                      High openness with moderate value-prop understanding - signals knowledge gap, not intent gap.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                      Recurring delivery feedback across visits - worth pattern-checking at regional level.
-                    </li>
-                  </ul>
-                </Card>
 
                 <div className="flex justify-end pt-2">
                   <Button variant="outline" onClick={() => setSelectedDealerId(null)}>Close</Button>
