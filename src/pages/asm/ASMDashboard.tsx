@@ -17,12 +17,7 @@ const ObjectionIntelligenceView = ({
   onClose,
 }: { objection: string | null; onClose: () => void }) => {
   if (!objection) return null;
-  const rootCauses = objectionRootCauses[objection] ?? [
-    "Pattern observed across multiple retailers and sub-areas",
-    "Limited coverage in ME conversation notes",
-  ];
 
-  // Distribution mock data
   const subAreas = [
     { area: "Pune West", count: 14 },
     { area: "Pune NE",   count: 9 },
@@ -55,8 +50,25 @@ const ObjectionIntelligenceView = ({
           <DialogTitle className="font-display text-xl">Objection Intelligence View - {objection}</DialogTitle>
         </DialogHeader>
 
-        {/* Distribution */}
+        {/* Prioritization */}
         <Card className="p-4">
+          <h3 className="font-semibold text-foreground mb-1">Prioritization View</h3>
+          <p className="text-xs text-muted-foreground mb-3">Which retailers need attention first?</p>
+          <div className="divide-y divide-border">
+            {priority.map((p, i) => (
+              <div key={i} className="py-2 flex items-center gap-3 text-sm">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-foreground">{p.dealer.name}</p>
+                  <p className="text-xs text-muted-foreground">Blocker: {p.blocker} · Repeated {p.repeated}x · ME: {p.me}</p>
+                </div>
+                <span className="text-xs text-muted-foreground shrink-0">{p.dealer.lastVisit}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Distribution */}
+        <Card className="p-4 mt-3">
           <h3 className="font-semibold text-foreground mb-1">Distribution View</h3>
           <p className="text-xs text-muted-foreground mb-3">Where is the problem happening?</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -90,37 +102,6 @@ const ObjectionIntelligenceView = ({
           </div>
         </Card>
 
-        {/* Prioritization */}
-        <Card className="p-4 mt-3">
-          <h3 className="font-semibold text-foreground mb-1">Prioritization View</h3>
-          <p className="text-xs text-muted-foreground mb-3">Which retailers need attention first?</p>
-          <div className="divide-y divide-border">
-            {priority.map((p, i) => (
-              <div key={i} className="py-2 flex items-center gap-3 text-sm">
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-foreground">{p.dealer.name}</p>
-                  <p className="text-xs text-muted-foreground">Blocker: {p.blocker} · Repeated {p.repeated}x · ME: {p.me}</p>
-                </div>
-                <span className="text-xs text-muted-foreground shrink-0">{p.dealer.lastVisit}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* Root causes */}
-        <Card className="p-4 mt-3 bg-info/5 border-info/20">
-          <h3 className="font-semibold text-foreground mb-1 flex items-center gap-2"><Sparkles className="w-4 h-4 text-info" />Root-Cause Signals</h3>
-          <p className="text-xs text-muted-foreground mb-3">Patterns derived from engagement data</p>
-          <ul className="space-y-2 text-sm text-foreground/85">
-            {rootCauses.map((r, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                <span>{r}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-
         <div className="flex justify-end pt-3">
           <Button variant="outline" onClick={onClose}>Close</Button>
         </div>
@@ -136,10 +117,10 @@ const ASMDashboard = () => {
   const m = useMemo(() => asmMetrics.windows[window], [window]);
 
   const cards = [
-    { icon: Store,         label: "Total retailers met", value: m.totalRetailersMet },
-    { icon: Users,         label: "Active retailers",    value: m.active, sub: `${m.inactive} inactive` },
-    { icon: Sparkles,      label: "New retailers added", value: m.newAdded },
-    { icon: MessageSquare, label: "Conversations logged",value: m.conversations },
+    { icon: Users,         label: "Number of MEs",                value: asmMetrics.mesUnder },
+    { icon: Store,         label: "Total retailers in the region", value: asmMetrics.totalRetailersInRegion },
+    { icon: Sparkles,      label: "Retailers met by the MEs",     value: m.totalRetailersMet },
+    { icon: MessageSquare, label: "Conversations logged",         value: m.conversations },
   ];
 
   return (
@@ -174,7 +155,6 @@ const ASMDashboard = () => {
               </div>
               <p className="font-display font-bold text-2xl text-foreground">{c.value.toLocaleString()}</p>
               <p className="text-sm text-muted-foreground">{c.label}</p>
-              {c.sub && <p className="text-xs text-muted-foreground/80 mt-0.5">{c.sub}</p>}
             </Card>
           ))}
         </div>
