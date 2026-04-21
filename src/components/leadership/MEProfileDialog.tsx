@@ -17,7 +17,7 @@ const contextLabel: Record<NonNullable<Props["context"]>, string> = {
   consistency: "Consistent Coverage",
   activation: "Inactive to Loyal Activation",
   objections: "Objection-Heavy Pairings",
-  uplift: "Attribute Uplift Contribution",
+  uplift: "​",
 };
 
 const periodLabel: Record<NonNullable<Props["period"]>, string> = {
@@ -88,7 +88,7 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
         <div className="space-y-1 pb-3 border-b">
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="font-display font-bold text-xl text-foreground">{me.name}</h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-info/10 text-info font-medium">{contextLabel[context]}</span>
+            <span className="text-xs px-2 py-0.5 rounded-full text-info font-medium bg-primary-foreground">{contextLabel[context]}</span>
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
             <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{me.area}, {me.region}</span>
