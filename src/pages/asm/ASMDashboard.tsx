@@ -131,7 +131,7 @@ const ASMDashboard = () => {
           <div>
             <h1 className="font-display font-bold text-2xl text-foreground">Raj Kumar's Dashboard</h1>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5" />{asmMetrics.region} · {asmMetrics.mesUnder} MEs under Raj Kumar
+              <MapPin className="w-3.5 h-3.5" />{asmMetrics.region}
             </p>
           </div>
           <Tabs value={window} onValueChange={(v) => setWindow(v as Window)}>
