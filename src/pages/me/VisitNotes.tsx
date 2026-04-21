@@ -85,20 +85,11 @@ const VisitNotes = () => {
     return bullets;
   }, [stored]);
 
-  const [isEditingActions, setIsEditingActions] = useState(false);
-  const [actionPointsText, setActionPointsText] = useState("");
-  const [isEditingFeedback, setIsEditingFeedback] = useState(false);
-  const [feedbackText, setFeedbackText] = useState("");
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
   const visitDate = useMemo(() => formatToday(), []);
 
-  useEffect(() => {
-    setActionPointsText(initialActionPoints.join("\n"));
-    setFeedbackText(initialFeedback.join("\n"));
-  }, [initialActionPoints, initialFeedback]);
-
-  const actionPointsList = actionPointsText.split("\n").map((s) => s.trim()).filter(Boolean);
-  const feedbackList = feedbackText.split("\n").map((s) => s.trim()).filter(Boolean);
+  const actionPointsList = initialActionPoints;
+  const feedbackList = initialFeedback;
 
   const bulletsToText = (arr: string[]) => arr.map((b) => `• ${b}`).join("\n");
 
