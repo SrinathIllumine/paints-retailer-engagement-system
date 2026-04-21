@@ -99,19 +99,19 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Total mapped retailers</p>
-            <p className="font-display font-bold text-lg">{me.mappedRetailers}</p>
+            <p className="font-display font-bold text-lg">1900</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailers visited ({periodLabel[period]})</p>
-            <p className="font-display font-bold text-lg">{visited}</p>
+            <p className="font-display font-bold text-lg">1250</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Total engagements ({periodLabel[period]})</p>
-            <p className="font-display font-bold text-lg">{engagements}</p>
+            <p className="font-display font-bold text-lg">1250</p>
           </Card>
           <Card className="p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Retailer attributes uplift</p>
-            <p className="font-display font-bold text-lg">+{uplift}%</p>
+            <p className="font-display font-bold text-lg">+600%</p>
           </Card>
         </div>
 
