@@ -73,24 +73,26 @@ const PctCell = ({ value }: { value: number }) => {
 const MEView = () => {
   const [stateName, setStateName] = useState<string>("Maharashtra");
   const [selected, setSelected] = useState<string | null>(null);
+  const [coverageDetail, setCoverageDetail] = useState<Row | null>(null);
 
   const currentState = useMemo(() => states.find((s) => s.name === stateName)!, [stateName]);
 
   const totals = useMemo(() => {
     const engagements = rows.reduce((a, r) => a + r.engagements, 0);
     const objections = rows.reduce((a, r) => a + r.objections, 0);
-    const avg = (k: keyof Row["coverage"]) => Math.round(rows.reduce((a, r) => a + r.coverage[k], 0) / rows.length);
-    return {
-      engagements,
-      objections,
-      coverage: {
-        jkAlignment: avg("jkAlignment"),
-        valueProp: avg("valueProp"),
-        marketAwareness: avg("marketAwareness"),
-        openness: avg("openness"),
-        growthPotential: avg("growthPotential"),
-      },
-    };
+    // Major objection: highest occurring across rows
+    const objCounts = rows.reduce<Record<string, number>>((acc, r) => {
+      acc[r.majorObjection] = (acc[r.majorObjection] ?? 0) + r.objections;
+      return acc;
+    }, {});
+    const majorObjection = Object.entries(objCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—";
+    // Consolidated coverage: union of covered types across MEs / total types
+    const covered = new Set<EngagementType>();
+    rows.forEach((r) => r.coveredTypes.forEach((t) => covered.add(t)));
+    const coveragePctAvg = Math.round(
+      rows.reduce((a, r) => a + coveragePct(r.coveredTypes), 0) / rows.length
+    );
+    return { engagements, objections, majorObjection, coveragePctAvg };
   }, []);
 
   return (
