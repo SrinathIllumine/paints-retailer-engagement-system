@@ -155,34 +155,22 @@ const MEView = () => {
             </Tooltip>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Total engagements</p>
+              <p className="text-xs text-muted-foreground">Total engagements (30D)</p>
               <p className="font-display font-bold text-lg">{totals.engagements.toLocaleString()}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Total objections</p>
+              <p className="text-xs text-muted-foreground">Total objections (30D)</p>
               <p className="font-display font-bold text-lg">{totals.objections.toLocaleString()}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">JK alignment</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.jkAlignment}%</p>
+              <p className="text-xs text-muted-foreground">Major objection in the state</p>
+              <p className="font-display font-bold text-base leading-tight mt-0.5">{totals.majorObjection}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Value proposition</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.valueProp}%</p>
-            </div>
-            <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Market awareness</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.marketAwareness}%</p>
-            </div>
-            <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Openness</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.openness}%</p>
-            </div>
-            <div className="rounded-lg bg-secondary/50 p-3">
-              <p className="text-xs text-muted-foreground">Growth potential</p>
-              <p className="font-display font-bold text-lg">{totals.coverage.growthPotential}%</p>
+              <p className="text-xs text-muted-foreground">Types of engagements covered</p>
+              <p className="font-display font-bold text-lg">{totals.coveragePctAvg}%</p>
             </div>
           </div>
         </Card>
