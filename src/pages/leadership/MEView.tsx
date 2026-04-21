@@ -150,7 +150,7 @@ const MEView = () => {
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs text-xs">
-                Coverage % shows how often each engagement type was actually covered in ME conversations during the period.
+                Types of engagements covered (%) = engagement topics actually discussed by MEs, out of the {ENGAGEMENT_TYPES.length} tracked types ({ENGAGEMENT_TYPES.join(", ")}).
               </TooltipContent>
             </Tooltip>
           </div>
