@@ -191,9 +191,9 @@ const AllRetailers = () => {
           {summary.map((seg) => {
             // Hardcoded display values for top cards
             const displayCounts: Record<DealerType, number> = {
-              loyal: 7,
-              new: 50,
-              inactive: 50,
+              loyal: 1900,
+              new: 1250,
+              inactive: 1250,
               declining: 600,
             };
             const displayPercentages: Record<DealerType, string> = {
