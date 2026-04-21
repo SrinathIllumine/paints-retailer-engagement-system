@@ -13,7 +13,7 @@ interface Props {
 }
 
 const contextLabel: Record<NonNullable<Props["context"]>, string> = {
-  coverage: "Focused Coverage Pattern",
+  coverage: "\n",
   consistency: "Consistent Coverage",
   activation: "Inactive to Loyal Activation",
   objections: "Objection-Heavy Pairings",
