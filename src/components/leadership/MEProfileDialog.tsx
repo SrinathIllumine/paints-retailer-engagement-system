@@ -147,16 +147,18 @@ const MEProfileDialog = ({ meId, context = "coverage", period = "30d", onClose }
             <thead>
               <tr className="text-xs text-muted-foreground border-b">
                 <th className="text-left font-medium py-2">Retailer</th>
-                <th className="text-left font-medium py-2">Area</th>
-                <th className="text-right font-medium py-2">Engagements</th>
+                <th className="text-right font-medium py-2">Engagements in that period ({periodShort})</th>
+                <th className="text-right font-medium py-2">Objections in that period</th>
+                <th className="text-right font-medium py-2">Last visited</th>
               </tr>
             </thead>
             <tbody>
-              {recent.map(({ dealer, engagements }) => (
+              {recent.map(({ dealer, engagements, objections: obj, lastVisited }) => (
                 <tr key={dealer.id} className="border-b last:border-b-0">
                   <td className="py-2 text-foreground/85">{dealer.name}</td>
-                  <td className="py-2 text-muted-foreground">{dealer.area}</td>
                   <td className="py-2 text-right font-semibold">{engagements}</td>
+                  <td className="py-2 text-right font-semibold">{obj}</td>
+                  <td className="py-2 text-right text-muted-foreground">{lastVisited}</td>
                 </tr>
               ))}
             </tbody>
