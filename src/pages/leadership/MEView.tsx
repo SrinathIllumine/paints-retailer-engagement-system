@@ -1,163 +1,227 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import LeadershipLayout from "@/components/leadership/LeadershipLayout";
 import { Card } from "@/components/ui/card";
-import MEProfileDialog from "@/components/leadership/MEProfileDialog";
 import {
-  focusedCoverageMEs,
-  consistentCoverageMEs,
-  inactiveToLoyalMEs,
-  objectionHeavyPairs,
-  dimensionUpliftMEs,
-  marketingExecutives,
-} from "@/data/meAnalytics";
-import { dealers } from "@/data/mockData";
-import { Target, Users, Repeat, AlertTriangle, TrendingUp, ChevronRight, Info } from "lucide-react";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import MEProfileDialog from "@/components/leadership/MEProfileDialog";
+import { marketingExecutives } from "@/data/meAnalytics";
+import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-type Ctx = "coverage" | "consistency" | "activation" | "objections" | "uplift";
+interface StateInfo {
+  name: string;
+  enabled: boolean;
+  asms: number;
+  mes: number;
+  totalRetailers: number;
+}
 
-const SectionCard = ({
-  icon: Icon,
-  title,
-  story,
-  children,
-}: {
-  icon: typeof Target;
-  title: string;
-  story: string;
-  children: React.ReactNode;
-}) => (
-  <Card className="p-5">
-    <div className="flex items-start gap-3 mb-3">
-      <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-        <Icon className="w-4 h-4" />
-      </div>
-      <div>
-        <h3 className="font-semibold text-foreground">{title}</h3>
-        <p className="text-xs text-muted-foreground mt-0.5">{story}</p>
-      </div>
-    </div>
-    <div className="divide-y divide-border">{children}</div>
-  </Card>
-);
+const states: StateInfo[] = [
+  { name: "Maharashtra",   enabled: true,  asms: 2, mes: marketingExecutives.length, totalRetailers: 2010 },
+  { name: "Gujarat",       enabled: false, asms: 1, mes: 18, totalRetailers: 1640 },
+  { name: "Karnataka",     enabled: false, asms: 2, mes: 22, totalRetailers: 1880 },
+  { name: "Tamil Nadu",    enabled: false, asms: 2, mes: 24, totalRetailers: 2120 },
+  { name: "Rajasthan",     enabled: false, asms: 1, mes: 16, totalRetailers: 1490 },
+];
 
-const MERow = ({
-  name,
-  area,
-  note,
-  onClick,
-}: { name: string; area: string; note: string; onClick: () => void }) => (
-  <button
-    className="w-full flex items-center gap-3 py-2.5 text-left hover:bg-secondary/40 transition-colors px-1 rounded"
-    onClick={onClick}
-  >
-    <div className="flex-1 min-w-0">
-      <p className="text-sm font-medium text-foreground">{name}</p>
-      <p className="text-xs text-muted-foreground">{area} · {note}</p>
-    </div>
-    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-  </button>
-);
+interface Row {
+  asm: string;
+  area: string;
+  meId: string;
+  meName: string;
+  engagements: number;
+  objections: number;
+  coverage: { jkAlignment: number; valueProp: number; marketAwareness: number; openness: number; growthPotential: number };
+}
+
+const rows: Row[] = [
+  { asm: "Raj Kumar",   area: "Pune West",  meId: "me1", meName: "Ravi Kumar",     engagements: 168, objections: 22, coverage: { jkAlignment: 72, valueProp: 58, marketAwareness: 41, openness: 36, growthPotential: 28 } },
+  { asm: "Raj Kumar",   area: "Pune NE",    meId: "me2", meName: "Sunil Sharma",   engagements: 184, objections: 11, coverage: { jkAlignment: 81, valueProp: 74, marketAwareness: 62, openness: 55, growthPotential: 48 } },
+  { asm: "Raj Kumar",   area: "Pune South", meId: "me3", meName: "Anita Deshmukh", engagements: 152, objections: 38, coverage: { jkAlignment: 54, valueProp: 41, marketAwareness: 32, openness: 27, growthPotential: 19 } },
+  { asm: "Anil Joshi",  area: "Pune SW",    meId: "me4", meName: "Vikas Patil",    engagements: 196, objections: 8,  coverage: { jkAlignment: 88, valueProp: 79, marketAwareness: 71, openness: 64, growthPotential: 57 } },
+  { asm: "Anil Joshi",  area: "Pune North", meId: "me5", meName: "Priya Nair",     engagements: 141, objections: 17, coverage: { jkAlignment: 66, valueProp: 52, marketAwareness: 47, openness: 42, growthPotential: 33 } },
+];
+
+const PctCell = ({ value }: { value: number }) => {
+  const tone =
+    value >= 70 ? "bg-success/15 text-success" :
+    value >= 45 ? "bg-info/15 text-info" :
+    "bg-warning/15 text-warning";
+  return <span className={`inline-block min-w-[42px] text-center text-xs px-2 py-0.5 rounded-full font-medium ${tone}`}>{value}%</span>;
+};
 
 const MEView = () => {
-  const [selected, setSelected] = useState<{ id: string; ctx: Ctx } | null>(null);
+  const [stateName, setStateName] = useState<string>("Maharashtra");
+  const [selected, setSelected] = useState<string | null>(null);
+
+  const currentState = useMemo(() => states.find((s) => s.name === stateName)!, [stateName]);
+
+  const totals = useMemo(() => {
+    const engagements = rows.reduce((a, r) => a + r.engagements, 0);
+    const objections = rows.reduce((a, r) => a + r.objections, 0);
+    const avg = (k: keyof Row["coverage"]) => Math.round(rows.reduce((a, r) => a + r.coverage[k], 0) / rows.length);
+    return {
+      engagements,
+      objections,
+      coverage: {
+        jkAlignment: avg("jkAlignment"),
+        valueProp: avg("valueProp"),
+        marketAwareness: avg("marketAwareness"),
+        openness: avg("openness"),
+        growthPotential: avg("growthPotential"),
+      },
+    };
+  }, []);
 
   return (
     <LeadershipLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-foreground">State-wise View</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            State-wise visibility into ME engagement effectiveness with retailers
-          </p>
+        <div className="flex items-end justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="font-display font-bold text-2xl text-foreground">State-wise View</h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              State-wise visibility into ME engagement effectiveness with retailers
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">State</span>
+            <Select value={stateName} onValueChange={setStateName}>
+              <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {states.map((s) => (
+                  <SelectItem key={s.name} value={s.name} disabled={!s.enabled}>
+                    {s.name}{!s.enabled ? " (coming soon)" : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
-        {/* Region snapshot */}
-        <Card className="p-4 bg-info/5 border-info/20">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-            <span className="text-foreground/80"><span className="text-muted-foreground">State:</span> <span className="font-semibold">Maharashtra</span></span>
-            <span className="text-foreground/80"><span className="text-muted-foreground">MEs in view:</span> <span className="font-semibold">{marketingExecutives.length}</span></span>
-            <span className="text-foreground/80"><span className="text-muted-foreground">Retailers covered:</span> <span className="font-semibold">{dealers.length * 30}</span></span>
+        {/* State summary */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Card className="p-4">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Number of ASMs</p>
+            <p className="font-display font-bold text-2xl text-foreground mt-1">{currentState.asms}</p>
+          </Card>
+          <Card className="p-4">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Number of MEs</p>
+            <p className="font-display font-bold text-2xl text-foreground mt-1">{currentState.mes}</p>
+          </Card>
+          <Card className="p-4">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Total retailers in the state</p>
+            <p className="font-display font-bold text-2xl text-foreground mt-1">{currentState.totalRetailers.toLocaleString()}</p>
+          </Card>
+        </div>
+
+        {/* State-level aggregates */}
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <div>
+              <h3 className="font-semibold text-foreground">State-level engagement aggregates</h3>
+              <p className="text-xs text-muted-foreground">Last 30 days · {currentState.name}</p>
+            </div>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground cursor-help">
-                  <Info className="w-3.5 h-3.5" />How to read this view
+                <span className="text-xs text-muted-foreground inline-flex items-center gap-1 cursor-help">
+                  <Info className="w-3.5 h-3.5" />How coverage % is read
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs text-xs">
-                Each section highlights a behavioural pattern derived from visit data and engagement notes - click any ME to see context.
+                Coverage % shows how often each engagement type was actually covered in ME conversations during the period.
               </TooltipContent>
             </Tooltip>
           </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-sm">
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">Total engagements</p>
+              <p className="font-display font-bold text-lg">{totals.engagements.toLocaleString()}</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">Total objections</p>
+              <p className="font-display font-bold text-lg">{totals.objections.toLocaleString()}</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">JK alignment</p>
+              <p className="font-display font-bold text-lg">{totals.coverage.jkAlignment}%</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">Value proposition</p>
+              <p className="font-display font-bold text-lg">{totals.coverage.valueProp}%</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">Market awareness</p>
+              <p className="font-display font-bold text-lg">{totals.coverage.marketAwareness}%</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">Openness</p>
+              <p className="font-display font-bold text-lg">{totals.coverage.openness}%</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-3">
+              <p className="text-xs text-muted-foreground">Growth potential</p>
+              <p className="font-display font-bold text-lg">{totals.coverage.growthPotential}%</p>
+            </div>
+          </div>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <SectionCard
-            icon={Target}
-            title="Focused Coverage Patterns"
-            story="MEs concentrating most of their visits on a small set of retailers."
-          >
-            {focusedCoverageMEs.map(({ me, note }) => (
-              <MERow key={me.id} name={me.name} area={me.area} note={note} onClick={() => setSelected({ id: me.id, ctx: "coverage" })} />
-            ))}
-            {focusedCoverageMEs.length === 0 && <p className="text-sm text-muted-foreground py-2">No concentration patterns flagged.</p>}
-          </SectionCard>
-
-          <SectionCard
-            icon={Users}
-            title="Consistent Coverage Leaders"
-            story="MEs regularly engaging the majority of their mapped retailers."
-          >
-            {consistentCoverageMEs.map(({ me, note }) => (
-              <MERow key={me.id} name={me.name} area={me.area} note={note} onClick={() => setSelected({ id: me.id, ctx: "consistency" })} />
-            ))}
-            {consistentCoverageMEs.length === 0 && <p className="text-sm text-muted-foreground py-2">No consistent coverage leaders this period.</p>}
-          </SectionCard>
-
-          <SectionCard
-            icon={Repeat}
-            title="Inactive to Loyal Conversion"
-            story="MEs who have rebuilt momentum with previously inactive retailers."
-          >
-            {inactiveToLoyalMEs.map(({ me, note }) => (
-              <MERow key={me.id} name={me.name} area={me.area} note={note} onClick={() => setSelected({ id: me.id, ctx: "activation" })} />
-            ))}
-            {inactiveToLoyalMEs.length === 0 && <p className="text-sm text-muted-foreground py-2">No reactivation pattern in the current window.</p>}
-          </SectionCard>
-
-          <SectionCard
-            icon={AlertTriangle}
-            title="Objection-Heavy ME-Retailer Pairs"
-            story="Repeating objections in the same pairings - often a coaching or context signal."
-          >
-            {objectionHeavyPairs.map((p, i) => {
-              const me = marketingExecutives.find((m) => m.id === p.meId)!;
-              const dealer = dealers.find((d) => d.id === p.dealerId);
-              return (
-                <MERow
-                  key={i}
-                  name={`${me.name} ↔ ${dealer?.name ?? "Retailer"}`}
-                  area={me.area}
-                  note={`${p.objection} - repeated ${p.repeatedCount}x`}
-                  onClick={() => setSelected({ id: me.id, ctx: "objections" })}
-                />
-              );
-            })}
-          </SectionCard>
-
-          <SectionCard
-            icon={TrendingUp}
-            title="Dimension Uplift Contributors"
-            story="MEs whose retailers show measurable improvement in JK Alignment, Value Prop, Market Awareness, Growth Potential or Openness."
-          >
-            {dimensionUpliftMEs.map(({ me, note }) => (
-              <MERow key={me.id} name={me.name} area={me.area} note={note} onClick={() => setSelected({ id: me.id, ctx: "uplift" })} />
-            ))}
-          </SectionCard>
-        </div>
+        {/* Main analytics table */}
+        <Card className="overflow-hidden">
+          <div className="p-4 border-b border-border">
+            <h3 className="font-semibold text-foreground">ASM · ME engagement breakdown</h3>
+            <p className="text-xs text-muted-foreground">Last 30 days · click any row to see ME profile</p>
+          </div>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ASM</TableHead>
+                  <TableHead>Area covered</TableHead>
+                  <TableHead>ME</TableHead>
+                  <TableHead className="text-right">Engagements (30d)</TableHead>
+                  <TableHead className="text-right">Objections (30d)</TableHead>
+                  <TableHead className="text-center">JK alignment</TableHead>
+                  <TableHead className="text-center">Value prop</TableHead>
+                  <TableHead className="text-center">Market awareness</TableHead>
+                  <TableHead className="text-center">Openness</TableHead>
+                  <TableHead className="text-center">Growth potential</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r) => (
+                  <TableRow key={r.meId} className="cursor-pointer" onClick={() => setSelected(r.meId)}>
+                    <TableCell className="font-medium">{r.asm}</TableCell>
+                    <TableCell className="text-muted-foreground">{r.area}</TableCell>
+                    <TableCell>{r.meName}</TableCell>
+                    <TableCell className="text-right font-semibold">{r.engagements}</TableCell>
+                    <TableCell className="text-right font-semibold">{r.objections}</TableCell>
+                    <TableCell className="text-center"><PctCell value={r.coverage.jkAlignment} /></TableCell>
+                    <TableCell className="text-center"><PctCell value={r.coverage.valueProp} /></TableCell>
+                    <TableCell className="text-center"><PctCell value={r.coverage.marketAwareness} /></TableCell>
+                    <TableCell className="text-center"><PctCell value={r.coverage.openness} /></TableCell>
+                    <TableCell className="text-center"><PctCell value={r.coverage.growthPotential} /></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
       </div>
 
-      <MEProfileDialog meId={selected?.id ?? null} context={selected?.ctx} onClose={() => setSelected(null)} />
+      <MEProfileDialog meId={selected} context="uplift" onClose={() => setSelected(null)} />
     </LeadershipLayout>
   );
 };
