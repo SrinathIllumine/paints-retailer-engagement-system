@@ -87,7 +87,7 @@ const MEsWeeklySnapshot = () => {
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tagCls[tag]}`}>{tag} uplift</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tagCls[tag]}`}>{tag} retailer attributes uplift</span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs text-xs">{tagHelp[tag]}</TooltipContent>
                   </Tooltip>
