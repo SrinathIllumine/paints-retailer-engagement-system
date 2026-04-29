@@ -24,7 +24,7 @@ const Index = () => {
               <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
             <h2 className="font-display font-bold text-xl text-foreground mb-1">ME App</h2>
-            <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits.</p>
+            <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits...</p>
             <Button variant="field" className="w-full">Open ME App →</Button>
           </Card>
 
