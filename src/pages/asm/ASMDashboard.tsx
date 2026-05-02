@@ -63,7 +63,7 @@ const KpiCard = ({ k }: { k: KPI }) => {
     ? "text-muted-foreground"
     : positive
     ? "text-success"
-    : "text-warning";
+    : "text-success";
   const Icon = positive ? TrendingUp : TrendingDown;
   return (
     <Card className="p-4">
