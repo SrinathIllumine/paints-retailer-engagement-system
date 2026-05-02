@@ -40,7 +40,7 @@ import asmPhoto from "@/assets/asm-rajesh.jpg";
 type Status = "on-track" | "at-risk" | "off-track";
 
 const statusMeta: Record<Status, { label: string; cls: string }> = {
-  "on-track":  { label: "On Track",  cls: "bg-success/10 text-success" },
+  "on-track":  { label: "Lagging Behind",  cls: "px-2 py-1 rounded-full text-[11px] font-semibold text-sidebar-ring bg-accent" },
   "at-risk":   { label: "Lagging Behind",   cls: "bg-warning/10 text-warning" },
   "off-track": { label: "Off Track", cls: "bg-destructive/10 text-destructive" },
 };
@@ -48,11 +48,11 @@ const statusMeta: Record<Status, { label: string; cls: string }> = {
 const TOTAL_MES = 7;
 const ACTIVE_MES = 6;
 const RETAILERS_PER_ME = 200;
-const RETAILERS_TARGET = ACTIVE_MES * RETAILERS_PER_ME; // 1400 (active MEs × 200)
-const RETAILERS_MET = RETAILERS_TARGET; // total active retailers
+const RETAILERS_TARGET = 1400; // 1400
+const RETAILERS_MET = 1300; // 1300
 const ENGAGEMENTS_PER_ME = 10;
-const ENGAGEMENTS_TARGET = TOTAL_MES * ENGAGEMENTS_PER_ME; // 70
-const ENGAGEMENTS_TODAY = ACTIVE_MES * ENGAGEMENTS_PER_ME; // 60
+const ENGAGEMENTS_TARGET = 200; // 200
+const ENGAGEMENTS_TODAY = 185; // 185
 const NATIONAL_AVG_OBJ = 1.0;
 const AVG_OBJ_PER_RETAILER = 1.2;
 
@@ -231,7 +231,7 @@ const ASMDashboard = () => {
         {/* B. KPI cards — three engagement KPIs */}
         <section>
           <h2 className="text-sm font-semibold text-foreground/70 uppercase tracking-wide mb-3">
-            Today's snapshot
+            SNAPSHOT
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {/* 1. Active MEs */}
@@ -265,7 +265,7 @@ const ASMDashboard = () => {
                 <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
                   <Store className="w-4 h-4 text-info" />
                 </div>
-                <p className="text-sm text-muted-foreground">Active Retailers</p>
+                <p className="text-sm text-muted-foreground">Active Retailers Covered</p>
               </div>
               <p className="font-display font-bold text-4xl text-foreground text-center">
                 {RETAILERS_MET.toLocaleString()}
@@ -277,7 +277,7 @@ const ASMDashboard = () => {
                     {RETAILERS_TARGET.toLocaleString()}
                   </p>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[retailerStatus].cls}`}>
+                <span className={statusMeta[retailerStatus].cls}>
                   {statusMeta[retailerStatus].label}
                 </span>
               </div>
@@ -299,7 +299,7 @@ const ASMDashboard = () => {
                   <p className="text-muted-foreground">Target</p>
                   <p className="font-semibold text-foreground text-sm">{ENGAGEMENTS_TARGET}</p>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[engagementStatus].cls}`}>
+                <span className={statusMeta[engagementStatus].cls}>
                   {statusMeta[engagementStatus].label}
                 </span>
               </div>
@@ -321,7 +321,7 @@ const ASMDashboard = () => {
                   <p className="text-muted-foreground">National Avg.</p>
                   <p className="font-semibold text-foreground text-sm">{NATIONAL_AVG_OBJ.toFixed(1)}</p>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[objStatus].cls}`}>
+                <span className={statusMeta[objStatus].cls}>
                   {objLabel}
                 </span>
               </div>
