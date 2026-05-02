@@ -21,7 +21,7 @@ import {
   Store,
   Info,
   Trophy,
-  AlertOctagon,
+  ArrowDownRight,
   ArrowUpRight,
   UserCircle2,
   FileText,
@@ -510,7 +510,7 @@ const ASMDashboard = () => {
                 <Trophy className="w-3.5 h-3.5" /> Top: {top.meName}
               </span>
               <span className="inline-flex items-center gap-1 text-warning">
-                <AlertOctagon className="w-3.5 h-3.5" /> Watch: {bottom.meName}
+                <ArrowDownRight className="w-3.5 h-3.5" /> Watch: {bottom.meName}
               </span>
             </div>
           </div>
@@ -551,7 +551,7 @@ const ASMDashboard = () => {
                     <TableCell className="text-center">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold ${statusMeta[r.status].cls}`}>
                         {r.status === "on-track" && <ArrowUpRight className="w-3 h-3" />}
-                        {r.status === "at-risk" && <AlertOctagon className="w-3 h-3" />}
+                        {r.status === "at-risk" && <ArrowDownRight className="w-3 h-3" />}
                         {r.status === "off-track" && <Info className="w-3 h-3" />}
                         {statusMeta[r.status].label}
                       </span>
