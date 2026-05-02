@@ -548,7 +548,6 @@ const ASMDashboard = () => {
                         / {r.engagementBenchmark}
                       </span>
                     </TableCell>
-                    <TableCell className="text-right font-semibold">{r.actionPoints}</TableCell>
                     <TableCell className="text-center">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold ${statusMeta[r.status].cls}`}>
                         {r.status === "on-track" && <ArrowUpRight className="w-3 h-3" />}
