@@ -523,7 +523,6 @@ const ASMDashboard = () => {
                   <TableHead>Market area</TableHead>
                   <TableHead className="text-right">Retailers met</TableHead>
                   <TableHead className="text-right">Engagement units covered</TableHead>
-                  <TableHead className="text-right">Action points done</TableHead>
                   <TableHead className="text-center">Status</TableHead>
                 </TableRow>
               </TableHeader>
