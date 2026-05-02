@@ -16,8 +16,9 @@ import AllRetailers from "./pages/leadership/AllRetailers.tsx";
 import StrategicSlicing from "./pages/leadership/StrategicSlicing.tsx";
 import MEView from "./pages/leadership/MEView.tsx";
 import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
-import MEsAreaSnapshot from "./pages/asm/MEsAreaSnapshot.tsx";
-import MEsWeeklySnapshot from "./pages/asm/MEsWeeklySnapshot.tsx";
+import ASMObjections from "./pages/asm/ASMObjections.tsx";
+import ASMAllRetailers from "./pages/asm/ASMAllRetailers.tsx";
+import ASMInsights from "./pages/asm/ASMInsights.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,8 +45,12 @@ const App = () => (
           <Route path="/leadership/targeting" element={<StrategicSlicing />} />
           {/* ASM Analytics App */}
           <Route path="/asm" element={<ASMDashboard />} />
-          <Route path="/asm/area-snapshot" element={<MEsAreaSnapshot />} />
-          <Route path="/asm/weekly-snapshot" element={<MEsWeeklySnapshot />} />
+          <Route path="/asm/objections" element={<ASMObjections />} />
+          <Route path="/asm/retailers" element={<ASMAllRetailers />} />
+          <Route path="/asm/insights" element={<ASMInsights />} />
+          {/* Backwards-compatible aliases */}
+          <Route path="/asm/area-snapshot" element={<ASMDashboard />} />
+          <Route path="/asm/weekly-snapshot" element={<ASMDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
