@@ -41,7 +41,7 @@ type Status = "on-track" | "at-risk" | "off-track";
 
 const statusMeta: Record<Status, { label: string; cls: string }> = {
   "on-track":  { label: "On Track",  cls: "bg-success/10 text-success" },
-  "at-risk":   { label: "At Risk",   cls: "bg-warning/10 text-warning" },
+  "at-risk":   { label: "Lagging Behind",   cls: "bg-warning/10 text-warning" },
   "off-track": { label: "Off Track", cls: "bg-destructive/10 text-destructive" },
 };
 
@@ -49,7 +49,7 @@ const TOTAL_MES = 7;
 const ACTIVE_MES = 6;
 const RETAILERS_PER_DAY = 10;
 const RETAILERS_TARGET = TOTAL_MES * RETAILERS_PER_DAY; // 70
-const RETAILERS_MET = 60;
+const RETAILERS_MET = 50;
 const NATIONAL_AVG_OBJ = 1.0;
 const AVG_OBJ_PER_RETAILER = 1.2;
 
@@ -265,7 +265,7 @@ const ASMDashboard = () => {
                   <p className="text-muted-foreground">Target</p>
                   <p className="font-semibold text-foreground text-sm">
                     {RETAILERS_TARGET}
-                    <span className="text-muted-foreground font-normal"> ({TOTAL_MES}×{RETAILERS_PER_DAY})</span>
+                    <span className="text-muted-foreground font-normal"> &nbsp;</span>
                   </p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[retailerStatus].cls}`}>
