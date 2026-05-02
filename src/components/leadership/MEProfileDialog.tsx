@@ -210,38 +210,6 @@ const MEProfileDialog = ({ meId, onClose }: Props) => {
           )}
         </Card>
 
-        {/* High-frequency visited areas — minimalist ranked bar list, ascending */}
-        <Card className="p-4 mt-3">
-          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-            <h3 className="font-semibold text-foreground flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-success" />
-              High-frequency visited areas
-            </h3>
-            <span className="text-xs text-muted-foreground">
-              Total engagements: <span className="font-semibold text-foreground">{totalAreaEngagements}</span>
-            </span>
-          </div>
-          <div className="space-y-2.5">
-            {sortedAreas.map((a) => {
-              const widthPct = Math.round((a.visits / maxVisits) * 100);
-              return (
-                <div key={a.name} className="space-y-1">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-foreground/85">{a.name}</span>
-                    <span className="font-semibold text-foreground tabular-nums">{a.visits}</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                    <div
-                      className="h-full bg-success/70 rounded-full transition-all"
-                      style={{ width: `${widthPct}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Card>
-
         {/* Retailer Segments — moved here from breakdown table */}
         <Card className="p-4 mt-3">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
