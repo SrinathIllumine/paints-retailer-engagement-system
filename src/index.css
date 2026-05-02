@@ -79,3 +79,7 @@
     @apply min-h-[48px] flex items-center;
   }
 }
+
+.recharts-default-legend {
+  @apply rounded-none !important;
+}

@@ -305,13 +305,13 @@ const ASMDashboard = () => {
               </div>
             </Card>
 
-            {/* 4. Avg Objections / Retailer */}
+            {/* 4. All Retailers Profiles */}
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
                   <Info className="w-4 h-4 text-info" />
                 </div>
-                <p className="text-sm text-muted-foreground">Avg. Objections / Retailer</p>
+                <p className="text-sm text-muted-foreground">All Retailers Profiles</p>
               </div>
               <p className="font-display font-bold text-4xl text-foreground text-center">
                 {AVG_OBJ_PER_RETAILER.toFixed(1)}
@@ -443,7 +443,7 @@ const ASMDashboard = () => {
           {showReport && (
             <div className="mt-4 rounded-lg border border-border bg-background p-6 font-mono text-sm leading-relaxed">
               <div className="text-center border-b border-dashed border-border pb-3 mb-4">
-                <p className="font-bold text-foreground">Consolidated 'ME Engagement Report' (Daily)</p>
+                <p className="font-bold text-foreground">What are the Key objections raised in my area?</p>
                 <p className="text-muted-foreground mt-1">Rajesh Kumar, ASM, Pune · {area}</p>
               </div>
 
