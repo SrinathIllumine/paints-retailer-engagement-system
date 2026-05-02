@@ -19,7 +19,7 @@ import {
 import {
   Users,
   Store,
-  AlertTriangle,
+  Info,
   Trophy,
   AlertOctagon,
   ArrowUpRight,
@@ -42,7 +42,7 @@ type Status = "on-track" | "at-risk" | "off-track";
 const statusMeta: Record<Status, { label: string; cls: string }> = {
   "on-track":  { label: "On-Track",  cls: "px-2 py-1 rounded-full text-[11px] font-semibold text-success bg-[#b1e7ce]" },
   "at-risk":   { label: "Lagging Behind",   cls: "bg-warning/10 text-warning" },
-  "off-track": { label: "Off Track", cls: "bg-destructive/10 text-destructive" },
+  "off-track": { label: "Off Track", cls: "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold px-2 py-1 rounded-full text-[11px] font-semibold text-warning bg-[#f59f0a]/[0.16]" },
 };
 
 const TOTAL_MES = 7;
@@ -309,7 +309,7 @@ const ASMDashboard = () => {
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
-                  <AlertTriangle className="w-4 h-4 text-info" />
+                  <Info className="w-4 h-4 text-info" />
                 </div>
                 <p className="text-sm text-muted-foreground">Avg. Objections / Retailer</p>
               </div>
@@ -552,7 +552,7 @@ const ASMDashboard = () => {
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold ${statusMeta[r.status].cls}`}>
                         {r.status === "on-track" && <ArrowUpRight className="w-3 h-3" />}
                         {r.status === "at-risk" && <AlertOctagon className="w-3 h-3" />}
-                        {r.status === "off-track" && <AlertTriangle className="w-3 h-3" />}
+                        {r.status === "off-track" && <Info className="w-3 h-3" />}
                         {statusMeta[r.status].label}
                       </span>
                     </TableCell>
