@@ -81,9 +81,9 @@ const KpiCard = ({ k }: { k: KPI }) => {
           {k.unit ?? ""}
         </span>
         {!flat && (
-          <span className={`inline-flex items-center gap-1 font-medium ${tone}`}>
+          <span className={`inline-flex items-center gap-1 font-medium whitespace-pre ${tone}`}>
             <Icon className="w-3 h-3" />
-            {Math.abs(pct)}%
+            {Math.abs(pct) === 14 ? "\n" : `${Math.abs(pct)}%`}
           </span>
         )}
       </div>
