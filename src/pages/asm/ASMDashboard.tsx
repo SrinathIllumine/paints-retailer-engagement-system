@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import ASMLayout from "@/components/asm/ASMLayout";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -362,8 +362,8 @@ const ASMDashboard = () => {
                 </div>
               ))}
               {heatmapData.map((week, wi) => (
-                <>
-                  <div key={`label-${wi}`} className="text-[10px] text-muted-foreground pr-2 self-center">
+                <Fragment key={`row-${wi}`}>
+                  <div className="text-[10px] text-muted-foreground pr-2 self-center">
                     W{wi + 1}
                   </div>
                   {week.map((v, di) => (
@@ -377,7 +377,7 @@ const ASMDashboard = () => {
                       </span>
                     </div>
                   ))}
-                </>
+                </Fragment>
               ))}
             </div>
           </div>
