@@ -348,9 +348,9 @@ const ASMDashboard = () => {
                 <TableRow>
                   <TableHead>ME</TableHead>
                   <TableHead className="text-right">Unique retailers visited</TableHead>
+                  <TableHead className="text-right">% Unique retailers visited</TableHead>
                   <TableHead className="text-right">Total retailers mapped</TableHead>
                   <TableHead className="text-right">Engagements covered</TableHead>
-                  <TableHead>Retailer segments</TableHead>
                   <TableHead className="text-center">Profile</TableHead>
                 </TableRow>
               </TableHeader>
