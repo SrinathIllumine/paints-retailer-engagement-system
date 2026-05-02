@@ -510,7 +510,7 @@ const ASMDashboard = () => {
                 <Trophy className="w-3.5 h-3.5" /> Top: {top.meName}
               </span>
               <span className="inline-flex items-center gap-1 text-warning">
-                <AlertOctagon className="w-3.5 h-3.5" /> Watch: {bottom.meName}
+                <ArrowDownRight className="w-3.5 h-3.5" /> Watch: {bottom.meName}
               </span>
             </div>
           </div>
