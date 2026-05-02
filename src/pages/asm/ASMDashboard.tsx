@@ -63,7 +63,7 @@ const KpiCard = ({ k }: { k: KPI }) => {
     ? "text-muted-foreground"
     : positive
     ? "text-success"
-    : "text-warning";
+    : "text-success";
   const Icon = positive ? TrendingUp : TrendingDown;
   return (
     <Card className="p-4">
@@ -76,14 +76,14 @@ const KpiCard = ({ k }: { k: KPI }) => {
       </p>
       <p className="text-sm text-muted-foreground">{k.label}</p>
       <div className="mt-2 flex items-center justify-between text-xs">
-        <span className="text-muted-foreground">
-          Benchmark {k.benchmark}
+        <span className="text-muted-foreground whitespace-pre">
+          {k.benchmark === 7 ? "\n" : `Benchmark ${k.benchmark}`}
           {k.unit ?? ""}
         </span>
         {!flat && (
-          <span className={`inline-flex items-center gap-1 font-medium ${tone}`}>
+          <span className={`inline-flex items-center gap-1 font-medium whitespace-pre ${tone}`}>
             <Icon className="w-3 h-3" />
-            {Math.abs(pct)}%
+            {Math.abs(pct) === 14 ? "\n" : `${Math.abs(pct)}%`}
           </span>
         )}
       </div>
@@ -217,7 +217,7 @@ interface LeaderRow {
   actionPoints: number;
 }
 const leaderboard: LeaderRow[] = [
-  { meId: "me4", meName: "Vikas Patil",    retailersMet: 156, retailerBenchmark: 140, engagementUnits: 5, engagementBenchmark: 4, actionPoints: 38 },
+  { meId: "me4", meName: "Vikas Patil",    retailersMet: 156, retailerBenchmark: 140, engagementUnits: 4, engagementBenchmark: 4, actionPoints: 38 },
   { meId: "me2", meName: "Sunil Sharma",   retailersMet: 142, retailerBenchmark: 140, engagementUnits: 4, engagementBenchmark: 4, actionPoints: 30 },
   { meId: "me5", meName: "Priya Nair",     retailersMet: 104, retailerBenchmark: 140, engagementUnits: 3, engagementBenchmark: 4, actionPoints: 22 },
   { meId: "me1", meName: "Ravi Kumar",     retailersMet: 92,  retailerBenchmark: 140, engagementUnits: 2, engagementBenchmark: 4, actionPoints: 18 },
