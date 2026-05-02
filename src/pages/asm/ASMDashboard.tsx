@@ -348,8 +348,8 @@ const ASMDashboard = () => {
                 <TableRow>
                   <TableHead>ME</TableHead>
                   <TableHead className="text-right">Unique retailers visited</TableHead>
-                  <TableHead className="text-right">% Unique retailers visited</TableHead>
                   <TableHead className="text-right">Total retailers mapped</TableHead>
+                  <TableHead className="text-right">% Unique retailers visited</TableHead>
                   <TableHead className="text-right">Engagements covered</TableHead>
                   <TableHead className="text-center">Profile</TableHead>
                 </TableRow>
@@ -372,11 +372,11 @@ const ASMDashboard = () => {
                       <TableCell className="text-right font-semibold">
                         {r.uniqueRetailersVisited}
                       </TableCell>
-                      <TableCell className="text-right">
-                        <span className={`font-semibold ${pctTone}`}>{pct}%</span>
-                      </TableCell>
                       <TableCell className="text-right text-muted-foreground">
                         {r.totalRetailersMapped}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span className={`font-semibold ${pctTone}`}>{pct}%</span>
                       </TableCell>
                       <TableCell className="text-right font-semibold">
                         {r.engagementsCovered}
