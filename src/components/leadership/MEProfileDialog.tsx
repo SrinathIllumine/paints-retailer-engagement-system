@@ -220,7 +220,7 @@ const MEProfileDialog = ({ meId, onClose }: Props) => {
             {(Object.keys(cov.segments) as DealerType[]).map((key) => {
               const s = cov.segments[key];
               const meta = segmentMeta[key];
-              const pct = Math.round((s.covered / s.total) * 100);
+              const pct = s.total > 0 ? Math.round((s.covered / s.total) * 100) : 0;
               return (
                 <div key={key} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
