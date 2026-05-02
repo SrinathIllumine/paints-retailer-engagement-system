@@ -369,20 +369,17 @@ const ASMDashboard = () => {
                         <div className="font-medium text-foreground">{r.meName}</div>
                         <div className="text-xs text-muted-foreground">{r.area}</div>
                       </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {r.uniqueRetailersVisited}
+                      </TableCell>
                       <TableCell className="text-right">
                         <span className={`font-semibold ${pctTone}`}>{pct}%</span>
-                        <span className="text-xs text-muted-foreground ml-1">
-                          ({r.uniqueRetailersVisited})
-                        </span>
                       </TableCell>
                       <TableCell className="text-right text-muted-foreground">
                         {r.totalRetailersMapped}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
                         {r.engagementsCovered}
-                      </TableCell>
-                      <TableCell onClick={(e) => { e.stopPropagation(); setSelectedMe(r.meId); }}>
-                        <SegmentChips segments={r.segments} />
                       </TableCell>
                       <TableCell className="text-center">
                         <button
