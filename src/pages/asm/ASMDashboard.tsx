@@ -47,9 +47,12 @@ const statusMeta: Record<Status, { label: string; cls: string }> = {
 
 const TOTAL_MES = 7;
 const ACTIVE_MES = 6;
-const RETAILERS_PER_DAY = 10;
-const RETAILERS_TARGET = TOTAL_MES * RETAILERS_PER_DAY; // 70
-const RETAILERS_MET = 50;
+const RETAILERS_PER_ME = 200;
+const RETAILERS_TARGET = ACTIVE_MES * RETAILERS_PER_ME; // 1400 (active MEs × 200)
+const RETAILERS_MET = RETAILERS_TARGET; // total active retailers
+const ENGAGEMENTS_PER_ME = 10;
+const ENGAGEMENTS_TARGET = TOTAL_MES * ENGAGEMENTS_PER_ME; // 70
+const ENGAGEMENTS_TODAY = ACTIVE_MES * ENGAGEMENTS_PER_ME; // 60
 const NATIONAL_AVG_OBJ = 1.0;
 const AVG_OBJ_PER_RETAILER = 1.2;
 
@@ -57,6 +60,13 @@ const retailerStatus: Status =
   RETAILERS_MET >= RETAILERS_TARGET * 0.95
     ? "on-track"
     : RETAILERS_MET >= RETAILERS_TARGET * 0.8
+    ? "at-risk"
+    : "off-track";
+
+const engagementStatus: Status =
+  ENGAGEMENTS_TODAY >= ENGAGEMENTS_TARGET * 0.95
+    ? "on-track"
+    : ENGAGEMENTS_TODAY >= ENGAGEMENTS_TARGET * 0.8
     ? "at-risk"
     : "off-track";
 
