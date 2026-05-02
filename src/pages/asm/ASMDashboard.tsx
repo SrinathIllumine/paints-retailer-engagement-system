@@ -217,7 +217,7 @@ interface LeaderRow {
   actionPoints: number;
 }
 const leaderboard: LeaderRow[] = [
-  { meId: "me4", meName: "Vikas Patil",    retailersMet: 156, retailerBenchmark: 140, engagementUnits: 5, engagementBenchmark: 4, actionPoints: 38 },
+  { meId: "me4", meName: "Vikas Patil",    retailersMet: 156, retailerBenchmark: 140, engagementUnits: 4, engagementBenchmark: 4, actionPoints: 38 },
   { meId: "me2", meName: "Sunil Sharma",   retailersMet: 142, retailerBenchmark: 140, engagementUnits: 4, engagementBenchmark: 4, actionPoints: 30 },
   { meId: "me5", meName: "Priya Nair",     retailersMet: 104, retailerBenchmark: 140, engagementUnits: 3, engagementBenchmark: 4, actionPoints: 22 },
   { meId: "me1", meName: "Ravi Kumar",     retailersMet: 92,  retailerBenchmark: 140, engagementUnits: 2, engagementBenchmark: 4, actionPoints: 18 },
