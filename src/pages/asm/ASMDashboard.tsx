@@ -443,7 +443,7 @@ const ASMDashboard = () => {
           {showReport && (
             <div className="mt-4 rounded-lg border border-border bg-background p-6 font-mono text-sm leading-relaxed">
               <div className="text-center border-b border-dashed border-border pb-3 mb-4">
-                <p className="font-bold text-foreground">Consolidated 'ME Engagement Report' (Daily)</p>
+                <p className="font-bold text-foreground">What are the Key objections raised in my area?</p>
                 <p className="text-muted-foreground mt-1">Rajesh Kumar, ASM, Pune · {area}</p>
               </div>
 
