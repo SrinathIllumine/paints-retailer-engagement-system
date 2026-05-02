@@ -1,0 +1,282 @@
+import { useMemo, useState } from "react";
+import ASMLayout from "@/components/asm/ASMLayout";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Swords,
+  PackageX,
+  Tag,
+  UserCircle,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Plus,
+  MapPin,
+  Lightbulb,
+} from "lucide-react";
+
+type Category = "Competition" | "Product Quality" | "Schemes" | "Customer" | "Demand";
+
+interface Insight {
+  id: string;
+  category: Category;
+  marketArea: string;
+  title: string;
+  summary: string;
+  tags: string[];
+  trend: "up" | "down" | "flat";
+  reportedAt: string;
+  reportedBy: string;
+}
+
+const insights: Insight[] = [
+  {
+    id: "i1",
+    category: "Competition",
+    marketArea: "Panvel",
+    title: "Chetak Paints aggressively entering Panvel",
+    summary:
+      "Local sales reps from Chetak are visiting our top contractor-focused dealers with intro discounts of 8–10%. Three of our retailers report being approached in the last 2 weeks.",
+    tags: ["new-entrant", "contractor-pull", "discount-pressure"],
+    trend: "up",
+    reportedAt: "20 Apr",
+    reportedBy: "Vikas Patil",
+  },
+  {
+    id: "i2",
+    category: "Competition",
+    marketArea: "Pune SW",
+    title: "Birla piloting EMI payments for retailers",
+    summary:
+      "Birla offering 30/60/90 day EMI on bulk orders. Particularly attractive to declining retailers with working-capital pressure. Two retailers have signed up.",
+    tags: ["financing", "retailer-lock-in", "innovation"],
+    trend: "up",
+    reportedAt: "18 Apr",
+    reportedBy: "Vikas Patil",
+  },
+  {
+    id: "i3",
+    category: "Competition",
+    marketArea: "Pune South",
+    title: "Asian Paints bundling Putty SKUs",
+    summary:
+      "Asian Paints offering free white-cement on bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders.",
+    tags: ["bundling", "lock-in", "sku-strategy"],
+    trend: "up",
+    reportedAt: "12 Apr",
+    reportedBy: "Anita Deshmukh",
+  },
+  {
+    id: "i4",
+    category: "Product Quality",
+    marketArea: "Pune NE",
+    title: "Packaging damage on monsoon dispatches",
+    summary:
+      "4 retailers reported torn outer bags on shipments dispatched in early April. No product loss but visible damage is hurting the shelf-presentation argument.",
+    tags: ["packaging", "logistics", "monsoon"],
+    trend: "flat",
+    reportedAt: "22 Apr",
+    reportedBy: "Sunil Sharma",
+  },
+  {
+    id: "i5",
+    category: "Product Quality",
+    marketArea: "Pune North",
+    title: "Weight variance flagged on 50kg cement",
+    summary:
+      "2 contractors weighed bags and reported 0.5–1kg variance. Asking for QC tightening before sharing the issue with their network.",
+    tags: ["qc", "weight", "contractor-feedback"],
+    trend: "flat",
+    reportedAt: "16 Apr",
+    reportedBy: "Priya Nair",
+  },
+  {
+    id: "i6",
+    category: "Schemes",
+    marketArea: "Pune West",
+    title: "Festival scheme tiers feel too complex",
+    summary:
+      "Retailers say the 4-tier slab + bonus SKU structure is hard to explain to contractors. Requesting a single flat-discount communication for the next cycle.",
+    tags: ["complexity", "communication", "asks"],
+    trend: "down",
+    reportedAt: "21 Apr",
+    reportedBy: "Ravi Kumar",
+  },
+  {
+    id: "i7",
+    category: "Schemes",
+    marketArea: "Pune South",
+    title: "Asks for simpler retailer loyalty programme",
+    summary:
+      "Loyal retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers.",
+    tags: ["loyalty", "ask", "redesign"],
+    trend: "flat",
+    reportedAt: "08 Apr",
+    reportedBy: "Anita Deshmukh",
+  },
+  {
+    id: "i8",
+    category: "Customer",
+    marketArea: "Pune NE",
+    title: "Contractor preference shifting to faster-setting cement",
+    summary:
+      "Younger contractors in commercial projects are explicitly asking for faster-setting variants. Older base still prefers standard PPC.",
+    tags: ["contractor", "preference-shift", "product-fit"],
+    trend: "up",
+    reportedAt: "19 Apr",
+    reportedBy: "Sunil Sharma",
+  },
+  {
+    id: "i9",
+    category: "Customer",
+    marketArea: "Pune SW",
+    title: "Buying behaviour: smaller, more frequent orders",
+    summary:
+      "Contractors are placing 2–3 smaller orders per month instead of one large one. Driven by cash-flow caution. Affects our minimum-order incentives.",
+    tags: ["buying-behavior", "frequency", "incentive-fit"],
+    trend: "up",
+    reportedAt: "14 Apr",
+    reportedBy: "Vikas Patil",
+  },
+  {
+    id: "i10",
+    category: "Demand",
+    marketArea: "Pune North",
+    title: "Demand dip after early monsoon",
+    summary:
+      "Early monsoon onset has paused 30+ small construction sites in Pune North. Retailers expect ~20% softer demand for the next 3 weeks.",
+    tags: ["seasonal", "demand-drop", "monsoon"],
+    trend: "down",
+    reportedAt: "23 Apr",
+    reportedBy: "Priya Nair",
+  },
+  {
+    id: "i11",
+    category: "Demand",
+    marketArea: "Pune West",
+    title: "Festival-led spike expected in white cement",
+    summary:
+      "Retailers report contractors stocking up for festival re-finishing work. White cement and putty enquiries up week-on-week.",
+    tags: ["festival", "spike", "white-cement"],
+    trend: "up",
+    reportedAt: "17 Apr",
+    reportedBy: "Ravi Kumar",
+  },
+];
+
+const categoryMeta: Record<
+  Category,
+  { icon: typeof Swords; tone: string; bg: string }
+> = {
+  Competition: { icon: Swords, tone: "text-primary", bg: "bg-primary/10" },
+  "Product Quality": { icon: PackageX, tone: "text-warning", bg: "bg-warning/10" },
+  Schemes: { icon: Tag, tone: "text-info", bg: "bg-info/10" },
+  Customer: { icon: UserCircle, tone: "text-success", bg: "bg-success/10" },
+  Demand: { icon: TrendingUp, tone: "text-foreground", bg: "bg-secondary" },
+};
+
+const TrendIcon = ({ t }: { t: Insight["trend"] }) => {
+  if (t === "up") return <TrendingUp className="w-3.5 h-3.5 text-success" />;
+  if (t === "down") return <TrendingDown className="w-3.5 h-3.5 text-warning" />;
+  return <Minus className="w-3.5 h-3.5 text-muted-foreground" />;
+};
+
+const ASMInsights = () => {
+  const [filter, setFilter] = useState<Category | "all">("all");
+  const filtered = useMemo(
+    () => (filter === "all" ? insights : insights.filter((i) => i.category === filter)),
+    [filter],
+  );
+
+  return (
+    <ASMLayout>
+      <div className="space-y-6">
+        <div className="flex items-end justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="font-display font-bold text-2xl text-foreground">
+              Insights from the Market
+            </h1>
+            <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+              <MapPin className="w-3.5 h-3.5" />
+              Maharashtra · {insights.length} ground signals from MEs
+            </p>
+          </div>
+          <Button size="sm" variant="outline" className="text-xs">
+            <Plus className="w-3.5 h-3.5 mr-1" />
+            Add insight
+          </Button>
+        </div>
+
+        <Tabs value={filter} onValueChange={(v) => setFilter(v as Category | "all")}>
+          <TabsList className="flex flex-wrap h-auto">
+            <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
+            {(Object.keys(categoryMeta) as Category[]).map((c) => (
+              <TabsTrigger key={c} value={c} className="text-xs">
+                {c}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filtered.map((i) => {
+            const meta = categoryMeta[i.category];
+            const Icon = meta.icon;
+            return (
+              <Card key={i.id} className="p-4 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                <div className="flex items-start gap-3">
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${meta.bg}`}>
+                    <Icon className={`w-4 h-4 ${meta.tone}`} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className={`font-medium ${meta.tone}`}>{i.category}</span>
+                      <span>·</span>
+                      <span>{i.marketArea}</span>
+                      <TrendIcon t={i.trend} />
+                    </div>
+                    <h3 className="font-semibold text-foreground text-sm mt-1 leading-snug">
+                      {i.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-sm text-foreground/80 leading-relaxed">
+                  {i.summary}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {i.tags.map((t) => (
+                    <Badge key={t} variant="secondary" className="text-[10px] font-normal">
+                      #{t}
+                    </Badge>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-border text-xs text-muted-foreground">
+                  <span>
+                    {i.reportedAt} · {i.reportedBy}
+                  </span>
+                  <Button size="sm" variant="ghost" className="h-7 text-xs">
+                    <Lightbulb className="w-3 h-3 mr-1" />
+                    Add action note
+                  </Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+
+        {filtered.length === 0 && (
+          <Card className="p-8 text-center text-sm text-muted-foreground">
+            No insights in this category yet
+          </Card>
+        )}
+      </div>
+    </ASMLayout>
+  );
+};
+
+export default ASMInsights;
