@@ -233,7 +233,7 @@ const ASMDashboard = () => {
           <h2 className="text-sm font-semibold text-foreground/70 uppercase tracking-wide mb-3">
             Today's snapshot
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {/* 1. Active MEs */}
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
@@ -268,14 +268,13 @@ const ASMDashboard = () => {
                 <p className="text-sm text-muted-foreground">Active Retailers</p>
               </div>
               <p className="font-display font-bold text-4xl text-foreground text-center">
-                {RETAILERS_MET}
+                {RETAILERS_MET.toLocaleString()}
               </p>
               <div className="mt-4 flex items-end justify-between text-xs">
                 <div>
-                  <p className="text-muted-foreground">Target</p>
+                  <p className="text-muted-foreground">Total</p>
                   <p className="font-semibold text-foreground text-sm">
-                    {RETAILERS_TARGET}
-                    <span className="text-muted-foreground font-normal"> &nbsp;</span>
+                    {RETAILERS_TARGET.toLocaleString()}
                   </p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[retailerStatus].cls}`}>
@@ -284,7 +283,29 @@ const ASMDashboard = () => {
               </div>
             </Card>
 
-            {/* 3. Avg Objections / Retailer */}
+            {/* 3. Average Engagements per ME */}
+            <Card className="p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
+                  <Trophy className="w-4 h-4 text-info" />
+                </div>
+                <p className="text-sm text-muted-foreground">Avg. Engagements per ME</p>
+              </div>
+              <p className="font-display font-bold text-4xl text-foreground text-center">
+                {ENGAGEMENTS_TODAY}
+              </p>
+              <div className="mt-4 flex items-end justify-between text-xs">
+                <div>
+                  <p className="text-muted-foreground">Target</p>
+                  <p className="font-semibold text-foreground text-sm">{ENGAGEMENTS_TARGET}</p>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[engagementStatus].cls}`}>
+                  {statusMeta[engagementStatus].label}
+                </span>
+              </div>
+            </Card>
+
+            {/* 4. Avg Objections / Retailer */}
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
