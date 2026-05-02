@@ -40,7 +40,7 @@ import asmPhoto from "@/assets/asm-rajesh.jpg";
 type Status = "on-track" | "at-risk" | "off-track";
 
 const statusMeta: Record<Status, { label: string; cls: string }> = {
-  "on-track":  { label: "Lagging Behind",  cls: "px-2 py-1 rounded-full text-[11px] font-semibold text-sidebar-ring bg-accent" },
+  "on-track":  { label: "On-Track",  cls: "px-2 py-1 rounded-full text-[11px] font-semibold text-success bg-[#b1e7ce]" },
   "at-risk":   { label: "Lagging Behind",   cls: "bg-warning/10 text-warning" },
   "off-track": { label: "Off Track", cls: "bg-destructive/10 text-destructive" },
 };
