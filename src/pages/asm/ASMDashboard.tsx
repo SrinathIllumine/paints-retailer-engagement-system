@@ -77,7 +77,7 @@ const KpiCard = ({ k }: { k: KPI }) => {
       <p className="text-sm text-muted-foreground">{k.label}</p>
       <div className="mt-2 flex items-center justify-between text-xs">
         <span className="text-muted-foreground whitespace-pre">
-          {k.benchmark === 7 ? "\n" : `Benchmark ${k.benchmark}`}
+          {k.benchmark === 7 ? "\n" : k.benchmark === 240 ? `Total: ${k.benchmark}` : `Benchmark ${k.benchmark}`}
           {k.unit ?? ""}
         </span>
         {!flat && (
