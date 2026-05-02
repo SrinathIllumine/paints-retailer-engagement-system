@@ -77,13 +77,13 @@ const KpiCard = ({ k }: { k: KPI }) => {
       <p className="text-sm text-muted-foreground">{k.label}</p>
       <div className="mt-2 flex items-center justify-between text-xs">
         <span className="text-muted-foreground whitespace-pre">
-          {k.benchmark === 7 ? "\n" : `Benchmark ${k.benchmark}`}
+          {k.benchmark === 7 ? "\n" : k.benchmark === 240 ? `Total: ${k.benchmark}` : `Benchmark ${k.benchmark}`}
           {k.unit ?? ""}
         </span>
         {!flat && (
           <span className={`inline-flex items-center gap-1 font-medium whitespace-pre ${tone}`}>
             <Icon className="w-3 h-3" />
-            {Math.abs(pct) === 14 ? "\n" : `${Math.abs(pct)}%`}
+            {Math.abs(pct) === 14 ? "\n" : Math.abs(pct) === 9 ? "On-Track" : `${Math.abs(pct)}%`}
           </span>
         )}
       </div>
