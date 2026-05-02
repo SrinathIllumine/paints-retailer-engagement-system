@@ -47,9 +47,12 @@ const statusMeta: Record<Status, { label: string; cls: string }> = {
 
 const TOTAL_MES = 7;
 const ACTIVE_MES = 6;
-const RETAILERS_PER_DAY = 10;
-const RETAILERS_TARGET = TOTAL_MES * RETAILERS_PER_DAY; // 70
-const RETAILERS_MET = 50;
+const RETAILERS_PER_ME = 200;
+const RETAILERS_TARGET = ACTIVE_MES * RETAILERS_PER_ME; // 1400 (active MEs × 200)
+const RETAILERS_MET = RETAILERS_TARGET; // total active retailers
+const ENGAGEMENTS_PER_ME = 10;
+const ENGAGEMENTS_TARGET = TOTAL_MES * ENGAGEMENTS_PER_ME; // 70
+const ENGAGEMENTS_TODAY = ACTIVE_MES * ENGAGEMENTS_PER_ME; // 60
 const NATIONAL_AVG_OBJ = 1.0;
 const AVG_OBJ_PER_RETAILER = 1.2;
 
@@ -57,6 +60,13 @@ const retailerStatus: Status =
   RETAILERS_MET >= RETAILERS_TARGET * 0.95
     ? "on-track"
     : RETAILERS_MET >= RETAILERS_TARGET * 0.8
+    ? "at-risk"
+    : "off-track";
+
+const engagementStatus: Status =
+  ENGAGEMENTS_TODAY >= ENGAGEMENTS_TARGET * 0.95
+    ? "on-track"
+    : ENGAGEMENTS_TODAY >= ENGAGEMENTS_TARGET * 0.8
     ? "at-risk"
     : "off-track";
 
@@ -223,7 +233,7 @@ const ASMDashboard = () => {
           <h2 className="text-sm font-semibold text-foreground/70 uppercase tracking-wide mb-3">
             Today's snapshot
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {/* 1. Active MEs */}
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
@@ -258,14 +268,13 @@ const ASMDashboard = () => {
                 <p className="text-sm text-muted-foreground">Active Retailers</p>
               </div>
               <p className="font-display font-bold text-4xl text-foreground text-center">
-                {RETAILERS_MET}
+                {RETAILERS_MET.toLocaleString()}
               </p>
               <div className="mt-4 flex items-end justify-between text-xs">
                 <div>
-                  <p className="text-muted-foreground">Target</p>
+                  <p className="text-muted-foreground">Total</p>
                   <p className="font-semibold text-foreground text-sm">
-                    {RETAILERS_TARGET}
-                    <span className="text-muted-foreground font-normal"> &nbsp;</span>
+                    {RETAILERS_TARGET.toLocaleString()}
                   </p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[retailerStatus].cls}`}>
@@ -274,7 +283,29 @@ const ASMDashboard = () => {
               </div>
             </Card>
 
-            {/* 3. Avg Objections / Retailer */}
+            {/* 3. Average Engagements per ME */}
+            <Card className="p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
+                  <Trophy className="w-4 h-4 text-info" />
+                </div>
+                <p className="text-sm text-muted-foreground">Avg. Engagements per ME</p>
+              </div>
+              <p className="font-display font-bold text-4xl text-foreground text-center">
+                {ENGAGEMENTS_TODAY}
+              </p>
+              <div className="mt-4 flex items-end justify-between text-xs">
+                <div>
+                  <p className="text-muted-foreground">Target</p>
+                  <p className="font-semibold text-foreground text-sm">{ENGAGEMENTS_TARGET}</p>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${statusMeta[engagementStatus].cls}`}>
+                  {statusMeta[engagementStatus].label}
+                </span>
+              </div>
+            </Card>
+
+            {/* 4. Avg Objections / Retailer */}
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
@@ -317,9 +348,9 @@ const ASMDashboard = () => {
                 <TableRow>
                   <TableHead>ME</TableHead>
                   <TableHead className="text-right">Unique retailers visited</TableHead>
+                  <TableHead className="text-right">% Unique retailers visited</TableHead>
                   <TableHead className="text-right">Total retailers mapped</TableHead>
                   <TableHead className="text-right">Engagements covered</TableHead>
-                  <TableHead>Retailer segments</TableHead>
                   <TableHead className="text-center">Profile</TableHead>
                 </TableRow>
               </TableHeader>
@@ -338,20 +369,17 @@ const ASMDashboard = () => {
                         <div className="font-medium text-foreground">{r.meName}</div>
                         <div className="text-xs text-muted-foreground">{r.area}</div>
                       </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {r.uniqueRetailersVisited}
+                      </TableCell>
                       <TableCell className="text-right">
                         <span className={`font-semibold ${pctTone}`}>{pct}%</span>
-                        <span className="text-xs text-muted-foreground ml-1">
-                          ({r.uniqueRetailersVisited})
-                        </span>
                       </TableCell>
                       <TableCell className="text-right text-muted-foreground">
                         {r.totalRetailersMapped}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
                         {r.engagementsCovered}
-                      </TableCell>
-                      <TableCell onClick={(e) => { e.stopPropagation(); setSelectedMe(r.meId); }}>
-                        <SegmentChips segments={r.segments} />
                       </TableCell>
                       <TableCell className="text-center">
                         <button
@@ -495,7 +523,6 @@ const ASMDashboard = () => {
                   <TableHead>Market area</TableHead>
                   <TableHead className="text-right">Retailers met</TableHead>
                   <TableHead className="text-right">Engagement units covered</TableHead>
-                  <TableHead className="text-right">Action points done</TableHead>
                   <TableHead className="text-center">Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -521,7 +548,6 @@ const ASMDashboard = () => {
                         / {r.engagementBenchmark}
                       </span>
                     </TableCell>
-                    <TableCell className="text-right font-semibold">{r.actionPoints}</TableCell>
                     <TableCell className="text-center">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold ${statusMeta[r.status].cls}`}>
                         {r.status === "on-track" && <ArrowUpRight className="w-3 h-3" />}
