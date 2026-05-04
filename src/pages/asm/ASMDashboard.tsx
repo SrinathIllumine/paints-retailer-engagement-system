@@ -137,7 +137,7 @@ interface AreaReport {
 
 const baseReport: AreaReport = {
   actionPoints: [
-    "Local competitor Chetak Paints are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks.",
+    "Ahead of the monsoon, 70% of retailers across the country are hesitant to stock JK putty. As the current packaging leads to deterioration in bag quality during rainy conditions. Some are switching to Asian Paints",
   ],
   activeMes: 6,
   totalMes: 6,
