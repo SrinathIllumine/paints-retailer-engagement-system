@@ -304,7 +304,7 @@ export const engagementTrend = [
 export const objectionBreakdown = [
   { name: "No demand", value: 28 },
   { name: "Working capital", value: 22 },
-  { name: "No space", value: 18 },
+  { name: "SKU space", value: 18 },
   { name: "Competition from other brands", value: 17 },
   { name: "Poor Product Quality", value: 15 },
 ];
