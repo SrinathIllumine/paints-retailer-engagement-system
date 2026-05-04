@@ -35,10 +35,10 @@ const insights: Insight[] = [
   {
     id: "i1",
     category: "Competition",
-    marketArea: "Panvel",
-    title: "Chetak Paints aggressively entering Panvel",
+    marketArea: "Pune",
+    title: "Asian Paints Putty aggressive bundling in Pune",
     summary:
-      "Local sales reps from Chetak are visiting our top contractor-focused dealers with intro discounts of 8–10%. Three of our retailers report being approached in the last 2 weeks.",
+      "Sudden spike in Asian Paints Putty SKUs in Pune - as they are offering better schemes on bundled Putty & Paints purchases. Our retailers report this is changing their decision on monthly putty orders.",
     tags: ["new-entrant", "contractor-pull", "discount-pressure"],
     trend: "up",
     reportedAt: "20 Apr",
