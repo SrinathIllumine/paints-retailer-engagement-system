@@ -96,9 +96,9 @@ const insights: Insight[] = [
     id: "i6",
     category: "Schemes",
     marketArea: "Pune West",
-    title: "Festival scheme tiers feel too complex",
+    title: "Asks for simpler retailer loyalty programme for mid-tier retailers",
     summary:
-      "Retailers say the 4-tier slab + bonus SKU structure is hard to explain to contractors. Requesting a single flat-discount communication for the next cycle.",
+      "Retailers are preferring schemes that are simple with less complex tier-structures (instead of complex-schemes with which run into multiple pages - for e.g. Retailers say JK's 4-tier slab + bonus SKU structure is hard to explain to contractors )",
     tags: ["complexity", "communication", "asks"],
     trend: "down",
     reportedAt: "21 Apr",
