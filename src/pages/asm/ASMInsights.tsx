@@ -36,7 +36,7 @@ const insights: Insight[] = [
     id: "i1",
     category: "Competition",
     marketArea: "Pimpri Chinchwad",
-    title: "Chetak Paints aggressively entering Panvel",
+    title: "Asian Paints aggressively entering Putty - by product bundling",
     summary:
       "Sudden spike in Asian Paints Putty SKUs in Pimpri Chinchwad. Retailers are getting attractive schemes on Paints only if they buy bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders.",
     tags: ["new-entrant", "contractor-pull", "discount-pressure"],
