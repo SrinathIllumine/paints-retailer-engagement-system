@@ -329,41 +329,6 @@ const ASMObjections = () => {
           </div>
         </Card>
       </div>
-
-      <Dialog open={!!openRetailer} onOpenChange={(o) => !o && setOpenRetailer(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="font-display text-xl">
-              {openRetailer?.retailer}
-            </DialogTitle>
-          </DialogHeader>
-          {openRetailer && (
-            <div className="space-y-3">
-              <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                <span>{openRetailer.area}</span>
-                <span>·</span>
-                <span>ME: {openRetailer.assignedMe}</span>
-                <span>·</span>
-                <span>{openRetailer.objections} objections raised</span>
-              </div>
-              <div className="divide-y divide-border border border-border rounded-lg">
-                {openRetailer.history.map((h, i) => (
-                  <div key={i} className="p-3">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-medium text-foreground">{h.date}</span>
-                      <Badge variant="outline" className="font-normal">
-                        {h.objection}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-foreground/80 mt-1">{h.note}</p>
-                    <p className="text-xs text-muted-foreground mt-1">— {h.me}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </ASMLayout>
   );
 };
