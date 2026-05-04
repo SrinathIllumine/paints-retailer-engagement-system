@@ -49,7 +49,7 @@ const retailerObjections: RetailerObjection[] = [
     topObjection: "Working capital",
     history: [
       { date: "12 Apr", me: "Anita Deshmukh", objection: "Working capital", note: "Asked for 30-day credit window; raised again." },
-      { date: "28 Mar", me: "Anita Deshmukh", objection: "Competition", note: "Asian Paints offering bundled SKUs." },
+      { date: "28 Mar", me: "Anita Deshmukh", objection: "Competition from other brands", note: "Asian Paints offering bundled SKUs." },
       { date: "15 Mar", me: "Anita Deshmukh", objection: "No demand", note: "Contractor footfall has dropped after monsoon." },
     ],
   },
@@ -59,9 +59,9 @@ const retailerObjections: RetailerObjection[] = [
     assignedMe: "Priya Nair",
     objections: 4,
     pendingDays: 18,
-    topObjection: "No space",
+    topObjection: "SKU space",
     history: [
-      { date: "10 Apr", me: "Priya Nair", objection: "No space", note: "Compact display offered, not yet placed." },
+      { date: "10 Apr", me: "Priya Nair", objection: "SKU space", note: "Compact display offered, not yet placed." },
       { date: "22 Mar", me: "Priya Nair", objection: "No demand", note: "Wants painter-meet support before scaling." },
     ],
   },
@@ -71,10 +71,10 @@ const retailerObjections: RetailerObjection[] = [
     assignedMe: "Vikas Patil",
     objections: 3,
     pendingDays: 14,
-    topObjection: "Competition",
+    topObjection: "Competition from other brands",
     history: [
-      { date: "18 Apr", me: "Vikas Patil", objection: "Competition", note: "Birla EMI scheme creating pressure." },
-      { date: "02 Apr", me: "Vikas Patil", objection: "Quality", note: "Two contractors flagged packaging damage." },
+      { date: "18 Apr", me: "Vikas Patil", objection: "Competition from other brands", note: "Birla EMI scheme creating pressure." },
+      { date: "02 Apr", me: "Vikas Patil", objection: "Poor Product Quality", note: "Two contractors flagged packaging damage." },
     ],
   },
   {
@@ -105,9 +105,9 @@ const retailerObjections: RetailerObjection[] = [
     assignedMe: "Sunil Sharma",
     objections: 2,
     pendingDays: 9,
-    topObjection: "No space",
+    topObjection: "SKU space",
     history: [
-      { date: "23 Apr", me: "Sunil Sharma", objection: "No space", note: "Open to compact stand if branded well." },
+      { date: "23 Apr", me: "Sunil Sharma", objection: "SKU space", note: "Open to compact stand if branded well." },
     ],
   },
 ];
