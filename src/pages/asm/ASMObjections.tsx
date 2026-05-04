@@ -88,7 +88,36 @@ const retailerObjections: RetailerObjection[] = [
       { date: "20 Apr", me: "Ravi Kumar", objection: "Demand-related", note: "Newly mapped retailer, awareness building." },
     ],
   },
-// ... keep existing code
+  {
+    retailer: "Deshpande Hardware Stores",
+    area: "Pune North",
+    assignedMe: "Priya Nair",
+    objections: 3,
+    pendingDays: 28,
+    topObjection: "Working capital",
+    history: [
+      { date: "06 Apr", me: "Priya Nair", objection: "Working capital", note: "Wants flexible ordering plan." },
+    ],
+  },
+  {
+    retailer: "Patel & Sons Hardware",
+    area: "Pune NE",
+    assignedMe: "Sunil Sharma",
+    objections: 2,
+    pendingDays: 9,
+    topObjection: "SKU space",
+    history: [
+      { date: "23 Apr", me: "Sunil Sharma", objection: "SKU space", note: "Open to compact stand if branded well." },
+    ],
+  },
+];
+
+interface AreaObjection {
+  area: string;
+  mes: string[];
+  byType: Record<string, number>;
+}
+
 const areaObjections: AreaObjection[] = [
   {
     area: "Pune West",
