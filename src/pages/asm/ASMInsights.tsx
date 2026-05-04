@@ -243,7 +243,7 @@ const ASMInsights = () => {
                   </div>
                 </div>
 
-                <p className="text-sm text-foreground/80 leading-relaxed">
+                <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
                   {i.summary}
                 </p>
 
