@@ -98,9 +98,209 @@ export const engagementThemes: EngagementTheme[] = [
       {
         id: "wi1",
         label: "Demand-related in my area",
-...
+        peerLearning: "Retailers in similar markets started with a small trial and saw demand grow as contractors discovered the quality. Initial demand is created through awareness, not existing demand.",
+        dealerStory: "",
+      },
+      {
+        id: "wi2",
+        label: "Working capital will get blocked",
+        peerLearning: "Many retailers start with a minimum order and see turnover within 2-3 weeks. Start small and scale based on traction.",
+        dealerStory: "",
+      },
+      {
+        id: "wi3",
+        label: "No space in the shop",
+        peerLearning: "JK's compact multi-product display stand takes just 4 sq ft and is designed for small shops. It's provided free and positioned for visibility.",
+        dealerStory: "",
+      },
+      {
+        id: "wi4",
+        label: "What if it doesn't work?",
+        peerLearning: "Start with the top 3 proven sellers in your market segment and set a 30-day review checkpoint. Most retailers see traction within the first month.",
+        dealerStory: "",
+      },
+    ],
+  },
+  {
+    id: "et2",
+    title: "Getting Initial Success as a New Retailer",
+    subtitle: "Build confidence and momentum in the first 90 days",
+    icon: "Rocket",
+    color: "info",
+    discussionPoints: [
+      {
+        id: "dp4",
+        title: "Quick Wins Strategy",
+        description: "Focus on high-demand, fast-moving SKUs first",
+        detail: "Start with JK's top 5 best-selling SKUs in your area. These products have proven demand and quick turnaround - giving you confidence and cash flow within the first 2-3 weeks.",
+      },
+      {
+        id: "dp5",
+        title: "Contractor Network Building",
+        description: "Connect with local contractors through JK's network",
+        detail: "JK facilitates introductions to active contractors in your area. Building relationships with contractors creates a sustainable pull for JK products through your shop.",
+      },
+      {
+        id: "dp6",
+        title: "Marketing & Visibility Support",
+        description: "Free in-shop branding and local marketing campaigns",
+        detail: "JK provides shop board branding, product displays, and local advertising support at zero cost. This establishes you as an authorized JK retailer and drives footfall from day one.",
+      },
+    ],
+    whatIfs: [
+      {
+        id: "wi5",
+        label: "I already have established brands",
+        peerLearning: "JK doesn't replace your existing brands - it adds a premium tier. Retailers who added JK alongside existing brands saw increased footfall without cannibalizing existing sales.",
+        dealerStory: "",
+      },
+      {
+        id: "wi6",
+        label: "I'm not sure about the quality",
+        peerLearning: "JK Cement has 40+ years of trust. Free product samples are available for you and your contractors to test. Most retailers who tested the products were convinced by the quality.",
+        dealerStory: "",
+      },
+    ],
+  },
+  {
+    id: "et3",
+    title: "Building a Pool of Contractors / Painters",
+    subtitle: "Create a sustainable network of influencers who drive demand",
+    icon: "Users",
+    color: "success",
+    discussionPoints: [
+      {
+        id: "dp7",
+        title: "Contractor Engagement",
+        description: "Build lasting relationships with contractors who use JK products",
+        detail: "Engage contractors through product training, knowledge sharing, and consistent quality. This positions you as a trusted partner and knowledge hub in your area.",
+      },
+      {
+        id: "dp8",
+        title: "Technical Training Sessions",
+        description: "Free training builds contractor confidence and trust",
+        detail: "JK conducts free application training for contractors at your shop. This positions you as a knowledge hub, builds trust, and ensures contractors apply products correctly - reducing complaints.",
+      },
+      {
+        id: "dp9",
+        title: "Painter Meet Programs",
+        description: "Organized events to engage painters in your area",
+        detail: "JK sponsors painter meets with product demos, lucky draws, and networking. These events build your reputation as a community hub and create word-of-mouth demand for JK products.",
+      },
+    ],
+    whatIfs: [
+      {
+        id: "wi7",
+        label: "Contractors prefer other brands",
+        peerLearning: "Contractors follow quality and support. Once contractors attend a JK training session and experience the product, most build a preference over time through consistent results.",
+        dealerStory: "",
+      },
+      {
+        id: "wi8",
+        label: "I don't know enough contractors",
+        peerLearning: "JK's field team helps identify and connect you with active contractors in your area. On average, each new retailer is introduced to 8-12 contractors within the first month.",
+        dealerStory: "",
+      },
+    ],
+  },
+];
+
+export const discussionPoints: DiscussionPoint[] = [
+  {
+    id: "1",
+    title: "JK Product Range – Multi-Product Awareness",
+    bullets: [
+      "JK Cement offers a comprehensive product portfolio across categories",
+      "Product range covers cement, white cement, putty, and paints",
+      "Opportunity to become a one-stop solution for contractors",
+      "Marketing support with in-shop branding and visibility materials",
+    ],
+    objections: [
+      { id: "o1", label: "Already selling other brands", response: "JK complements existing brands as a premium option. More product choices mean more footfall and a stronger position as a go-to retailer." },
       { id: "o2", label: "Demand-related in my area", response: "Demand often starts with visibility. Retailers in similar markets found that once JK products were displayed, contractor enquiries followed naturally." },
-...
+      { id: "o3", label: "Not sure about stocking new products", response: "Start with a small trial of fast-moving SKUs. Assess traction over 30 days before deciding on next steps." },
+    ],
+  },
+  {
+    id: "2",
+    title: "JK White Cement – Seasonal Opportunity",
+    bullets: [
+      "Festival season typically sees higher demand for white cement",
+      "New consumer-friendly packaging in 1kg and 5kg packs",
+      "JK provides display materials for in-shop visibility",
+      "Contractor demand remains strong year-round",
+    ],
+    objections: [
+      { id: "o4", label: "No space in shop", response: "JK's compact display stand takes just 2 sq ft and is designed for small shops. It's positioned to draw attention without taking floor space." },
+      { id: "o5", label: "What if it doesn't sell", response: "White cement has consistent year-round demand. Start with a small quantity and scale based on actual sell-through." },
+    ],
+  },
+  {
+    id: "3",
+    title: "Relationship & Trust Building",
+    bullets: [
+      "Check on any pending issues or service gaps",
+      "Discuss retailer's business growth and how JK can support",
+      "Share success stories from similar retailers in the region",
+      "Understand competitive landscape in the retailer's area",
+    ],
+    objections: [
+      { id: "o6", label: "JK delivery is often delayed", response: "We've expanded distribution points in your zone. Share any specific incidents and I'll escalate immediately for resolution." },
+    ],
+  },
+  {
+    id: "4",
+    title: "Retailer Support & Knowledge Building",
+    bullets: [
+      "Technical training for retailer staff on product applications",
+      "Annual retailer meet and recognition events",
+      "Priority access to new product information",
+      "Ongoing ME support for business growth conversations",
+    ],
+    objections: [
+      { id: "o7", label: "I don't see enough support from JK", response: "JK is committed to being a long-term partner. Let's identify specific areas where you need more support and we'll work on it together." },
+    ],
+  },
+  {
+    id: "5",
+    title: "Market Intelligence & Feedback",
+    bullets: [
+      "Understand customer preferences and trending products",
+      "Identify upcoming construction projects in the area",
+      "Note any new competitors entering the market",
+      "Gather insights on what contractors are looking for",
+    ],
+    objections: [],
+  },
+];
+
+export const regions = ["North", "South", "East", "West"];
+export const zones = ["Zone A", "Zone B", "Zone C", "Zone D"];
+
+export const kpiData = {
+  totalRetailers: 5000,
+  conversationsToday: 2000,
+  conversationsWeek: 2180,
+  engagementQualityIndex: 7.4,
+  launchReadiness: 68,
+};
+
+export const segmentationData = [
+  { type: "new" as DealerType, count: 1250, label: "New Retailers", percentage: 25 },
+  { type: "loyal" as DealerType, count: 1900, label: "Loyal Retailers", percentage: 38 },
+  { type: "inactive" as DealerType, count: 1250, label: "Inactive Retailers", percentage: 25 },
+  { type: "declining" as DealerType, count: 600, label: "Declining Retailers", percentage: 12 },
+];
+
+export const engagementTrend = [
+  { month: "Jan", conversations: 1800, quality: 6.8 },
+  { month: "Feb", conversations: 2100, quality: 7.0 },
+  { month: "Mar", conversations: 2400, quality: 7.2 },
+  { month: "Apr", conversations: 2180, quality: 7.4 },
+  { month: "May", conversations: 2600, quality: 7.1 },
+  { month: "Jun", conversations: 2900, quality: 7.6 },
+];
+
 export const objectionBreakdown = [
   { name: "Demand-related", value: 28 },
   { name: "Working capital", value: 22 },
