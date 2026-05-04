@@ -53,31 +53,73 @@ const morphCount: Record<Morphology, number> = {
 const morphCycle: Morphology[] = ["New", "Loyal", "Declining", "Inactive"];
 const meCycle = marketingExecutives.map((m) => m.name);
 
-const baseRetailers: RetailerRow[] = dealers.map((d, i) => ({
-  id: d.id,
-  name: d.name,
-  morphology: morphCycle[i % morphCycle.length],
-  marketArea: d.area,
-  assignedMe: meCycle[i % meCycle.length],
-  lastVisited: d.lastVisit.replace("Last visited: ", "").replace("Last weeks ago", "2 weeks ago"),
-  engagementUnits: (i % 5) + 1,
-  history: [
-    { date: "20 Apr", me: meCycle[i % meCycle.length], outcome: d.lastOutcome, actionPoint: "Share new SKU sheet on next visit" },
-    { date: "28 Mar", me: meCycle[i % meCycle.length], outcome: "Discussed contractor network expansion", actionPoint: "Connect with 2 local painters" },
-    { date: "10 Mar", me: meCycle[i % meCycle.length], outcome: "Introduced Festival scheme", actionPoint: "Decide on display stand placement" },
-  ],
-}));
+// Engagement units calibrated by morphology so the data tells a believable story:
+// Loyal = high (4-5), New = mid (2-3), Declining = low-mid (1-2), Inactive = lowest (0-1)
+const engagementByMorph: Record<Morphology, number> = {
+  Loyal: 5,
+  New: 3,
+  Declining: 2,
+  Inactive: 1,
+};
+
+const isShopClosed = (outcome: string) =>
+  /shop closed|closed during visit|store closed/i.test(outcome);
+
+// Build a believable history. If the shop was closed, no discussion-based action
+// point is captured — only an internal follow-up is logged by the ME.
+const buildHistory = (
+  meName: string,
+  lastOutcome: string,
+): RetailerRow["history"] => {
+  const first = isShopClosed(lastOutcome)
+    ? {
+        date: "20 Apr",
+        me: meName,
+        outcome: lastOutcome,
+        actionPoint: "Internal follow-up planned by ME — retry visit next week",
+      }
+    : {
+        date: "20 Apr",
+        me: meName,
+        outcome: lastOutcome,
+        actionPoint: "Share new SKU sheet on next visit",
+      };
+  return [
+    first,
+    { date: "28 Mar", me: meName, outcome: "Discussed contractor network expansion", actionPoint: "Connect with 2 local painters" },
+    { date: "10 Mar", me: meName, outcome: "Introduced Festival scheme", actionPoint: "Decide on display stand placement" },
+  ];
+};
+
+const baseRetailers: RetailerRow[] = dealers.map((d, i) => {
+  const morphology = morphCycle[i % morphCycle.length];
+  const meName = meCycle[i % meCycle.length];
+  return {
+    id: d.id,
+    name: d.name,
+    morphology,
+    marketArea: d.area,
+    assignedMe: meName,
+    lastVisited: d.lastVisit.replace("Last visited: ", "").replace("Last weeks ago", "2 weeks ago"),
+    engagementUnits: engagementByMorph[morphology],
+    history: buildHistory(meName, d.lastOutcome),
+  };
+});
 
 // Pad to ~40 rows for a more realistic table
 const padded: RetailerRow[] = [];
 for (let i = 0; i < 5; i++) {
   baseRetailers.forEach((r, j) => {
+    // Slight variance per branch but never beyond the morphology band
+    const base = engagementByMorph[r.morphology];
+    const variance = ((i + j) % 2 === 0 ? 0 : -1);
+    const units = Math.max(0, Math.min(5, base + variance));
     padded.push({
       ...r,
       id: `${r.id}-${i}-${j}`,
       name: i === 0 ? r.name : `${r.name.split(" ")[0]} ${["Branch", "Hub", "Centre", "Outpost", "Depot"][i - 1] ?? ""} ${i}`,
       lastVisited: ["2 days ago", "1 week ago", "3 weeks ago", "1 month ago", "Yesterday"][(i + j) % 5],
-      engagementUnits: (((i * 3 + j) % 5) + 1),
+      engagementUnits: units,
     });
   });
 }
