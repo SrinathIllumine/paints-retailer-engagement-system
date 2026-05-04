@@ -122,31 +122,31 @@ const areaObjections: AreaObjection[] = [
   {
     area: "Pune West",
     mes: ["Ravi Kumar"],
-    byType: { Pricing: 4, Quality: 3, Schemes: 2, Logistics: 5, Competition: 8 },
+    byType: { "No demand": 6, "Working capital": 4, "SKU space": 4, "Competition from other brands": 3, "Poor Product Quality": 3 },
   },
   {
     area: "Pune NE",
     mes: ["Sunil Sharma"],
-    byType: { Pricing: 2, Quality: 1, Schemes: 4, Logistics: 1, Competition: 3 },
+    byType: { "No demand": 4, "Working capital": 3, "SKU space": 3, "Competition from other brands": 2, "Poor Product Quality": 2 },
   },
   {
     area: "Pune South",
     mes: ["Anita Deshmukh"],
-    byType: { Pricing: 6, Quality: 3, Schemes: 5, Logistics: 4, Competition: 11 },
+    byType: { "No demand": 8, "Working capital": 7, "SKU space": 4, "Competition from other brands": 5, "Poor Product Quality": 4 },
   },
   {
     area: "Pune SW",
     mes: ["Vikas Patil"],
-    byType: { Pricing: 1, Quality: 4, Schemes: 1, Logistics: 0, Competition: 2 },
+    byType: { "No demand": 3, "Working capital": 2, "SKU space": 2, "Competition from other brands": 3, "Poor Product Quality": 3 },
   },
   {
     area: "Pune North",
     mes: ["Priya Nair"],
-    byType: { Pricing: 3, Quality: 2, Schemes: 3, Logistics: 3, Competition: 6 },
+    byType: { "No demand": 7, "Working capital": 6, "SKU space": 5, "Competition from other brands": 4, "Poor Product Quality": 3 },
   },
 ];
 
-const objectionTypes = ["Pricing", "Quality", "Schemes", "Logistics", "Competition"];
+const objectionTypes = ["No demand", "Working capital", "SKU space", "Competition from other brands", "Poor Product Quality"];
 
 const ASMObjections = () => {
   const [search, setSearch] = useState("");
