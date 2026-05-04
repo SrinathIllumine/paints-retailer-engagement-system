@@ -38,7 +38,7 @@ const insights: Insight[] = [
     marketArea: "Panvel",
     title: "Chetak Paints aggressively entering Panvel",
     summary:
-      "Local sales reps from Chetak are visiting our top contractor-focused dealers with intro discounts of 8–10%. Three of our retailers report being approached in the last 2 weeks.",
+      "Local sales reps from Chetak are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks.",
     tags: ["new-entrant", "contractor-pull", "discount-pressure"],
     trend: "up",
     reportedAt: "20 Apr",
