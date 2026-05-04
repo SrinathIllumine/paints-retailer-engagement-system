@@ -173,15 +173,15 @@ const ASMObjections = () => {
   );
 
   return (
-    <ASMLayout>
+    <ASMLayout hideFilters>
       <div className="space-y-6">
         <div>
           <h1 className="font-display font-bold text-2xl text-foreground">
-            What are the key objections in my area?
+            What are the key Objections raised by Retailers?
           </h1>
           <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5" />
-            Maharashtra · {marketingExecutives.length} MEs · 5 market areas
+            Pune · 6 MEs · 6 Market Areas
           </p>
         </div>
 
