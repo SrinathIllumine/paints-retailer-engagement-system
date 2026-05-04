@@ -31,6 +31,17 @@ import { marketingExecutives } from "@/data/meAnalytics";
 
 type Morphology = "Loyal" | "New" | "Declining" | "Inactive";
 
+interface RetailerRow {
+  id: string;
+  name: string;
+  morphology: Morphology;
+  marketArea: string;
+  assignedMe: string;
+  lastVisited: string;
+  engagementUnits: number; // 0..5 attributes covered
+  history: { date: string; me: string; outcome: string; actionPoint: string }[];
+}
+
 const morphCount: Record<Morphology, number> = {
   Loyal: 674,
   New: 307,
