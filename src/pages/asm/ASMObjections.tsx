@@ -218,9 +218,6 @@ const ASMObjections = () => {
           <div className="p-4 border-b border-border flex items-center gap-3 flex-wrap">
             <div>
               <h3 className="font-semibold text-foreground">Retailer-wise objections</h3>
-              <p className="text-xs text-muted-foreground">
-                Click any row to open engagement history
-              </p>
             </div>
             <div className="ml-auto relative">
               <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -246,11 +243,7 @@ const ASMObjections = () => {
               </TableHeader>
               <TableBody>
                 {filtered.map((r) => (
-                  <TableRow
-                    key={r.retailer}
-                    className="cursor-pointer"
-                    onClick={() => setOpenRetailer(r)}
-                  >
+                  <TableRow key={r.retailer}>
                     <TableCell className="font-medium">{r.retailer}</TableCell>
                     <TableCell className="text-muted-foreground">{r.area}</TableCell>
                     <TableCell>{r.assignedMe}</TableCell>
