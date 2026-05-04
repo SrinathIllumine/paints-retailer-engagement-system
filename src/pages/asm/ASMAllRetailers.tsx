@@ -29,28 +29,17 @@ import { Search, Store, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { dealers } from "@/data/mockData";
 import { marketingExecutives } from "@/data/meAnalytics";
 
-type Morphology = "Dealer" | "Sub-dealer" | "Contractor-focused" | "Project-store";
-
-interface RetailerRow {
-  id: string;
-  name: string;
-  morphology: Morphology;
-  marketArea: string;
-  assignedMe: string;
-  lastVisited: string;
-  engagementUnits: number; // 0..5 attributes covered
-  history: { date: string; me: string; outcome: string; actionPoint: string }[];
-}
+type Morphology = "Loyal" | "New" | "Declining" | "Inactive";
 
 const morphCount: Record<Morphology, number> = {
-  Dealer: 22000,
-  "Sub-dealer": 15600,
-  "Contractor-focused": 8400,
-  "Project-store": 4000,
+  Loyal: 674,
+  New: 307,
+  Declining: 244,
+  Inactive: 175,
 };
 
 // Build a believable retailer set from the existing dealers + extension rows
-const morphCycle: Morphology[] = ["Dealer", "Sub-dealer", "Contractor-focused", "Project-store"];
+const morphCycle: Morphology[] = ["Loyal", "New", "Declining", "Inactive"];
 const meCycle = marketingExecutives.map((m) => m.name);
 
 const baseRetailers: RetailerRow[] = dealers.map((d, i) => ({
