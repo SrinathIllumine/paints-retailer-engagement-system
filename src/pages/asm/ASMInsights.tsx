@@ -35,10 +35,10 @@ const insights: Insight[] = [
   {
     id: "i1",
     category: "Competition",
-    marketArea: "Panvel",
+    marketArea: "Pimpri Chinchwad",
     title: "Chetak Paints aggressively entering Panvel",
     summary:
-      "Local sales reps from Chetak are visiting our top contractor-focused dealers with intro discounts of 8–10%. Three of our retailers report being approached in the last 2 weeks.",
+      "Sudden spike in Asian Paints Putty SKUs in Pimpri Chinchwad. Retailers are getting attractive schemes on Paints only if they buy bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders.",
     tags: ["new-entrant", "contractor-pull", "discount-pressure"],
     trend: "up",
     reportedAt: "20 Apr",
