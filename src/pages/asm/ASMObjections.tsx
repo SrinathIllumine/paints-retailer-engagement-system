@@ -189,9 +189,6 @@ const ASMObjections = () => {
           <div className="flex items-center justify-between mb-3">
             <div>
               <h3 className="font-semibold text-foreground">Common objections</h3>
-              <p className="text-xs text-muted-foreground">
-                Click any slice to filter the breakdown below
-              </p>
             </div>
             <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
               <AlertTriangle className="w-3.5 h-3.5" />
@@ -207,29 +204,14 @@ const ASMObjections = () => {
                 outerRadius={90}
                 dataKey="value"
                 label={({ name, value }) => `${name} (${value}%)`}
-                onClick={(d: { name?: string }) => setActiveObjection(d?.name ?? null)}
-                cursor="pointer"
               >
                 {objectionBreakdown.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
               <RTooltip />
-              <Legend />
             </PieChart>
           </ResponsiveContainer>
-          {activeObjection && (
-            <div className="mt-2 text-xs text-info">
-              Filtering by:{" "}
-              <span className="font-medium">{activeObjection}</span>{" "}
-              <button
-                onClick={() => setActiveObjection(null)}
-                className="ml-2 underline"
-              >
-                clear
-              </button>
-            </div>
-          )}
         </Card>
 
         <Card className="overflow-hidden">
