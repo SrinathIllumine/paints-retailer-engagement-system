@@ -149,7 +149,7 @@ const baseReport: AreaReport = {
     { name: "Building contractor / painter pool", pct: 30 },
   ],
   topObjections: [
-    { name: "No demand in my area", pct: 45 },
+    { name: "Bad Packaging - reducing quality of putty", pct: 45 },
     { name: "No space in the shop", pct: 30 },
     { name: "Working capital will be blocked", pct: 25 },
   ],
