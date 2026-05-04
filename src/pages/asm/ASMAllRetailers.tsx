@@ -134,14 +134,14 @@ const ASMAllRetailers = () => {
           </h1>
           <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5" />
-            Maharashtra · 50,000+ retailers across India
+            Pune· 1400+ retailers
           </p>
         </div>
 
         {/* A. Snapshot - morphology */}
         <section>
           <h2 className="text-sm font-semibold text-foreground/70 uppercase tracking-wide mb-3">
-            By morphology
+            BY MORPHOLOGY
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {(Object.keys(morphCount) as Morphology[]).map((m) => (
