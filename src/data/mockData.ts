@@ -97,7 +97,7 @@ export const engagementThemes: EngagementTheme[] = [
     whatIfs: [
       {
         id: "wi1",
-        label: "No demand in my area",
+        label: "SKU space-related in my area",
         peerLearning: "Retailers in similar markets started with a small trial and saw demand grow as contractors discovered the quality. Initial demand is created through awareness, not existing demand.",
         dealerStory: "",
       },
@@ -217,7 +217,7 @@ export const discussionPoints: DiscussionPoint[] = [
     ],
     objections: [
       { id: "o1", label: "Already selling other brands", response: "JK complements existing brands as a premium option. More product choices mean more footfall and a stronger position as a go-to retailer." },
-      { id: "o2", label: "No demand in my area", response: "Demand often starts with visibility. Retailers in similar markets found that once JK products were displayed, contractor enquiries followed naturally." },
+      { id: "o2", label: "SKU space-related in my area", response: "Demand often starts with visibility. Retailers in similar markets found that once JK products were displayed, contractor enquiries followed naturally." },
       { id: "o3", label: "Not sure about stocking new products", response: "Start with a small trial of fast-moving SKUs. Assess traction over 30 days before deciding on next steps." },
     ],
   },
@@ -302,7 +302,7 @@ export const engagementTrend = [
 ];
 
 export const objectionBreakdown = [
-  { name: "No demand", value: 28 },
+  { name: "SKU space-related", value: 28 },
   { name: "Working capital", value: 22 },
   { name: "SKU space", value: 18 },
   { name: "Competition from other brands", value: 17 },

@@ -50,7 +50,7 @@ const retailerObjections: RetailerObjection[] = [
     history: [
       { date: "12 Apr", me: "Anita Deshmukh", objection: "Working capital", note: "Asked for 30-day credit window; raised again." },
       { date: "28 Mar", me: "Anita Deshmukh", objection: "Competition from other brands", note: "Asian Paints offering bundled SKUs." },
-      { date: "15 Mar", me: "Anita Deshmukh", objection: "No demand", note: "Contractor footfall has dropped after monsoon." },
+      { date: "15 Mar", me: "Anita Deshmukh", objection: "SKU space-related", note: "Contractor footfall has dropped after monsoon." },
     ],
   },
   {
@@ -62,7 +62,7 @@ const retailerObjections: RetailerObjection[] = [
     topObjection: "SKU space",
     history: [
       { date: "10 Apr", me: "Priya Nair", objection: "SKU space", note: "Compact display offered, not yet placed." },
-      { date: "22 Mar", me: "Priya Nair", objection: "No demand", note: "Wants painter-meet support before scaling." },
+      { date: "22 Mar", me: "Priya Nair", objection: "SKU space-related", note: "Wants painter-meet support before scaling." },
     ],
   },
   {
@@ -83,9 +83,9 @@ const retailerObjections: RetailerObjection[] = [
     assignedMe: "Ravi Kumar",
     objections: 3,
     pendingDays: 11,
-    topObjection: "No demand",
+    topObjection: "SKU space-related",
     history: [
-      { date: "20 Apr", me: "Ravi Kumar", objection: "No demand", note: "Newly mapped retailer, awareness building." },
+      { date: "20 Apr", me: "Ravi Kumar", objection: "SKU space-related", note: "Newly mapped retailer, awareness building." },
     ],
   },
   {
@@ -122,31 +122,31 @@ const areaObjections: AreaObjection[] = [
   {
     area: "Pune West",
     mes: ["Ravi Kumar"],
-    byType: { "No demand": 6, "Working capital": 4, "SKU space": 4, "Competition from other brands": 3, "Poor Product Quality": 3 },
+    byType: { "SKU space-related": 6, "Working capital": 4, "SKU space": 4, "Competition from other brands": 3, "Poor Product Quality": 3 },
   },
   {
     area: "Pune NE",
     mes: ["Sunil Sharma"],
-    byType: { "No demand": 4, "Working capital": 3, "SKU space": 3, "Competition from other brands": 2, "Poor Product Quality": 2 },
+    byType: { "SKU space-related": 4, "Working capital": 3, "SKU space": 3, "Competition from other brands": 2, "Poor Product Quality": 2 },
   },
   {
     area: "Pune South",
     mes: ["Anita Deshmukh"],
-    byType: { "No demand": 8, "Working capital": 7, "SKU space": 4, "Competition from other brands": 5, "Poor Product Quality": 4 },
+    byType: { "SKU space-related": 8, "Working capital": 7, "SKU space": 4, "Competition from other brands": 5, "Poor Product Quality": 4 },
   },
   {
     area: "Pune SW",
     mes: ["Vikas Patil"],
-    byType: { "No demand": 3, "Working capital": 2, "SKU space": 2, "Competition from other brands": 3, "Poor Product Quality": 3 },
+    byType: { "SKU space-related": 3, "Working capital": 2, "SKU space": 2, "Competition from other brands": 3, "Poor Product Quality": 3 },
   },
   {
     area: "Pune North",
     mes: ["Priya Nair"],
-    byType: { "No demand": 7, "Working capital": 6, "SKU space": 5, "Competition from other brands": 4, "Poor Product Quality": 3 },
+    byType: { "SKU space-related": 7, "Working capital": 6, "SKU space": 5, "Competition from other brands": 4, "Poor Product Quality": 3 },
   },
 ];
 
-const objectionTypes = ["No demand", "Working capital", "SKU space", "Competition from other brands", "Poor Product Quality"];
+const objectionTypes = ["SKU space-related", "Working capital", "SKU space", "Competition from other brands", "Poor Product Quality"];
 
 const ASMObjections = () => {
   const [search, setSearch] = useState("");
