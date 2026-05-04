@@ -347,10 +347,10 @@ const ASMDashboard = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>ME</TableHead>
-                  <TableHead className="text-right">Unique retailers visited</TableHead>
-                  <TableHead className="text-right">Total retailers mapped</TableHead>
-                  <TableHead className="text-right">% Unique retailers visited</TableHead>
                   <TableHead className="text-right">Engagements covered</TableHead>
+                  <TableHead className="text-right">Total retailers mapped</TableHead>
+                  <TableHead className="text-right">Unique retailers visited</TableHead>
+                  <TableHead className="text-right">% Unique retailers visited</TableHead>
                   <TableHead className="text-center">Profile</TableHead>
                 </TableRow>
               </TableHeader>
@@ -370,16 +370,16 @@ const ASMDashboard = () => {
                         <div className="text-xs text-muted-foreground">{r.area}</div>
                       </TableCell>
                       <TableCell className="text-right font-semibold">
-                        {r.uniqueRetailersVisited}
+                        {r.engagementsCovered}
                       </TableCell>
                       <TableCell className="text-right text-muted-foreground">
                         {r.totalRetailersMapped}
                       </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {r.uniqueRetailersVisited}
+                      </TableCell>
                       <TableCell className="text-right">
                         <span className={`font-semibold ${pctTone}`}>{pct}%</span>
-                      </TableCell>
-                      <TableCell className="text-right font-semibold">
-                        {r.engagementsCovered}
                       </TableCell>
                       <TableCell className="text-center">
                         <button
