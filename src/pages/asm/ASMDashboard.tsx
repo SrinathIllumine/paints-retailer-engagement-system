@@ -137,7 +137,7 @@ interface AreaReport {
 
 const baseReport: AreaReport = {
   actionPoints: [
-    "Local competitor Chetak Paints are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks.",
+    "Ahead of the monsoon, 70% of retailers across the country are hesitant to stock JK putty. As the current packaging leads to deterioration in bag quality during rainy conditions. Some are switching to Asian Paints",
   ],
   activeMes: 6,
   totalMes: 6,
@@ -149,7 +149,7 @@ const baseReport: AreaReport = {
     { name: "Building contractor / painter pool", pct: 30 },
   ],
   topObjections: [
-    { name: "No demand in my area", pct: 45 },
+    { name: "Bad Packaging - reducing quality of putty", pct: 45 },
     { name: "No space in the shop", pct: 30 },
     { name: "Working capital will be blocked", pct: 25 },
   ],
@@ -172,7 +172,7 @@ interface LeaderRow {
 
 const leaderboard: LeaderRow[] = [
   { meId: "me4", meName: "Vikas Patil",    marketArea: "Pune SW",    retailersMet: 468, retailerBenchmark: 420, engagementUnits: 4, engagementBenchmark: 4, actionPoints: 114, status: "on-track" },
-  { meId: "me2", meName: "Sunil Sharma",   marketArea: "Pune NE",    retailersMet: 426, retailerBenchmark: 420, engagementUnits: 4, engagementBenchmark: 4, actionPoints:  90, status: "on-track" },
+  { meId: "me2", meName: "Sunil Sharma",   marketArea: "Pattern Across India                   ",    retailersMet: 426, retailerBenchmark: 420, engagementUnits: 4, engagementBenchmark: 4, actionPoints:  90, status: "on-track" },
   { meId: "me5", meName: "Priya Nair",     marketArea: "Pune North", retailersMet: 312, retailerBenchmark: 420, engagementUnits: 3, engagementBenchmark: 4, actionPoints:  66, status: "at-risk" },
   { meId: "me1", meName: "Ravi Kumar",     marketArea: "Pune West",  retailersMet: 276, retailerBenchmark: 420, engagementUnits: 2, engagementBenchmark: 4, actionPoints:  54, status: "at-risk" },
   { meId: "me3", meName: "Anita Deshmukh", marketArea: "Pune South", retailersMet: 213, retailerBenchmark: 420, engagementUnits: 1, engagementBenchmark: 4, actionPoints:  36, status: "off-track" },
