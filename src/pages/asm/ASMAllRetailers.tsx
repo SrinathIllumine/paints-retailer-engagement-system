@@ -168,7 +168,7 @@ const ASMAllRetailers = () => {
   const areas = Array.from(new Set(padded.map((r) => r.marketArea)));
 
   return (
-    <ASMLayout>
+    <ASMLayout hideFilters>
       <div className="space-y-6">
         <div>
           <h1 className="font-display font-bold text-2xl text-foreground">

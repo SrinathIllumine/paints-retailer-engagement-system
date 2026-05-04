@@ -191,7 +191,7 @@ const ASMInsights = () => {
   );
 
   return (
-    <ASMLayout>
+    <ASMLayout hideFilters>
       <div className="space-y-6">
         <div className="flex items-end justify-between flex-wrap gap-3">
           <div>
