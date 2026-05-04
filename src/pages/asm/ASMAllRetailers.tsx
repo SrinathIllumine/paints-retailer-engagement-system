@@ -50,7 +50,7 @@ const morphCount: Record<Morphology, number> = {
 };
 
 // Build a believable retailer set from the existing dealers + extension rows
-const morphCycle: Morphology[] = ["Loyal", "New", "Declining", "Inactive"];
+const morphCycle: Morphology[] = ["New", "Loyal", "Declining", "Inactive"];
 const meCycle = marketingExecutives.map((m) => m.name);
 
 const baseRetailers: RetailerRow[] = dealers.map((d, i) => ({
