@@ -60,7 +60,7 @@ const insights: Insight[] = [
     id: "i3",
     category: "Competition",
     marketArea: "Pune South",
-    title: "Asian Paints bundling Putty SKUs",
+    title: "Asian Paints aggressively entering Putty - by product bundling",
     summary:
       "Asian Paints offering free white-cement on bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders.",
     tags: ["bundling", "lock-in", "sku-strategy"],
