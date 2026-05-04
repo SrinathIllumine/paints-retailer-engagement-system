@@ -44,7 +44,7 @@ interface RetailerRow {
 
 const morphCount: Record<Morphology, number> = {
   Loyal: 674,
-  New: 307,
+  New: 225,
   Declining: 244,
   Inactive: 175,
 };
