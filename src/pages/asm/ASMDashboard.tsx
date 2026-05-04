@@ -137,7 +137,7 @@ interface AreaReport {
 
 const baseReport: AreaReport = {
   actionPoints: [
-    "Many retailers are facing stocking issues w.r.t Putty due to packaging issues. Refer recommended solutions to MEs before next visit.",
+    "Local competitor Chetak Paints are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks.",
   ],
   activeMes: 6,
   totalMes: 6,
