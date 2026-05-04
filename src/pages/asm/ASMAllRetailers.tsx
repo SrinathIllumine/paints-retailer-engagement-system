@@ -29,7 +29,7 @@ import { Search, Store, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { dealers } from "@/data/mockData";
 import { marketingExecutives } from "@/data/meAnalytics";
 
-type Morphology = "Dealer" | "Sub-dealer" | "Contractor-focused" | "Project-store";
+type Morphology = "Loyal" | "New" | "Declining" | "Inactive";
 
 interface RetailerRow {
   id: string;
@@ -43,14 +43,14 @@ interface RetailerRow {
 }
 
 const morphCount: Record<Morphology, number> = {
-  Dealer: 22000,
-  "Sub-dealer": 15600,
-  "Contractor-focused": 8400,
-  "Project-store": 4000,
+  Loyal: 674,
+  New: 307,
+  Declining: 244,
+  Inactive: 175,
 };
 
 // Build a believable retailer set from the existing dealers + extension rows
-const morphCycle: Morphology[] = ["Dealer", "Sub-dealer", "Contractor-focused", "Project-store"];
+const morphCycle: Morphology[] = ["New", "Loyal", "Declining", "Inactive"];
 const meCycle = marketingExecutives.map((m) => m.name);
 
 const baseRetailers: RetailerRow[] = dealers.map((d, i) => ({
@@ -134,14 +134,14 @@ const ASMAllRetailers = () => {
           </h1>
           <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5" />
-            Maharashtra · 50,000+ retailers across India
+            Pune· 1400+ retailers
           </p>
         </div>
 
         {/* A. Snapshot - morphology */}
         <section>
           <h2 className="text-sm font-semibold text-foreground/70 uppercase tracking-wide mb-3">
-            By morphology
+            BY MORPHOLOGY
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {(Object.keys(morphCount) as Morphology[]).map((m) => (
