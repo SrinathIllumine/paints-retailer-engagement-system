@@ -12,9 +12,10 @@ import EngagementTheme from "./pages/me/EngagementTheme.tsx";
 import VisitNotes from "./pages/me/VisitNotes.tsx";
 import VisitComplete from "./pages/me/VisitComplete.tsx";
 import Dashboard from "./pages/leadership/Dashboard.tsx";
-import AllRetailers from "./pages/leadership/AllRetailers.tsx";
-import StrategicSlicing from "./pages/leadership/StrategicSlicing.tsx";
-import MEView from "./pages/leadership/MEView.tsx";
+import Objections from "./pages/leadership/Objections.tsx";
+import Insights from "./pages/leadership/Insights.tsx";
+import Coverage from "./pages/leadership/Coverage.tsx";
+import Leaderboard from "./pages/leadership/Leaderboard.tsx";
 import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
 import ASMObjections from "./pages/asm/ASMObjections.tsx";
 import ASMAllRetailers from "./pages/asm/ASMAllRetailers.tsx";
@@ -37,12 +38,10 @@ const App = () => (
           <Route path="/me/notes/:id" element={<VisitNotes />} />
           <Route path="/me/complete/:id" element={<VisitComplete />} />
           <Route path="/leadership" element={<Dashboard />} />
-          <Route path="/leadership/all-retailers" element={<AllRetailers />} />
-          <Route path="/leadership/me-view" element={<MEView />} />
-          {/* Backwards-compatible aliases */}
-          <Route path="/leadership/segmentation" element={<AllRetailers />} />
-          <Route path="/leadership/dealer-profile" element={<AllRetailers />} />
-          <Route path="/leadership/targeting" element={<StrategicSlicing />} />
+          <Route path="/leadership/objections" element={<Objections />} />
+          <Route path="/leadership/insights" element={<Insights />} />
+          <Route path="/leadership/coverage" element={<Coverage />} />
+          <Route path="/leadership/leaderboard" element={<Leaderboard />} />
           {/* ASM Analytics App */}
           <Route path="/asm" element={<ASMDashboard />} />
           <Route path="/asm/objections" element={<ASMObjections />} />
