@@ -59,10 +59,10 @@ const insights: Insight[] = [
   {
     id: "i3",
     category: "Competition",
-    marketArea: "Pune South",
+    marketArea: "Pimpri Chinchwad",
     title: "Asian Paints bundling Putty SKUs",
     summary:
-      "Asian Paints offering free white-cement on bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders.",
+      "Sudden spike in Asian Paints Putty SKUs in Pimpri Chinchwad.\nRetailers are getting attractive schemes on Paints only if they buy bundled Putty purchases above 50 bags.\nOur retailers report this is changing their decision on monthly putty orders.",
     tags: ["bundling", "lock-in", "sku-strategy"],
     trend: "up",
     reportedAt: "12 Apr",
@@ -243,7 +243,7 @@ const ASMInsights = () => {
                   </div>
                 </div>
 
-                <p className="text-sm text-foreground/80 leading-relaxed">
+                <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
                   {i.summary}
                 </p>
 
