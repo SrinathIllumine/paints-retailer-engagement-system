@@ -10,12 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import {
   PieChart,
@@ -23,11 +17,9 @@ import {
   Cell,
   Tooltip as RTooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 import { Search, AlertTriangle, Clock, MapPin } from "lucide-react";
 import { objectionBreakdown, dealers } from "@/data/mockData";
-import { marketingExecutives } from "@/data/meAnalytics";
 
 const COLORS = [
   "hsl(0,78%,48%)",
@@ -157,8 +149,6 @@ const areaObjections: AreaObjection[] = [
 const objectionTypes = ["Pricing", "Quality", "Schemes", "Logistics", "Competition"];
 
 const ASMObjections = () => {
-  const [activeObjection, setActiveObjection] = useState<string | null>(null);
-  const [openRetailer, setOpenRetailer] = useState<RetailerObjection | null>(null);
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(
@@ -173,15 +163,15 @@ const ASMObjections = () => {
   );
 
   return (
-    <ASMLayout>
+    <ASMLayout hideFilters>
       <div className="space-y-6">
         <div>
           <h1 className="font-display font-bold text-2xl text-foreground">
-            What are the key objections in my area?
+            What are the key Objections raised by Retailers?
           </h1>
           <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5" />
-            Maharashtra · {marketingExecutives.length} MEs · 5 market areas
+            Pune · 6 MEs · 6 Market Areas
           </p>
         </div>
 
@@ -189,9 +179,6 @@ const ASMObjections = () => {
           <div className="flex items-center justify-between mb-3">
             <div>
               <h3 className="font-semibold text-foreground">Common objections</h3>
-              <p className="text-xs text-muted-foreground">
-                Click any slice to filter the breakdown below
-              </p>
             </div>
             <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
               <AlertTriangle className="w-3.5 h-3.5" />
@@ -207,38 +194,20 @@ const ASMObjections = () => {
                 outerRadius={90}
                 dataKey="value"
                 label={({ name, value }) => `${name} (${value}%)`}
-                onClick={(d: { name?: string }) => setActiveObjection(d?.name ?? null)}
-                cursor="pointer"
               >
                 {objectionBreakdown.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
               <RTooltip />
-              <Legend />
             </PieChart>
           </ResponsiveContainer>
-          {activeObjection && (
-            <div className="mt-2 text-xs text-info">
-              Filtering by:{" "}
-              <span className="font-medium">{activeObjection}</span>{" "}
-              <button
-                onClick={() => setActiveObjection(null)}
-                className="ml-2 underline"
-              >
-                clear
-              </button>
-            </div>
-          )}
         </Card>
 
         <Card className="overflow-hidden">
           <div className="p-4 border-b border-border flex items-center gap-3 flex-wrap">
             <div>
               <h3 className="font-semibold text-foreground">Retailer-wise objections</h3>
-              <p className="text-xs text-muted-foreground">
-                Click any row to open engagement history
-              </p>
             </div>
             <div className="ml-auto relative">
               <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -264,11 +233,7 @@ const ASMObjections = () => {
               </TableHeader>
               <TableBody>
                 {filtered.map((r) => (
-                  <TableRow
-                    key={r.retailer}
-                    className="cursor-pointer"
-                    onClick={() => setOpenRetailer(r)}
-                  >
+                  <TableRow key={r.retailer}>
                     <TableCell className="font-medium">{r.retailer}</TableCell>
                     <TableCell className="text-muted-foreground">{r.area}</TableCell>
                     <TableCell>{r.assignedMe}</TableCell>
@@ -362,41 +327,6 @@ const ASMObjections = () => {
           </div>
         </Card>
       </div>
-
-      <Dialog open={!!openRetailer} onOpenChange={(o) => !o && setOpenRetailer(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="font-display text-xl">
-              {openRetailer?.retailer}
-            </DialogTitle>
-          </DialogHeader>
-          {openRetailer && (
-            <div className="space-y-3">
-              <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                <span>{openRetailer.area}</span>
-                <span>·</span>
-                <span>ME: {openRetailer.assignedMe}</span>
-                <span>·</span>
-                <span>{openRetailer.objections} objections raised</span>
-              </div>
-              <div className="divide-y divide-border border border-border rounded-lg">
-                {openRetailer.history.map((h, i) => (
-                  <div key={i} className="p-3">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-medium text-foreground">{h.date}</span>
-                      <Badge variant="outline" className="font-normal">
-                        {h.objection}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-foreground/80 mt-1">{h.note}</p>
-                    <p className="text-xs text-muted-foreground mt-1">— {h.me}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </ASMLayout>
   );
 };
