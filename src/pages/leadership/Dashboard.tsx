@@ -19,11 +19,10 @@ import {
 import { Activity, AlertCircle, ArrowDown, ArrowUp, CheckCircle2, MapPinned, Store, Users } from "lucide-react";
 import {
   Area,
-  AreaChart,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -222,7 +221,7 @@ const Dashboard = () => (
           <h2 className="font-display text-lg font-bold text-foreground">Month-on-Month Engagement Trend</h2>
           <p className="mb-4 text-sm text-muted-foreground">National engagement growth and active ME trend.</p>
           <ResponsiveContainer width="100%" height={360}>
-            <LineChart data={momTrend} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
+            <ComposedChart data={momTrend} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
               <YAxis yAxisId="left" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
@@ -231,7 +230,7 @@ const Dashboard = () => (
               <Legend />
               <Area yAxisId="left" type="monotone" dataKey="engagements" name="Engagements" fill="hsl(var(--primary) / 0.12)" stroke="hsl(var(--primary))" strokeWidth={2} />
               <Line yAxisId="right" type="monotone" dataKey="activeMes" name="Active MEs" stroke="hsl(var(--info))" strokeWidth={2} dot={{ r: 4 }} />
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         </Card>
       </section>
