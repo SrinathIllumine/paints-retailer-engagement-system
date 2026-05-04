@@ -149,8 +149,6 @@ const areaObjections: AreaObjection[] = [
 const objectionTypes = ["Pricing", "Quality", "Schemes", "Logistics", "Competition"];
 
 const ASMObjections = () => {
-  const [activeObjection, setActiveObjection] = useState<string | null>(null);
-  const [openRetailer, setOpenRetailer] = useState<RetailerObjection | null>(null);
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(
