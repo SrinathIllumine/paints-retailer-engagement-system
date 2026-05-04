@@ -2,7 +2,7 @@ import LeadershipLayout from "@/components/leadership/LeadershipLayout";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { areaCoverage, engagementUnits, nationalCoverage, stateCoverage, states, type EngagementUnit } from "@/data/leadershipData";
-import { Pentagon, RadarIcon, Target } from "lucide-react";
+import { Target } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer, Tooltip } from "recharts";
 
