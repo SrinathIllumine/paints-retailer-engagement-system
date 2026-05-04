@@ -10,12 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import {
   PieChart,
@@ -23,11 +17,9 @@ import {
   Cell,
   Tooltip as RTooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 import { Search, AlertTriangle, Clock, MapPin } from "lucide-react";
 import { objectionBreakdown, dealers } from "@/data/mockData";
-import { marketingExecutives } from "@/data/meAnalytics";
 
 const COLORS = [
   "hsl(0,78%,48%)",
