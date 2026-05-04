@@ -172,7 +172,7 @@ interface LeaderRow {
 
 const leaderboard: LeaderRow[] = [
   { meId: "me4", meName: "Vikas Patil",    marketArea: "Pune SW",    retailersMet: 468, retailerBenchmark: 420, engagementUnits: 4, engagementBenchmark: 4, actionPoints: 114, status: "on-track" },
-  { meId: "me2", meName: "Sunil Sharma",   marketArea: "Pune NE",    retailersMet: 426, retailerBenchmark: 420, engagementUnits: 4, engagementBenchmark: 4, actionPoints:  90, status: "on-track" },
+  { meId: "me2", meName: "Sunil Sharma",   marketArea: "Pattern Across India                   ",    retailersMet: 426, retailerBenchmark: 420, engagementUnits: 4, engagementBenchmark: 4, actionPoints:  90, status: "on-track" },
   { meId: "me5", meName: "Priya Nair",     marketArea: "Pune North", retailersMet: 312, retailerBenchmark: 420, engagementUnits: 3, engagementBenchmark: 4, actionPoints:  66, status: "at-risk" },
   { meId: "me1", meName: "Ravi Kumar",     marketArea: "Pune West",  retailersMet: 276, retailerBenchmark: 420, engagementUnits: 2, engagementBenchmark: 4, actionPoints:  54, status: "at-risk" },
   { meId: "me3", meName: "Anita Deshmukh", marketArea: "Pune South", retailersMet: 213, retailerBenchmark: 420, engagementUnits: 1, engagementBenchmark: 4, actionPoints:  36, status: "off-track" },
