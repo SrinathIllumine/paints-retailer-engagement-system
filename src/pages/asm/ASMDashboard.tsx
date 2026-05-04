@@ -305,13 +305,13 @@ const ASMDashboard = () => {
               </div>
             </Card>
 
-            {/* 4. All Retailers Profiles */}
+            {/* 4. Avg. Objections per Retailer */}
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
                   <Info className="w-4 h-4 text-info" />
                 </div>
-                <p className="text-sm text-muted-foreground">All Retailers Profiles</p>
+                <p className="text-sm text-muted-foreground">Avg. Objections per Retailer</p>
               </div>
               <p className="font-display font-bold text-4xl text-foreground text-center">
                 {AVG_OBJ_PER_RETAILER.toFixed(1)}
