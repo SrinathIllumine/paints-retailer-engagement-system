@@ -514,6 +514,9 @@ const EngagementTheme = () => {
                       note: insightNotes[s.key].trim(),
                       summary: insightSummaries[s.key].trim(),
                     })),
+                  retailerIdeas: (ideaNote.trim() || ideaSummary.trim())
+                    ? { note: ideaNote.trim(), summary: ideaSummary.trim() }
+                    : null,
                 };
                 sessionStorage.setItem(key, JSON.stringify({ ...existing, themes: themesData }));
               } catch {}
