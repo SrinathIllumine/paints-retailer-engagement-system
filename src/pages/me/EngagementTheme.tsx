@@ -157,6 +157,10 @@ const EngagementTheme = () => {
     competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "",
   });
 
+  // Retailer Ideas — single voice/text capture with AI summary
+  const [ideaNote, setIdeaNote] = useState("");
+  const [ideaSummary, setIdeaSummary] = useState("");
+
   useEffect(() => {
     setCompletedPoints(new Set());
     setSelectedWhatIfs(new Set());
