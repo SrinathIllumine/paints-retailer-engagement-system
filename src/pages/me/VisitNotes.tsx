@@ -3,10 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store, Radar } from "lucide-react";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store, Radar, Sparkles } from "lucide-react";
 import { dealers } from "@/data/mockData";
 
 type MarketInsight = { category: string; note: string; summary: string };
+type RetailerIdea = { note: string; summary: string };
 
 type ThemeData = {
   themeTitle: string;
@@ -15,6 +16,7 @@ type ThemeData = {
   actionPoints: string[];
   feedback: string[];
   marketInsights?: MarketInsight[];
+  retailerIdeas?: RetailerIdea | null;
 };
 
 const ME_NAME = "Manish Kumar from JK";
@@ -88,6 +90,17 @@ const VisitNotes = () => {
     return items;
   }, [stored]);
 
+  const retailerIdeas = useMemo<string[]>(() => {
+    const items: string[] = [];
+    Object.values(stored).forEach((t) => {
+      const ri = t?.retailerIdeas;
+      if (ri && (ri.summary?.trim() || ri.note?.trim())) {
+        items.push(ri.summary?.trim() || ri.note?.trim());
+      }
+    });
+    return items;
+  }, [stored]);
+
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
   const visitDate = useMemo(() => formatToday(), []);
 
@@ -123,6 +136,9 @@ ${bulletsToText(actionPointsList)}
 
 📡 *Market Insights:*
 ${insightsToText(marketInsights)}
+
+💡 *Retailer Ideas:*
+${retailerIdeas.length === 0 ? "• No ideas captured" : bulletsToText(retailerIdeas)}
 
 - JK Cement ME Team`;
 
@@ -241,8 +257,30 @@ ${insightsToText(marketInsights)}
             </div>
           </div>
 
+          {/* Retailer Ideas (read-only) */}
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4 text-info" />
+            </div>
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Retailer Ideas</p>
+              {retailerIdeas.length > 0 ? (
+                <ul className="mt-1.5 space-y-1">
+                  {retailerIdeas.map((idea, i) => (
+                    <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
+                      <span className="whitespace-pre-line">{idea}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-1.5 text-sm text-muted-foreground italic">No retailer ideas captured.</p>
+              )}
+            </div>
+          </div>
+
           <p className="text-xs text-muted-foreground italic pt-1">
-            To edit Action Points or Market Insights, go back to the previous step.
+            To edit Action Points, Market Insights or Retailer Ideas, go back to the previous step.
           </p>
         </Card>
 
