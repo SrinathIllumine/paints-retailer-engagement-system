@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Smartphone, Monitor, BarChart3 } from "lucide-react";
+import { Smartphone, Monitor, BarChart3, LayoutDashboard } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Index = () => {
           <p className="text-muted-foreground text-lg">Select your interface to continue</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/area")}>
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
@@ -48,6 +48,15 @@ const Index = () => {
 -> high-quality engagement at ME level`}
             </p>
             <Button variant="outline" className="w-full">Open Dashboard →</Button>
+          </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/asm-dashboard-new")}>
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <LayoutDashboard className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
+            </div>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">ASM Dashboard (New)</h2>
+            <p className="text-sm text-muted-foreground mb-4">Redesigned ASM weekly view — KPIs, Engagement Unit pentagon, objections, market insights and daily reports.</p>
+            <Button variant="outline" className="w-full">Open New Dashboard →</Button>
           </Card>
         </div>
       </div>

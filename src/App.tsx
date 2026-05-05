@@ -20,6 +20,7 @@ import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
 import ASMObjections from "./pages/asm/ASMObjections.tsx";
 import ASMAllRetailers from "./pages/asm/ASMAllRetailers.tsx";
 import ASMInsights from "./pages/asm/ASMInsights.tsx";
+import AsmDashboardNew from "./pages/AsmDashboardNew.tsx";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/asm/retailers" element={<ASMAllRetailers />} />
           <Route path="/asm/insights" element={<ASMInsights />} />
           {/* Backwards-compatible aliases */}
+          <Route path="/asm-dashboard-new" element={<AsmDashboardNew />} />
           <Route path="/asm/area-snapshot" element={<ASMDashboard />} />
           <Route path="/asm/weekly-snapshot" element={<ASMDashboard />} />
           <Route path="*" element={<NotFound />} />
