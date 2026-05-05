@@ -145,7 +145,7 @@ const EngagementTheme = () => {
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
   const [expandedBestPractices, setExpandedBestPractices] = useState<Record<string, boolean>>({});
   const [selectedActionPoints, setSelectedActionPoints] = useState<Set<string>>(new Set());
-  const [selectedGoForwards, setSelectedGoForwards] = useState<Set<string>>(new Set());
+  
   const [retailerFeedback, setRetailerFeedback] = useState("");
 
   // Market insights state — raw note + AI summary per section
