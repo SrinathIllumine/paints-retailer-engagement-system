@@ -170,6 +170,8 @@ const EngagementTheme = () => {
     setRetailerFeedback("");
     setInsightNotes({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
     setInsightSummaries({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
+    setIdeaNote("");
+    setIdeaSummary("");
     window.scrollTo(0, 0);
   }, [themeId]);
 
