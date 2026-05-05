@@ -137,6 +137,9 @@ ${bulletsToText(actionPointsList)}
 📡 *Market Insights:*
 ${insightsToText(marketInsights)}
 
+💡 *Retailer Ideas:*
+${retailerIdeas.length === 0 ? "• No ideas captured" : bulletsToText(retailerIdeas)}
+
 - JK Cement ME Team`;
 
   return (
