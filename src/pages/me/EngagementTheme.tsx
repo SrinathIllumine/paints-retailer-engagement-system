@@ -192,7 +192,7 @@ const EngagementTheme = () => {
     : 0;
 
   const actionPoints = themePositiveTakeaways[theme.id] || themePositiveTakeaways.et1;
-  const goForwards = themeGoForwards[theme.id] || themeGoForwards.et1;
+  
 
   return (
     <MeLayout title={theme.title} showBack>
