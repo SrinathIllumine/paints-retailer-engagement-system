@@ -24,7 +24,7 @@ import {
   ArrowRight,
   BookOpen,
   TrendingUp,
-  Flag,
+  
   Radar,
 } from "lucide-react";
 import { engagementThemes, dealers } from "@/data/mockData";
@@ -145,7 +145,7 @@ const EngagementTheme = () => {
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
   const [expandedBestPractices, setExpandedBestPractices] = useState<Record<string, boolean>>({});
   const [selectedActionPoints, setSelectedActionPoints] = useState<Set<string>>(new Set());
-  const [selectedGoForwards, setSelectedGoForwards] = useState<Set<string>>(new Set());
+  
   const [retailerFeedback, setRetailerFeedback] = useState("");
 
   // Market insights state — raw note + AI summary per section
@@ -161,7 +161,7 @@ const EngagementTheme = () => {
     setSelectedWhatIfs(new Set());
     setExpandedBestPractices({});
     setSelectedActionPoints(new Set());
-    setSelectedGoForwards(new Set());
+    
     setRetailerFeedback("");
     setInsightNotes({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
     setInsightSummaries({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
@@ -192,7 +192,7 @@ const EngagementTheme = () => {
     : 0;
 
   const actionPoints = themePositiveTakeaways[theme.id] || themePositiveTakeaways.et1;
-  const goForwards = themeGoForwards[theme.id] || themeGoForwards.et1;
+  
 
   return (
     <MeLayout title={theme.title} showBack>
@@ -222,10 +222,9 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Master accordion of all sections */}
+        {/* Master accordion of all sections — collapsed by default */}
         <Accordion
           type="multiple"
-          defaultValue={["core", "objections", "actions", "goforward", "insights"]}
           className="space-y-3"
         >
           {/* CORE DISCUSSION POINTS */}
@@ -367,7 +366,7 @@ const EngagementTheme = () => {
                   </span>
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="px-4 space-y-2">
+              <AccordionContent className="px-4 space-y-3">
                 <p className="text-xs text-muted-foreground">Commitments the retailer will own.</p>
                 {actionPoints.map((chip) => {
                   const isSelected = selectedActionPoints.has(chip);
@@ -376,37 +375,6 @@ const EngagementTheme = () => {
                       key={chip}
                       className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
                       onClick={() => toggleSet(selectedActionPoints, setSelectedActionPoints, chip)}
-                    >
-                      <Checkbox checked={isSelected} className="mt-0.5" />
-                      <span className="text-sm text-foreground">{chip}</span>
-                    </label>
-                  );
-                })}
-              </AccordionContent>
-            </AccordionItem>
-          </Card>
-
-          {/* GO FORWARD */}
-          <Card className="overflow-hidden">
-            <AccordionItem value="goforward" className="border-b-0">
-              <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
-                  <Flag className="w-3.5 h-3.5" />
-                  Go Forward
-                  <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
-                    {selectedGoForwards.size} selected
-                  </span>
-                </span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4 space-y-3">
-                <p className="text-xs text-muted-foreground">Next steps you (the ME) will own after this visit.</p>
-                {goForwards.map((chip) => {
-                  const isSelected = selectedGoForwards.has(chip);
-                  return (
-                    <label
-                      key={chip}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
-                      onClick={() => toggleSet(selectedGoForwards, setSelectedGoForwards, chip)}
                     >
                       <Checkbox checked={isSelected} className="mt-0.5" />
                       <span className="text-sm text-foreground">{chip}</span>
@@ -498,7 +466,7 @@ const EngagementTheme = () => {
                     .filter((w) => selectedWhatIfs.has(w.id))
                     .map((w) => w.label),
                   actionPoints: Array.from(selectedActionPoints),
-                  goForwards: Array.from(selectedGoForwards),
+                  
                   feedback: retailerFeedback.trim() ? [retailerFeedback.trim()] : [],
                   marketInsights: MARKET_INSIGHT_SECTIONS
                     .filter((s) => insightNotes[s.key].trim() || insightSummaries[s.key].trim())

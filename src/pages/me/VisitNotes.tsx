@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store } from "lucide-react";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store, Radar } from "lucide-react";
 import { dealers } from "@/data/mockData";
+
+type MarketInsight = { category: string; note: string; summary: string };
 
 type ThemeData = {
   themeTitle: string;
@@ -12,6 +14,7 @@ type ThemeData = {
   objections: string[];
   actionPoints: string[];
   feedback: string[];
+  marketInsights?: MarketInsight[];
 };
 
 const ME_NAME = "Manish Kumar from JK";
@@ -75,22 +78,32 @@ const VisitNotes = () => {
     return bullets;
   }, [stored]);
 
-  const initialFeedback = useMemo(() => {
-    const bullets: string[] = [];
-    Object.values(stored).forEach((t) => t?.feedback?.forEach((f) => bullets.push(f)));
-    if (bullets.length === 0) {
-      bullets.push("No key critical feedback from the retailer");
-    }
-    return bullets;
+  const marketInsights = useMemo<MarketInsight[]>(() => {
+    const items: MarketInsight[] = [];
+    Object.values(stored).forEach((t) =>
+      t?.marketInsights?.forEach((mi) => {
+        if (mi && (mi.summary?.trim() || mi.note?.trim())) items.push(mi);
+      })
+    );
+    return items;
   }, [stored]);
 
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
   const visitDate = useMemo(() => formatToday(), []);
 
   const actionPointsList = initialActionPoints;
-  const feedbackList = initialFeedback;
 
   const bulletsToText = (arr: string[]) => arr.map((b) => `• ${b}`).join("\n");
+
+  const insightsToText = (items: MarketInsight[]) =>
+    items.length === 0
+      ? "• No market insights captured"
+      : items
+          .map((mi) => {
+            const body = (mi.summary?.trim() || mi.note?.trim() || "").replace(/^•\s*/gm, "  - ");
+            return `• ${mi.category}:\n${body}`;
+          })
+          .join("\n");
 
   const whatsAppMessage =
 `*Visit Summary - ${dealer.name}*
@@ -108,8 +121,8 @@ ${bulletsToText(objectionBullets)}
 ✅ *Action Points / Go-Forwards:*
 ${bulletsToText(actionPointsList)}
 
-💬 *Key Critical Feedback:*
-${bulletsToText(feedbackList)}
+📡 *Market Insights:*
+${insightsToText(marketInsights)}
 
 - JK Cement ME Team`;
 
@@ -201,28 +214,35 @@ ${bulletsToText(feedbackList)}
             </div>
           </div>
 
-          {/* Key Critical Feedback (read-only) */}
+          {/* Market Insights (read-only) */}
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
-              <MessageSquare className="w-4 h-4 text-info" />
+              <Radar className="w-4 h-4 text-info" />
             </div>
             <div className="flex-1">
-              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Key Critical Feedback</p>
-              <ul className="mt-1.5 space-y-1">
-                {feedbackList.length > 0 ? feedbackList.map((f, i) => (
-                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                )) : (
-                  <li className="text-sm text-muted-foreground italic">No critical feedback noted.</li>
-                )}
-              </ul>
+              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Market Insights</p>
+              {marketInsights.length > 0 ? (
+                <ul className="mt-1.5 space-y-2">
+                  {marketInsights.map((mi, i) => (
+                    <li key={i} className="text-sm text-foreground">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-info shrink-0" />
+                        <span className="font-semibold">{mi.category}</span>
+                      </div>
+                      <p className="ml-3.5 mt-0.5 text-foreground/85 whitespace-pre-line leading-relaxed">
+                        {mi.summary?.trim() || mi.note?.trim()}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-1.5 text-sm text-muted-foreground italic">No market insights captured.</p>
+              )}
             </div>
           </div>
 
           <p className="text-xs text-muted-foreground italic pt-1">
-            To edit Action Points or Critical Feedback, go back to the previous step.
+            To edit Action Points or Market Insights, go back to the previous step.
           </p>
         </Card>
 
