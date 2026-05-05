@@ -222,10 +222,9 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Master accordion of all sections */}
+        {/* Master accordion of all sections — collapsed by default */}
         <Accordion
           type="multiple"
-          defaultValue={["core", "objections", "actions", "goforward", "insights"]}
           className="space-y-3"
         >
           {/* CORE DISCUSSION POINTS */}
