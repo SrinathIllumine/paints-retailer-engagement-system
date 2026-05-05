@@ -366,7 +366,7 @@ const EngagementTheme = () => {
                   </span>
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="px-4 space-y-2">
+              <AccordionContent className="px-4 space-y-3">
                 <p className="text-xs text-muted-foreground">Commitments the retailer will own.</p>
                 {actionPoints.map((chip) => {
                   const isSelected = selectedActionPoints.has(chip);
@@ -381,9 +381,22 @@ const EngagementTheme = () => {
                     </label>
                   );
                 })}
+
+                <div className="pt-2 space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Additional Retailer Feedback
+                  </label>
+                  <Textarea
+                    value={retailerFeedback}
+                    onChange={(e) => setRetailerFeedback(e.target.value)}
+                    placeholder="Capture any additional feedback or context the retailer shared…"
+                    className="min-h-[90px] rounded-xl bg-card text-sm"
+                  />
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Card>
+
 
           {/* GO FORWARD */}
           <Card className="overflow-hidden">
