@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-  type CarouselApi,
-} from "@/components/ui/carousel";
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import {
   ChevronDown,
   ChevronUp,
@@ -25,12 +23,16 @@ import {
   Users,
   ArrowRight,
   BookOpen,
+  TrendingUp,
+  Flag,
+  Radar,
 } from "lucide-react";
 import { engagementThemes, dealers } from "@/data/mockData";
+import VoiceTextInput from "@/components/me/VoiceTextInput";
 
 const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
-// Per-theme best practices (contextual to each objection)
+// Per-theme best practices
 const bestPracticesMap: Record<string, string[]> = {
   wi1: [
     "Start with a small trial batch to test actual demand before committing further",
@@ -82,7 +84,6 @@ const bestPracticesMap: Record<string, string[]> = {
   ],
 };
 
-// Per-theme takeaways (action-oriented outcomes)
 const themePositiveTakeaways: Record<string, string[]> = {
   et1: [
     "I'll try 2–3 relevant SKUs with contractors before the next meeting to see if it works for me",
@@ -104,6 +105,35 @@ const themePositiveTakeaways: Record<string, string[]> = {
   ],
 };
 
+// Go-forward suggestions (next-step commitments) — independent of action points
+const themeGoForwards: Record<string, string[]> = {
+  et1: [
+    "Schedule follow-up visit within 2 weeks to review trial outcomes",
+    "Share JK multi-product brochure on WhatsApp by tomorrow",
+    "Coordinate with ASM to arrange contractor meet next month",
+  ],
+  et2: [
+    "Confirm initial order placement before week-end",
+    "Send display stand request to area office",
+    "Plan joint visit with senior ME for next review cycle",
+  ],
+  et3: [
+    "Block date for in-shop painter meet in next 3 weeks",
+    "Share painter contact list with ASM for invites",
+    "Follow up on demo feedback within 7 days",
+  ],
+};
+
+const MARKET_INSIGHT_SECTIONS = [
+  { key: "competition", label: "Competition", placeholder: "What competitors are doing — schemes, pricing, push, new SKUs…" },
+  { key: "demand", label: "Demand", placeholder: "Demand patterns — projects, seasonality, slow/fast movers…" },
+  { key: "productQuality", label: "Product Quality", placeholder: "Any complaints, observations on JK or competitor product quality…" },
+  { key: "schemes", label: "Schemes", placeholder: "Scheme feedback — what's working, what's missing, retailer asks…" },
+  { key: "customerRelated", label: "Customer Related", placeholder: "End-customer behaviour — preferences, brand pull, painter influence…" },
+] as const;
+
+type InsightKey = typeof MARKET_INSIGHT_SECTIONS[number]["key"];
+
 const EngagementTheme = () => {
   const { themeId, id: dealerId } = useParams();
   const navigate = useNavigate();
@@ -111,32 +141,30 @@ const EngagementTheme = () => {
   const dealer = dealers.find((d) => d.id === dealerId) || dealers[0];
   const Icon = themeIcons[theme.icon] || Layers;
 
-  const currentThemeIndex = engagementThemes.findIndex((t) => t.id === themeId);
-  const isLastTheme = currentThemeIndex === engagementThemes.length - 1;
-  const nextTheme = !isLastTheme ? engagementThemes[currentThemeIndex + 1] : null;
-
   const [completedPoints, setCompletedPoints] = useState<Set<string>>(new Set());
   const [selectedWhatIfs, setSelectedWhatIfs] = useState<Set<string>>(new Set());
   const [expandedBestPractices, setExpandedBestPractices] = useState<Record<string, boolean>>({});
-  const [selectedChips, setSelectedChips] = useState<Set<string>>(new Set());
-  const [additionalNotes, setAdditionalNotes] = useState("");
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [selectedActionPoints, setSelectedActionPoints] = useState<Set<string>>(new Set());
+  const [selectedGoForwards, setSelectedGoForwards] = useState<Set<string>>(new Set());
+  const [retailerFeedback, setRetailerFeedback] = useState("");
 
-  useEffect(() => {
-    if (!carouselApi) return;
-    const onSelect = () => setActiveSlide(carouselApi.selectedScrollSnap());
-    onSelect();
-    carouselApi.on("select", onSelect);
-    return () => { carouselApi.off("select", onSelect); };
-  }, [carouselApi]);
+  // Market insights state — raw note + AI summary per section
+  const [insightNotes, setInsightNotes] = useState<Record<InsightKey, string>>({
+    competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "",
+  });
+  const [insightSummaries, setInsightSummaries] = useState<Record<InsightKey, string>>({
+    competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "",
+  });
 
   useEffect(() => {
     setCompletedPoints(new Set());
     setSelectedWhatIfs(new Set());
     setExpandedBestPractices({});
-    setSelectedChips(new Set());
-    setAdditionalNotes("");
+    setSelectedActionPoints(new Set());
+    setSelectedGoForwards(new Set());
+    setRetailerFeedback("");
+    setInsightNotes({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
+    setInsightSummaries({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
     window.scrollTo(0, 0);
   }, [themeId]);
 
@@ -147,33 +175,29 @@ const EngagementTheme = () => {
   };
 
   const toggleWhatIf = (id: string) => {
-    // Only one objection's Best Practices visible at a time
-    if (selectedWhatIfs.has(id)) {
-      setSelectedWhatIfs(new Set());
-      setExpandedBestPractices({});
-    } else {
-      setSelectedWhatIfs(new Set([id]));
-      // Best practices open by default for the newly selected objection only
-      setExpandedBestPractices({ [id]: true });
-    }
+    const next = new Set(selectedWhatIfs);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedWhatIfs(next);
+    if (!expandedBestPractices[id]) setExpandedBestPractices((p) => ({ ...p, [id]: true }));
   };
 
-  const toggleChip = (chip: string) => {
-    const next = new Set(selectedChips);
-    if (next.has(chip)) next.delete(chip); else next.add(chip);
-    setSelectedChips(next);
+  const toggleSet = (set: Set<string>, setter: (s: Set<string>) => void, value: string) => {
+    const next = new Set(set);
+    if (next.has(value)) next.delete(value); else next.add(value);
+    setter(next);
   };
 
   const progress = theme.discussionPoints.length > 0
     ? (completedPoints.size / theme.discussionPoints.length) * 100
     : 0;
 
-  const takeaways = themePositiveTakeaways[theme.id] || themePositiveTakeaways.et1;
+  const actionPoints = themePositiveTakeaways[theme.id] || themePositiveTakeaways.et1;
+  const goForwards = themeGoForwards[theme.id] || themeGoForwards.et1;
 
   return (
     <MeLayout title={theme.title} showBack>
-      <div className="p-4 space-y-5">
-        {/* Theme Header - plain text, no red */}
+      <div className="p-4 space-y-4">
+        {/* Header */}
         <div className="animate-slide-up flex items-start gap-3">
           <div className={`w-11 h-11 rounded-xl bg-${theme.color}/10 flex items-center justify-center shrink-0`}>
             <Icon className={`w-5 h-5 text-${theme.color}`} />
@@ -198,179 +222,264 @@ const EngagementTheme = () => {
           </div>
         </div>
 
-        {/* Combined: Core Discussion Points + Handle Objections */}
-        <Card className="p-4 space-y-5">
-          {/* Core Discussion Points - horizontal swipe carousel */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 uppercase tracking-wider font-extrabold text-card-foreground text-sm">
-                <MessageSquare className="w-3.5 h-3.5" />
-                CORE DISCUSSION POINTS
-              </div>
-              <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
-                {activeSlide + 1} / {theme.discussionPoints.length}
-                <span className="hidden sm:inline">· swipe</span>
-                <ArrowRight className="w-3 h-3 animate-pulse" />
-              </span>
-            </div>
-
-            <div className="relative">
-              <Carousel setApi={setCarouselApi} opts={{ align: "start" }} className="w-full">
-                <CarouselContent className="-ml-2">
+        {/* Master accordion of all sections */}
+        <Accordion
+          type="multiple"
+          defaultValue={["core", "objections", "actions", "goforward", "insights"]}
+          className="space-y-3"
+        >
+          {/* CORE DISCUSSION POINTS */}
+          <Card className="overflow-hidden">
+            <AccordionItem value="core" className="border-b-0">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  Core Discussion Points
+                  <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
+                    {completedPoints.size}/{theme.discussionPoints.length}
+                  </span>
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <Accordion type="multiple" className="space-y-2">
                   {theme.discussionPoints.map((point, i) => {
                     const isDone = completedPoints.has(point.id);
                     return (
-                      <CarouselItem key={point.id} className="pl-2 basis-[88%] sm:basis-[92%]">
-                        <Card className={`overflow-hidden transition-all ${isDone ? "border-success/40 bg-success/5" : ""}`}>
-                          <div className="p-4 space-y-3">
-                            <div className="flex items-start gap-3">
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isDone ? "bg-success text-success-foreground" : "bg-secondary text-muted-foreground"}`}>
-                                {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-sm font-bold">{i + 1}</span>}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h4 className="font-semibold text-foreground text-base">{point.title}</h4>
-                                <p className="mt-0.5 text-sm text-muted-foreground leading-relaxed">{point.description}</p>
-                              </div>
+                      <AccordionItem
+                        key={point.id}
+                        value={point.id}
+                        className={`border rounded-xl px-3 ${isDone ? "border-success/40 bg-success/5" : "border-border"}`}
+                      >
+                        <AccordionTrigger className="hover:no-underline py-3">
+                          <div className="flex items-start gap-3 text-left flex-1">
+                            <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isDone ? "bg-success text-success-foreground" : "bg-secondary text-muted-foreground"}`}>
+                              {isDone ? <CheckCircle2 className="w-4 h-4" /> : <span className="text-xs font-bold">{i + 1}</span>}
                             </div>
-
-                            {/* USEFUL INSIGHTS - always visible & open */}
-                            <div className="bg-secondary/40 rounded-lg p-3">
-                              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">USEFUL INSIGHTS FOR YOU</p>
-                              <p className="text-sm text-foreground/85 leading-relaxed font-normal">{point.detail}</p>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-foreground text-sm">{point.title}</h4>
+                              <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed line-clamp-2">{point.description}</p>
                             </div>
-
-                            <Button
-                              variant={isDone ? "secondary" : "field"}
-                              size="sm"
-                              className="w-full"
-                              onClick={() => toggleComplete(point.id)}
-                            >
-                              {isDone ? "Mark as Not Discussed" : "Mark as Discussed ✓"}
-                            </Button>
                           </div>
-                        </Card>
-                      </CarouselItem>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-3">
+                          <div className="bg-secondary/40 rounded-lg p-3">
+                            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Useful insights for you</p>
+                            <p className="text-sm text-foreground/85 leading-relaxed">{point.detail}</p>
+                          </div>
+                          <Button
+                            variant={isDone ? "secondary" : "field"}
+                            size="sm"
+                            className="w-full"
+                            onClick={() => toggleComplete(point.id)}
+                          >
+                            {isDone ? "Mark as Not Discussed" : "Mark as Discussed ✓"}
+                          </Button>
+                        </AccordionContent>
+                      </AccordionItem>
                     );
                   })}
-                </CarouselContent>
-                {/* Right gradient fade hint */}
-                <div className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-card to-transparent rounded-r-lg" />
+                </Accordion>
+              </AccordionContent>
+            </AccordionItem>
+          </Card>
 
-                <div className="flex items-center justify-center gap-2 mt-3">
-                  <CarouselPrevious className="static translate-y-0" />
-                  <div className="flex gap-1.5">
-                    {theme.discussionPoints.map((_, i) => (
-                      <button
-                        key={i}
-                        aria-label={`Go to point ${i + 1}`}
-                        onClick={() => carouselApi?.scrollTo(i)}
-                        className={`h-1.5 rounded-full transition-all ${i === activeSlide ? `w-5 bg-${theme.color}` : "w-1.5 bg-muted"}`}
-                      />
-                    ))}
-                  </div>
-                  <CarouselNext className="static translate-y-0" />
-                </div>
-              </Carousel>
-              <p className="text-[11px] text-center text-muted-foreground mt-1">Swipe left or right to see more discussion points</p>
-            </div>
-          </div>
-
-          {/* Handle Objections - hidden until at least one point marked as Discussed */}
-          {theme.whatIfs.length > 0 && completedPoints.size > 0 && (
-            <div className="space-y-3 pt-4 border-t border-border animate-fade-in">
-              <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
-                <Lightbulb className="w-3.5 h-3.5" />
-                HANDLE OBJECTIONS
-              </div>
-              <p className="text-xs text-muted-foreground -mt-1">Select any objection the retailer raises.</p>
-              {theme.whatIfs.map((wi) => {
-                const isSelected = selectedWhatIfs.has(wi.id);
-                const practices = bestPracticesMap[wi.id] || [];
-                const practicesOpen = expandedBestPractices[wi.id] !== false; // default open
-
-                return (
-                  <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
-                    <button
-                      className={`w-full tap-target px-4 py-3 text-left text-sm font-medium transition-all ${
-                        isSelected ? "bg-warning/10 text-warning" : "bg-card text-foreground"
-                      }`}
-                      onClick={() => toggleWhatIf(wi.id)}
-                    >
-                      <span className="flex items-center gap-2">
-                        <span className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected ? "border-warning bg-warning text-warning-foreground" : "border-muted-foreground/30"
-                        }`}>
-                          {isSelected && <CheckCircle2 className="w-3 h-3" />}
-                        </span>
-                        {wi.label}
-                      </span>
-                    </button>
-
-                    {isSelected && practices.length > 0 && (
-                      <div className="px-4 pb-4 space-y-2 animate-fade-in">
-                        <div className="border border-info/20 rounded-lg overflow-hidden">
-                          <button
-                            className="w-full flex items-center justify-between px-3 py-2.5 bg-info/5 text-left"
-                            onClick={() => setExpandedBestPractices(prev => ({ ...prev, [wi.id]: prev[wi.id] === false ? true : false }))}
-                          >
-                            <span className="flex items-center gap-2 text-xs font-semibold text-info uppercase">
-                              <BookOpen className="w-3.5 h-3.5" />
-                              BEST PRACTICES FOR THE RETAILER
+          {/* OBJECTIONS */}
+          {theme.whatIfs.length > 0 && (
+            <Card className="overflow-hidden">
+              <AccordionItem value="objections" className="border-b-0">
+                <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                  <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                    <Lightbulb className="w-3.5 h-3.5" />
+                    Objections
+                    <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
+                      {selectedWhatIfs.size} selected
+                    </span>
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 space-y-2">
+                  <p className="text-xs text-muted-foreground">Select all objections raised by the retailer.</p>
+                  {theme.whatIfs.map((wi) => {
+                    const isSelected = selectedWhatIfs.has(wi.id);
+                    const practices = bestPracticesMap[wi.id] || [];
+                    const practicesOpen = expandedBestPractices[wi.id] !== false;
+                    return (
+                      <Card key={wi.id} className={`overflow-hidden transition-all ${isSelected ? "border-warning/30" : ""}`}>
+                        <button
+                          type="button"
+                          className={`w-full tap-target px-3 py-2.5 text-left text-sm font-medium transition-all ${
+                            isSelected ? "bg-warning/10 text-warning" : "bg-card text-foreground"
+                          }`}
+                          onClick={() => toggleWhatIf(wi.id)}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected ? "border-warning bg-warning text-warning-foreground" : "border-muted-foreground/30"
+                            }`}>
+                              {isSelected && <CheckCircle2 className="w-3 h-3" />}
                             </span>
-                            {practicesOpen ? <ChevronUp className="w-3.5 h-3.5 text-info" /> : <ChevronDown className="w-3.5 h-3.5 text-info" />}
-                          </button>
-                          {practicesOpen && (
-                            <div className="px-3 pb-3 pt-2 bg-info/5 space-y-1.5 animate-fade-in max-h-48 overflow-y-auto">
-                              {practices.map((practice, idx) => (
-                                <div key={idx} className="bg-background/60 border border-info/15 rounded-lg px-3 py-2.5 text-sm text-foreground/80">
-                                  {practice}
+                            {wi.label}
+                          </span>
+                        </button>
+
+                        {isSelected && practices.length > 0 && (
+                          <div className="px-3 pb-3 animate-fade-in">
+                            <div className="border border-info/20 rounded-lg overflow-hidden">
+                              <button
+                                type="button"
+                                className="w-full flex items-center justify-between px-3 py-2 bg-info/5 text-left"
+                                onClick={() => setExpandedBestPractices((prev) => ({ ...prev, [wi.id]: !practicesOpen }))}
+                              >
+                                <span className="flex items-center gap-2 text-xs font-semibold text-info uppercase">
+                                  <BookOpen className="w-3.5 h-3.5" />
+                                  Best practices for the retailer
+                                </span>
+                                {practicesOpen ? <ChevronUp className="w-3.5 h-3.5 text-info" /> : <ChevronDown className="w-3.5 h-3.5 text-info" />}
+                              </button>
+                              {practicesOpen && (
+                                <div className="px-3 pb-3 pt-2 bg-info/5 space-y-1.5 animate-fade-in max-h-48 overflow-y-auto">
+                                  {practices.map((practice, idx) => (
+                                    <div key={idx} className="bg-background/60 border border-info/15 rounded-lg px-3 py-2 text-sm text-foreground/80">
+                                      {practice}
+                                    </div>
+                                  ))}
                                 </div>
-                              ))}
+                              )}
                             </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </Card>
-                );
-              })}
-            </div>
+                          </div>
+                        )}
+                      </Card>
+                    );
+                  })}
+                </AccordionContent>
+              </AccordionItem>
+            </Card>
           )}
-        </Card>
 
-        {/* Retailer Response */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-1.5 uppercase tracking-wider text-sm font-extrabold text-card-foreground">
-            <StickyNote className="w-3.5 h-3.5" />
-            RETAILER ACTION POINTS / GO-FORWARDS
-          </div>
-          <p className="text-xs text-muted-foreground -mt-1">Select key retailer action points from your discussion.</p>
+          {/* RETAILER ACTION POINTS */}
+          <Card className="overflow-hidden">
+            <AccordionItem value="actions" className="border-b-0">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                  <StickyNote className="w-3.5 h-3.5" />
+                  Retailer Action Points
+                  <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
+                    {selectedActionPoints.size} selected
+                  </span>
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4 space-y-2">
+                <p className="text-xs text-muted-foreground">Commitments the retailer will own.</p>
+                {actionPoints.map((chip) => {
+                  const isSelected = selectedActionPoints.has(chip);
+                  return (
+                    <label
+                      key={chip}
+                      className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
+                      onClick={() => toggleSet(selectedActionPoints, setSelectedActionPoints, chip)}
+                    >
+                      <Checkbox checked={isSelected} className="mt-0.5" />
+                      <span className="text-sm text-foreground">{chip}</span>
+                    </label>
+                  );
+                })}
+              </AccordionContent>
+            </AccordionItem>
+          </Card>
 
-          <div className="space-y-2">
-            {takeaways.map((chip) => {
-              const isSelected = selectedChips.has(chip);
-              return (
-                <label
-                  key={chip}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
-                  onClick={() => toggleChip(chip)}
-                >
-                  <Checkbox checked={isSelected} className="mt-0.5" />
-                  <span className="text-sm text-foreground">{chip}</span>
-                </label>
-              );
-            })}
-          </div>
+          {/* GO FORWARD */}
+          <Card className="overflow-hidden">
+            <AccordionItem value="goforward" className="border-b-0">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                  <Flag className="w-3.5 h-3.5" />
+                  Go Forward
+                  <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
+                    {selectedGoForwards.size} selected
+                  </span>
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4 space-y-3">
+                <p className="text-xs text-muted-foreground">Next steps you (the ME) will own after this visit.</p>
+                {goForwards.map((chip) => {
+                  const isSelected = selectedGoForwards.has(chip);
+                  return (
+                    <label
+                      key={chip}
+                      className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
+                      onClick={() => toggleSet(selectedGoForwards, setSelectedGoForwards, chip)}
+                    >
+                      <Checkbox checked={isSelected} className="mt-0.5" />
+                      <span className="text-sm text-foreground">{chip}</span>
+                    </label>
+                  );
+                })}
 
-          <Textarea
-            value={additionalNotes}
-            onChange={(e) => setAdditionalNotes(e.target.value)}
-            placeholder="Any key critical feedback from the retailer..."
-            className="min-h-[60px] rounded-xl bg-card text-sm"
-          />
-        </div>
+                <div className="pt-2 space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Additional Retailer Feedback
+                  </label>
+                  <Textarea
+                    value={retailerFeedback}
+                    onChange={(e) => setRetailerFeedback(e.target.value)}
+                    placeholder="Capture any additional feedback or context the retailer shared…"
+                    className="min-h-[90px] rounded-xl bg-card text-sm"
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Card>
 
-        {/* Navigation */}
+          {/* MARKET INSIGHTS */}
+          <Card className="overflow-hidden">
+            <AccordionItem value="insights" className="border-b-0">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                  <Radar className="w-3.5 h-3.5" />
+                  Market Insights
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <p className="text-xs text-muted-foreground mb-2">
+                  Capture field signals — speak or type. AI will summarise into 2–4 sharp lines.
+                </p>
+                <Accordion type="multiple" className="space-y-2">
+                  {MARKET_INSIGHT_SECTIONS.map((s) => {
+                    const hasContent = !!insightNotes[s.key]?.trim();
+                    return (
+                      <AccordionItem
+                        key={s.key}
+                        value={s.key}
+                        className={`border rounded-xl px-3 ${hasContent ? "border-info/30 bg-info/5" : "border-border"}`}
+                      >
+                        <AccordionTrigger className="hover:no-underline py-3">
+                          <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                            <TrendingUp className="w-3.5 h-3.5 text-muted-foreground" />
+                            {s.label}
+                            {hasContent && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-info/15 text-info font-medium">captured</span>
+                            )}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <VoiceTextInput
+                            category={s.label}
+                            placeholder={s.placeholder}
+                            value={insightNotes[s.key]}
+                            onChange={(v) => setInsightNotes((prev) => ({ ...prev, [s.key]: v }))}
+                            summary={insightSummaries[s.key]}
+                            onSummaryChange={(v) => setInsightSummaries((prev) => ({ ...prev, [s.key]: v }))}
+                          />
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+              </AccordionContent>
+            </AccordionItem>
+          </Card>
+        </Accordion>
+
+        {/* Save */}
         <div className="pt-2 space-y-2 animate-slide-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
           <Button
             variant="field"
@@ -388,8 +497,16 @@ const EngagementTheme = () => {
                   objections: theme.whatIfs
                     .filter((w) => selectedWhatIfs.has(w.id))
                     .map((w) => w.label),
-                  actionPoints: Array.from(selectedChips),
-                  feedback: additionalNotes.trim() ? [additionalNotes.trim()] : [],
+                  actionPoints: Array.from(selectedActionPoints),
+                  goForwards: Array.from(selectedGoForwards),
+                  feedback: retailerFeedback.trim() ? [retailerFeedback.trim()] : [],
+                  marketInsights: MARKET_INSIGHT_SECTIONS
+                    .filter((s) => insightNotes[s.key].trim() || insightSummaries[s.key].trim())
+                    .map((s) => ({
+                      category: s.label,
+                      note: insightNotes[s.key].trim(),
+                      summary: insightSummaries[s.key].trim(),
+                    })),
                 };
                 sessionStorage.setItem(key, JSON.stringify({ ...existing, themes: themesData }));
               } catch {}
