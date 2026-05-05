@@ -92,9 +92,18 @@ const VisitNotes = () => {
   const visitDate = useMemo(() => formatToday(), []);
 
   const actionPointsList = initialActionPoints;
-  const feedbackList = initialFeedback;
 
   const bulletsToText = (arr: string[]) => arr.map((b) => `• ${b}`).join("\n");
+
+  const insightsToText = (items: MarketInsight[]) =>
+    items.length === 0
+      ? "• No market insights captured"
+      : items
+          .map((mi) => {
+            const body = (mi.summary?.trim() || mi.note?.trim() || "").replace(/^•\s*/gm, "  - ");
+            return `• ${mi.category}:\n${body}`;
+          })
+          .join("\n");
 
   const whatsAppMessage =
 `*Visit Summary - ${dealer.name}*
@@ -112,8 +121,8 @@ ${bulletsToText(objectionBullets)}
 ✅ *Action Points / Go-Forwards:*
 ${bulletsToText(actionPointsList)}
 
-💬 *Key Critical Feedback:*
-${bulletsToText(feedbackList)}
+📡 *Market Insights:*
+${insightsToText(marketInsights)}
 
 - JK Cement ME Team`;
 
