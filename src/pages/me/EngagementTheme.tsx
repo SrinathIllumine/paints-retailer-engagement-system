@@ -231,7 +231,7 @@ const EngagementTheme = () => {
           <Card className="overflow-hidden">
             <AccordionItem value="core" className="border-b-0">
               <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                <span className="flex items-center gap-2 font-extrabold uppercase tracking-wider text-card-foreground text-xs">
                   <MessageSquare className="w-3.5 h-3.5" />
                   Core Discussion Points
                   <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
@@ -287,7 +287,7 @@ const EngagementTheme = () => {
             <Card className="overflow-hidden">
               <AccordionItem value="objections" className="border-b-0">
                 <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                  <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                  <span className="flex items-center gap-2 font-extrabold uppercase tracking-wider text-card-foreground text-xs">
                     <Lightbulb className="w-3.5 h-3.5" />
                     Objections
                     <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
@@ -358,11 +358,13 @@ const EngagementTheme = () => {
           <Card className="overflow-hidden">
             <AccordionItem value="actions" className="border-b-0">
               <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                <span className="flex items-center gap-2 font-extrabold uppercase tracking-wider text-card-foreground text-xs">
                   <StickyNote className="w-3.5 h-3.5" />
-                  Retailer Action Points
-                  <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
-                    {selectedActionPoints.size} selected
+                  <span className="flex flex-col items-start leading-tight">
+                    RETAILER ACTION POINTS / GO-FORWARDS
+                    <span className="text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
+                      {selectedActionPoints.size} selected
+                    </span>
                   </span>
                 </span>
               </AccordionTrigger>
@@ -401,7 +403,7 @@ const EngagementTheme = () => {
           <Card className="overflow-hidden">
             <AccordionItem value="insights" className="border-b-0">
               <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
+                <span className="flex items-center gap-2 font-extrabold uppercase tracking-wider text-card-foreground text-xs">
                   <Radar className="w-3.5 h-3.5" />
                   Market Insights
                 </span>
