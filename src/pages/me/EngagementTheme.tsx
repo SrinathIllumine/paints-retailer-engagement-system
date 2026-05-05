@@ -360,12 +360,12 @@ const EngagementTheme = () => {
               <AccordionTrigger className="px-4 py-3 hover:no-underline">
                 <span className="flex items-center gap-2 font-extrabold uppercase tracking-wider text-card-foreground text-xs">
                   <StickyNote className="w-3.5 h-3.5" />
-                  <div className="flex flex-col items-start leading-tight">
+                  <span className="flex flex-col items-start leading-tight">
                     RETAILER ACTION POINTS / GO-FORWARDS
                     <span className="text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
                       {selectedActionPoints.size} selected
                     </span>
-                  </div>
+                  </span>
                 </span>
               </AccordionTrigger>
               <AccordionContent className="px-4 space-y-3">
