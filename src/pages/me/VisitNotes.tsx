@@ -90,6 +90,17 @@ const VisitNotes = () => {
     return items;
   }, [stored]);
 
+  const retailerIdeas = useMemo<string[]>(() => {
+    const items: string[] = [];
+    Object.values(stored).forEach((t) => {
+      const ri = t?.retailerIdeas;
+      if (ri && (ri.summary?.trim() || ri.note?.trim())) {
+        items.push(ri.summary?.trim() || ri.note?.trim());
+      }
+    });
+    return items;
+  }, [stored]);
+
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
   const visitDate = useMemo(() => formatToday(), []);
 
