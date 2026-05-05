@@ -161,7 +161,7 @@ const EngagementTheme = () => {
     setSelectedWhatIfs(new Set());
     setExpandedBestPractices({});
     setSelectedActionPoints(new Set());
-    setSelectedGoForwards(new Set());
+    
     setRetailerFeedback("");
     setInsightNotes({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
     setInsightSummaries({ competition: "", demand: "", productQuality: "", schemes: "", customerRelated: "" });
