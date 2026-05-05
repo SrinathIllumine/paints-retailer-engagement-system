@@ -397,51 +397,6 @@ const EngagementTheme = () => {
             </AccordionItem>
           </Card>
 
-
-
-          {/* GO FORWARD */}
-          <Card className="overflow-hidden">
-            <AccordionItem value="goforward" className="border-b-0">
-              <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-card-foreground">
-                  <Flag className="w-3.5 h-3.5" />
-                  Go Forward
-                  <span className="ml-1 text-[10px] text-muted-foreground font-medium normal-case tracking-normal">
-                    {selectedGoForwards.size} selected
-                  </span>
-                </span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4 space-y-3">
-                <p className="text-xs text-muted-foreground">Next steps you (the ME) will own after this visit.</p>
-                {goForwards.map((chip) => {
-                  const isSelected = selectedGoForwards.has(chip);
-                  return (
-                    <label
-                      key={chip}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50 cursor-pointer transition-all hover:border-primary/30 tap-target"
-                      onClick={() => toggleSet(selectedGoForwards, setSelectedGoForwards, chip)}
-                    >
-                      <Checkbox checked={isSelected} className="mt-0.5" />
-                      <span className="text-sm text-foreground">{chip}</span>
-                    </label>
-                  );
-                })}
-
-                <div className="pt-2 space-y-1.5">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    Additional Retailer Feedback
-                  </label>
-                  <Textarea
-                    value={retailerFeedback}
-                    onChange={(e) => setRetailerFeedback(e.target.value)}
-                    placeholder="Capture any additional feedback or context the retailer shared…"
-                    className="min-h-[90px] rounded-xl bg-card text-sm"
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Card>
-
           {/* MARKET INSIGHTS */}
           <Card className="overflow-hidden">
             <AccordionItem value="insights" className="border-b-0">
