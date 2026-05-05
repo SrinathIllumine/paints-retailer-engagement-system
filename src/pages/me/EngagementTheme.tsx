@@ -26,6 +26,7 @@ import {
   TrendingUp,
   
   Radar,
+  Sparkles,
 } from "lucide-react";
 import { engagementThemes, dealers } from "@/data/mockData";
 import VoiceTextInput from "@/components/me/VoiceTextInput";
