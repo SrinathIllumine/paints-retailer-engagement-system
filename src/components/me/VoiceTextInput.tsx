@@ -17,44 +17,81 @@ const getSR = (): any => {
   return (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition || null;
 };
 
-// Crisp mock AI summarizer — 2–3 short, scannable bullets.
+// ---------- Smarter mock summarizer ----------
+const STOP = new Set([
+  "the","a","an","is","are","was","were","be","been","being","of","to","in","on","for","and","or","but",
+  "with","as","at","by","from","that","this","these","those","it","its","i","you","he","she","we","they",
+  "them","my","our","your","their","so","if","then","than","also","just","very","really","not","no","yes",
+  "do","does","did","done","have","has","had","will","would","can","could","should","may","might","about",
+  "into","over","under","up","down","out","off","there","here","what","which","who","whom","how","why",
+  "when","where","because","while","ok","okay","right","like","said","says","say"
+]);
+
+const splitSentences = (t: string): string[] =>
+  t.replace(/\s+/g, " ").trim()
+    .split(/(?<=[.!?।])\s+|\s*[;|]\s*/)
+    .map(s => s.trim())
+    .filter(s => s.length > 2);
+
+const keywordScore = (sent: string, freq: Map<string, number>): number => {
+  const words = sent.toLowerCase().match(/[a-z0-9₹%]+/g) || [];
+  let s = 0;
+  for (const w of words) if (!STOP.has(w) && w.length > 2) s += freq.get(w) || 0;
+  // Boost sentences that mention numbers, money, % or action verbs
+  if (/\d/.test(sent)) s += 3;
+  if (/(₹|rs\.?|inr|%|bag|bags|tonne|ton|cr|lakh)/i.test(sent)) s += 4;
+  if (/(want|need|ask|request|demand|complain|issue|problem|prefer|suggest|plan|launch|offer|scheme|margin|price|delivery|stock|supply)/i.test(sent)) s += 3;
+  return s / Math.max(1, Math.sqrt(words.length));
+};
+
+const trimSent = (s: string, maxWords = 18) => {
+  const w = s.replace(/[.!?।]+$/g, "").trim().split(/\s+/);
+  return w.length <= maxWords ? w.join(" ") : w.slice(0, maxWords).join(" ") + "…";
+};
+
 const mockSummarize = (text: string, category: string): string => {
   const cleaned = text.replace(/\s+/g, " ").trim();
   if (!cleaned) return "";
 
-  // Split into sentence-like chunks
-  const sentences = cleaned
-    .split(/(?<=[.!?।])\s+|\s*[;|]\s*/)
-    .map((s) => s.trim())
-    .filter((s) => s.length > 3);
+  const sentences = splitSentences(cleaned);
+  if (sentences.length === 0) return `• ${category}: ${trimSent(cleaned)}`;
 
-  const pool = sentences.length ? sentences : [cleaned];
-
-  // Dedupe by lowercased first 6 words
-  const seen = new Set<string>();
-  const unique: string[] = [];
-  for (const s of pool) {
-    const sig = s.toLowerCase().split(/\s+/).slice(0, 6).join(" ");
-    if (seen.has(sig)) continue;
-    seen.add(sig);
-    unique.push(s);
+  // Build word frequency
+  const freq = new Map<string, number>();
+  for (const s of sentences) {
+    const words = s.toLowerCase().match(/[a-z0-9₹%]+/g) || [];
+    for (const w of words) {
+      if (STOP.has(w) || w.length <= 2) continue;
+      freq.set(w, (freq.get(w) || 0) + 1);
+    }
   }
 
-  const trim = (s: string, n = 14) => {
-    const words = s.replace(/[.!?।]+$/g, "").split(/\s+/);
-    return words.length <= n ? words.join(" ") : words.slice(0, n).join(" ") + "…";
-  };
+  // Rank
+  const ranked = sentences
+    .map((s, i) => ({ s, i, score: keywordScore(s, freq) }))
+    .sort((a, b) => b.score - a.score);
 
-  const bullets = unique.slice(0, 3).map(trim);
-  const labelled = bullets.map((b, i) => {
-    if (i === 0) return `${category}: ${b}`;
-    if (i === 1) return `Implication: ${b}`;
-    return `Watch-out: ${b}`;
-  });
+  // Dedupe by first 5 keyword signature
+  const seen = new Set<string>();
+  const picked: { s: string; i: number }[] = [];
+  for (const r of ranked) {
+    const sig = (r.s.toLowerCase().match(/[a-z0-9]+/g) || [])
+      .filter(w => !STOP.has(w)).slice(0, 5).join(" ");
+    if (seen.has(sig)) continue;
+    seen.add(sig);
+    picked.push({ s: r.s, i: r.i });
+    if (picked.length === 3) break;
+  }
+  // Restore original order for readability
+  picked.sort((a, b) => a.i - b.i);
 
-  return labelled.map((b) => `• ${b}`).join("\n");
+  const labels = [`${category}`, "Implication", "Watch-out"];
+  return picked
+    .map((p, idx) => `• ${labels[idx] || "Note"}: ${trimSent(p.s)}`)
+    .join("\n");
 };
 
+// ---------- Component ----------
 const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSummaryChange }: Props) => {
   const [listening, setListening] = useState(false);
   const [interimText, setInterimText] = useState("");
@@ -64,12 +101,22 @@ const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSum
 
   const recRef = useRef<any>(null);
   const shouldListenRef = useRef(false);
-  const baseTextRef = useRef<string>(""); // committed text before current session
+  const baseTextRef = useRef<string>("");
   const valueRef = useRef<string>(value);
+  const onChangeRef = useRef(onChange);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => { valueRef.current = value; }, [value]);
+  useEffect(() => { onChangeRef.current = onChange; }, [onChange]);
 
   const supportsVoice = !!getSR();
+
+  const stopMediaStream = () => {
+    try {
+      mediaStreamRef.current?.getTracks().forEach(t => t.stop());
+    } catch {}
+    mediaStreamRef.current = null;
+  };
 
   const buildRecognizer = () => {
     const SR = getSR();
@@ -78,61 +125,88 @@ const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSum
     rec.lang = "en-IN";
     rec.continuous = true;
     rec.interimResults = true;
+    rec.maxAlternatives = 1;
 
     rec.onresult = (e: any) => {
       let interim = "";
       let finalChunk = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const r = e.results[i];
-        const transcript = r[0].transcript;
+        const transcript = r[0]?.transcript ?? "";
         if (r.isFinal) finalChunk += transcript + " ";
         else interim += transcript;
       }
       if (finalChunk) {
-        baseTextRef.current = (baseTextRef.current + " " + finalChunk).replace(/\s+/g, " ").trim();
-        onChange(baseTextRef.current);
-        setInterimText("");
-      } else {
-        setInterimText(interim);
+        const merged = (baseTextRef.current + " " + finalChunk).replace(/\s+/g, " ").trim();
+        baseTextRef.current = merged;
+        onChangeRef.current(merged);
       }
+      setInterimText(interim);
     };
 
     rec.onerror = (e: any) => {
-      // 'no-speech' / 'aborted' are common — keep session alive if user wants it on
-      if (e?.error && e.error !== "no-speech" && e.error !== "aborted") {
-        setError(`Mic error: ${e.error}`);
+      const code = e?.error;
+      if (code === "not-allowed" || code === "service-not-allowed") {
+        setError("Microphone permission blocked. Allow access and try again.");
+        shouldListenRef.current = false;
+      } else if (code === "audio-capture") {
+        setError("No microphone found.");
+        shouldListenRef.current = false;
+      } else if (code && code !== "no-speech" && code !== "aborted") {
+        // Surface but don't kill session
+        setError(`Mic: ${code}`);
       }
     };
 
     rec.onend = () => {
-      // Auto-restart while user hasn't pressed Stop
+      // continuous=true should keep it alive; if it ends while user wants to keep listening,
+      // restart silently ONCE without any extra UI churn (this is the only way Chrome
+      // sometimes drops the session). We avoid aggressive loop-restarts that cause beeps.
       if (shouldListenRef.current) {
-        try { rec.start(); } catch { /* ignore double-start */ }
-      } else {
-        setListening(false);
-        setInterimText("");
+        try {
+          rec.start();
+          return;
+        } catch {
+          // fall through to stopped state
+        }
       }
+      setListening(false);
+      setInterimText("");
+      stopMediaStream();
     };
 
     return rec;
   };
 
-  const startListening = () => {
+  const startListening = async () => {
     if (!getSR()) {
-      setError("Voice not supported in this browser.");
+      setError("Voice not supported in this browser. Please type your note.");
       return;
     }
     setError("");
     baseTextRef.current = valueRef.current.trim();
+
+    // Pre-acquire mic stream so Chrome keeps the device warm and reduces re-prompt beeps
+    try {
+      mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+      });
+    } catch (err: any) {
+      setError(err?.name === "NotAllowedError"
+        ? "Microphone permission blocked. Allow access and try again."
+        : "Could not access microphone.");
+      return;
+    }
+
     shouldListenRef.current = true;
     const rec = buildRecognizer();
-    if (!rec) return;
+    if (!rec) { stopMediaStream(); return; }
     recRef.current = rec;
     try {
       rec.start();
       setListening(true);
     } catch {
-      // already started
+      // Already started — treat as listening
       setListening(true);
     }
   };
@@ -142,11 +216,13 @@ const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSum
     try { recRef.current?.stop(); } catch {}
     setListening(false);
     setInterimText("");
+    stopMediaStream();
   };
 
   useEffect(() => () => {
     shouldListenRef.current = false;
     try { recRef.current?.stop(); } catch {}
+    stopMediaStream();
   }, []);
 
   const runSummarize = () => {
@@ -155,7 +231,7 @@ const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSum
     setTimeout(() => {
       onSummaryChange(mockSummarize(value, category));
       setSummarizing(false);
-    }, 500);
+    }, 450);
   };
 
   const displayedValue = listening && interimText
@@ -186,7 +262,6 @@ const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSum
         <Textarea
           value={displayedValue}
           onChange={(e) => {
-            // Manual edits become the new committed base
             baseTextRef.current = e.target.value;
             onChange(e.target.value);
           }}
