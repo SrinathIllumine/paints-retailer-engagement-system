@@ -454,6 +454,36 @@ const EngagementTheme = () => {
               </AccordionContent>
             </AccordionItem>
           </Card>
+
+          {/* RETAILER IDEAS */}
+          <Card className="overflow-hidden">
+            <AccordionItem value="ideas" className="border-b-0">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <span className="flex items-center gap-2 font-extrabold uppercase tracking-wider text-card-foreground text-xs">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Retailer Ideas
+                  {(ideaNote.trim() || ideaSummary.trim()) && (
+                    <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-info/15 text-info font-medium normal-case tracking-normal">
+                      captured
+                    </span>
+                  )}
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <p className="text-xs text-muted-foreground mb-2">
+                  Capture suggestions or ideas the retailer shared — speak or type. AI will summarise crisply.
+                </p>
+                <VoiceTextInput
+                  category="Retailer Idea"
+                  placeholder="What ideas or suggestions did the retailer share?"
+                  value={ideaNote}
+                  onChange={setIdeaNote}
+                  summary={ideaSummary}
+                  onSummaryChange={setIdeaSummary}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Card>
         </Accordion>
 
         {/* Save */}
