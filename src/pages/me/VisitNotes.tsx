@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store } from "lucide-react";
+import { CheckCircle2, FileText, MessageSquare, AlertTriangle, Share2, X, Phone, Calendar, User, Store, Radar } from "lucide-react";
 import { dealers } from "@/data/mockData";
+
+type MarketInsight = { category: string; note: string; summary: string };
 
 type ThemeData = {
   themeTitle: string;
@@ -12,6 +14,7 @@ type ThemeData = {
   objections: string[];
   actionPoints: string[];
   feedback: string[];
+  marketInsights?: MarketInsight[];
 };
 
 const ME_NAME = "Manish Kumar from JK";
