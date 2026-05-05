@@ -257,8 +257,30 @@ ${retailerIdeas.length === 0 ? "• No ideas captured" : bulletsToText(retailerI
             </div>
           </div>
 
+          {/* Retailer Ideas (read-only) */}
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4 text-info" />
+            </div>
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Retailer Ideas</p>
+              {retailerIdeas.length > 0 ? (
+                <ul className="mt-1.5 space-y-1">
+                  {retailerIdeas.map((idea, i) => (
+                    <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
+                      <span className="whitespace-pre-line">{idea}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-1.5 text-sm text-muted-foreground italic">No retailer ideas captured.</p>
+              )}
+            </div>
+          </div>
+
           <p className="text-xs text-muted-foreground italic pt-1">
-            To edit Action Points or Market Insights, go back to the previous step.
+            To edit Action Points, Market Insights or Retailer Ideas, go back to the previous step.
           </p>
         </Card>
 
