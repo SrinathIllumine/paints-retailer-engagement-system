@@ -466,7 +466,7 @@ const EngagementTheme = () => {
                     .filter((w) => selectedWhatIfs.has(w.id))
                     .map((w) => w.label),
                   actionPoints: Array.from(selectedActionPoints),
-                  goForwards: Array.from(selectedGoForwards),
+                  
                   feedback: retailerFeedback.trim() ? [retailerFeedback.trim()] : [],
                   marketInsights: MARKET_INSIGHT_SECTIONS
                     .filter((s) => insightNotes[s.key].trim() || insightSummaries[s.key].trim())
