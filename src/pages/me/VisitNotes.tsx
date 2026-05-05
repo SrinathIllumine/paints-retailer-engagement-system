@@ -78,13 +78,14 @@ const VisitNotes = () => {
     return bullets;
   }, [stored]);
 
-  const initialFeedback = useMemo(() => {
-    const bullets: string[] = [];
-    Object.values(stored).forEach((t) => t?.feedback?.forEach((f) => bullets.push(f)));
-    if (bullets.length === 0) {
-      bullets.push("No key critical feedback from the retailer");
-    }
-    return bullets;
+  const marketInsights = useMemo<MarketInsight[]>(() => {
+    const items: MarketInsight[] = [];
+    Object.values(stored).forEach((t) =>
+      t?.marketInsights?.forEach((mi) => {
+        if (mi && (mi.summary?.trim() || mi.note?.trim())) items.push(mi);
+      })
+    );
+    return items;
   }, [stored]);
 
   const [showWhatsAppPreview, setShowWhatsAppPreview] = useState(false);
