@@ -214,28 +214,35 @@ ${insightsToText(marketInsights)}
             </div>
           </div>
 
-          {/* Key Critical Feedback (read-only) */}
+          {/* Market Insights (read-only) */}
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
-              <MessageSquare className="w-4 h-4 text-info" />
+              <Radar className="w-4 h-4 text-info" />
             </div>
             <div className="flex-1">
-              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Key Critical Feedback</p>
-              <ul className="mt-1.5 space-y-1">
-                {feedbackList.length > 0 ? feedbackList.map((f, i) => (
-                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-info mt-1.5 shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                )) : (
-                  <li className="text-sm text-muted-foreground italic">No critical feedback noted.</li>
-                )}
-              </ul>
+              <p className="text-xs uppercase tracking-wider text-card-foreground font-extrabold">Market Insights</p>
+              {marketInsights.length > 0 ? (
+                <ul className="mt-1.5 space-y-2">
+                  {marketInsights.map((mi, i) => (
+                    <li key={i} className="text-sm text-foreground">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-info shrink-0" />
+                        <span className="font-semibold">{mi.category}</span>
+                      </div>
+                      <p className="ml-3.5 mt-0.5 text-foreground/85 whitespace-pre-line leading-relaxed">
+                        {mi.summary?.trim() || mi.note?.trim()}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-1.5 text-sm text-muted-foreground italic">No market insights captured.</p>
+              )}
             </div>
           </div>
 
           <p className="text-xs text-muted-foreground italic pt-1">
-            To edit Action Points or Critical Feedback, go back to the previous step.
+            To edit Action Points or Market Insights, go back to the previous step.
           </p>
         </Card>
 
