@@ -6,13 +6,12 @@ import { Calendar, User, Store, ClipboardList, AlertTriangle, CheckCircle2, Ligh
 import { dealers } from "@/data/mockData";
 import { OBJECTIONS } from "@/components/me/EngagePopup";
 
+type Insight = { id: string; tag: string; text: string; summary: string };
 type SummaryState = {
   objections: string[];
   actionPoints: string[];
   topicsCovered: string[];
-  insightTag: string;
-  insightText: string;
-  insightSummary: string;
+  insights: Insight[];
   feedbackText: string;
   feedbackSummary: string;
 };
