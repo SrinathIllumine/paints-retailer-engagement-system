@@ -87,7 +87,7 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
             </div>
           </Q>
 
-          <Q idx={2} title="Record new market insights">
+          <Q idx={2} title="Record new market insights" isOpen={openQ === 2} onToggle={() => setOpenQ(openQ === 2 ? null : 2)}>
             <div className="mt-3 space-y-2">
               <div className="flex flex-wrap gap-1.5">
                 {INSIGHT_TAGS.map((t) => (
