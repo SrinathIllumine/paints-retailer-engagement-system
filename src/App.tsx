@@ -11,6 +11,7 @@ import GuidedConversation from "./pages/me/GuidedConversation.tsx";
 import EngagementTheme from "./pages/me/EngagementTheme.tsx";
 import VisitNotes from "./pages/me/VisitNotes.tsx";
 import VisitComplete from "./pages/me/VisitComplete.tsx";
+import VisitSummary from "./pages/me/VisitSummary.tsx";
 import Dashboard from "./pages/leadership/Dashboard.tsx";
 import Objections from "./pages/leadership/Objections.tsx";
 import Insights from "./pages/leadership/Insights.tsx";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/me/engagement/:id/:themeId" element={<EngagementTheme />} />
           <Route path="/me/notes/:id" element={<VisitNotes />} />
           <Route path="/me/complete/:id" element={<VisitComplete />} />
+          <Route path="/me/visit-summary/:id" element={<VisitSummary />} />
           <Route path="/leadership" element={<Dashboard />} />
           <Route path="/leadership/objections" element={<Objections />} />
           <Route path="/leadership/insights" element={<Insights />} />
