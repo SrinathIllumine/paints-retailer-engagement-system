@@ -84,7 +84,7 @@ const DealerSnapshot = () => {
   const [lockMsg, setLockMsg] = useState<null | "engage" | "diagnoze">(null);
   const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
   const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
-    topicsCovered: [], insightTag: "", insightText: "", insightSummary: "",
+    topicsCovered: [], insights: [newInsight()],
     feedbackText: "", feedbackSummary: "",
   });
 
