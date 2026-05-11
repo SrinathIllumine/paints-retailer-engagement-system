@@ -260,39 +260,86 @@ const DealerSnapshot = () => {
           </div>
         )}
 
-        {/* Customized Engagement Plan */}
+        {/* Current Scenario */}
+        <div className="animate-slide-up" style={{ animationDelay: "60ms", animationFillMode: "backwards" }}>
+          <h3 className="text-xs font-bold text-primary mb-2 uppercase tracking-[0.18em]">Current Scenario</h3>
+          <Card className="bg-info/5 border-info/20 p-4">
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              Long-standing retailer since 2014. At this point in time, his sales are coming down w.r.t JK.
+            </p>
+          </Card>
+        </div>
+
+        {/* Customized Engagement Plan — sequential checklist */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Customized Engagement Plan</h3>
           <Card className="bg-info/5 border-info/20 divide-y divide-info/15 overflow-hidden">
             {([
-              { key: "prepare", label: "PREPARE", subtitle: "Before The Conversation" },
-              { key: "engage", label: "ENGAGE", subtitle: "During The Conversation" },
-              { key: "diagnoze", label: "DIAGNOZE", subtitle: "Post Conversation" },
-            ] as const).map((row) => (
-              <button
-                key={row.key}
-                type="button"
-                onClick={() => setPhase(row.key)}
-                className="w-full flex items-center justify-between px-4 py-3.5 text-left hover:bg-info/5 transition-colors active:scale-[0.99]"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-display font-bold text-primary text-sm tracking-wider">{row.label}</span>
-                  <ArrowRight className="w-4 h-4 text-primary" />
-                  <span className="text-sm text-foreground/85 ml-1">{row.subtitle}</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-              </button>
-            ))}
+              { key: "prepare", label: "PREPARE", subtitle: "Before The Conversation", locked: false },
+              { key: "engage", label: "ENGAGE", subtitle: "During The Conversation", locked: !completed.prepare },
+              { key: "diagnoze", label: "DIAGNOZE", subtitle: "Post Conversation", locked: !completed.engage },
+            ] as const).map((row) => {
+              const done = completed[row.key];
+              const locked = row.locked && !done;
+              return (
+                <button
+                  key={row.key}
+                  type="button"
+                  onClick={() => {
+                    if (locked) {
+                      showLock(row.key as "engage" | "diagnoze");
+                      return;
+                    }
+                    setPhase(row.key);
+                  }}
+                  className={`w-full flex items-center justify-between px-4 py-3.5 text-left transition-colors active:scale-[0.99] ${locked ? "opacity-40 cursor-not-allowed" : "hover:bg-info/5"}`}
+                  aria-disabled={locked}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {done ? (
+                      <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
+                    ) : (
+                      <Circle className="w-5 h-5 text-muted-foreground shrink-0" />
+                    )}
+                    <span className="font-display font-bold text-primary text-sm tracking-wider">{row.label}</span>
+                    <ArrowRight className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-sm text-foreground/85 truncate">{row.subtitle}</span>
+                  </div>
+                  {locked ? (
+                    <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                  )}
+                </button>
+              );
+            })}
+            {allDone && (
+              <div className="px-4 py-3 text-center text-sm font-semibold text-success flex items-center justify-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" /> Engagement Complete
+              </div>
+            )}
           </Card>
+          {lockMsg && (
+            <p className="text-xs text-muted-foreground mt-2 px-1 animate-fade-in">
+              Complete {lockMsg === "engage" ? "PREPARE" : "ENGAGE"} first.
+            </p>
+          )}
         </div>
 
-        <PreparePopup open={phase === "prepare"} onClose={() => setPhase(null)} />
+        <PreparePopup
+          open={phase === "prepare"}
+          onClose={() => setPhase(null)}
+          onDone={() => setCompleted((c) => ({ ...c, prepare: true }))}
+        />
         <EngagePopup
           open={phase === "engage"}
           onClose={() => setPhase(null)}
           state={engageState}
           setState={setEngageState}
-          onComplete={() => setPhase("diagnoze")}
+          onComplete={() => {
+            setCompleted((c) => ({ ...c, engage: true }));
+            setPhase("diagnoze");
+          }}
         />
         <DiagnozePopup
           open={phase === "diagnoze"}
@@ -300,6 +347,7 @@ const DealerSnapshot = () => {
           state={diagnozeState}
           setState={setDiagnozeState}
           onGenerate={() => {
+            setCompleted((c) => ({ ...c, diagnoze: true }));
             setPhase(null);
             navigate(`/me/visit-summary/${dealer.id}`, {
               state: {
