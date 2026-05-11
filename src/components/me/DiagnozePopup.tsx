@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ChevronDown, ClipboardList } from "lucide-react";
+import { X, ChevronDown, ClipboardList, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import VoiceTextInput from "@/components/me/VoiceTextInput";
