@@ -100,27 +100,57 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
           </Q>
 
           <Q idx={2} title="Record new market insights" isOpen={openQ === 2} onToggle={() => setOpenQ(openQ === 2 ? null : 2)}>
-            <div className="mt-3 space-y-2">
-              <div className="flex flex-wrap gap-1.5">
-                {INSIGHT_TAGS.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setState({ ...state, insightTag: state.insightTag === t ? "" : t })}
-                    className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${state.insightTag === t ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-secondary"}`}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-              <VoiceTextInput
-                category={state.insightTag || "Market Insight"}
-                placeholder="market-related, competitor-related, scheme-related, etc."
-                value={state.insightText}
-                onChange={(v) => setState({ ...state, insightText: v })}
-                summary={state.insightSummary}
-                onSummaryChange={(v) => setState({ ...state, insightSummary: v })}
-              />
+            <div className="mt-3 space-y-3">
+              {state.insights.map((ins, i) => {
+                const update = (patch: Partial<MarketInsight>) => {
+                  const next = state.insights.map((x) => x.id === ins.id ? { ...x, ...patch } : x);
+                  setState({ ...state, insights: next });
+                };
+                const remove = () => {
+                  setState({ ...state, insights: state.insights.filter((x) => x.id !== ins.id) });
+                };
+                return (
+                  <div key={ins.id} className="rounded-xl border border-border bg-background/40 p-2.5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Insight {i + 1}</span>
+                      {state.insights.length > 1 && (
+                        <button type="button" onClick={remove} className="text-muted-foreground hover:text-destructive p-1">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {INSIGHT_TAGS.map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => update({ tag: ins.tag === t ? "" : t })}
+                          className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${ins.tag === t ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-secondary"}`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                    <VoiceTextInput
+                      category={ins.tag || "Market Insight"}
+                      placeholder="market-related, competitor-related, scheme-related, etc."
+                      value={ins.text}
+                      onChange={(v) => update({ text: v })}
+                      summary={ins.summary}
+                      onSummaryChange={(v) => update({ summary: v })}
+                    />
+                  </div>
+                );
+              })}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={() => setState({ ...state, insights: [...state.insights, newInsight()] })}
+              >
+                <Plus className="w-3.5 h-3.5 mr-1.5" /> Add another insight
+              </Button>
             </div>
           </Q>
 
