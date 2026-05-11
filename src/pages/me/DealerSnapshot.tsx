@@ -338,7 +338,7 @@ const DealerSnapshot = () => {
           setState={setEngageState}
           onComplete={() => {
             setCompleted((c) => ({ ...c, engage: true }));
-            setPhase("diagnoze");
+            setPhase(null);
           }}
         />
         <DiagnozePopup
