@@ -174,62 +174,8 @@ const DealerSnapshot = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Retailer Dimensions */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                    <BarChart3 className="w-3 h-3" />
-                    Retailer Dimensions
-                  </h4>
-                  {Object.entries(profile.dimensions).map(([key, value]) => {
-                    const meta = dimensionMeta[key];
-                    const colorClass = getDimensionColor(key, value);
-                    const specialLabel = getDimensionLabel(key, value);
-                    return (
-                      <div key={key} className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-foreground">{meta.label}</span>
-                          <div className="flex items-center gap-2">
-                            {specialLabel && (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium text-primary-foreground bg-[#055136]">{specialLabel}</span>
-                            )}
-                            <span className="text-sm font-bold text-foreground">{value}%</span>
-                          </div>
-                        </div>
-                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                          <div className={`h-full ${colorClass} rounded-full transition-all duration-500`} style={{ width: `${value}%` }} />
-                        </div>
-                        <p className="text-xs text-muted-foreground">{meta.description}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Retailer Mindset - only the active mode */}
-                <div className="space-y-2">
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Retailer Mindset</h4>
-                  {(() => {
-                    const mindsetMeta: Record<string, { desc: string; cls: string }> = {
-                      "Growth mode": { desc: "Retailer is open to new initiatives and improvement opportunities.", cls: "bg-success/10 text-success border-success/30" },
-                      "Exploring mode": { desc: "Retailer is curious and willing to try new ideas selectively.", cls: "bg-info/10 text-info border-info/30" },
-                      "Stable mode": { desc: "Retailer prefers consistency and continues with existing practices.", cls: "bg-warning/10 text-warning border-warning/30" },
-                      "Disengaged mode": { desc: "Retailer currently shows low interest in change or new ideas.", cls: "bg-muted text-muted-foreground border-border" },
-                    };
-                    const active = mindsetMeta[profile.mindset];
-                    if (!active) return null;
-                    return (
-                      <div className={`rounded-xl px-3 py-2.5 border ${active.cls}`}>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-current" />
-                          <p className="text-sm font-semibold">{profile.mindset}</p>
-                          <span className="ml-auto text-[10px] uppercase tracking-wider font-bold">Current</span>
-                        </div>
-                        <p className="text-xs mt-1 opacity-80 leading-snug">{active.desc}</p>
-                      </div>
-                    );
-                  })()}
-                </div>
               </div>
+
             </div>
           </div>
         )}
