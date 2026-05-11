@@ -4,7 +4,7 @@ import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
-import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, CheckCircle2, X, User, ArrowRight } from "lucide-react";
+import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, CheckCircle2, X, User, ArrowRight, Circle, Lock } from "lucide-react";
 import { dealers } from "@/data/mockData";
 import PreparePopup from "@/components/me/PreparePopup";
 import EngagePopup, { type EngageState } from "@/components/me/EngagePopup";
