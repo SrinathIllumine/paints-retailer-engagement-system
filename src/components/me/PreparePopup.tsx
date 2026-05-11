@@ -57,7 +57,7 @@ const PreparePopup = ({ open, onClose, onDone }: Props) => {
         </div>
 
         <div className="sticky bottom-0 bg-card border-t border-border p-3">
-          <Button className="w-full" variant="outline" onClick={onClose}>Close</Button>
+          <Button className="w-full" onClick={() => { onDone?.(); onClose(); }}>✓ Mark Prepare as Done</Button>
         </div>
       </div>
     </div>
