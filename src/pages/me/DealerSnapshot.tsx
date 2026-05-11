@@ -80,11 +80,20 @@ const DealerSnapshot = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
   const [phase, setPhase] = useState<"prepare" | "engage" | "diagnoze" | null>(null);
+  const [completed, setCompleted] = useState<{ prepare: boolean; engage: boolean; diagnoze: boolean }>({ prepare: false, engage: false, diagnoze: false });
+  const [lockMsg, setLockMsg] = useState<null | "engage" | "diagnoze">(null);
   const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
   const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
     topicsCovered: [], insightTag: "", insightText: "", insightSummary: "",
     feedbackText: "", feedbackSummary: "",
   });
+
+  const showLock = (which: "engage" | "diagnoze") => {
+    setLockMsg(which);
+    setTimeout(() => setLockMsg((m) => (m === which ? null : m)), 2500);
+  };
+
+  const allDone = completed.prepare && completed.engage && completed.diagnoze;
 
   const profile = getProfileDetails(dealer);
 
