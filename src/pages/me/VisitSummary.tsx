@@ -106,11 +106,20 @@ ${feedback ? feedback : "—"}
         <Card className="p-3">
           <div className="flex items-center gap-2 mb-2">
             <Lightbulb className="w-4 h-4 text-primary" />
-            <h4 className="font-display font-bold text-foreground text-sm">New Market Insight</h4>
-            {s.insightTag && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">{s.insightTag}</span>}
+            <h4 className="font-display font-bold text-foreground text-sm">New Market Insights</h4>
           </div>
-          {insight ? (
-            <p className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed">{insight}</p>
+          {insightItems.length ? (
+            <ul className="space-y-2">
+              {insightItems.map((x, i) => (
+                <li key={i} className="text-sm text-foreground/85">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Insight {i + 1}</span>
+                    {x.tag && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">{x.tag}</span>}
+                  </div>
+                  <p className="whitespace-pre-line leading-relaxed">{x.body}</p>
+                </li>
+              ))}
+            </ul>
           ) : (
             <p className="text-xs text-muted-foreground italic">No insight recorded.</p>
           )}
