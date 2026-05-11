@@ -30,6 +30,22 @@ type Props = {
   onGenerate: () => void;
 };
 
+const Q = ({ idx, title, isOpen, onToggle, children }: { idx: number; title: string; isOpen: boolean; onToggle: () => void; children: React.ReactNode }) => (
+  <div className="rounded-xl border border-border bg-card overflow-hidden">
+    <button
+      type="button"
+      onClick={onToggle}
+      className="w-full flex items-center justify-between p-3 text-left"
+    >
+      <span className="text-sm font-semibold text-foreground pr-2">
+        <span className="text-primary mr-1.5">Q{idx}.</span>{title}
+      </span>
+      <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+    </button>
+    {isOpen && <div className="px-3 pb-3 pt-0 border-t border-border/60">{children}</div>}
+  </div>
+);
+
 const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) => {
   const [openQ, setOpenQ] = useState<number | null>(null);
   if (!open) return null;
@@ -39,25 +55,6 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
       ? state.topicsCovered.filter((x) => x !== t)
       : [...state.topicsCovered, t];
     setState({ ...state, topicsCovered: next });
-  };
-
-  const Q = ({ idx, title, children }: { idx: number; title: string; children: React.ReactNode }) => {
-    const isOpen = openQ === idx;
-    return (
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
-        <button
-          type="button"
-          onClick={() => setOpenQ(isOpen ? null : idx)}
-          className="w-full flex items-center justify-between p-3 text-left"
-        >
-          <span className="text-sm font-semibold text-foreground pr-2">
-            <span className="text-primary mr-1.5">Q{idx}.</span>{title}
-          </span>
-          <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-        </button>
-        {isOpen && <div className="px-3 pb-3 pt-0 border-t border-border/60">{children}</div>}
-      </div>
-    );
   };
 
   return (
@@ -76,7 +73,7 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
         </div>
 
         <div className="overflow-y-auto p-4 space-y-3 flex-1">
-          <Q idx={1} title="Which of the points were you able to cover?">
+          <Q idx={1} title="Which of the points were you able to cover?" isOpen={openQ === 1} onToggle={() => setOpenQ(openQ === 1 ? null : 1)}>
             <div className="space-y-2 mt-3">
               {PREPARE_POINTS.map((p) => {
                 const checked = state.topicsCovered.includes(p);
@@ -90,7 +87,7 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
             </div>
           </Q>
 
-          <Q idx={2} title="Record new market insights">
+          <Q idx={2} title="Record new market insights" isOpen={openQ === 2} onToggle={() => setOpenQ(openQ === 2 ? null : 2)}>
             <div className="mt-3 space-y-2">
               <div className="flex flex-wrap gap-1.5">
                 {INSIGHT_TAGS.map((t) => (
@@ -115,7 +112,7 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
             </div>
           </Q>
 
-          <Q idx={3} title="Any comments or suggestions from the dealer">
+          <Q idx={3} title="Any comments or suggestions from the dealer" isOpen={openQ === 3} onToggle={() => setOpenQ(openQ === 3 ? null : 3)}>
             <div className="mt-3">
               <VoiceTextInput
                 category="Dealer Feedback"
