@@ -71,8 +71,8 @@ ${objectionLabels.length ? objectionLabels.map((t) => `• ${t}`).join("\n") : "
 ✅ *Action Points / Go-Forwards:*
 ${s.actionPoints.length ? s.actionPoints.map((t) => `• ${t}`).join("\n") : "• —"}
 
-💡 *New Market Insight:*
-${insight ? insight : "—"}
+💡 *New Market Insights:*
+${insightItems.length ? insightItems.map((x) => `• ${x.tag ? `[${x.tag}] ` : ""}${x.body}`).join("\n") : "• —"}
 
 🔑 *Key Critical Feedback:*
 ${feedback ? feedback : "—"}
