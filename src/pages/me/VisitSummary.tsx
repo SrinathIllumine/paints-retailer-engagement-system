@@ -46,12 +46,14 @@ const VisitSummary = () => {
   const dealer = dealers.find((d) => d.id === id) || dealers[0];
   const s = (loc.state as SummaryState) || {
     objections: [], actionPoints: [], topicsCovered: [],
-    insightTag: "", insightText: "", insightSummary: "",
+    insights: [],
     feedbackText: "", feedbackSummary: "",
   };
 
   const objectionLabels = s.objections.map((id) => OBJECTIONS.find((o) => o.id === id)?.label).filter(Boolean) as string[];
-  const insight = (s.insightSummary || s.insightText).trim();
+  const insightItems = (s.insights || [])
+    .map((ins) => ({ tag: ins.tag, body: (ins.summary || ins.text).trim() }))
+    .filter((x) => x.body.length > 0);
   const feedback = (s.feedbackSummary || s.feedbackText).trim();
 
   const waMessage =
