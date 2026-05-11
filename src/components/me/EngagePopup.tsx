@@ -59,9 +59,6 @@ export const OBJECTIONS = [
 export const ACTION_POINTS = [
   "Meet key painters/contractors within the next 7 days to generate demand.",
   "Review sales movement together after 2 weeks.",
-  "Share updated scheme/pricing details with the retailer within 3 days.",
-  "Arrange a JK technical expert visit within the next 14 days.",
-  "Follow up on stock availability with the distributor within 48 hours.",
 ];
 
 type Props = {
