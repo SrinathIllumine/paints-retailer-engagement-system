@@ -24,7 +24,7 @@ const cards = [
   },
 ];
 
-const PreparePopup = ({ open, onClose }: Props) => {
+const PreparePopup = ({ open, onClose, onDone }: Props) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center sm:p-4">
