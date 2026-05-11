@@ -13,14 +13,26 @@ export const PREPARE_POINTS = [
 
 const INSIGHT_TAGS = ["Demand-related", "Competitor-related", "Scheme-related"];
 
+export type MarketInsight = {
+  id: string;
+  tag: string;
+  text: string;
+  summary: string;
+};
+
 export type DiagnozeState = {
   topicsCovered: string[];
-  insightTag: string;
-  insightText: string;
-  insightSummary: string;
+  insights: MarketInsight[];
   feedbackText: string;
   feedbackSummary: string;
 };
+
+export const newInsight = (): MarketInsight => ({
+  id: Math.random().toString(36).slice(2, 9),
+  tag: "",
+  text: "",
+  summary: "",
+});
 
 type Props = {
   open: boolean;
