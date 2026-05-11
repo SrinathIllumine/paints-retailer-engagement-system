@@ -79,14 +79,14 @@ const DealerSnapshot = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
+  const [phase, setPhase] = useState<"prepare" | "engage" | "diagnoze" | null>(null);
+  const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
+  const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
+    topicsCovered: [], insightTag: "", insightText: "", insightSummary: "",
+    feedbackText: "", feedbackSummary: "",
+  });
 
   const profile = getProfileDetails(dealer);
-
-  const dimensionMeta: Record<string, { label: string; description: string }> = {
-    alignmentToJK: { label: "Alignment to JK", description: "How closely the retailer's business aligns with JK's product vision" },
-    valueProposition: { label: "Understanding of Value Proposition", description: "Retailer's grasp of JK's product benefits and differentiators" },
-    marketAwareness: { label: "Market Awareness", description: "Retailer's knowledge of local market dynamics and customer needs" },
-  };
 
   return (
     <MeLayout title="Retailer Snapshot" showBack>
