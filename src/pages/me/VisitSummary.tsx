@@ -6,13 +6,12 @@ import { Calendar, User, Store, ClipboardList, AlertTriangle, CheckCircle2, Ligh
 import { dealers } from "@/data/mockData";
 import { OBJECTIONS } from "@/components/me/EngagePopup";
 
+type Insight = { id: string; tag: string; text: string; summary: string };
 type SummaryState = {
   objections: string[];
   actionPoints: string[];
   topicsCovered: string[];
-  insightTag: string;
-  insightText: string;
-  insightSummary: string;
+  insights: Insight[];
   feedbackText: string;
   feedbackSummary: string;
 };
@@ -47,12 +46,14 @@ const VisitSummary = () => {
   const dealer = dealers.find((d) => d.id === id) || dealers[0];
   const s = (loc.state as SummaryState) || {
     objections: [], actionPoints: [], topicsCovered: [],
-    insightTag: "", insightText: "", insightSummary: "",
+    insights: [],
     feedbackText: "", feedbackSummary: "",
   };
 
   const objectionLabels = s.objections.map((id) => OBJECTIONS.find((o) => o.id === id)?.label).filter(Boolean) as string[];
-  const insight = (s.insightSummary || s.insightText).trim();
+  const insightItems = (s.insights || [])
+    .map((ins) => ({ tag: ins.tag, body: (ins.summary || ins.text).trim() }))
+    .filter((x) => x.body.length > 0);
   const feedback = (s.feedbackSummary || s.feedbackText).trim();
 
   const waMessage =
@@ -70,8 +71,8 @@ ${objectionLabels.length ? objectionLabels.map((t) => `• ${t}`).join("\n") : "
 ✅ *Action Points / Go-Forwards:*
 ${s.actionPoints.length ? s.actionPoints.map((t) => `• ${t}`).join("\n") : "• —"}
 
-💡 *New Market Insight:*
-${insight ? insight : "—"}
+💡 *New Market Insights:*
+${insightItems.length ? insightItems.map((x) => `• ${x.tag ? `[${x.tag}] ` : ""}${x.body}`).join("\n") : "• —"}
 
 🔑 *Key Critical Feedback:*
 ${feedback ? feedback : "—"}
@@ -105,11 +106,20 @@ ${feedback ? feedback : "—"}
         <Card className="p-3">
           <div className="flex items-center gap-2 mb-2">
             <Lightbulb className="w-4 h-4 text-primary" />
-            <h4 className="font-display font-bold text-foreground text-sm">New Market Insight</h4>
-            {s.insightTag && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">{s.insightTag}</span>}
+            <h4 className="font-display font-bold text-foreground text-sm">New Market Insights</h4>
           </div>
-          {insight ? (
-            <p className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed">{insight}</p>
+          {insightItems.length ? (
+            <ul className="space-y-2">
+              {insightItems.map((x, i) => (
+                <li key={i} className="text-sm text-foreground/85">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Insight {i + 1}</span>
+                    {x.tag && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">{x.tag}</span>}
+                  </div>
+                  <p className="whitespace-pre-line leading-relaxed">{x.body}</p>
+                </li>
+              ))}
+            </ul>
           ) : (
             <p className="text-xs text-muted-foreground italic">No insight recorded.</p>
           )}

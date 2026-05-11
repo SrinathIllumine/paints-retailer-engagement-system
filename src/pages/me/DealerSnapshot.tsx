@@ -8,7 +8,7 @@ import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, C
 import { dealers } from "@/data/mockData";
 import PreparePopup from "@/components/me/PreparePopup";
 import EngagePopup, { type EngageState } from "@/components/me/EngagePopup";
-import DiagnozePopup, { type DiagnozeState } from "@/components/me/DiagnozePopup";
+import DiagnozePopup, { type DiagnozeState, newInsight } from "@/components/me/DiagnozePopup";
 
 const revenueLabelMap: Record<string, string> = {
   A: "> ₹2 Cr",
@@ -84,7 +84,7 @@ const DealerSnapshot = () => {
   const [lockMsg, setLockMsg] = useState<null | "engage" | "diagnoze">(null);
   const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
   const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
-    topicsCovered: [], insightTag: "", insightText: "", insightSummary: "",
+    topicsCovered: [], insights: [newInsight()],
     feedbackText: "", feedbackSummary: "",
   });
 
