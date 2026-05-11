@@ -112,7 +112,7 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
             </div>
           </Q>
 
-          <Q idx={3} title="Any comments or suggestions from the dealer">
+          <Q idx={3} title="Any comments or suggestions from the dealer" isOpen={openQ === 3} onToggle={() => setOpenQ(openQ === 3 ? null : 3)}>
             <div className="mt-3">
               <VoiceTextInput
                 category="Dealer Feedback"
