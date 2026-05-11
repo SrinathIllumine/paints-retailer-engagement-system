@@ -30,6 +30,22 @@ type Props = {
   onGenerate: () => void;
 };
 
+const Q = ({ idx, title, isOpen, onToggle, children }: { idx: number; title: string; isOpen: boolean; onToggle: () => void; children: React.ReactNode }) => (
+  <div className="rounded-xl border border-border bg-card overflow-hidden">
+    <button
+      type="button"
+      onClick={onToggle}
+      className="w-full flex items-center justify-between p-3 text-left"
+    >
+      <span className="text-sm font-semibold text-foreground pr-2">
+        <span className="text-primary mr-1.5">Q{idx}.</span>{title}
+      </span>
+      <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+    </button>
+    {isOpen && <div className="px-3 pb-3 pt-0 border-t border-border/60">{children}</div>}
+  </div>
+);
+
 const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) => {
   const [openQ, setOpenQ] = useState<number | null>(null);
   if (!open) return null;
@@ -39,25 +55,6 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
       ? state.topicsCovered.filter((x) => x !== t)
       : [...state.topicsCovered, t];
     setState({ ...state, topicsCovered: next });
-  };
-
-  const Q = ({ idx, title, children }: { idx: number; title: string; children: React.ReactNode }) => {
-    const isOpen = openQ === idx;
-    return (
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
-        <button
-          type="button"
-          onClick={() => setOpenQ(isOpen ? null : idx)}
-          className="w-full flex items-center justify-between p-3 text-left"
-        >
-          <span className="text-sm font-semibold text-foreground pr-2">
-            <span className="text-primary mr-1.5">Q{idx}.</span>{title}
-          </span>
-          <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-        </button>
-        {isOpen && <div className="px-3 pb-3 pt-0 border-t border-border/60">{children}</div>}
-      </div>
-    );
   };
 
   return (
