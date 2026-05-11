@@ -85,12 +85,14 @@ const MyTradingArea = () => {
         {/* Retailer List */}
         <div className="space-y-3 animate-fade-in">
           <span className="text-sm text-muted-foreground font-medium">{sortedDealers.length} retailer(s)</span>
-          {sortedDealers.map((dealer, i) => (
+          {sortedDealers.map((dealer, i) => {
+            const accessible = dealer.id === "1";
+            return (
             <Card
               key={dealer.id}
-              className="p-4 cursor-pointer active:scale-[0.98] transition-transform animate-slide-up"
+              className={`p-4 transition-transform animate-slide-up ${accessible ? "cursor-pointer active:scale-[0.98]" : "cursor-not-allowed opacity-50"}`}
               style={{ animationDelay: `${i * 50}ms`, animationFillMode: "backwards" }}
-              onClick={() => navigate(`/me/dealer/${dealer.id}`)}
+              onClick={() => accessible && navigate(`/me/dealer/${dealer.id}`)}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
@@ -106,7 +108,8 @@ const MyTradingArea = () => {
                 <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
               </div>
             </Card>
-          ))}
+            );
+          })}
           {sortedDealers.length === 0 && (
             <div className="text-center py-8">
               <Store className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
