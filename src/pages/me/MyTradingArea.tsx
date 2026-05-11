@@ -108,7 +108,8 @@ const MyTradingArea = () => {
                 <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
               </div>
             </Card>
-          ))}
+            );
+          })}
           {sortedDealers.length === 0 && (
             <div className="text-center py-8">
               <Store className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
