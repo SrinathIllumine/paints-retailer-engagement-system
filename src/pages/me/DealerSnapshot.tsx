@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
-import { MapPin, Award, ChevronRight, ChevronDown, ChevronUp, Layers, Rocket, Users, History, MessageSquare, AlertTriangle, CheckCircle2, X, User, BarChart3 } from "lucide-react";
-import { dealers, engagementThemes } from "@/data/mockData";
+import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, CheckCircle2, X, User, ArrowRight } from "lucide-react";
+import { dealers } from "@/data/mockData";
+import PreparePopup from "@/components/me/PreparePopup";
+import EngagePopup, { type EngageState } from "@/components/me/EngagePopup";
+import DiagnozePopup, { type DiagnozeState } from "@/components/me/DiagnozePopup";
 
 const revenueLabelMap: Record<string, string> = {
   A: "> ₹2 Cr",
   B: "₹1–2 Cr",
   C: "< ₹1 Cr",
 };
-
-const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
 // Mock engagement history data - first-person retailer voice
 const engagementHistory = [
