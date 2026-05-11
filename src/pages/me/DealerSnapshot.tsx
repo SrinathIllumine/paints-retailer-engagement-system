@@ -48,10 +48,10 @@ const engagementHistory = [
 
 // Mock profile details
 const getProfileDetails = (dealer: typeof dealers[0]) => ({
-  joiningDate: "Jan 2022",
+  joiningDate: "Jan 2014",
   revenue: revenueLabelMap[dealer.revenueCategory],
   productsHandled: ["Cement", "White Cement", "Putty", "Paints"],
-  totalEngagements: 18,
+  totalEngagements: 12,
   dimensions: {
     alignmentToJK: dealer.type === "loyal" ? 82 : dealer.type === "new" ? 45 : dealer.type === "declining" ? 28 : 15,
     valueProposition: dealer.type === "loyal" ? 75 : dealer.type === "new" ? 38 : dealer.type === "declining" ? 32 : 20,
