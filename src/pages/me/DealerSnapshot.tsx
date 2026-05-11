@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import DealerTypeBadge from "@/components/DealerTypeBadge";
-import { MapPin, Award, ChevronRight, ChevronDown, ChevronUp, Layers, Rocket, Users, History, MessageSquare, AlertTriangle, CheckCircle2, X, User, BarChart3 } from "lucide-react";
-import { dealers, engagementThemes } from "@/data/mockData";
+import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, CheckCircle2, X, User, ArrowRight } from "lucide-react";
+import { dealers } from "@/data/mockData";
+import PreparePopup from "@/components/me/PreparePopup";
+import EngagePopup, { type EngageState } from "@/components/me/EngagePopup";
+import DiagnozePopup, { type DiagnozeState } from "@/components/me/DiagnozePopup";
 
 const revenueLabelMap: Record<string, string> = {
   A: "> ₹2 Cr",
   B: "₹1–2 Cr",
   C: "< ₹1 Cr",
 };
-
-const themeIcons: Record<string, typeof Layers> = { Layers, Rocket, Users };
 
 // Mock engagement history data - first-person retailer voice
 const engagementHistory = [
@@ -79,14 +79,14 @@ const DealerSnapshot = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
+  const [phase, setPhase] = useState<"prepare" | "engage" | "diagnoze" | null>(null);
+  const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
+  const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
+    topicsCovered: [], insightTag: "", insightText: "", insightSummary: "",
+    feedbackText: "", feedbackSummary: "",
+  });
 
   const profile = getProfileDetails(dealer);
-
-  const dimensionMeta: Record<string, { label: string; description: string }> = {
-    alignmentToJK: { label: "Alignment to JK", description: "How closely the retailer's business aligns with JK's product vision" },
-    valueProposition: { label: "Understanding of Value Proposition", description: "Retailer's grasp of JK's product benefits and differentiators" },
-    marketAwareness: { label: "Market Awareness", description: "Retailer's knowledge of local market dynamics and customer needs" },
-  };
 
   return (
     <MeLayout title="Retailer Snapshot" showBack>
@@ -174,62 +174,8 @@ const DealerSnapshot = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Retailer Dimensions */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                    <BarChart3 className="w-3 h-3" />
-                    Retailer Dimensions
-                  </h4>
-                  {Object.entries(profile.dimensions).map(([key, value]) => {
-                    const meta = dimensionMeta[key];
-                    const colorClass = getDimensionColor(key, value);
-                    const specialLabel = getDimensionLabel(key, value);
-                    return (
-                      <div key={key} className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-foreground">{meta.label}</span>
-                          <div className="flex items-center gap-2">
-                            {specialLabel && (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium text-primary-foreground bg-[#055136]">{specialLabel}</span>
-                            )}
-                            <span className="text-sm font-bold text-foreground">{value}%</span>
-                          </div>
-                        </div>
-                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                          <div className={`h-full ${colorClass} rounded-full transition-all duration-500`} style={{ width: `${value}%` }} />
-                        </div>
-                        <p className="text-xs text-muted-foreground">{meta.description}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Retailer Mindset - only the active mode */}
-                <div className="space-y-2">
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Retailer Mindset</h4>
-                  {(() => {
-                    const mindsetMeta: Record<string, { desc: string; cls: string }> = {
-                      "Growth mode": { desc: "Retailer is open to new initiatives and improvement opportunities.", cls: "bg-success/10 text-success border-success/30" },
-                      "Exploring mode": { desc: "Retailer is curious and willing to try new ideas selectively.", cls: "bg-info/10 text-info border-info/30" },
-                      "Stable mode": { desc: "Retailer prefers consistency and continues with existing practices.", cls: "bg-warning/10 text-warning border-warning/30" },
-                      "Disengaged mode": { desc: "Retailer currently shows low interest in change or new ideas.", cls: "bg-muted text-muted-foreground border-border" },
-                    };
-                    const active = mindsetMeta[profile.mindset];
-                    if (!active) return null;
-                    return (
-                      <div className={`rounded-xl px-3 py-2.5 border ${active.cls}`}>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-current" />
-                          <p className="text-sm font-semibold">{profile.mindset}</p>
-                          <span className="ml-auto text-[10px] uppercase tracking-wider font-bold">Current</span>
-                        </div>
-                        <p className="text-xs mt-1 opacity-80 leading-snug">{active.desc}</p>
-                      </div>
-                    );
-                  })()}
-                </div>
               </div>
+
             </div>
           </div>
         )}
@@ -307,32 +253,54 @@ const DealerSnapshot = () => {
 
         {/* Customized Engagement Plan */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">CUSTOMIZED ENGAGEMENT PLAN</h3>
-          <div className="space-y-3">
-            {engagementThemes.map((theme, i) => {
-              const Icon = themeIcons[theme.icon] || Layers;
-              return (
-                <Card
-                  key={theme.id}
-                  className="p-4 cursor-pointer active:scale-[0.98] transition-all hover:shadow-md animate-slide-up"
-                  style={{ animationDelay: `${(i + 2) * 60}ms`, animationFillMode: "backwards" }}
-                  onClick={() => navigate(`/me/engagement/${dealer.id}/${theme.id}`)}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`w-11 h-11 rounded-xl bg-${theme.color}/10 flex items-center justify-center shrink-0`}>
-                      <Icon className={`w-5 h-5 text-${theme.color}`} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-foreground text-sm leading-snug">{theme.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{theme.subtitle}</p>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Customized Engagement Plan</h3>
+          <Card className="bg-info/5 border-info/20 divide-y divide-info/15 overflow-hidden">
+            {([
+              { key: "prepare", label: "PREPARE", subtitle: "Before The Conversation" },
+              { key: "engage", label: "ENGAGE", subtitle: "During The Conversation" },
+              { key: "diagnoze", label: "DIAGNOZE", subtitle: "Post Conversation" },
+            ] as const).map((row) => (
+              <button
+                key={row.key}
+                type="button"
+                onClick={() => setPhase(row.key)}
+                className="w-full flex items-center justify-between px-4 py-3.5 text-left hover:bg-info/5 transition-colors active:scale-[0.99]"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-display font-bold text-primary text-sm tracking-wider">{row.label}</span>
+                  <ArrowRight className="w-4 h-4 text-primary" />
+                  <span className="text-sm text-foreground/85 ml-1">{row.subtitle}</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+              </button>
+            ))}
+          </Card>
         </div>
+
+        <PreparePopup open={phase === "prepare"} onClose={() => setPhase(null)} />
+        <EngagePopup
+          open={phase === "engage"}
+          onClose={() => setPhase(null)}
+          state={engageState}
+          setState={setEngageState}
+          onComplete={() => setPhase("diagnoze")}
+        />
+        <DiagnozePopup
+          open={phase === "diagnoze"}
+          onClose={() => setPhase(null)}
+          state={diagnozeState}
+          setState={setDiagnozeState}
+          onGenerate={() => {
+            setPhase(null);
+            navigate(`/me/visit-summary/${dealer.id}`, {
+              state: {
+                objections: engageState.objections,
+                actionPoints: engageState.actionPoints,
+                ...diagnozeState,
+              },
+            });
+          }}
+        />
       </div>
     </MeLayout>
   );

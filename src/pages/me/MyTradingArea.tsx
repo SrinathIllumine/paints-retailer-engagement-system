@@ -49,7 +49,8 @@ const MyTradingArea = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sortedDealers = useMemo(() => {
-    let result = [...dealers].sort((a, b) => a.name.localeCompare(b.name));
+    // Per spec: only Jai Maharashtra Hardware & Electricals is shown.
+    let result = dealers.filter((d) => d.id === "1");
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
