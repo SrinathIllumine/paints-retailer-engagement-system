@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-type Props = { open: boolean; onClose: () => void };
+type Props = { open: boolean; onClose: () => void; onDone?: () => void };
 
 const cards = [
   {
@@ -24,7 +24,7 @@ const cards = [
   },
 ];
 
-const PreparePopup = ({ open, onClose }: Props) => {
+const PreparePopup = ({ open, onClose, onDone }: Props) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center sm:p-4">
@@ -57,7 +57,7 @@ const PreparePopup = ({ open, onClose }: Props) => {
         </div>
 
         <div className="sticky bottom-0 bg-card border-t border-border p-3">
-          <Button className="w-full" variant="outline" onClick={onClose}>Close</Button>
+          <Button className="w-full" onClick={() => { onDone?.(); onClose(); }}>✓ Mark Prepare as Done</Button>
         </div>
       </div>
     </div>

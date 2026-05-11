@@ -49,8 +49,7 @@ const MyTradingArea = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sortedDealers = useMemo(() => {
-    // Per spec: only Jai Maharashtra Hardware & Electricals is shown.
-    let result = dealers.filter((d) => d.id === "1");
+    let result = [...dealers];
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
