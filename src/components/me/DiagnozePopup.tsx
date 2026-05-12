@@ -5,11 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import VoiceTextInput from "@/components/me/VoiceTextInput";
 
 export const PREPARE_POINTS = [
-  "Retailer agreed to push JK SKUs with painters/contractors",
-  "Retailer agreed to maintain buffer stock of fast-moving SKUs",
-  "Retailer agreed to a joint visit with technical/ASM support",
-  "Retailer agreed to improve in-shop visibility (standee/display)",
-  "None — no action points agreed",
+  "Meet key painters/contractors within the next 7 days to generate demand.",
+  "Review sales movement together after 2 weeks.",
 ];
 
 const INSIGHT_TAGS = ["Demand-related", "Competitor-related", "Scheme-related"];
