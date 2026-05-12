@@ -56,7 +56,7 @@ const matchObjections = (text: string): ObjectionMatch[] => {
 // ---------------- Static Q2 / Q3 content ----------------
 
 export const BUSINESS_IDEAS = [
-  "Track the new construction sites and approach their site supervisors.",
+  "Trending in the area - many new construction sites are coming up. You may approach the site supervisors to share JK's multi-product portfolio - Putty, Paints & White Cement.",
   "A business growth session can be organized by JK team for your contractors - where they understand how their business can grow using JK's unique value proposition.",
 ];
 
