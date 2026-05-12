@@ -4,6 +4,30 @@ import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { dealers } from "@/data/mockData";
+import { Send, CheckCheck } from "lucide-react";
+
+const todayStr = () => new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
+const buildWaMessage = (dealerName: string) =>
+`*Visit Summary — ${dealerName}*
+📅 ${todayStr()}
+👤 Manish Kumar from JK
+🏪 ${dealerName} (Owner / In-shop)
+
+✅ *Action Points / Go-Forwards:*
+• Share JK premium grade samples with key builder contacts
+• Follow up on credit terms objection within 3 days
+
+🧠 *New Market Insights:*
+• Demand for white cement rising in nearby residential projects
+
+🔑 *Key Critical Feedback:*
+Retailer flagged credit cycle is shorter than competitor. Wants combo schemes with putty.
+
+— JK Cement ME Team`;
 import {
   Accordion,
   AccordionContent,
@@ -147,6 +171,11 @@ const StatCard = ({
 const MyDashboard = () => {
   const navigate = useNavigate();
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
+  const [summaryDealerId, setSummaryDealerId] = useState<string | null>(null);
+  const summaryDealer = summaryDealerId ? dealers.find((d) => d.id === summaryDealerId) : null;
+  const summaryName = summaryDealer?.name ?? recentlyVisited.find((r) => r.id === summaryDealerId)?.name ?? "";
+  const waMessage = summaryDealerId ? buildWaMessage(summaryName) : "";
+  const shareWa = () => window.open(`https://wa.me/?text=${encodeURIComponent(waMessage)}`, "_blank");
 
   return (
     <MeLayout title="My Dashboard" showBack>
@@ -207,7 +236,7 @@ const MyDashboard = () => {
                   {recentlyVisited.map((r) => (
                     <button
                       key={r.id}
-                      onClick={() => navigate(`/me/visit-summary/${r.id}`)}
+                      onClick={() => setSummaryDealerId(r.id)}
                       className="w-full text-left p-3 rounded-lg border border-border/60 bg-background hover:bg-accent/40 active:scale-[0.99] transition-all"
                     >
                       <div className="flex items-start justify-between gap-2">
@@ -429,6 +458,26 @@ const MyDashboard = () => {
           </Accordion>
         </div>
       </div>
+
+      <Dialog open={!!summaryDealerId} onOpenChange={(o) => !o && setSummaryDealerId(null)}>
+        <DialogContent className="max-w-md p-4 gap-3">
+          <DialogHeader>
+            <DialogTitle className="text-base">Visit Summary Report</DialogTitle>
+          </DialogHeader>
+          <div className="bg-[#e5ddd5] rounded-2xl p-3 max-h-[60vh] overflow-y-auto">
+            <div className="bg-white rounded-xl rounded-tl-sm p-3 shadow-sm relative">
+              <pre className="whitespace-pre-wrap font-sans text-[13px] text-foreground/90 leading-relaxed">{waMessage}</pre>
+              <div className="flex items-center justify-end gap-1 mt-1.5">
+                <span className="text-[10px] text-muted-foreground">Just now</span>
+                <CheckCheck className="w-3.5 h-3.5 text-[#34B7F1]" />
+              </div>
+            </div>
+          </div>
+          <Button className="w-full bg-[#25D366] hover:bg-[#1ebe57] text-white" onClick={shareWa}>
+            <Send className="w-4 h-4 mr-1.5" /> Share via WhatsApp
+          </Button>
+        </DialogContent>
+      </Dialog>
     </MeLayout>
   );
 };
