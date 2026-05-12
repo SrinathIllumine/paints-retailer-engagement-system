@@ -51,7 +51,7 @@ const PreparePopup = ({ open, onClose, onDone }: Props) => {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{c.tag}</span>
               </div>
               <h4 className="font-display font-bold text-foreground text-sm">{c.title}</h4>
-              <p className="text-sm text-foreground/80 leading-relaxed mt-1">{c.body}</p>
+              <p className="text-sm text-foreground/80 leading-relaxed mt-1 whitespace-pre-line">{c.body}</p>
             </div>
           ))}
         </div>
