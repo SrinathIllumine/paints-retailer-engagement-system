@@ -129,6 +129,10 @@ const ASMDashboard = () => {
                 Engagement quality by market area · benchmark vs company target
               </p>
             </div>
+            <span className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded-md px-2 py-1">
+              <span className="inline-block w-6 border-t-2 border-dashed border-muted-foreground/70" />
+              Company Benchmark (80%)
+            </span>
           </div>
 
           <div className="h-[340px] w-full">
@@ -155,17 +159,8 @@ const ASMDashboard = () => {
                   y={80}
                   stroke="hsl(var(--muted-foreground))"
                   strokeDasharray="4 4"
-                >
-                  <Label
-                    value="Company Benchmark (80%)"
-                    position="insideTopRight"
-                    style={{
-                      fontSize: 11,
-                      fill: "hsl(var(--muted-foreground))",
-                      fontWeight: 500,
-                    }}
-                  />
-                </ReferenceLine>
+                />
+
                 <Bar
                   dataKey="value"
                   radius={[6, 6, 0, 0]}
