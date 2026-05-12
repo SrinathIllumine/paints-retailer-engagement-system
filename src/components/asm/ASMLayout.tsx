@@ -34,7 +34,7 @@ const navItems = [
   {
     icon: Store,
     label: "Leaderboard",
-    sub: "Top retailer objections in my area",
+    sub: "ME Leaderboard w.r.t Sales & Engagement Levels",
     path: "/asm/retailers",
   },
   {
