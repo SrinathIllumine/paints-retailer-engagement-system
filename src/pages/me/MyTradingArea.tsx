@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Search,
   MapPin,
@@ -65,10 +66,23 @@ const MyTradingArea = () => {
   return (
     <MeLayout title="My Trading Area" showBack footer={<FixedFooter />}>
       <div className="p-4 pb-2 space-y-4">
-        {/* Welcoming Message */}
-        <div className="animate-fade-in">
-          <p className="text-base text-foreground font-medium">Good to see you Manish Kumar 👋</p>
-          <p className="text-sm text-muted-foreground">Let's plan your engagements with retailers today.</p>
+        {/* Welcoming Message + Profile */}
+        <div className="flex items-start justify-between gap-3 animate-fade-in">
+          <div className="min-w-0 flex-1">
+            <p className="text-base text-foreground font-medium">Good to see you Manish Kumar 👋</p>
+            <p className="text-sm text-muted-foreground">Let's plan your engagements with retailers today.</p>
+          </div>
+          <button
+            onClick={() => navigate("/me/dashboard")}
+            aria-label="Open My Dashboard"
+            className="shrink-0 active:scale-95 transition-transform"
+          >
+            <Avatar className="w-10 h-10 border-2 border-primary/20">
+              <AvatarFallback className="bg-primary/10 text-primary font-display font-bold text-sm">
+                MK
+              </AvatarFallback>
+            </Avatar>
+          </button>
         </div>
 
         {/* Search */}
