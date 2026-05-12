@@ -5,10 +5,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import VoiceTextInput from "@/components/me/VoiceTextInput";
 
 export const PREPARE_POINTS = [
-  "Understand the Retailer's Concern for Sales Drop",
-  "Be Ready with Local Market Updates",
-  "Go with a Growth Suggestion",
-  "None — dealer was not receptive",
+  "Retailer agreed to push JK SKUs with painters/contractors",
+  "Retailer agreed to maintain buffer stock of fast-moving SKUs",
+  "Retailer agreed to a joint visit with technical/ASM support",
+  "Retailer agreed to improve in-shop visibility (standee/display)",
+  "None — no action points agreed",
 ];
 
 const INSIGHT_TAGS = ["Demand-related", "Competitor-related", "Scheme-related"];
@@ -22,6 +23,7 @@ export type MarketInsight = {
 
 export type DiagnozeState = {
   topicsCovered: string[];
+  customActionPoint?: string;
   insights: MarketInsight[];
   feedbackText: string;
   feedbackSummary: string;
@@ -96,6 +98,18 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
                   </label>
                 );
               })}
+              <div className="pt-1">
+                <label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  Other action point
+                </label>
+                <textarea
+                  value={state.customActionPoint ?? ""}
+                  onChange={(e) => setState({ ...state, customActionPoint: e.target.value })}
+                  placeholder="Type any other action point agreed by the retailer..."
+                  rows={3}
+                  className="mt-1 w-full rounded-lg border border-border bg-background p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+              </div>
             </div>
           </Q>
 
