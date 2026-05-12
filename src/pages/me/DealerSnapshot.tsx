@@ -7,7 +7,7 @@ import DealerTypeBadge from "@/components/DealerTypeBadge";
 import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, CheckCircle2, X, User, ArrowRight, Circle, Lock } from "lucide-react";
 import { dealers } from "@/data/mockData";
 import PreparePopup from "@/components/me/PreparePopup";
-import EngagePopup, { type EngageState } from "@/components/me/EngagePopup";
+import EngagePopup, { type EngageState, newEngageState } from "@/components/me/EngagePopup";
 import DiagnozePopup, { type DiagnozeState, newInsight } from "@/components/me/DiagnozePopup";
 
 const revenueLabelMap: Record<string, string> = {
@@ -82,7 +82,7 @@ const DealerSnapshot = () => {
   const [phase, setPhase] = useState<"prepare" | "engage" | "diagnoze" | null>(null);
   const [completed, setCompleted] = useState<{ prepare: boolean; engage: boolean; diagnoze: boolean }>({ prepare: false, engage: false, diagnoze: false });
   const [lockMsg, setLockMsg] = useState<null | "engage" | "diagnoze">(null);
-  const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
+  const [engageState, setEngageState] = useState<EngageState>(newEngageState());
   const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
     topicsCovered: [], insights: [newInsight()],
     feedbackText: "", feedbackSummary: "",
@@ -260,16 +260,6 @@ const DealerSnapshot = () => {
           </div>
         )}
 
-        {/* Current Scenario */}
-        <div className="animate-slide-up" style={{ animationDelay: "60ms", animationFillMode: "backwards" }}>
-          <h3 className="text-xs font-bold text-primary mb-2 uppercase tracking-[0.18em]">Current Scenario</h3>
-          <Card className="bg-info/5 border-info/20 p-4">
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              Long-standing retailer since 2014. At this point in time, his sales are coming down w.r.t JK.
-            </p>
-          </Card>
-        </div>
-
         {/* Customized Engagement Plan — sequential checklist */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Customized Engagement Plan</h3>
@@ -355,8 +345,7 @@ const DealerSnapshot = () => {
             setPhase(null);
             navigate(`/me/visit-summary/${dealer.id}`, {
               state: {
-                objections: engageState.objections,
-                actionPoints: engageState.actionPoints,
+                engage: engageState,
                 ...diagnozeState,
               },
             });
