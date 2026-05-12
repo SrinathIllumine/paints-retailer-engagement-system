@@ -264,7 +264,7 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="min-w-0">
-          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">DURING</p>
+          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em] text-xs font-light">DURING</p>
           <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5 truncate">
             Addressing Flashpoints
           </h3>

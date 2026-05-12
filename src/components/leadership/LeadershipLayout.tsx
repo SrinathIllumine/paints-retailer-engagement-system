@@ -29,7 +29,7 @@ const navItems = [
   },
   {
     icon: Trophy,
-    label: "Leaderboard",
+    label: "Engagement Quality",
     sub: "Top MEs, top & bottom states, top objections",
     path: "/leadership/leaderboard",
   },
