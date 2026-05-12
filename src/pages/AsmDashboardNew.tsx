@@ -163,7 +163,8 @@ const AsmDashboardNew = () => {
                   <TableCell>{r.retailer}</TableCell>
                   <TableCell>
                     <Link
-                      to="/me/visit-summary/1"
+                      to={`/me/visit-summary/${r.dealerId}`}
+                      state={r.state}
                       className="text-primary underline underline-offset-2 hover:no-underline"
                     >
                       View Report
