@@ -171,6 +171,11 @@ const StatCard = ({
 const MyDashboard = () => {
   const navigate = useNavigate();
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
+  const [summaryDealerId, setSummaryDealerId] = useState<string | null>(null);
+  const summaryDealer = summaryDealerId ? dealers.find((d) => d.id === summaryDealerId) : null;
+  const summaryName = summaryDealer?.name ?? recentlyVisited.find((r) => r.id === summaryDealerId)?.name ?? "";
+  const waMessage = summaryDealerId ? buildWaMessage(summaryName) : "";
+  const shareWa = () => window.open(`https://wa.me/?text=${encodeURIComponent(waMessage)}`, "_blank");
 
   return (
     <MeLayout title="My Dashboard" showBack>
