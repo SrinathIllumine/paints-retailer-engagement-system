@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Store, ClipboardList, MessageSquareWarning, Lightbulb, BookOpen, CheckCircle2, Key, Send, CheckCheck, Sparkles } from "lucide-react";
 import { dealers } from "@/data/mockData";
-import { type EngageState, newEngageState } from "@/components/me/EngagePopup";
+import { type EngageState, newEngageState, BUSINESS_IDEAS, NEARBY_DGS, EDUCATION_POINTS } from "@/components/me/EngagePopup";
 
 type Insight = { id: string; tag: string; text: string; summary: string };
 type SummaryState = {
