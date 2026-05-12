@@ -41,19 +41,15 @@ const toMatch = (o: typeof OBJECTION_CATALOGUE[number]): ObjectionMatch => ({
 
 const matchObjections = (text: string): ObjectionMatch[] => {
   const t = text.toLowerCase().trim();
-  if (!t) return [];
+  if (!t) return OBJECTION_CATALOGUE.map(toMatch);
   const scored = OBJECTION_CATALOGUE.map((o) => {
     const score = o.keywords.reduce((acc, kw) => acc + (t.includes(kw) ? 1 : 0), 0);
     return { o, score };
   })
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 2)
     .map((x) => toMatch(x.o));
-  // Fallback: if voice didn't hit any keyword, still suggest the two most common objections
-  if (scored.length === 0) {
-    return [toMatch(OBJECTION_CATALOGUE[0]), toMatch(OBJECTION_CATALOGUE[3])];
-  }
+  if (scored.length === 0) return OBJECTION_CATALOGUE.map(toMatch);
   return scored;
 };
 
