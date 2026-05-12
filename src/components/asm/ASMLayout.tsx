@@ -33,8 +33,8 @@ const navItems = [
   },
   {
     icon: Store,
-    label: "All Retailers",
-    sub: "Master list & profiles",
+    label: "Leaderboard",
+    sub: "Collated insights from across markets in Pune",
     path: "/asm/retailers",
   },
   {
