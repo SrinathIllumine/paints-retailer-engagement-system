@@ -93,7 +93,7 @@ const mockSummarize = (text: string, category: string): string => {
 };
 
 // ---------- Component ----------
-const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSummaryChange }: Props) => {
+const VoiceTextInput = ({ category, placeholder, label = "Your note", value, onChange, summary, onSummaryChange }: Props) => {
   const [listening, setListening] = useState(false);
   const [interimText, setInterimText] = useState("");
   const [summarizing, setSummarizing] = useState(false);
