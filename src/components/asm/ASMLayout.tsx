@@ -28,7 +28,7 @@ const navItems = [
   {
     icon: AlertTriangle,
     label: "Retailer Objections",
-    sub: "Key objections raised in my area",
+    sub: "Top objections raised in my area",
     path: "/asm/objections",
   },
   {
