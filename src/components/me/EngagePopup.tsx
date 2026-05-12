@@ -79,12 +79,6 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
       : [...state.objections, id];
     setState({ ...state, objections: next });
   };
-  const toggleAction = (label: string) => {
-    const next = state.actionPoints.includes(label)
-      ? state.actionPoints.filter((x) => x !== label)
-      : [...state.actionPoints, label];
-    setState({ ...state, actionPoints: next });
-  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center sm:p-4">
@@ -104,8 +98,10 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
         <div className="overflow-y-auto p-4 space-y-5 flex-1">
           {/* Section A */}
           <section className="space-y-2">
-            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">WHAT IS THE FLASHPOINT YOU ARE FACING WITH THE RETAILER?</h4>
-            <div className="mt-1"></div>
+            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+              WHAT IS THE FLASHPOINT YOU ARE FACING WITH THE RETAILER?
+            </h4>
+            <div className="space-y-2 mt-4">
               {OBJECTIONS.map((o) => {
                 const checked = state.objections.includes(o.id);
                 const isOpen = expanded[o.id];
@@ -145,7 +141,6 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
               })}
             </div>
           </section>
-
         </div>
 
         <div className="bg-card border-t border-border p-3">
