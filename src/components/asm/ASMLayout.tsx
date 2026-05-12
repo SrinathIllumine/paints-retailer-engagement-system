@@ -83,7 +83,7 @@ const ASMLayout = ({ children, hideFilters = false }: Props) => {
               >
                 <item.icon className="w-4 h-4 mt-0.5 shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-sm font-medium leading-tight">
+                  <p className="leading-tight text-xs font-light">
                     {item.label}
                   </p>
                   <p
