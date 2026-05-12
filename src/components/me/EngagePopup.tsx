@@ -55,9 +55,14 @@ const OBJECTION_CATALOGUE: { label: string; keywords: string[]; bestPractices: s
   },
 ];
 
+const toMatch = (o: typeof OBJECTION_CATALOGUE[number]): ObjectionMatch => ({
+  label: o.label,
+  bestPractices: o.bestPractices,
+});
+
 const matchObjections = (text: string): ObjectionMatch[] => {
-  const t = text.toLowerCase();
-  if (!t.trim()) return [];
+  const t = text.toLowerCase().trim();
+  if (!t) return [];
   const scored = OBJECTION_CATALOGUE.map((o) => {
     const score = o.keywords.reduce((acc, kw) => acc + (t.includes(kw) ? 1 : 0), 0);
     return { o, score };
@@ -65,7 +70,11 @@ const matchObjections = (text: string): ObjectionMatch[] => {
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, 2)
-    .map((x) => ({ label: x.o.label, bestPractices: x.o.bestPractices }));
+    .map((x) => toMatch(x.o));
+  // Fallback: if voice didn't hit any keyword, still suggest the two most common objections
+  if (scored.length === 0) {
+    return [toMatch(OBJECTION_CATALOGUE[0]), toMatch(OBJECTION_CATALOGUE[3])];
+  }
   return scored;
 };
 
@@ -157,7 +166,13 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
   const runMatch = (text: string) => {
     setMatching(true);
     setTimeout(() => {
-      updateObjections({ transcript: text, matches: matchObjections(text) });
+      const matches = text
+        ? matchObjections(text)
+        : [
+            { label: OBJECTION_CATALOGUE[0].label, bestPractices: OBJECTION_CATALOGUE[0].bestPractices },
+            { label: OBJECTION_CATALOGUE[3].label, bestPractices: OBJECTION_CATALOGUE[3].bestPractices },
+          ];
+      updateObjections({ transcript: text, matches });
       setMatching(false);
     }, 400);
   };
@@ -203,8 +218,7 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
       if (shouldListenRef.current) { try { rec.start(); return; } catch {} }
       setListening(false);
       setInterim("");
-      const finalText = baseTextRef.current.trim();
-      if (finalText) runMatch(finalText);
+      runMatch(baseTextRef.current.trim());
     };
     shouldListenRef.current = true;
     recRef.current = rec;
