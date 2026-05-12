@@ -57,7 +57,7 @@ const matchObjections = (text: string): ObjectionMatch[] => {
 
 export const BUSINESS_IDEAS = [
   "Track the new construction sites and approach their site supervisors.",
-  "Expand your contractor base by getting in touch with JK's DGs.",
+  "A business growth session can be organized by JK team for your contractors - where they understand how their business can grow using JK's unique value proposition.",
 ];
 
 export const NEARBY_DGS = [
