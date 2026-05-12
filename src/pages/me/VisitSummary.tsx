@@ -61,7 +61,13 @@ const VisitSummary = () => {
     const lines = ["💡 *Business Ideas Proposed:*"];
     BUSINESS_IDEAS.forEach((p) => lines.push(`• ${p}`));
     lines.push("  Nearby DGs:");
-    NEARBY_DGS.forEach((dg) => lines.push(`   - ${dg.name} (${dg.area}) ${dg.phone}`));
+    NEARBY_DGS.forEach((dg) => {
+      const parts = [];
+      if (dg.name) parts.push(dg.name);
+      parts.push(dg.area.replace(/\n/g, " "));
+      if (dg.phone) parts.push(dg.phone);
+      lines.push(`   - ${parts.join(" · ")}`);
+    });
     return lines.join("\n");
   };
 
