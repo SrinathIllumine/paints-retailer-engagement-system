@@ -141,12 +141,7 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
   const runMatch = (text: string) => {
     setMatching(true);
     setTimeout(() => {
-      const matches = text
-        ? matchObjections(text)
-        : [
-            { label: OBJECTION_CATALOGUE[0].label, bestPractices: OBJECTION_CATALOGUE[0].bestPractices },
-            { label: OBJECTION_CATALOGUE[3].label, bestPractices: OBJECTION_CATALOGUE[3].bestPractices },
-          ];
+      const matches = matchObjections(text);
       updateObjections({ transcript: text, matches });
       setMatching(false);
     }, 400);
