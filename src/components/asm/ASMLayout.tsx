@@ -22,7 +22,7 @@ const navItems = [
   {
     icon: Users,
     label: "Engagement Quality",
-    sub: "ME Leaderboard w.r.t Sales & Engagement Levels",
+    sub: "What is the quality of retailer engagement in Pune markets?",
     path: "/asm",
   },
   {
