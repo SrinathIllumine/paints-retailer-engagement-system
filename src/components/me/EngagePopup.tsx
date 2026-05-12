@@ -132,7 +132,6 @@ const QHeader = ({
     <span className="flex items-start gap-2 min-w-0">
       <Icon className="w-4 h-4 text-primary shrink-0 mt-0.5" />
       <span className="text-sm font-semibold text-foreground leading-snug">
-        <span className="text-primary mr-1">Q{idx}.</span>
         {title}
       </span>
     </span>
