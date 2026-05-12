@@ -7,7 +7,7 @@ import DealerTypeBadge from "@/components/DealerTypeBadge";
 import { MapPin, ChevronRight, ChevronDown, ChevronUp, History, AlertTriangle, CheckCircle2, X, User, ArrowRight, Circle, Lock } from "lucide-react";
 import { dealers } from "@/data/mockData";
 import PreparePopup from "@/components/me/PreparePopup";
-import EngagePopup, { type EngageState } from "@/components/me/EngagePopup";
+import EngagePopup, { type EngageState, newEngageState } from "@/components/me/EngagePopup";
 import DiagnozePopup, { type DiagnozeState, newInsight } from "@/components/me/DiagnozePopup";
 
 const revenueLabelMap: Record<string, string> = {
@@ -82,7 +82,7 @@ const DealerSnapshot = () => {
   const [phase, setPhase] = useState<"prepare" | "engage" | "diagnoze" | null>(null);
   const [completed, setCompleted] = useState<{ prepare: boolean; engage: boolean; diagnoze: boolean }>({ prepare: false, engage: false, diagnoze: false });
   const [lockMsg, setLockMsg] = useState<null | "engage" | "diagnoze">(null);
-  const [engageState, setEngageState] = useState<EngageState>({ objections: [], actionPoints: [] });
+  const [engageState, setEngageState] = useState<EngageState>(newEngageState());
   const [diagnozeState, setDiagnozeState] = useState<DiagnozeState>({
     topicsCovered: [], insights: [newInsight()],
     feedbackText: "", feedbackSummary: "",
@@ -345,8 +345,7 @@ const DealerSnapshot = () => {
             setPhase(null);
             navigate(`/me/visit-summary/${dealer.id}`, {
               state: {
-                objections: engageState.objections,
-                actionPoints: engageState.actionPoints,
+                engage: engageState,
                 ...diagnozeState,
               },
             });
