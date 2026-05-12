@@ -7,12 +7,12 @@ const cards = [
   {
     n: 1,
     tag: "Long-term Relationship Building",
-    title: "Understand the Retailer's Concern for Sales Drop",
-    body: "Is it due to demand, competition, pricing, or stock movement?",
+    title: "Potential Opportunities in your area identified by DGs",
+    body: "i) Meeting Commitments made in the last meeting\nii) Introducing a new scheme",
   },
   {
     n: 2,
-    tag: "Tactical",
+    tag: "BUSINESS BUILDING",
     title: "Potential Opportunities in your area identified by DGs",
     body: "For example: (i) JK WallMaxx is highly popular in Hinjewadi — there is already an existing demand, the retailer can capitalize on that. (ii) Suggest a better scheme than the competition.",
   },
@@ -20,7 +20,7 @@ const cards = [
     n: 3,
     tag: "Operational",
     title: "Go with a Growth Suggestion",
-    body: "i) Meeting Commitments make in the last meeting\nii) Introducing a new scheme",
+    body: "i) Meeting Commitments made in the last meeting\nii) Introducing a new scheme",
   },
 ];
 
