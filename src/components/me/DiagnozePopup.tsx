@@ -5,10 +5,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import VoiceTextInput from "@/components/me/VoiceTextInput";
 
 export const PREPARE_POINTS = [
-  "Understand the Retailer's Concern for Sales Drop",
-  "Be Ready with Local Market Updates",
-  "Go with a Growth Suggestion",
-  "None — dealer was not receptive",
+  "Retailer agreed to push JK SKUs with painters/contractors",
+  "Retailer agreed to maintain buffer stock of fast-moving SKUs",
+  "Retailer agreed to a joint visit with technical/ASM support",
+  "Retailer agreed to improve in-shop visibility (standee/display)",
+  "None — no action points agreed",
 ];
 
 const INSIGHT_TAGS = ["Demand-related", "Competitor-related", "Scheme-related"];
