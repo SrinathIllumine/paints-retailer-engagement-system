@@ -40,7 +40,7 @@ const navItems = [
   {
     icon: Lightbulb,
     label: "Market Insights",
-    sub: "Qualitative signals from the field",
+    sub: "Collated insights from across markets in Pune",
     path: "/asm/insights",
   },
 ];
