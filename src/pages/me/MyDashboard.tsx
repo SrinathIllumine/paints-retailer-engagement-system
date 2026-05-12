@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
@@ -19,6 +20,9 @@ import {
   Lightbulb,
   History,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle2,
   FileText,
   MessageSquare,
 } from "lucide-react";
@@ -79,11 +83,39 @@ const insightRetailers = [
 ];
 
 const engagementHistory = [
-  { date: "Today", title: "Visit · Rajesh Construction Supply", detail: "Discussed multi-product alignment. Captured 1 objection on credit terms." },
-  { date: "Yesterday", title: "Visit · Patel & Sons Hardware", detail: "Introduced premium portfolio. Retailer agreed to a trial order." },
-  { date: "2 days ago", title: "Visit · Jai Maharashtra Hardware", detail: "Productive conversation on product range. Logged market insight." },
-  { date: "5 days ago", title: "Visit · Mahalaxmi Traders", detail: "Strong relationship continued. Shared scheme calendar for next month." },
-  { date: "1 week ago", title: "Visit · Sharma Building Materials", detail: "Introduction completed. Retailer requested catalogue." },
+  {
+    date: "Apr 12, 2026",
+    summary: "Visited Rajesh Construction Supply – multi-product alignment",
+    actionPoints: [
+      { goal: "Share JK premium grade samples with 2 builder contacts", bullets: ["Pick up sample kits from depot", "Schedule on-site demo next week"] },
+      { goal: "Resolve credit terms objection raised during visit", bullets: ["Loop in ASM for revised terms", "Confirm decision with retailer in 3 days"] },
+    ],
+    feedback: ["Retailer flagged credit cycle is shorter than competitor", "Wants combo schemes with putty"],
+  },
+  {
+    date: "Apr 10, 2026",
+    summary: "Visited Patel & Sons Hardware – introduced premium portfolio",
+    actionPoints: [
+      { goal: "Confirm trial order processing this week", bullets: ["Coordinate with order desk", "Share dispatch ETA with retailer"] },
+    ],
+    feedback: ["Retailer interested but cautious on first-order quantity"],
+  },
+  {
+    date: "Apr 8, 2026",
+    summary: "Visited Jai Maharashtra Hardware – product range discussion",
+    actionPoints: [
+      { goal: "Log market insight on white cement demand in Hinjewadi", bullets: ["Update insights tracker", "Flag to ASM for area-level view"] },
+    ],
+    feedback: ["Packaging dampness during monsoon raised again"],
+  },
+  {
+    date: "Apr 3, 2026",
+    summary: "Visited Mahalaxmi Traders – relationship continuity",
+    actionPoints: [
+      { goal: "Share monthly scheme calendar before next visit", bullets: ["Send PDF over WhatsApp", "Confirm receipt"] },
+    ],
+    feedback: ["Competitor running 30-day credit offer in Pune SW"],
+  },
 ];
 
 const severityClass: Record<"high" | "medium" | "low", string> = {
