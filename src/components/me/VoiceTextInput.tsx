@@ -6,6 +6,7 @@ import { Mic, MicOff, Sparkles, Loader2, Pencil } from "lucide-react";
 type Props = {
   category: string;
   placeholder?: string;
+  label?: string;
   value: string;
   onChange: (next: string) => void;
   summary: string;
@@ -92,7 +93,7 @@ const mockSummarize = (text: string, category: string): string => {
 };
 
 // ---------- Component ----------
-const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSummaryChange }: Props) => {
+const VoiceTextInput = ({ category, placeholder, label = "Your note", value, onChange, summary, onSummaryChange }: Props) => {
   const [listening, setListening] = useState(false);
   const [interimText, setInterimText] = useState("");
   const [summarizing, setSummarizing] = useState(false);
@@ -242,7 +243,7 @@ const VoiceTextInput = ({ category, placeholder, value, onChange, summary, onSum
     <div className="space-y-3">
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs font-medium text-muted-foreground">Your note</span>
+          <span className="text-xs font-medium text-muted-foreground">{label}</span>
           {supportsVoice && (
             <Button
               type="button"
