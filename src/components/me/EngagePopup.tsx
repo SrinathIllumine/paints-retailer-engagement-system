@@ -9,48 +9,27 @@ export type ObjectionMatch = { label: string; bestPractices: string[] };
 
 const OBJECTION_CATALOGUE: { label: string; keywords: string[]; bestPractices: string[] }[] = [
   {
-    label: "Margin / Price too low vs competition",
-    keywords: ["margin", "price", "cheap", "costly", "expensive", "discount", "rate", "mrp", "landing"],
+    label: "Demand for premium products has slowed in this area.",
+    keywords: ["premium", "slow", "demand", "high-end", "expensive", "costly"],
     bestPractices: [
-      "Reframe price into total value: durability, coverage per bag, and pull-through demand.",
-      "Show the per-bag earning at the next slab to make the upside concrete.",
-      "Bundle a running visibility/scheme incentive to close the perceived gap.",
+      "Push mid-range / faster-moving SKUs first instead of forcing premium products immediately.",
+      "Identify active premium-selling pockets nearby and understand what customer segment is still buying there.",
     ],
   },
   {
-    label: "Stock / Supply / Delivery issue",
-    keywords: ["stock", "supply", "deliver", "delivery", "availab", "shortage", "delay", "late"],
+    label: "Contractor / site activity is lower compared to last year.",
+    keywords: ["contractor", "site", "activity", "project", "construction", "mason", "lower", "less"],
     bestPractices: [
-      "Commit a written restock ETA on the spot with the distributor's confirmation.",
-      "Offer a smaller buffer order to bridge until the next dispatch.",
-      "Share the depot contact for direct status checks to rebuild trust.",
+      "Map active contractors / sites still operating in the area and reconnect them to the retailer.",
+      "Focus on smaller renovation and repainting jobs instead of waiting for large project demand.",
     ],
   },
   {
-    label: "Painter / Contractor prefers competitor",
-    keywords: ["painter", "contractor", "mason", "influenc", "applicator"],
+    label: "People are delaying painting and renovation work.",
+    keywords: ["delay", "delaying", "paint", "painting", "renovation", "repaint", "postpone", "waiting"],
     bestPractices: [
-      "Plan a joint visit with a JK technical expert to 2 key painters this fortnight.",
-      "Offer a painter meet at the retailer's outlet with a live product demo.",
-      "Enrol top painters into the Painter Loyalty Scheme on the same day.",
-    ],
-  },
-  {
-    label: "Competitor scheme is stronger",
-    keywords: ["scheme", "offer", "competitor", "rival", "other brand", "otherbrand"],
-    bestPractices: [
-      "Position the running JK scheme bundle vs. the competitor's net landing.",
-      "Highlight a nearby retailer success story to neutralise the pitch.",
-      "Confirm the scheme validity window so the retailer can plan inventory.",
-    ],
-  },
-  {
-    label: "Quality / Packaging concern",
-    keywords: ["quality", "packaging", "bag", "torn", "monsoon", "leak", "broken"],
-    bestPractices: [
-      "Acknowledge, log a quality ticket on the spot, and share the reference number.",
-      "Offer replacement of damaged bags from the next dispatch.",
-      "Walk through the new packaging spec / batch improvements briefly.",
+      "Position products around maintenance, waterproofing, and repair needs instead of full repainting.",
+      "Encourage retailers to promote smaller pack sizes and budget-friendly combinations to restart buying.",
     ],
   },
 ];
