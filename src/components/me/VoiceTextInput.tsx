@@ -187,16 +187,24 @@ const VoiceTextInput = ({ category, placeholder, label = "Your note", value, onC
     setError("");
     baseTextRef.current = valueRef.current.trim();
 
-    // Pre-acquire mic stream so Chrome keeps the device warm and reduces re-prompt beeps
-    try {
-      mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-      });
-    } catch (err: any) {
-      setError(err?.name === "NotAllowedError"
-        ? "Microphone permission blocked. Allow access and try again."
-        : "Could not access microphone.");
-      return;
+    // On Android Chrome, holding a getUserMedia stream blocks SpeechRecognition from
+    // accessing the microphone (recognition silently fails / never returns results).
+    // Only pre-acquire the stream on non-Android platforms (iOS/desktop), where it
+    // helps reduce permission re-prompt beeps. On Android, let SpeechRecognition own the mic.
+    const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    const isAndroid = /Android/i.test(ua);
+
+    if (!isAndroid) {
+      try {
+        mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        });
+      } catch (err: any) {
+        setError(err?.name === "NotAllowedError"
+          ? "Microphone permission blocked. Allow access and try again."
+          : "Could not access microphone.");
+        return;
+      }
     }
 
     shouldListenRef.current = true;
