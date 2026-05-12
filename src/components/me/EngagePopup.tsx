@@ -147,21 +147,6 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
             </div>
           </section>
 
-          {/* Section B */}
-          <section className="space-y-2">
-            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">Action Points</h4>
-            <div className="space-y-2 mt-1">
-              {ACTION_POINTS.map((a) => {
-                const checked = state.actionPoints.includes(a);
-                return (
-                  <label key={a} className={`flex items-start gap-2.5 rounded-xl border p-3 cursor-pointer transition-colors ${checked ? "border-success/40 bg-success/5" : "border-border bg-card"}`}>
-                    <Checkbox checked={checked} onCheckedChange={() => toggleAction(a)} className="mt-0.5" />
-                    <span className="text-sm text-foreground/90">{a}</span>
-                  </label>
-                );
-              })}
-            </div>
-          </section>
         </div>
 
         <div className="bg-card border-t border-border p-3">
