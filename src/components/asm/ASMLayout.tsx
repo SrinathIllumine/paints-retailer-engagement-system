@@ -90,7 +90,7 @@ const ASMLayout = ({ children, hideFilters = false }: Props) => {
                     className={`leading-snug mt-0.5 ${
                       active
                         ? "text-sidebar-primary-foreground/80 text-base font-extrabold"
-                        : "text-sidebar-foreground/55 text-[11px]"
+                        : "text-sidebar-foreground/55 text-base font-extrabold"
                     }`}
                   >
                     {item.sub}
