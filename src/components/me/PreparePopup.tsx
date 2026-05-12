@@ -13,14 +13,14 @@ const cards = [
   {
     n: 2,
     tag: "Tactical",
-    title: "Be Ready with Local Market Updates",
+    title: "Potential Opportunities in your area identified by DGs",
     body: "For example: (i) JK WallMaxx is highly popular in Hinjewadi — there is already an existing demand, the retailer can capitalize on that. (ii) Suggest a better scheme than the competition.",
   },
   {
     n: 3,
     tag: "Operational",
     title: "Go with a Growth Suggestion",
-    body: "For example: If the retailer has lost some contractors to competition, suggest arranging a meeting with those contractors where you can present JK's value proposition.",
+    body: "i) Meeting Commitments make in the last meeting\nii) Introducing a new scheme",
   },
 ];
 
@@ -51,7 +51,7 @@ const PreparePopup = ({ open, onClose, onDone }: Props) => {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{c.tag}</span>
               </div>
               <h4 className="font-display font-bold text-foreground text-sm">{c.title}</h4>
-              <p className="text-sm text-foreground/80 leading-relaxed mt-1">{c.body}</p>
+              <p className="text-sm text-foreground/80 leading-relaxed mt-1 whitespace-pre-line">{c.body}</p>
             </div>
           ))}
         </div>
