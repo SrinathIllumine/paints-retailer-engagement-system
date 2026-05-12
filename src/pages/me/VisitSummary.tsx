@@ -61,7 +61,13 @@ const VisitSummary = () => {
     const lines = ["💡 *Business Ideas Proposed:*"];
     BUSINESS_IDEAS.forEach((p) => lines.push(`• ${p}`));
     lines.push("  Nearby DGs:");
-    NEARBY_DGS.forEach((dg) => lines.push(`   - ${dg.name} (${dg.area}) ${dg.phone}`));
+    NEARBY_DGS.forEach((dg) => {
+      const parts = [];
+      if (dg.name) parts.push(dg.name);
+      parts.push(dg.area.replace(/\n/g, " "));
+      if (dg.phone) parts.push(dg.phone);
+      lines.push(`   - ${parts.join(" · ")}`);
+    });
     return lines.join("\n");
   };
 
@@ -143,8 +149,10 @@ ${waBlocks.join("\n\n")}
         <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Nearby DGs</p>
         <ul className="space-y-1">
           {NEARBY_DGS.map((dg, i) => (
-            <li key={i} className="text-xs text-foreground/85">
-              <span className="font-semibold text-foreground">{dg.name}</span> · {dg.area} · {dg.phone}
+            <li key={i} className="text-xs text-foreground/85 whitespace-pre-line leading-relaxed">
+              {dg.name && <><span className="font-semibold text-foreground">{dg.name}</span> · </>}
+              {dg.area}
+              {dg.phone && <> · {dg.phone}</>}
             </li>
           ))}
         </ul>
