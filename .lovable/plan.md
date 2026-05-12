@@ -1,25 +1,66 @@
-## Make ASM Reports the main ASM Dashboard (New) screen
 
-Replace the current contents of the ASM Dashboard (New) home screen with the ASM Reports screen we just built. The old dashboard sections (KPI cards, Engagement Unit Coverage, Objections + donut, Market Insights, Engagement Quality, Daily Engagement Reports) are removed from the route.
+## ASM Reports — layout & content refinements
 
-### Changes
+All changes are scoped to `src/pages/AsmDashboardNew.tsx`. No backend, no routing changes.
 
-1. **`src/pages/AsmDashboardNew.tsx`** — replace the entire body with the ASM Reports layout currently in `AsmReportsNew.tsx`:
-   - Header: `ASM Reports` title (no Close button — this is now the section's main screen).
-   - Sub-header strip: **`Ravi Kumar, ASM, Pune`** | Team of 6 MEs | 6 markets.
-   - 2×2 grid of the four cards (Engagement Reports table, Coverage Heatmap, Top Objections pie, Key Insights).
-   - Drop the previous header chips (week chip and ASM Reports link) since reports are now the page itself.
+### 1. Fit all 4 cards in a single screen view
 
-2. **`src/App.tsx`** — remove the `/asm-dashboard-new/reports` route (no longer needed; the home route renders the reports screen).
+- Tighten the page wrapper: reduce vertical padding (`py-4`), shrink header margin and sub-header strip.
+- Reduce card padding (`p-3`), title sizes (`text-[14px]`), and inter-card gap (`gap-3`).
+- Make each card a fixed-height panel so the 2×2 grid fits the viewport (~`h-[calc((100vh-160px)/2)]`) with internal scroll for tables/legend overflow only.
+- Shrink pie chart height (~220px) and table row padding so cards stay compact.
 
-3. **Delete** `src/pages/AsmReportsNew.tsx` (its content moves into `AsmDashboardNew.tsx`).
+### 2. Reorder the 2×2 grid
 
-4. **Leave untouched** the old dashboard component files under `src/components/asm-dashboard/*` (KpiCards, EngagementUnitCoverage, ObjectionsAndDonut, MarketInsights, EngagementQuality, DailyEngagementReports). They are no longer imported anywhere but remain in the repo in case you want them back. Tell me if you'd like them deleted too.
+```text
+┌──────────────────────────┬──────────────────────────┐
+│ 1. Engagement Reports    │ 2. Top Retailer          │
+│    (top-left)            │    Objections (top-right)│
+├──────────────────────────┼──────────────────────────┤
+│ 3. Retailer Engagement   │ 4. Key Market Insights   │
+│    Coverage Heatmap      │    (bottom-right)        │
+│    (bottom-left)         │                          │
+└──────────────────────────┴──────────────────────────┘
+```
 
-### Files to change
+Rename card 4 header to **"Key Market Insights"**.
 
-- **Edit:** `src/pages/AsmDashboardNew.tsx` (replace body with reports layout)
-- **Edit:** `src/App.tsx` (remove `/asm-dashboard-new/reports` route + import)
-- **Delete:** `src/pages/AsmReportsNew.tsx`
+### 3. Redesign Key Market Insights card
 
-No backend changes.
+Replace the two flat grey blocks with a more visually engaging layout:
+
+- Two stacked insight items, each on a white card surface with a left accent bar in `--primary` (4px wide).
+- Each insight has:
+  - A small colored pill badge for the category (e.g. "Scheme-related" in primary tint, "Hinjewadi" in accent tint) at the top.
+  - A bold one-line takeaway in `text-foreground`.
+  - A short supporting line in `text-muted-foreground`.
+  - A small lucide icon (e.g. `Lightbulb` for common, `MapPin` for market-specific) in a soft circular badge on the right.
+- Subtle hover lift (`hover:shadow-md transition`) for parity with the other cards.
+
+Stays within design tokens (no raw colors).
+
+### 4. Heatmap column changes
+
+- Remove the **ME** column.
+- Add a new **Overall Engagement Quality** column immediately to the right of **Area**, showing the average of E1 + E2 + E3 (rounded), color-coded with the same `heatColor()` helper.
+- Keep the existing three engagement columns unchanged.
+
+Resulting columns: `Area | Overall Engagement Quality | Engagement 1 | Engagement 2 | Engagement 3`.
+
+### 5. Engagement Reports — top 3 + View More
+
+- Render only the first 3 rows of the `reports` array by default.
+- Add a **View more** button (ghost/link style, primary color) at the bottom-right of the card.
+- Clicking opens a Dialog (shadcn `Dialog`) titled "All Engagement Reports" containing the full table with the same columns, including per-row "View Report" links that preserve the existing `state` payload.
+
+### Technical notes
+
+- Use existing shadcn `Dialog` for the View More modal; no new dependencies.
+- Use `useState` to control the dialog.
+- Compute heatmap "Overall" inline: `Math.round((e1 + e2 + e3) / 3)`.
+- All colors via design tokens (`--primary`, `--muted`, `--success`, `--warning`, `--destructive`, etc.). No hard-coded hex except the existing pie chart palette.
+- No changes to `App.tsx`, routes, or the visit-summary page.
+
+### Files to edit
+
+- `src/pages/AsmDashboardNew.tsx` — only file touched.

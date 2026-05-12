@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Lightbulb, MapPin } from "lucide-react";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import {
   Table,
@@ -9,6 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 type ReportRow = {
   me: string;
@@ -85,11 +94,11 @@ const reports: ReportRow[] = [
 ];
 
 const heatmap = [
-  { me: "Aditya Salve", area: "Pune City", e1: 25, e1Sub: "50/200 retailers", e2: 80, e3: 80 },
-  { me: "Shivam K", area: "Kothrud", e1: 100, e2: 95, e3: 85 },
-  { me: "Dheeraj M", area: "Baner", e1: 90, e2: 85, e3: 85 },
-  { me: "Raj Kumar", area: "Wakad", e1: 95, e2: 95, e3: 95 },
-  { me: "Sagar", area: "Hinjewadi", e1: 5, e2: 0, e3: 0 },
+  { area: "Pune City", e1: 25, e1Sub: "50/200 retailers", e2: 80, e3: 80 },
+  { area: "Kothrud", e1: 100, e2: 95, e3: 85 },
+  { area: "Baner", e1: 90, e2: 85, e3: 85 },
+  { area: "Wakad", e1: 95, e2: 95, e3: 95 },
+  { area: "Hinjewadi", e1: 5, e2: 0, e3: 0 },
 ];
 
 const heatColor = (v: number) => {
@@ -106,199 +115,249 @@ const objections = [
   { name: "Working Capital related", value: 16, color: "#EF9F27" },
 ];
 
+const ReportsTable = ({ rows }: { rows: ReportRow[] }) => (
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="font-bold py-2 h-8">ME</TableHead>
+        <TableHead className="font-bold py-2 h-8">Area</TableHead>
+        <TableHead className="font-bold py-2 h-8">Retailer Engaged</TableHead>
+        <TableHead className="font-bold py-2 h-8">Report</TableHead>
+        <TableHead className="font-bold py-2 h-8">Time</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {rows.map((r) => (
+        <TableRow key={r.me + r.retailer}>
+          <TableCell className="py-2">{r.me}</TableCell>
+          <TableCell className="py-2">{r.area}</TableCell>
+          <TableCell className="py-2">{r.retailer}</TableCell>
+          <TableCell className="py-2">
+            <Link
+              to={`/me/visit-summary/${r.dealerId}`}
+              state={r.state}
+              className="text-primary underline underline-offset-2 hover:no-underline"
+            >
+              View Report
+            </Link>
+          </TableCell>
+          <TableCell className="py-2 text-muted-foreground">{r.time}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+);
+
 const AsmDashboardNew = () => {
   const navigate = useNavigate();
+  const [showAllReports, setShowAllReports] = useState(false);
+
   return (
-  <div className="min-h-screen bg-background">
-    <div className="max-w-screen-xl mx-auto px-6 py-6">
-      {/* Header */}
-      <header className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => navigate("/")}
-            className="p-1.5 rounded-md hover:bg-muted text-muted-foreground"
-            aria-label="Back to home"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-[24px] font-bold text-foreground">ASM Reports</h1>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-screen-xl mx-auto px-5 py-3">
+        {/* Header */}
+        <header className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate("/")}
+              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground"
+              aria-label="Back to home"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <h1 className="text-[20px] font-bold text-foreground">ASM Reports</h1>
+          </div>
+        </header>
 
-      {/* Sub-header strip */}
-      <div className="bg-muted rounded-md px-4 py-2.5 mb-5 text-[12px] text-muted-foreground">
-        <span className="font-bold text-foreground">Ravi Kumar, ASM, Pune</span>
-        <span className="mx-2">|</span>
-        <span>Team of 6 MEs</span>
-        <span className="mx-2">|</span>
-        <span>6 markets</span>
-      </div>
-
-      {/* 2x2 grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Card 1 — Engagement Reports */}
-        <div className="bg-card border rounded-lg p-4">
-          <h2 className="text-[15px] font-bold text-foreground">
-            1. Engagement Reports{" "}
-            <span className="font-normal text-muted-foreground">(Area-level)</span>
-          </h2>
-          <p className="text-[12px] italic text-muted-foreground mb-3">
-            Recent Reports (as on 12th May 2026)
-          </p>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="font-bold">ME</TableHead>
-                <TableHead className="font-bold">Area</TableHead>
-                <TableHead className="font-bold">Retailer Engaged</TableHead>
-                <TableHead className="font-bold">Report</TableHead>
-                <TableHead className="font-bold">Time</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {reports.map((r) => (
-                <TableRow key={r.me + r.retailer}>
-                  <TableCell>{r.me}</TableCell>
-                  <TableCell>{r.area}</TableCell>
-                  <TableCell>{r.retailer}</TableCell>
-                  <TableCell>
-                    <Link
-                      to={`/me/visit-summary/${r.dealerId}`}
-                      state={r.state}
-                      className="text-primary underline underline-offset-2 hover:no-underline"
-                    >
-                      View Report
-                    </Link>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{r.time}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+        {/* Sub-header strip */}
+        <div className="bg-muted rounded-md px-3 py-1.5 mb-3 text-[12px] text-muted-foreground">
+          <span className="font-bold text-foreground">Ravi Kumar, ASM, Pune</span>
+          <span className="mx-2">|</span>
+          <span>Team of 6 MEs</span>
+          <span className="mx-2">|</span>
+          <span>6 markets</span>
         </div>
 
-        {/* Card 2 — Heatmap */}
-        <div className="bg-card border rounded-lg p-4">
-          <h2 className="text-[15px] font-bold text-foreground">
-            2. Retailer Engagement Coverage Heatmap
-          </h2>
-          <p className="text-[12px] italic text-muted-foreground mb-3">
-            Overall coverage from 12th March till 12th May
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-[12px]">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-2 font-bold">ME</th>
-                  <th className="text-left py-2 pr-2 font-bold">Area</th>
-                  <th className="text-center py-2 px-2 font-normal">
-                    Engagement 1: <span className="font-bold">Value Proposition</span>
-                  </th>
-                  <th className="text-center py-2 px-2 font-normal">
-                    Engagement 2: <span className="font-bold">Expanding Contractor Base</span>
-                  </th>
-                  <th className="text-center py-2 px-2 font-normal">
-                    Engagement 3: <span className="font-bold">Improving Service</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {heatmap.map((row) => (
-                  <tr key={row.me} className="border-b last:border-0">
-                    <td className="py-2 pr-2 font-medium">{row.me}</td>
-                    <td className="py-2 pr-2 text-muted-foreground">{row.area}</td>
-                    {[
-                      { v: row.e1, sub: row.e1Sub },
-                      { v: row.e2 },
-                      { v: row.e3 },
-                    ].map((c, i) => (
-                      <td key={i} className="py-1.5 px-1">
-                        <div
-                          className={`rounded-md px-2 py-1.5 text-center font-medium ${heatColor(c.v)}`}
-                        >
-                          <div>{c.v}%</div>
-                          {c.sub && (
-                            <div className="text-[10px] opacity-70 font-normal">{c.sub}</div>
-                          )}
-                        </div>
-                      </td>
+        {/* 2x2 grid — fits in viewport */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ height: "calc(100vh - 110px)" }}>
+          {/* Card 1 — Engagement Reports (top-left) */}
+          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
+            <h2 className="text-[14px] font-bold text-foreground">
+              1. Engagement Reports{" "}
+              <span className="font-normal text-muted-foreground">(Area-level)</span>
+            </h2>
+            <p className="text-[11px] italic text-muted-foreground mb-2">
+              Recent Reports (as on 12th May 2026)
+            </p>
+            <div className="flex-1 overflow-auto">
+              <ReportsTable rows={reports.slice(0, 3)} />
+            </div>
+            <div className="flex justify-end pt-2">
+              <Dialog open={showAllReports} onOpenChange={setShowAllReports}>
+                <DialogTrigger asChild>
+                  <Button variant="link" size="sm" className="text-primary h-auto p-0">
+                    View more →
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle>All Engagement Reports</DialogTitle>
+                  </DialogHeader>
+                  <div className="max-h-[70vh] overflow-auto">
+                    <ReportsTable rows={reports} />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+
+          {/* Card 2 — Top Retailer Objections (top-right) */}
+          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
+            <h2 className="text-[14px] font-bold text-foreground mb-1">
+              2. Top Retailer Objections{" "}
+              <span className="font-normal text-muted-foreground">(in the area)</span>
+            </h2>
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={objections}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="45%"
+                    outerRadius="65%"
+                    label={({ value }) => `${value}%`}
+                    labelLine={false}
+                  >
+                    {objections.map((o) => (
+                      <Cell key={o.name} fill={o.color} />
                     ))}
+                  </Pie>
+                  <Tooltip formatter={(v: number) => `${v}%`} />
+                  <Legend wrapperStyle={{ fontSize: 10 }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Card 3 — Heatmap (bottom-left) */}
+          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
+            <h2 className="text-[14px] font-bold text-foreground">
+              3. Retailer Engagement Coverage Heatmap
+            </h2>
+            <p className="text-[11px] italic text-muted-foreground mb-2">
+              Overall coverage from 12th March till 12th May
+            </p>
+            <div className="flex-1 overflow-auto">
+              <table className="w-full text-[11px]">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-1.5 pr-2 font-bold">Area</th>
+                    <th className="text-center py-1.5 px-1 font-bold">
+                      Overall Engagement Quality
+                    </th>
+                    <th className="text-center py-1.5 px-1 font-normal">
+                      E1: <span className="font-bold">Value Prop</span>
+                    </th>
+                    <th className="text-center py-1.5 px-1 font-normal">
+                      E2: <span className="font-bold">Contractor Base</span>
+                    </th>
+                    <th className="text-center py-1.5 px-1 font-normal">
+                      E3: <span className="font-bold">Service</span>
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Card 3 — Objections Pie */}
-        <div className="bg-card border rounded-lg p-4">
-          <h2 className="text-[15px] font-bold text-foreground mb-3">
-            3. Top Retailer Objections{" "}
-            <span className="font-normal text-muted-foreground">(in the area)</span>
-          </h2>
-          <div style={{ width: "100%", height: 320 }}>
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie
-                  data={objections}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="45%"
-                  outerRadius={90}
-                  label={({ name, value }) => `${name} ${value}%`}
-                  labelLine
-                >
-                  {objections.map((o) => (
-                    <Cell key={o.name} fill={o.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(v: number) => `${v}%`} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Card 4 — Key Insights */}
-        <div className="bg-card border rounded-lg p-4">
-          <h2 className="text-[15px] font-bold text-foreground mb-3">
-            4. Key insights from markets in Pune
-          </h2>
-
-          <div className="bg-muted rounded-md p-3 mb-3">
-            <p className="text-[13px] font-bold text-foreground mb-2">
-              Common insights across markets
-            </p>
-            <p className="text-[11px] uppercase tracking-wider text-primary underline underline-offset-2 mb-1.5">
-              Scheme-related
-            </p>
-            <p className="text-[12px] text-foreground leading-relaxed">
-              <span className="font-bold">
-                Retailers are preferring schemes that are simple with less complex tier-structures
-              </span>{" "}
-              (instead of complex schemes that run into multiple pages — for e.g. Retailers say
-              JK's 4-tier slab + bonus SKU structure is hard to understand)
-            </p>
+                </thead>
+                <tbody>
+                  {heatmap.map((row) => {
+                    const overall = Math.round((row.e1 + row.e2 + row.e3) / 3);
+                    return (
+                      <tr key={row.area} className="border-b last:border-0">
+                        <td className="py-1.5 pr-2 font-medium">{row.area}</td>
+                        <td className="py-1 px-1">
+                          <div className={`rounded-md px-2 py-1 text-center font-semibold ${heatColor(overall)}`}>
+                            {overall}%
+                          </div>
+                        </td>
+                        {[
+                          { v: row.e1, sub: row.e1Sub },
+                          { v: row.e2 },
+                          { v: row.e3 },
+                        ].map((c, i) => (
+                          <td key={i} className="py-1 px-1">
+                            <div className={`rounded-md px-2 py-1 text-center font-medium ${heatColor(c.v)}`}>
+                              <div>{c.v}%</div>
+                              {c.sub && (
+                                <div className="text-[9px] opacity-70 font-normal">{c.sub}</div>
+                              )}
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-muted rounded-md p-3">
-            <p className="text-[13px] font-bold text-foreground mb-2">Market specific insights</p>
-            <p className="text-[11px] uppercase tracking-wider text-primary underline underline-offset-2 mb-1.5">
-              In Hinjewadi
-            </p>
-            <p className="text-[12px] text-foreground leading-relaxed">
-              <span className="font-bold">
-                Local sales reps from Chetak Paints (new local competitor) are visiting our top
-                contractor-focused dealers.
-              </span>{" "}
-              Three of our retailers report being approached in the last 2 weeks.
-            </p>
+          {/* Card 4 — Key Market Insights (bottom-right) */}
+          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
+            <h2 className="text-[14px] font-bold text-foreground mb-2">
+              4. Key Market Insights
+            </h2>
+
+            <div className="flex-1 overflow-auto space-y-2.5">
+              {/* Insight 1 */}
+              <div className="relative bg-card border rounded-lg pl-4 pr-3 py-2.5 hover:shadow-md transition-shadow overflow-hidden">
+                <span className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="inline-block bg-primary/10 text-primary text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                        Common · Scheme
+                      </span>
+                    </div>
+                    <p className="text-[12px] font-bold text-foreground leading-snug mb-1">
+                      Retailers prefer simple schemes over complex tier-structures.
+                    </p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      JK's 4-tier slab + bonus SKU structure is hard for retailers to understand.
+                    </p>
+                  </div>
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Lightbulb className="w-4 h-4 text-primary" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Insight 2 */}
+              <div className="relative bg-card border rounded-lg pl-4 pr-3 py-2.5 hover:shadow-md transition-shadow overflow-hidden">
+                <span className="absolute left-0 top-0 bottom-0 w-1 bg-warning" />
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="inline-block bg-warning/15 text-warning text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                        Hinjewadi · Competition
+                      </span>
+                    </div>
+                    <p className="text-[12px] font-bold text-foreground leading-snug mb-1">
+                      Chetak Paints reps targeting our top contractor-focused dealers.
+                    </p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      Three of our retailers report being approached in the last 2 weeks.
+                    </p>
+                  </div>
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-warning/15 flex items-center justify-center">
+                    <MapPin className="w-4 h-4 text-warning" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
 
