@@ -7,8 +7,8 @@ const cards = [
   {
     n: 1,
     tag: "Long-term Relationship Building",
-    title: "Potential Opportunities in your area identified by DGs",
-    body: "i) Meeting Commitments made in the last meeting\nii) Introducing a new scheme",
+    title: "Your sales volumne with JK has been coming down. What can we do to reverse it?",
+    body: "Try to diagnose why it is coming down. Is there a competitor? Is there an issue with the pricing?",
   },
   {
     n: 2,
