@@ -1,77 +1,65 @@
+## ASM Reports — new screen inside ASM Dashboard (New)
 
-# ME App v2 — Restore Retailer List + Sequential Engagement Checklist
+Add a new read-only "ASM Reports" screen inside the existing **ASM Dashboard (New)** section (route family `/asm-dashboard-new`), per the uploaded spec. Reuse the section's existing theme (light cards, red/orange accents, existing typography). No new top-level app.
 
-Builds on the existing Prepare/Engage/Diagnoze flow. Three focused changes per the v2 spec.
+### Route & entry point
 
----
+- **New route:** `/asm-dashboard-new/reports` → new page `src/pages/AsmReportsNew.tsx`. Registered in `src/App.tsx`.
+- **Entry from ASM Dashboard (New) home** (`src/pages/AsmDashboardNew.tsx`): add an `ASM Reports` button in the page header (top-right, next to the week chip) that links to `/asm-dashboard-new/reports`.
+- **Close button** in the new screen's header calls `navigate("/asm-dashboard-new")`.
 
-## 1. My Trading Area — restore full retailer list
+### Page structure (`AsmReportsNew.tsx`)
 
-**File:** `src/pages/me/MyTradingArea.tsx`
+Matches the wrapper used by `AsmDashboardNew.tsx`: `min-h-screen bg-background` with a `max-w-screen-xl mx-auto px-6 py-6` container, so it inherits the same chrome.
 
-- Remove the `dealers.filter((d) => d.id === "1")` restriction.
-- Show all dealers from `mockData` again, with original search behaviour intact.
-- No other changes to layout, footer, or navigation.
-
----
-
-## 2. Retailer Snapshot — add "Current Scenario" block
-
-**File:** `src/pages/me/DealerSnapshot.tsx`
-
-Insert a new read-only block **between the dealer header (Profile/History buttons row) and the Customized Engagement Plan card**.
-
-- Small red/orange uppercase label: `CURRENT SCENARIO` (same `text-primary uppercase tracking-wider text-xs font-bold` styling already used for phase labels).
-- Light-blue card matching the engagement plan card (`bg-info/5 border-info/20`).
-- Body copy (regular weight, dark): *"Long-standing retailer since 2014. At this point in time, his sales are coming down w.r.t JK."*
-- No edit controls, no icon actions.
-
-Profile Details popup already has Dimensions & Mindset removed — no change needed.
-
----
-
-## 3. Customized Engagement Plan — sequential locked checklist
-
-**File:** `src/pages/me/DealerSnapshot.tsx` (replace existing 3-row engagement card)
-
-Replace the current 3-row tappable card with a sequential checklist that enforces order.
-
-### State (added to `DealerSnapshot.tsx`)
-```ts
-const [completed, setCompleted] = useState<{prepare:boolean; engage:boolean; diagnoze:boolean}>({
-  prepare:false, engage:false, diagnoze:false
-});
-const [lockMsg, setLockMsg] = useState<null | "engage" | "diagnoze">(null);
-```
-
-### Row layout (in a single `bg-info/5 border-info/20` card)
+1. **Header row** — left: `ASM Reports` (large bold); right: `Close` link styled in primary/red accent.
+2. **Sub-header strip** (`bg-muted` band, matches existing dashboard tone): **`Ravi Kumar, ASM, Pune`** | Team of 6 MEs | 6 markets (name+designation bold).
+3. **Body grid:** `grid grid-cols-1 md:grid-cols-2 gap-4`, four cards in this order:
 
 ```text
-[○ / ✓]  PREPARE   →  Before The Conversation       [unlocked]
-[○ / ✓]  ENGAGE    →  During The Conversation        [🔒 until prepare done]
-[○ / ✓]  DIAGNOZE  →  Post Conversation              [🔒 until engage done]
+[ 1. Engagement Reports        ] [ 2. Retailer Engagement Heatmap ]
+[ 3. Top Retailer Objections   ] [ 4. Key insights from markets   ]
 ```
 
-- **Pending/unlocked**: empty `Circle` icon, full opacity.
-- **Locked**: empty circle + `Lock` icon on the right; row at `opacity-40`, `cursor-not-allowed`.
-- **Completed**: `CheckCircle2` filled in `text-success`.
-- Tapping a locked row sets `lockMsg` and renders a small inline note under the card: *"Complete PREPARE first."* / *"Complete ENGAGE first."* (auto-clears after a few seconds via `setTimeout`).
-- When all three are complete, render a centered footer line in the card: `Engagement Complete ✓` in `text-success`.
+Each card uses `bg-card border rounded-lg p-4` to match the existing ASM Dashboard cards.
 
-### Unlock & completion wiring
+### Card 1 — Engagement Reports (Area-level)
 
-- **PREPARE popup** (`PreparePopup.tsx`): replace the bottom "Close" button with `✓ Mark Prepare as Done`. Add an `onDone` prop. Tapping it calls `onDone()` then `onClose()`. In `DealerSnapshot`, `onDone` sets `completed.prepare = true`.
-- **ENGAGE popup**: existing `onComplete` already chains to Diagnoze. Wrap so it also sets `completed.engage = true` before opening Diagnoze.
-- **DIAGNOZE popup**: in `onGenerate`, set `completed.diagnoze = true` before navigating to Visit Summary.
+- Header `1. Engagement Reports (Area-level)` + italic sub-label *Recent Reports (as on 12th May 2026)*.
+- shadcn `Table` with columns **ME, Area, Retailer Engaged, Report, Time** and the 5 rows from the spec.
+- **View Report** rendered as an underlined `text-primary` link → navigates to existing `/me/visit-summary/1` (placeholder, since per-row report ids don't exist yet).
 
-No other popup logic changes — Engage's objections/best-practices accordions, Diagnoze's three Q accordions, and the WhatsApp-shared Visit Summary page already match the v2 spec.
+### Card 2 — Retailer Engagement Coverage Heatmap
 
----
+- Header + italic sub-label *Overall coverage from 12th March till 12th May*.
+- Table with columns **ME, Area, Engagement 1: Value Proposition, Engagement 2: Expanding Contractor Base, Engagement 3: Improving Service**. Engagement number regular weight, name in **bold** within header cells.
+- 5 rows from spec. Percentage cell color via helper:
+  - `>=80` → `bg-success/15 text-success`
+  - `40–79` → `bg-warning/15 text-warning`
+  - `<40` → `bg-destructive/15 text-destructive`
+- The `25%` cell shows `50/200 retailers` as a smaller muted sub-label below the percentage.
 
-## Files to change
+### Card 3 — Top Retailer Objections (in the area)
 
-- **Edit** `src/pages/me/MyTradingArea.tsx` — restore full dealer list.
-- **Edit** `src/pages/me/DealerSnapshot.tsx` — insert Current Scenario block; replace engagement plan card with sequential checklist; add completion state; wire popup completion callbacks.
-- **Edit** `src/components/me/PreparePopup.tsx` — add `onDone` prop and replace footer button label/handler.
+- Recharts `PieChart` (already in deps) with the 5 slices and spec colors (Red, Light green, Dark teal, Steel blue, Orange — inline since they're data-viz hues).
+- External labels with leader lines (`label` + `labelLine`), legend below. Centered, ~280px height.
 
-No new files. No backend changes. No router changes.
+### Card 4 — Key insights from markets in Pune
+
+- Two stacked inset cards using `bg-muted` (matches existing ASM Dashboard inset style):
+  - **Common insights across markets** (bold label) → tag chip `SCHEME-RELATED` (uppercase, underlined, `text-primary text-xs tracking-wider`) + bold lead sentence + remainder regular.
+  - **Market specific insights** (bold label) → tag chip `IN HINJEWADI` + bold lead + supporting sentence.
+
+### Styling & conventions
+
+- Reuse semantic tokens (`bg-card`, `bg-muted`, `border`, `text-foreground`, `text-muted-foreground`, `text-primary`, `bg-success/15`, `bg-warning/15`, `bg-destructive/15`) — no new palette.
+- Mobile-first single column at `<md`, two columns at `md+`.
+- Entire screen is read-only.
+
+### Files to change
+
+- **New:** `src/pages/AsmReportsNew.tsx`
+- **Edit:** `src/App.tsx` (register `/asm-dashboard-new/reports` route)
+- **Edit:** `src/pages/AsmDashboardNew.tsx` (add `ASM Reports` link in header)
+
+No backend, no schema, no new top-level section.
