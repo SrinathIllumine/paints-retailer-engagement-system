@@ -43,7 +43,7 @@ const VisitSummary = () => {
     ...((s.customActionPoint || "").trim() ? [s.customActionPoint!.trim()] : []),
   ];
 
-  const objBody = (engage.objections.summary || engage.objections.text || "").trim();
+  const objBody = (engage.objections.transcript || "").trim();
   const objMatches = engage.objections.matches || [];
 
   const waObjections = () => {
