@@ -252,12 +252,19 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
                   <ul className="space-y-2">
                     {NEARBY_DGS.map((dg, i) => (
                       <li key={i} className="text-sm">
-                        <p className="font-semibold text-foreground">{dg.name}</p>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                          <MapPin className="w-3 h-3" /> {dg.area}
-                          <span className="mx-1">·</span>
-                          <Phone className="w-3 h-3" /> {dg.phone}
-                        </p>
+                        {dg.name && <p className="font-semibold text-foreground">{dg.name}</p>}
+                        <div className="text-xs text-muted-foreground flex items-start gap-1 mt-0.5">
+                          <MapPin className="w-3 h-3 shrink-0 mt-0.5" />
+                          <div className="whitespace-pre-line leading-relaxed">
+                            {dg.area}
+                            {dg.phone && (
+                              <>
+                                <span className="mx-1">·</span>
+                                <Phone className="w-3 h-3 inline-block" /> {dg.phone}
+                              </>
+                            )}
+                          </div>
+                        </div>
                       </li>
                     ))}
                   </ul>
