@@ -458,6 +458,26 @@ const MyDashboard = () => {
           </Accordion>
         </div>
       </div>
+
+      <Dialog open={!!summaryDealerId} onOpenChange={(o) => !o && setSummaryDealerId(null)}>
+        <DialogContent className="max-w-md p-4 gap-3">
+          <DialogHeader>
+            <DialogTitle className="text-base">Visit Summary Report</DialogTitle>
+          </DialogHeader>
+          <div className="bg-[#e5ddd5] rounded-2xl p-3 max-h-[60vh] overflow-y-auto">
+            <div className="bg-white rounded-xl rounded-tl-sm p-3 shadow-sm relative">
+              <pre className="whitespace-pre-wrap font-sans text-[13px] text-foreground/90 leading-relaxed">{waMessage}</pre>
+              <div className="flex items-center justify-end gap-1 mt-1.5">
+                <span className="text-[10px] text-muted-foreground">Just now</span>
+                <CheckCheck className="w-3.5 h-3.5 text-[#34B7F1]" />
+              </div>
+            </div>
+          </div>
+          <Button className="w-full bg-[#25D366] hover:bg-[#1ebe57] text-white" onClick={shareWa}>
+            <Send className="w-4 h-4 mr-1.5" /> Share via WhatsApp
+          </Button>
+        </DialogContent>
+      </Dialog>
     </MeLayout>
   );
 };
