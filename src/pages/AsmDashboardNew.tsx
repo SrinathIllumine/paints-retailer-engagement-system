@@ -106,12 +106,23 @@ const objections = [
   { name: "Working Capital related", value: 16, color: "#EF9F27" },
 ];
 
-const AsmDashboardNew = () => (
+const AsmDashboardNew = () => {
+  const navigate = useNavigate();
+  return (
   <div className="min-h-screen bg-background">
     <div className="max-w-screen-xl mx-auto px-6 py-6">
       {/* Header */}
-      <header className="mb-4">
-        <h1 className="text-[24px] font-bold text-foreground">ASM Reports</h1>
+      <header className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate("/")}
+            className="p-1.5 rounded-md hover:bg-muted text-muted-foreground"
+            aria-label="Back to home"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h1 className="text-[24px] font-bold text-foreground">ASM Reports</h1>
+        </div>
       </header>
 
       {/* Sub-header strip */}
