@@ -91,9 +91,9 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
       <div className="bg-card w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[92vh] overflow-hidden shadow-2xl flex flex-col">
         <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-between rounded-t-2xl">
           <div>
-            <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">Engage</p>
+            <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">DURING</p>
             <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5">
-              Tools For Engagement During The Meeting With Retailer
+              Addressing Flashpoints
             </h3>
           </div>
           <button onClick={onClose} className="p-1 text-muted-foreground hover:text-foreground shrink-0">
@@ -104,9 +104,8 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
         <div className="overflow-y-auto p-4 space-y-5 flex-1">
           {/* Section A */}
           <section className="space-y-2">
-            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">Objections Faced</h4>
-            <p className="text-xs text-muted-foreground">Click on the objections faced</p>
-            <div className="space-y-2 mt-1">
+            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">WHAT IS THE FLASHPOINT YOU ARE FACING WITH THE RETAILER?</h4>
+            <div className="mt-1"></div>
               {OBJECTIONS.map((o) => {
                 const checked = state.objections.includes(o.id);
                 const isOpen = expanded[o.id];
