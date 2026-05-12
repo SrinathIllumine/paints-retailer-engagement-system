@@ -87,10 +87,10 @@ const ASMLayout = ({ children, hideFilters = false }: Props) => {
                     {item.label}
                   </p>
                   <p
-                    className={`text-[11px] leading-snug mt-0.5 ${
+                    className={`leading-snug mt-0.5 ${
                       active
-                        ? "text-sidebar-primary-foreground/80"
-                        : "text-sidebar-foreground/55"
+                        ? "text-sidebar-primary-foreground/80 text-base font-extrabold"
+                        : "text-sidebar-foreground/55 text-[11px]"
                     }`}
                   >
                     {item.sub}
