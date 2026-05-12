@@ -85,7 +85,7 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
         </div>
 
         <div className="overflow-y-auto p-4 space-y-3 flex-1">
-          <Q idx={1} title="Which of the points were you able to cover?" isOpen={openQ === 1} onToggle={() => setOpenQ(openQ === 1 ? null : 1)}>
+          <Q idx={1} title="What are the action points agreed by the Retailer?" isOpen={openQ === 1} onToggle={() => setOpenQ(openQ === 1 ? null : 1)}>
             <div className="space-y-2 mt-3">
               {PREPARE_POINTS.map((p) => {
                 const checked = state.topicsCovered.includes(p);
