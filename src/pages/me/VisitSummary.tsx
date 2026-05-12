@@ -58,22 +58,28 @@ const VisitSummary = () => {
   };
 
   const waIdeas = () => {
+    const sel = (engage.ideas?.selected || []).map((i) => BUSINESS_IDEAS[i]).filter(Boolean);
+    if (sel.length === 0) return "";
     const lines = ["💡 *Business Ideas Proposed:*"];
-    BUSINESS_IDEAS.forEach((p) => lines.push(`• ${p}`));
-    lines.push("  Nearby DGs:");
-    NEARBY_DGS.forEach((dg) => {
-      const parts = [];
-      if (dg.name) parts.push(dg.name);
-      parts.push(dg.area.replace(/\n/g, " "));
-      if (dg.phone) parts.push(dg.phone);
-      lines.push(`   - ${parts.join(" · ")}`);
-    });
+    sel.forEach((p) => lines.push(`• ${p}`));
+    if ((engage.ideas?.selected || []).includes(1)) {
+      lines.push("  Nearby DG:");
+      NEARBY_DGS.forEach((dg) => {
+        const parts = [];
+        if (dg.name) parts.push(dg.name);
+        parts.push(dg.area.replace(/\n/g, " "));
+        if (dg.phone) parts.push(dg.phone);
+        lines.push(`   - ${parts.join(" · ")}`);
+      });
+    }
     return lines.join("\n");
   };
 
   const waEducation = () => {
+    const sel = (engage.education?.selected || []).map((i) => EDUCATION_POINTS[i]).filter(Boolean);
+    if (sel.length === 0) return "";
     const lines = ["📘 *Product / Scheme Education:*"];
-    EDUCATION_POINTS.forEach((p) => lines.push(`• ${p}`));
+    sel.forEach((p) => lines.push(`• ${p}`));
     return lines.join("\n");
   };
 
