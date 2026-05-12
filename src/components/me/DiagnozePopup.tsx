@@ -98,6 +98,18 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
                   </label>
                 );
               })}
+              <div className="pt-1">
+                <label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  Other action point
+                </label>
+                <textarea
+                  value={state.customActionPoint ?? ""}
+                  onChange={(e) => setState({ ...state, customActionPoint: e.target.value })}
+                  placeholder="Type any other action point agreed by the retailer..."
+                  rows={3}
+                  className="mt-1 w-full rounded-lg border border-border bg-background p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+              </div>
             </div>
           </Q>
 
