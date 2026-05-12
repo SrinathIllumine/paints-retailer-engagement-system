@@ -1,7 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, TrendingDown } from "lucide-react";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Pie,
+  PieChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Label,
+} from "recharts";
 import {
   Table,
   TableBody,
@@ -15,370 +26,458 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-type ReportRow = {
+// ---------- Data ----------
+const engagementByMonth = [
+  { month: "Feb", value: 80 },
+  { month: "Mar", value: 85 },
+  { month: "Apr", value: 70 },
+];
+
+type Level = "HIGH" | "MODERATE" | "LOW";
+const meDetail: {
   me: string;
   area: string;
-  retailer: string;
-  time: string;
-  dealerId: string;
-  state: {
-    objections: string[];
-    actionPoints: string[];
-    topicsCovered: string[];
-    insights: { id: string; tag: string; text: string; summary: string }[];
-    feedbackText: string;
-    feedbackSummary: string;
-  };
-};
-
-const reports: ReportRow[] = [
-  {
-    me: "Aditya Salve", area: "Pune City", retailer: "Deshpande Hardware", time: "2 hours ago", dealerId: "9",
-    state: {
-      topicsCovered: ["Walked through JK Putty value proposition", "Reviewed current SKU mix and shelf placement"],
-      objections: ["pricing", "weak-support"],
-      actionPoints: ["Share updated price list and trade scheme by Friday", "Schedule contractor meet at shop next month"],
-      insights: [{ id: "i1", tag: "Competition", text: "UltraTech offering 3% extra discount in Pune City this month.", summary: "UltraTech offering 3% extra discount in Pune City this month." }],
-      feedbackText: "Service response time has improved but delivery still inconsistent in peak weeks.",
-      feedbackSummary: "Service response time has improved but delivery still inconsistent in peak weeks.",
-    },
-  },
-  {
-    me: "Shivam K", area: "Wakad", retailer: "Bhagwati Stores", time: "1 day ago", dealerId: "2",
-    state: {
-      topicsCovered: ["Introduced new JK Wall Putty pack sizes", "Discussed contractor loyalty program"],
-      objections: ["no-demand"],
-      actionPoints: ["Drop trial stock of 5kg pack next visit", "Connect retailer with 2 active painters in Wakad"],
-      insights: [{ id: "i1", tag: "Demand", text: "Housing project demand rising in Wakad sector — 4 retailers report low stock.", summary: "Housing project demand rising in Wakad sector — 4 retailers report low stock." }],
-      feedbackText: "Wants more in-shop branding material and a demo session for painters.",
-      feedbackSummary: "Needs in-shop branding and painter demo support.",
-    },
-  },
-  {
-    me: "Dheeraj M", area: "Baner", retailer: "Madhu Paints & Hardware", time: "2 days ago", dealerId: "6",
-    state: {
-      topicsCovered: ["Reviewed last quarter offtake vs target", "Aligned on summer scheme communication"],
-      objections: ["preference-shift", "stock"],
-      actionPoints: ["Resolve pending stock complaint with depot by EoD", "Send WhatsApp creative for summer scheme"],
-      insights: [{ id: "i1", tag: "Scheme", text: "Retailers want extension of Putty cashback offer beyond May 15.", summary: "Retailers want extension of Putty cashback offer beyond May 15." }],
-      feedbackText: "Happy with relationship but feels JK is losing shelf share to Birla in Baner.",
-      feedbackSummary: "Losing shelf share to Birla in Baner — needs counter strategy.",
-    },
-  },
-  {
-    me: "Raj Kumar", area: "Kothrud", retailer: "Deep Electricals & Paints", time: "2 days ago", dealerId: "8",
-    state: {
-      topicsCovered: ["Walked through differentiated service commitment", "Joint planning for next 30 days"],
-      objections: ["weak-support"],
-      actionPoints: ["ASM to do joint visit with retailer's top 3 contractors", "Set up monthly sales review cadence"],
-      insights: [{ id: "i1", tag: "Customer Behavior", text: "Contractors in Kothrud increasingly asking for premium finish products.", summary: "Contractors in Kothrud increasingly asking for premium finish products." }],
-      feedbackText: "Strong relationship; wants exclusive pricing for institutional projects he is bidding on.",
-      feedbackSummary: "Wants exclusive institutional pricing support.",
-    },
-  },
-  {
-    me: "Sagar", area: "Hinjewadi", retailer: "Jai Stores", time: "2 days ago", dealerId: "1",
-    state: {
-      topicsCovered: ["Discussed entry of Chetak Paints in Hinjewadi", "Reviewed JK product range for IT-park residential demand"],
-      objections: ["preference-shift", "pricing"],
-      actionPoints: ["Share competitor counter-pitch deck", "Activate retailer for upcoming Hinjewadi housing launch"],
-      insights: [{ id: "i1", tag: "Competition", text: "Chetak Paints reps visiting top contractor-focused dealers in Hinjewadi.", summary: "Chetak Paints reps visiting top contractor-focused dealers in Hinjewadi." }],
-      feedbackText: "Worried about losing key contractors to Chetak's aggressive scheme push.",
-      feedbackSummary: "Concerned about Chetak's contractor push in Hinjewadi.",
-    },
-  },
+  covered: string;
+  eq: { label: string; level: Level };
+  time: { label: string; level: Level };
+  prep: Level;
+  discussion: Level;
+}[] = [
+  { me: "Aditya Salve", area: "Pune City", covered: "120/200", eq: { label: "9/10", level: "HIGH" }, time: { label: "HIGH (15 minutes)", level: "HIGH" }, prep: "HIGH", discussion: "HIGH" },
+  { me: "Shivam K", area: "Wakad", covered: "100/200", eq: { label: "4/10", level: "LOW" }, time: { label: "LOW (2 minutes)", level: "LOW" }, prep: "LOW", discussion: "LOW" },
+  { me: "Dheeraj M", area: "Baner", covered: "150/200", eq: { label: "6.5/10", level: "MODERATE" }, time: { label: "MODERATE (8 minutes)", level: "MODERATE" }, prep: "LOW", discussion: "MODERATE" },
+  { me: "Raj Kumar", area: "Kothrud", covered: "190/200", eq: { label: "9/10", level: "HIGH" }, time: { label: "HIGH (15 minutes)", level: "HIGH" }, prep: "HIGH", discussion: "HIGH" },
+  { me: "Sagar", area: "Hinjewadi", covered: "180/200", eq: { label: "9.5/10", level: "HIGH" }, time: { label: "HIGH (15 minutes)", level: "HIGH" }, prep: "HIGH", discussion: "HIGH" },
 ];
 
-const heatmap = [
-  { area: "Pune City", e1: 25, e1Sub: "50/200 retailers", e2: 80, e3: 80 },
-  { area: "Kothrud", e1: 100, e2: 95, e3: 85 },
-  { area: "Baner", e1: 90, e2: 85, e3: 85 },
-  { area: "Wakad", e1: 95, e2: 95, e3: 95 },
-  { area: "Hinjewadi", e1: 5, e2: 0, e3: 0 },
+const objections = [
+  { name: "Competition Related", value: 45, color: "hsl(var(--primary))" },
+  { name: "Product quality", value: 30, color: "hsl(var(--warning))" },
+  { name: "Scheme related", value: 9, color: "hsl(217 70% 55%)" },
+  { name: "SKU Space related", value: 7, color: "hsl(160 50% 45%)" },
+  { name: "Working Capital related", value: 3, color: "hsl(280 40% 55%)" },
 ];
 
-// Red background only for low values; green/yellow keep text color but no background.
-const heatColor = (v: number) => {
-  if (v >= 80) return "text-success";
-  if (v >= 40) return "text-warning";
+const leaderboard: {
+  me: string;
+  area: string;
+  eq: Level;
+  sales: Level;
+  status: { label: string; tone: "success" | "warning" | "destructive" | "destructive-strong" };
+}[] = [
+  { me: "Aditya Salve", area: "Pune City", eq: "HIGH", sales: "HIGH", status: { label: "Top Performer", tone: "success" } },
+  { me: "Shivam K", area: "Wakad", eq: "MODERATE", sales: "HIGH", status: { label: "Can Improve", tone: "warning" } },
+  { me: "Dheeraj M", area: "Baner", eq: "LOW", sales: "MODERATE", status: { label: "Needs significant Improvement", tone: "destructive" } },
+  { me: "Raj Kumar", area: "Kothrud", eq: "LOW", sales: "MODERATE", status: { label: "Needs significant Improvement", tone: "destructive" } },
+  { me: "Sagar", area: "Hinjewadi", eq: "LOW", sales: "LOW", status: { label: "Needs immediate attention", tone: "destructive-strong" } },
+];
+
+// ---------- Helpers ----------
+const levelClasses = (l: Level) => {
+  if (l === "HIGH") return "bg-success/15 text-success";
+  if (l === "MODERATE") return "bg-warning/15 text-warning";
   return "bg-destructive/15 text-destructive";
 };
 
-const objections = [
-  { name: "Demand related", value: 30, color: "#E24B4A" },
-  { name: "Product quality", value: 18, color: "#9FE1CB" },
-  { name: "Competition related", value: 16, color: "#1F3A57" },
-  { name: "SKU Space related", value: 16, color: "#5B8DBE" },
-  { name: "Working Capital related", value: 16, color: "#EF9F27" },
-];
-
-const allInsights = [
-  { category: "Common · Scheme", title: "Retailers prefer simple schemes over complex tier-structures.", detail: "JK's 4-tier slab + bonus SKU structure is hard for retailers to understand." },
-  { category: "Hinjewadi · Competition", title: "Chetak Paints reps targeting our top contractor-focused dealers.", detail: "Three of our retailers report being approached in the last 2 weeks." },
-  { category: "Pune · Demand", title: "Housing project demand rising in Hadapsar sector 62–78.", detail: "7 retailers report low stock levels ahead of June–July peak." },
-  { category: "Common · Product Quality", title: "Putty settling time complaint raised for 3rd consecutive week.", detail: "Possible batch quality issue, QC escalation pending." },
-  { category: "Kothrud · Customer Behavior", title: "Contractors increasingly asking for premium finish products.", detail: "Shift away from economy SKUs across 6 dealers in last month." },
-];
-
-const InsightCard = ({ category, title, detail }: { category: string; title: string; detail: string }) => (
-  <div className="bg-card border rounded-lg px-3 py-2.5 hover:shadow-sm transition-shadow">
-    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">
-      {category}
-    </p>
-    <p className="text-[12px] font-bold text-foreground leading-snug mb-1">{title}</p>
-    <p className="text-[12px] text-muted-foreground leading-relaxed">{detail}</p>
-  </div>
+const Pill = ({ level, children }: { level: Level; children: React.ReactNode }) => (
+  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${levelClasses(level)}`}>
+    {children}
+  </span>
 );
 
-const ReportsTable = ({ rows }: { rows: ReportRow[] }) => (
-  <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead className="text-[12px] font-semibold py-2 h-8">ME</TableHead>
-        <TableHead className="text-[12px] font-semibold py-2 h-8">Area</TableHead>
-        <TableHead className="text-[12px] font-semibold py-2 h-8">Retailer Engaged</TableHead>
-        <TableHead className="text-[12px] font-semibold py-2 h-8">Report</TableHead>
-        <TableHead className="text-[12px] font-semibold py-2 h-8">Time</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      {rows.map((r) => (
-        <TableRow key={r.me + r.retailer}>
-          <TableCell className="py-2 text-[12px]">{r.me}</TableCell>
-          <TableCell className="py-2 text-[12px]">{r.area}</TableCell>
-          <TableCell className="py-2 text-[12px]">{r.retailer}</TableCell>
-          <TableCell className="py-2 text-[12px]">
-            <Link
-              to={`/me/visit-summary/${r.dealerId}`}
-              state={r.state}
-              className="text-primary underline underline-offset-2 hover:no-underline"
-            >
-              View Report
-            </Link>
-          </TableCell>
-          <TableCell className="py-2 text-[12px] text-muted-foreground">{r.time}</TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
+const StatusPill = ({ tone, label }: { tone: "success" | "warning" | "destructive" | "destructive-strong"; label: string }) => {
+  const cls =
+    tone === "success"
+      ? "bg-success/15 text-success"
+      : tone === "warning"
+        ? "bg-warning/15 text-warning"
+        : tone === "destructive"
+          ? "bg-destructive/15 text-destructive"
+          : "bg-destructive text-destructive-foreground";
+  return (
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${cls}`}>
+      {label}
+    </span>
+  );
+};
+
+const RedCta = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className="text-[12px] font-semibold text-destructive hover:underline underline-offset-2"
+  >
+    {children}
+  </button>
 );
 
+// ---------- Page ----------
 const AsmDashboardNew = () => {
   const navigate = useNavigate();
-  const [showAllReports, setShowAllReports] = useState(false);
-  const [showAllInsights, setShowAllInsights] = useState(false);
+  const [openEq, setOpenEq] = useState(false);
+  const [openInsights, setOpenInsights] = useState(false);
+  const [openObjections, setOpenObjections] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-screen-xl mx-auto px-5 py-3">
         {/* Header */}
-        <header className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigate("/")}
-              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground"
-              aria-label="Back to home"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <h1 className="text-[20px] font-bold text-foreground">ASM Reports</h1>
-          </div>
+        <header className="flex items-center gap-2 mb-1">
+          <button
+            onClick={() => navigate("/")}
+            className="p-1.5 rounded-md hover:bg-muted text-muted-foreground"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h1 className="text-[20px] font-bold text-foreground">ASM Reports</h1>
         </header>
-
-        {/* Profile block */}
-        <div className="flex items-center gap-3 mb-3">
-          <Avatar className="h-12 w-12 border">
-            <AvatarFallback className="bg-primary/10 text-primary font-semibold">RK</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-[18px] font-bold text-foreground leading-tight">Ravi Kumar</span>
-            <span className="text-[12px] text-muted-foreground leading-tight">ASM, Pune</span>
-            <div className="flex gap-1.5 mt-1">
-              <span className="text-[11px] bg-muted text-foreground rounded-full px-2 py-0.5">
-                Total MEs: <span className="font-semibold">6</span>
-              </span>
-              <span className="text-[11px] bg-muted text-foreground rounded-full px-2 py-0.5">
-                Total Markets: <span className="font-semibold">6</span>
-              </span>
-            </div>
-          </div>
-        </div>
+        <p className="text-[12px] text-muted-foreground mb-3 ml-8">
+          Ravi Kumar, ASM, Pune <span className="mx-1.5 text-border">|</span> Team of 6 MEs{" "}
+          <span className="mx-1.5 text-border">|</span> 6 markets
+        </p>
 
         {/* 2x2 grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ height: "calc(100vh - 170px)" }}>
-          {/* Card 1 — Engagement Reports */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ height: "calc(100vh - 110px)" }}>
+          {/* SECTION 1 — Engagement Quality bar chart */}
           <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[15px] font-bold text-foreground">
-              1. Engagement Reports{" "}
-              <span className="text-[12px] font-normal text-muted-foreground">(Area-level)</span>
+            <h2 className="text-[14px] font-bold text-foreground leading-snug">
+              1. What is the quality of retailer engagement by MEs in Pune?
             </h2>
-            <p className="text-[11px] italic text-muted-foreground mb-2">
-              Recent Reports (as on 12th May 2026)
-            </p>
-            <div className="flex-1 overflow-auto">
-              <ReportsTable rows={reports.slice(0, 3)} />
+            <div className="flex-1 min-h-0 mt-2 relative">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={engagementByMonth} margin={{ top: 20, right: 90, left: 10, bottom: 5 }}>
+                  <XAxis dataKey="month" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <YAxis
+                    domain={[0, 100]}
+                    tick={{ fontSize: 11 }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v) => `${v}%`}
+                  >
+                    <Label
+                      value="Engagement Quality"
+                      angle={-90}
+                      position="insideLeft"
+                      style={{ textAnchor: "middle", fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                    />
+                  </YAxis>
+                  <ReferenceLine
+                    y={80}
+                    stroke="hsl(var(--muted-foreground))"
+                    strokeDasharray="4 4"
+                  >
+                    <Label
+                      value="Company Benchmark"
+                      position="right"
+                      style={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                    />
+                  </ReferenceLine>
+                  <Bar
+                    dataKey="value"
+                    fill="hsl(210 75% 70%)"
+                    radius={[4, 4, 0, 0]}
+                    label={{ position: "top", fontSize: 11, fill: "hsl(var(--foreground))", formatter: (v: number) => `${v}%` }}
+                    barSize={55}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+              {/* Arrow annotation Mar -> Apr */}
+              <div className="pointer-events-none absolute right-[24%] top-[20%] flex items-center gap-1 text-destructive">
+                <TrendingDown className="w-4 h-4" />
+                <span className="text-[10px] font-semibold">Decline</span>
+              </div>
             </div>
-            <div className="flex justify-end pt-2">
-              <Dialog open={showAllReports} onOpenChange={setShowAllReports}>
-                <DialogTrigger asChild>
-                  <Button variant="link" size="sm" className="text-primary h-auto p-0 text-[12px]">
-                    View more →
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl">
-                  <DialogHeader>
-                    <DialogTitle>All Engagement Reports</DialogTitle>
-                  </DialogHeader>
-                  <div className="max-h-[70vh] overflow-auto">
-                    <ReportsTable rows={reports} />
-                  </div>
-                </DialogContent>
-              </Dialog>
+            <div className="flex justify-end pt-1">
+              <RedCta onClick={() => setOpenEq(true)}>Click to view →</RedCta>
             </div>
           </div>
 
-          {/* Card 2 — Top Retailer Objections */}
+          {/* SECTION 2 — Collated insights */}
           <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[15px] font-bold text-foreground mb-2">
-              2. Top Retailer Objections{" "}
+            <h2 className="text-[14px] font-bold text-foreground leading-snug mb-2">
+              2. Collated insights from across markets in Pune
+            </h2>
+            <div className="flex-1 overflow-auto space-y-2.5 pr-1 text-[12px]">
+              <div className="border-l-2 border-primary pl-2.5">
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-0.5">
+                  Competition-related
+                </p>
+                <p className="font-semibold text-foreground leading-snug">
+                  Local sales representatives from Chetak Paints (new local competitor) are visiting our top contractor-focused dealers.
+                </p>
+                <p className="text-muted-foreground leading-snug mt-0.5">
+                  Three of our retailers report being approached in the last 2 weeks.
+                </p>
+              </div>
+              <div className="border-l-2 border-warning pl-2.5">
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-0.5">
+                  Packaging-related
+                </p>
+                <p className="font-semibold text-foreground leading-snug">
+                  Retailers pull back on JK Putty orders over packaging concerns.
+                </p>
+                <p className="text-muted-foreground leading-snug mt-0.5">
+                  JK Putty's single-layer packaging fails to withstand high moisture levels during the monsoon, leading to rapid deterioration in quality.
+                </p>
+              </div>
+              <div className="border-l-2 border-success pl-2.5">
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-0.5">
+                  Scheme-related
+                </p>
+                <p className="font-semibold text-foreground leading-snug">
+                  Mid-tier retailers want better schemes.
+                </p>
+                <p className="text-muted-foreground leading-snug mt-0.5">
+                  Majority (i.e. mid-tier) retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers.
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <RedCta onClick={() => setOpenInsights(true)}>See All 10 Insights →</RedCta>
+            </div>
+          </div>
+
+          {/* SECTION 3 — Objections pie */}
+          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
+            <h2 className="text-[14px] font-bold text-foreground leading-snug">
+              3. Top Retailer Objections{" "}
               <span className="text-[12px] font-normal text-muted-foreground">(in the area)</span>
             </h2>
-            <div className="flex-1 min-h-0 grid grid-cols-5 gap-2">
-              <div className="col-span-3 min-h-0">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={objections}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius="80%"
-                      label={({ value }) => `${value}%`}
-                      labelLine={false}
-                    >
-                      {objections.map((o) => (
-                        <Cell key={o.name} fill={o.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(v: number) => `${v}%`} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <ul className="col-span-2 flex flex-col justify-center gap-1.5 text-[12px]">
-                {objections.map((o) => (
-                  <li key={o.name} className="flex items-center gap-2">
-                    <span
-                      className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
-                      style={{ background: o.color }}
-                    />
-                    <span className="flex-1 truncate">{o.name}</span>
-                    <span className="font-semibold text-foreground">{o.value}%</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Card 3 — Heatmap */}
-          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[15px] font-bold text-foreground">
-              3. Retailer Engagement Coverage Heatmap
-            </h2>
-            <p className="text-[11px] italic text-muted-foreground mb-2">
-              Overall coverage from 12th March till 12th May
-            </p>
-            <div className="flex-1 overflow-auto">
-              <table className="w-full text-[12px]">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-1.5 pr-2 font-semibold">Area</th>
-                    <th className="text-center py-1.5 px-1 font-semibold">
-                      Overall Engagement Quality
-                    </th>
-                    <th className="text-center py-1.5 px-1 font-normal">
-                      E1: <span className="font-semibold">Value Prop</span>
-                    </th>
-                    <th className="text-center py-1.5 px-1 font-normal">
-                      E2: <span className="font-semibold">Contractor Base</span>
-                    </th>
-                    <th className="text-center py-1.5 px-1 font-normal">
-                      E3: <span className="font-semibold">Service</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {heatmap.map((row) => {
-                    const overall = Math.round((row.e1 + row.e2 + row.e3) / 3);
-                    return (
-                      <tr key={row.area} className="border-b last:border-0">
-                        <td className="py-1.5 pr-2 font-medium">{row.area}</td>
-                        <td className="py-1 px-1">
-                          <div className={`rounded-md px-2 py-1 text-center font-semibold ${heatColor(overall)}`}>
-                            {overall}%
-                          </div>
-                        </td>
-                        {[
-                          { v: row.e1, sub: row.e1Sub },
-                          { v: row.e2 },
-                          { v: row.e3 },
-                        ].map((c, i) => (
-                          <td key={i} className="py-1 px-1">
-                            <div className={`rounded-md px-2 py-1 text-center font-medium ${heatColor(c.v)}`}>
-                              <div>{c.v}%</div>
-                              {c.sub && (
-                                <div className="text-[10px] opacity-70 font-normal">{c.sub}</div>
-                              )}
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Card 4 — Key Market Insights */}
-          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[15px] font-bold text-foreground mb-2">
-              4. Key Market Insights
-            </h2>
-
-            <div className="flex-1 overflow-auto space-y-2">
-              {allInsights.slice(0, 2).map((it) => (
-                <InsightCard key={it.title} {...it} />
-              ))}
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <Dialog open={showAllInsights} onOpenChange={setShowAllInsights}>
-                <DialogTrigger asChild>
-                  <Button variant="link" size="sm" className="text-primary h-auto p-0 text-[12px]">
-                    View all →
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>All Market Insights</DialogTitle>
-                  </DialogHeader>
-                  <div className="max-h-[70vh] overflow-auto space-y-2">
-                    {allInsights.map((it) => (
-                      <InsightCard key={it.title} {...it} />
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart margin={{ top: 10, right: 80, left: 80, bottom: 10 }}>
+                  <Pie
+                    data={objections}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius="70%"
+                    label={({ name, value }) => `${name} ${value}%`}
+                    labelLine
+                  >
+                    {objections.map((o) => (
+                      <Cell key={o.name} fill={o.color} />
                     ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-end pt-1">
+              <RedCta onClick={() => setOpenObjections(true)}>See top 5 objections in the area →</RedCta>
+            </div>
+          </div>
+
+          {/* SECTION 4 — ME Leaderboard */}
+          <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
+            <h2 className="text-[14px] font-bold text-foreground leading-snug mb-2">
+              4. ME Leaderboard w.r.t Sales & Engagement Levels
+            </h2>
+            <div className="flex-1 overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-[11px] font-semibold py-2 h-8 w-8">#</TableHead>
+                    <TableHead className="text-[11px] font-semibold py-2 h-8">ME</TableHead>
+                    <TableHead className="text-[11px] font-semibold py-2 h-8">Area</TableHead>
+                    <TableHead className="text-[11px] font-semibold py-2 h-8">Engagement Quality</TableHead>
+                    <TableHead className="text-[11px] font-semibold py-2 h-8">Sales Growth</TableHead>
+                    <TableHead className="text-[11px] font-semibold py-2 h-8">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {leaderboard.map((r, i) => (
+                    <TableRow key={r.me}>
+                      <TableCell className="py-2 text-[12px] text-muted-foreground">{i + 1}</TableCell>
+                      <TableCell className="py-2 text-[12px] font-medium">{r.me}</TableCell>
+                      <TableCell className="py-2 text-[12px]">{r.area}</TableCell>
+                      <TableCell className="py-2 text-[12px]"><Pill level={r.eq}>{r.eq}</Pill></TableCell>
+                      <TableCell className="py-2 text-[12px]"><Pill level={r.sales}>{r.sales}</Pill></TableCell>
+                      <TableCell className="py-2 text-[12px]"><StatusPill tone={r.status.tone} label={r.status.label} /></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </div>
         </div>
       </div>
+
+      {/* ===== Section 1 popup ===== */}
+      <Dialog open={openEq} onOpenChange={setOpenEq}>
+        <DialogContent className="max-w-5xl">
+          <DialogHeader>
+            <DialogTitle>Detailed list of MEs &amp; Engagement Quality</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-[70vh] overflow-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-[12px] font-semibold">ME</TableHead>
+                  <TableHead className="text-[12px] font-semibold">Area</TableHead>
+                  <TableHead className="text-[12px] font-semibold">No. of retailers covered</TableHead>
+                  <TableHead className="text-[12px] font-semibold">Overall Engagement Quality</TableHead>
+                  <TableHead className="text-[12px] font-semibold">Avg. Time Spent</TableHead>
+                  <TableHead className="text-[12px] font-semibold">Preparation levels</TableHead>
+                  <TableHead className="text-[12px] font-semibold">Discussion Points Covered</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {meDetail.map((r) => (
+                  <TableRow key={r.me}>
+                    <TableCell className="text-[12px] font-medium">{r.me}</TableCell>
+                    <TableCell className="text-[12px]">{r.area}</TableCell>
+                    <TableCell className="text-[12px]">{r.covered}</TableCell>
+                    <TableCell className="text-[12px]"><Pill level={r.eq.level}>{r.eq.label}</Pill></TableCell>
+                    <TableCell className="text-[12px]"><Pill level={r.time.level}>{r.time.label}</Pill></TableCell>
+                    <TableCell className="text-[12px]"><Pill level={r.prep}>{r.prep}</Pill></TableCell>
+                    <TableCell className="text-[12px]"><Pill level={r.discussion}>{r.discussion}</Pill></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ===== Section 2 popup ===== */}
+      <Dialog open={openInsights} onOpenChange={setOpenInsights}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Insights from the Market</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-[70vh] overflow-auto space-y-5 text-[13px] pr-1">
+            {[
+              {
+                num: 1,
+                title: "Competition Related",
+                items: [
+                  {
+                    h: "Chetak Paints aggressively entering Panvel",
+                    p: "Local sales reps from Chetak are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks.",
+                  },
+                  {
+                    h: "Birla Opus piloting EMI payments for retailers",
+                    p: "Birla offering 30/60/90 day EMI on bulk orders. Two retailers have already signed up. Particularly attractive to declining retailers with working-capital pressure.",
+                  },
+                  {
+                    h: "Asian Paints is locking-in retailers with Putty SKUs by bundling with Paints",
+                    p: "Sudden spike in Asian Paints Putty SKUs in Pimpri Chinchwad. Retailers are getting attractive schemes on Paints only if they buy bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders.",
+                  },
+                ],
+              },
+              {
+                num: 2,
+                title: "Product Quality",
+                items: [
+                  {
+                    h: "Retailers pull back on JK Putty orders over packaging concerns",
+                    p: "Ahead of the monsoon season, retailers are signaling reluctance to stock JK Putty due to ongoing packaging issues. They report that the product's single-layer packaging fails to withstand high moisture levels during the monsoon, leading to rapid deterioration in quality and rendering the product unusable.",
+                  },
+                  {
+                    h: "[Positive Feedback] JK Paint Users Happy with Shade Consistencies – This can be part of core value proposition / campaigns",
+                    p: "Painters are highlighting consistent coverage and zero shade variation in JK Paint products. This is leading to optimal material consumption & even finish, especially on larger surfaces. This can be part of our core value proposition – or ad campaigns.",
+                  },
+                ],
+              },
+              {
+                num: 3,
+                title: "Schemes Related",
+                items: [
+                  {
+                    h: "Retailers are asking for simpler retailer scheme structures (instead of multi-tier incentive mechanisms)",
+                    p: "Retailers are preferring schemes that are simple with less complex tier-structures (instead of complex-schemes with which run into multiple pages — for e.g. Retailers say JK's 4-tier slab + bonus SKU structure is hard to explain to contractors.",
+                  },
+                  {
+                    h: "Mid-tier retailers want better schemes",
+                    p: "Majority (i.e. mid-tier) retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers.",
+                  },
+                ],
+              },
+              {
+                num: 4,
+                title: "Contractor Related",
+                items: [
+                  {
+                    h: "Many Contractors in Pune are using JK Putty finish for 'premium interior repaint jobs' — (other locations can also leverage this insight)",
+                    p: "Contractors report choosing JK Putty more often in repainting of premium flats and bungalows where homeowners are sensitive to wall feel and lighting appearance. Helps them achieve a cleaner final paint finish with fewer visible surface marks.",
+                  },
+                  {
+                    h: "Contractor buying behaviour: smaller, more frequent orders",
+                    p: "Contractors are placing 2–3 smaller orders per month instead of one large one. Driven by cash-flow caution. Affects our minimum-order incentives.",
+                  },
+                ],
+              },
+              {
+                num: 5,
+                title: "Demand Related",
+                items: [{ h: "No change – already reflected.", p: "" }],
+              },
+            ].map((sec) => (
+              <section key={sec.num}>
+                <h3 className="text-[14px] font-bold text-foreground mb-2">
+                  {sec.num}. {sec.title}:
+                </h3>
+                <ol className="list-[lower-alpha] pl-5 space-y-2.5">
+                  {sec.items.map((it, idx) => (
+                    <li key={idx}>
+                      <p className="font-semibold text-foreground leading-snug">{it.h}</p>
+                      {it.p && <p className="text-muted-foreground leading-snug mt-0.5">{it.p}</p>}
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ===== Section 3 popup ===== */}
+      <Dialog open={openObjections} onOpenChange={setOpenObjections}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Top 5 objections in Pune</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-[70vh] overflow-auto space-y-5 text-[13px] pr-1">
+            {[
+              {
+                cat: "COMPETITION-RELATED",
+                items: [
+                  { q: "Competitor schemes are more visible and frequent.", e: "Retailers feel other brands are more active with scratch cards, gifts, or painter rewards." },
+                  { q: "Customers recognize competitor paint shades faster.", e: "Strong tinting/touchpoint presence from larger paint brands." },
+                  { q: "Competitors are doing more painter meets and site activities.", e: "Retailers feel JK's activation has become weak compared to others." },
+                ],
+              },
+              {
+                cat: "PRODUCT-QUALITY RELATED",
+                items: [
+                  { q: "Retailers feel product consistency changes batch-to-batch.", e: "Especially around workability, smoothness, or drying behavior in putty." },
+                ],
+              },
+              {
+                cat: "SCHEME-RELATED",
+                items: [
+                  { q: "Schemes are either unclear or not exciting enough.", e: "Retailers want simpler, faster, and more visible benefits tied to movement." },
+                ],
+              },
+            ].map((sec) => (
+              <section key={sec.cat}>
+                <h3 className="text-[11px] font-bold tracking-wider text-foreground mb-2">{sec.cat}</h3>
+                <ul className="space-y-2.5">
+                  {sec.items.map((it, idx) => (
+                    <li key={idx}>
+                      <p className="font-semibold text-foreground italic leading-snug">"{it.q}"</p>
+                      <p className="text-muted-foreground leading-snug mt-0.5">{it.e}</p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
