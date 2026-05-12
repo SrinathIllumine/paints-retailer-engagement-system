@@ -22,6 +22,7 @@ import ASMObjections from "./pages/asm/ASMObjections.tsx";
 import ASMAllRetailers from "./pages/asm/ASMAllRetailers.tsx";
 import ASMInsights from "./pages/asm/ASMInsights.tsx";
 import AsmDashboardNew from "./pages/AsmDashboardNew.tsx";
+import AsmReportsNew from "./pages/AsmReportsNew.tsx";
 
 const queryClient = new QueryClient();
 
