@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ArrowLeft, CheckCircle2, Sparkles, Loader2, ChevronDown, MessageSquareWarning, Lightbulb, BookOpen, Phone, MapPin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, CheckCircle2, Sparkles, Loader2, ChevronDown, MessageSquareWarning, Lightbulb, BookOpen, Mic, MicOff, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import VoiceTextInput from "@/components/me/VoiceTextInput";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // ---------------- Static catalogues ----------------
 
@@ -77,9 +77,7 @@ export const BUSINESS_IDEAS = [
 ];
 
 export const NEARBY_DGS = [
-  { name: "Ramesh Yadav", area: "Sector 14, Gurgaon", phone: "+91 98100 12345" },
-  { name: "", area: "Sector 14, Pune\n·\n+91 98100 12345", phone: "" },
-  { name: "Vikas Sharma", area: "DLF Phase 3", phone: "+91 98103 55512" },
+  { name: "Ramesh Yadav", area: "Sector 14, Pune", phone: "+91 98100 12345" },
 ];
 
 export const EDUCATION_POINTS = [
@@ -90,15 +88,15 @@ export const EDUCATION_POINTS = [
 // ---------------- State types ----------------
 
 export type EngageState = {
-  objections: { text: string; summary: string; matches: ObjectionMatch[] };
-  ideas: { points: string[]; dgDetails: typeof NEARBY_DGS };
-  education: { points: string[] };
+  objections: { transcript: string; matches: ObjectionMatch[] };
+  ideas: { selected: number[] };
+  education: { selected: number[] };
 };
 
 export const newEngageState = (): EngageState => ({
-  objections: { text: "", summary: "", matches: [] },
-  ideas: { points: BUSINESS_IDEAS, dgDetails: NEARBY_DGS },
-  education: { points: EDUCATION_POINTS },
+  objections: { transcript: "", matches: [] },
+  ideas: { selected: [] },
+  education: { selected: [] },
 });
 
 type Props = {
@@ -112,13 +110,11 @@ type Props = {
 // ---------------- UI ----------------
 
 const QHeader = ({
-  idx,
   title,
   icon: Icon,
   isOpen,
   onToggle,
 }: {
-  idx: number;
   title: string;
   icon: any;
   isOpen: boolean;
@@ -131,33 +127,112 @@ const QHeader = ({
   >
     <span className="flex items-start gap-2 min-w-0">
       <Icon className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-      <span className="text-sm font-semibold text-foreground leading-snug">
-        {title}
-      </span>
+      <span className="text-sm font-semibold text-foreground leading-snug">{title}</span>
     </span>
     <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} />
   </button>
 );
 
+const getSR = (): any => {
+  if (typeof window === "undefined") return null;
+  return (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition || null;
+};
+
 const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
   const [openQ, setOpenQ] = useState<number>(1);
-  const [busy, setBusy] = useState(false);
-  if (!open) return null;
+  const [listening, setListening] = useState(false);
+  const [interim, setInterim] = useState("");
+  const [matching, setMatching] = useState(false);
+  const [error, setError] = useState("");
+
+  const recRef = useRef<any>(null);
+  const shouldListenRef = useRef(false);
+  const baseTextRef = useRef("");
+
+  const supportsVoice = !!getSR();
 
   const updateObjections = (patch: Partial<EngageState["objections"]>) =>
     setState({ ...state, objections: { ...state.objections, ...patch } });
 
-  const runMatch = () => {
-    const txt = state.objections.text.trim();
-    if (!txt) return;
-    setBusy(true);
+  const runMatch = (text: string) => {
+    setMatching(true);
     setTimeout(() => {
-      updateObjections({ matches: matchObjections(txt) });
-      setBusy(false);
+      updateObjections({ transcript: text, matches: matchObjections(text) });
+      setMatching(false);
     }, 400);
   };
 
+  const startListening = () => {
+    const SR = getSR();
+    if (!SR) {
+      setError("Voice not supported in this browser.");
+      return;
+    }
+    setError("");
+    baseTextRef.current = state.objections.transcript.trim();
+    const rec = new SR();
+    rec.lang = "en-IN";
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.onresult = (e: any) => {
+      let interimChunk = "";
+      let finalChunk = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        const t = r[0]?.transcript ?? "";
+        if (r.isFinal) finalChunk += t + " ";
+        else interimChunk += t;
+      }
+      if (finalChunk) {
+        const merged = (baseTextRef.current + " " + finalChunk).replace(/\s+/g, " ").trim();
+        baseTextRef.current = merged;
+        updateObjections({ transcript: merged });
+      }
+      setInterim(interimChunk);
+    };
+    rec.onerror = (e: any) => {
+      const code = e?.error;
+      if (code === "not-allowed" || code === "service-not-allowed") {
+        setError("Microphone permission blocked.");
+        shouldListenRef.current = false;
+      } else if (code && code !== "no-speech" && code !== "aborted") {
+        setError(`Mic: ${code}`);
+      }
+    };
+    rec.onend = () => {
+      if (shouldListenRef.current) { try { rec.start(); return; } catch {} }
+      setListening(false);
+      setInterim("");
+      const finalText = baseTextRef.current.trim();
+      if (finalText) runMatch(finalText);
+    };
+    shouldListenRef.current = true;
+    recRef.current = rec;
+    try { rec.start(); setListening(true); } catch { setListening(true); }
+  };
+
+  const stopListening = () => {
+    shouldListenRef.current = false;
+    try { recRef.current?.stop(); } catch {}
+    setListening(false);
+  };
+
+  useEffect(() => () => {
+    shouldListenRef.current = false;
+    try { recRef.current?.stop(); } catch {}
+  }, []);
+
+  if (!open) return null;
+
   const toggle = (n: number) => setOpenQ(openQ === n ? 0 : n);
+
+  const toggleSelection = (key: "ideas" | "education", idx: number) => {
+    const cur = state[key].selected;
+    const next = cur.includes(idx) ? cur.filter((x) => x !== idx) : [...cur, idx];
+    setState({ ...state, [key]: { ...state[key], selected: next } } as EngageState);
+  };
+
+  const liveText = state.objections.transcript + (interim ? (state.objections.transcript ? " " : "") + interim : "");
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col">
@@ -177,38 +252,56 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto p-3 space-y-2">
-          {/* Q1 */}
+          {/* Q1 — Voice only */}
           <section className="rounded-xl border border-border bg-card overflow-hidden">
-            <QHeader idx={1} icon={MessageSquareWarning} title="Would you like help to handle any retailer objections?" isOpen={openQ === 1} onToggle={() => toggle(1)} />
+            <QHeader icon={MessageSquareWarning} title="Would you like help to handle any retailer objections?" isOpen={openQ === 1} onToggle={() => toggle(1)} />
             {openQ === 1 && (
               <div className="px-3 pb-3 pt-1 border-t border-border/60 space-y-3">
-                <VoiceTextInput
-                  category="Objection"
-                  placeholder="e.g. Retailer says JK margins are lower than competition…"
-                  label="Type your objections"
-                  value={state.objections.text}
-                  onChange={(v) => updateObjections({ text: v })}
-                  summary={state.objections.summary}
-                  onSummaryChange={(v) => updateObjections({ summary: v })}
-                />
-
-                <div>
+                <div className="flex flex-col items-center justify-center py-3 gap-2.5">
                   <Button
                     type="button"
-                    size="sm"
-                    variant="default"
-                    disabled={!state.objections.text.trim() || busy}
-                    onClick={runMatch}
+                    size="lg"
+                    variant={listening ? "destructive" : "default"}
+                    className="rounded-full h-16 w-16 p-0 shadow-md"
+                    onClick={listening ? stopListening : startListening}
+                    disabled={!supportsVoice}
+                    aria-label={listening ? "Stop recording" : "Start recording"}
                   >
-                    {busy ? (
-                      <><Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />Matching…</>
-                    ) : (
-                      <><Sparkles className="w-3.5 h-3.5 mr-1.5" />{state.objections.matches.length ? "Re-match objections" : "Match & suggest best practices"}</>
-                    )}
+                    {listening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
                   </Button>
+                  {listening ? (
+                    <p className="text-[11px] text-destructive flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
+                      Listening… tap to stop
+                    </p>
+                  ) : (
+                    <p className="text-[11px] text-muted-foreground">
+                      {state.objections.transcript ? "Tap mic to record again" : "Tap mic and describe the retailer's objection"}
+                    </p>
+                  )}
+                  {!supportsVoice && (
+                    <p className="text-[11px] text-destructive">Voice not supported in this browser.</p>
+                  )}
+                  {error && <p className="text-[11px] text-destructive">{error}</p>}
                 </div>
 
-                {state.objections.matches.length > 0 && (
+                {liveText && (
+                  <div className="rounded-lg border border-border bg-secondary/30 p-2.5">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Captured</p>
+                    <p className="text-sm text-foreground/85 leading-relaxed">
+                      {liveText}
+                      {listening && interim && <span className="text-muted-foreground italic"> …</span>}
+                    </p>
+                  </div>
+                )}
+
+                {matching && (
+                  <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
+                    <Loader2 className="w-3 h-3 animate-spin" /> Matching objections…
+                  </p>
+                )}
+
+                {!matching && state.objections.matches.length > 0 && (
                   <div className="space-y-2">
                     {state.objections.matches.map((m, i) => (
                       <div key={i} className="rounded-lg border border-info/20 bg-info/5 p-3">
@@ -229,62 +322,69 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
                     ))}
                   </div>
                 )}
+
+                {!matching && state.objections.transcript && state.objections.matches.length === 0 && (
+                  <p className="text-[11px] text-muted-foreground">No matching objections found in the catalogue.</p>
+                )}
               </div>
             )}
           </section>
 
-          {/* Q2 */}
+          {/* Q2 — selectable list */}
           <section className="rounded-xl border border-border bg-card overflow-hidden">
-            <QHeader idx={2} icon={Lightbulb} title="Propose new business building ideas" isOpen={openQ === 2} onToggle={() => toggle(2)} />
+            <QHeader icon={Lightbulb} title="Propose new business building ideas" isOpen={openQ === 2} onToggle={() => toggle(2)} />
             {openQ === 2 && (
-              <div className="px-3 pb-3 pt-1 border-t border-border/60 space-y-3">
-                <ul className="space-y-2">
-                  {BUSINESS_IDEAS.map((p, i) => (
-                    <li key={i} className="text-sm text-foreground/90 flex gap-2">
-                      <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="rounded-lg border border-border bg-secondary/30 p-2.5">
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Nearby Demand Generators (DGs)</p>
-                  <ul className="space-y-2">
-                    {NEARBY_DGS.map((dg, i) => (
-                      <li key={i} className="text-sm">
-                        {dg.name && <p className="font-semibold text-foreground">{dg.name}</p>}
-                        <div className="text-xs text-muted-foreground flex items-start gap-1 mt-0.5">
-                          <MapPin className="w-3 h-3 shrink-0 mt-0.5" />
-                          <div className="whitespace-pre-line leading-relaxed">
-                            {dg.area}
-                            {dg.phone && (
-                              <>
-                                <span className="mx-1">·</span>
-                                <Phone className="w-3 h-3 inline-block" /> {dg.phone}
-                              </>
-                            )}
+              <div className="px-3 pb-3 pt-1 border-t border-border/60 space-y-2">
+                {BUSINESS_IDEAS.map((p, i) => {
+                  const checked = state.ideas.selected.includes(i);
+                  return (
+                    <label
+                      key={i}
+                      className={`flex items-start gap-2.5 rounded-lg border p-2.5 cursor-pointer transition-colors ${checked ? "border-primary/40 bg-primary/5" : "border-border"}`}
+                    >
+                      <Checkbox checked={checked} onCheckedChange={() => toggleSelection("ideas", i)} className="mt-0.5" />
+                      <div className="text-sm text-foreground/90 flex-1">
+                        <span>{p}</span>
+                        {i === 1 && checked && (
+                          <div className="mt-2 rounded-md border border-border bg-secondary/30 p-2">
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Nearby DG</p>
+                            {NEARBY_DGS.map((dg, j) => (
+                              <div key={j} className="text-xs">
+                                <p className="font-semibold text-foreground">{dg.name}</p>
+                                <p className="text-muted-foreground flex items-center gap-1 mt-0.5 flex-wrap">
+                                  <MapPin className="w-3 h-3" /> {dg.area}
+                                  <span className="mx-1">·</span>
+                                  <Phone className="w-3 h-3" /> {dg.phone}
+                                </p>
+                              </div>
+                            ))}
                           </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                        )}
+                      </div>
+                    </label>
+                  );
+                })}
               </div>
             )}
           </section>
 
-          {/* Q3 */}
+          {/* Q3 — selectable list */}
           <section className="rounded-xl border border-border bg-card overflow-hidden">
-            <QHeader idx={3} icon={BookOpen} title="Educate on new products and/or schemes" isOpen={openQ === 3} onToggle={() => toggle(3)} />
+            <QHeader icon={BookOpen} title="Educate on new products and/or schemes" isOpen={openQ === 3} onToggle={() => toggle(3)} />
             {openQ === 3 && (
-              <div className="px-3 pb-3 pt-1 border-t border-border/60">
-                <ul className="space-y-2">
-                  {EDUCATION_POINTS.map((p, i) => (
-                    <li key={i} className="text-sm text-foreground/90 flex gap-2">
-                      <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="px-3 pb-3 pt-1 border-t border-border/60 space-y-2">
+                {EDUCATION_POINTS.map((p, i) => {
+                  const checked = state.education.selected.includes(i);
+                  return (
+                    <label
+                      key={i}
+                      className={`flex items-start gap-2.5 rounded-lg border p-2.5 cursor-pointer transition-colors ${checked ? "border-primary/40 bg-primary/5" : "border-border"}`}
+                    >
+                      <Checkbox checked={checked} onCheckedChange={() => toggleSelection("education", i)} className="mt-0.5" />
+                      <span className="text-sm text-foreground/90">{p}</span>
+                    </label>
+                  );
+                })}
               </div>
             )}
           </section>
