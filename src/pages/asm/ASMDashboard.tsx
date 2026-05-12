@@ -52,6 +52,7 @@ const engagementByArea = [
   { area: "Pune City", value: 90 },
   { area: "Wakad", value: 40 },
   { area: "Baner", value: 65 },
+  { area: "Yerwada", value: 70 },
   { area: "Kothrud", value: 90 },
   { area: "Hinjewadi", value: 95 },
 ].map((d) => ({ ...d, tier: tierFromValue(d.value) }));
@@ -70,6 +71,7 @@ const meDetail: MeDetailRow[] = [
   { area: "Wakad",     me: "Shivam K",     covered: "100/200", eq: { label: "4/10", tier: "low" },  time: { label: "2 min",  tier: "low" },  prep: "low" },
   { area: "Baner",     me: "Dheeraj M",    covered: "150/200", eq: { label: "6.5/10", tier: "moderate" }, time: { label: "8 min", tier: "moderate" }, prep: "low" },
   { area: "Kothrud",   me: "Raj Kumar",    covered: "190/200", eq: { label: "9/10", tier: "high" }, time: { label: "15 min", tier: "high" }, prep: "high" },
+  { area: "Yerwada",   me: "Mayank",       covered: "160/200", eq: { label: "7/10", tier: "moderate" }, time: { label: "9 min", tier: "moderate" }, prep: "low" },
   { area: "Hinjewadi", me: "Sagar",        covered: "180/200", eq: { label: "9.5/10", tier: "high" }, time: { label: "15 min", tier: "high" }, prep: "high" },
 ];
 
@@ -133,7 +135,7 @@ const ASMDashboard = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={engagementByArea}
-                margin={{ top: 24, right: 140, left: 0, bottom: 8 }}
+                margin={{ top: 24, right: 16, left: 0, bottom: 8 }}
               >
                 <XAxis
                   dataKey="area"
@@ -156,7 +158,7 @@ const ASMDashboard = () => {
                 >
                   <Label
                     value="Company Benchmark (80%)"
-                    position="right"
+                    position="insideTopRight"
                     style={{
                       fontSize: 11,
                       fill: "hsl(var(--muted-foreground))",
