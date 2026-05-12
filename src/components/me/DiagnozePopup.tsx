@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ChevronDown, ClipboardList, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, ChevronDown, ClipboardList, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import VoiceTextInput from "@/components/me/VoiceTextInput";
@@ -69,21 +69,21 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center sm:p-4">
-      <div className="bg-card w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[92vh] overflow-hidden shadow-2xl flex flex-col">
-        <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-between rounded-t-2xl">
-          <div>
-            <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">Diagnoze</p>
-            <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5">
-              Post Meeting With The Retailer
-            </h3>
-          </div>
-          <button onClick={onClose} className="p-1 text-muted-foreground hover:text-foreground shrink-0">
-            <X className="w-5 h-5" />
-          </button>
+    <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      <div className="bg-card border-b border-border px-4 py-3 flex items-center gap-3 shrink-0">
+        <button onClick={onClose} className="p-1 -ml-1 text-muted-foreground hover:text-foreground" aria-label="Back">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">AFTER</p>
+          <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5 truncate">
+            Post Meeting With The Retailer
+          </h3>
         </div>
+      </div>
 
-        <div className="overflow-y-auto p-4 space-y-3 flex-1">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-2xl mx-auto p-4 space-y-3">
           <Q idx={1} title="What are the action points agreed by the Retailer?" isOpen={openQ === 1} onToggle={() => setOpenQ(openQ === 1 ? null : 1)}>
             <div className="space-y-2 mt-3">
               {PREPARE_POINTS.map((p) => {

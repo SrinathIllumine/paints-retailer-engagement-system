@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = { open: boolean; onClose: () => void; onDone?: () => void };
@@ -27,21 +27,21 @@ const cards = [
 const PreparePopup = ({ open, onClose, onDone }: Props) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center sm:p-4">
-      <div className="bg-card w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[92vh] overflow-y-auto shadow-2xl flex flex-col">
-        <div className="sticky top-0 bg-card border-b border-border px-4 py-3 flex items-center justify-between rounded-t-2xl z-10">
-          <div>
-            <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">Prepare</p>
-            <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5">
-              Preparation Points Before Meeting the Retailer
-            </h3>
-          </div>
-          <button onClick={onClose} className="p-1 text-muted-foreground hover:text-foreground shrink-0">
-            <X className="w-5 h-5" />
-          </button>
+    <div className="fixed inset-0 z-50 bg-background flex flex-col">
+      <div className="bg-card border-b border-border px-4 py-3 flex items-center gap-3 shrink-0">
+        <button onClick={onClose} className="p-1 -ml-1 text-muted-foreground hover:text-foreground" aria-label="Back">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">Prepare</p>
+          <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5 truncate">
+            Preparation Points Before Meeting the Retailer
+          </h3>
         </div>
+      </div>
 
-        <div className="p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-2xl mx-auto p-4 space-y-3">
           {cards.map((c) => (
             <div key={c.n} className="rounded-xl border border-info/20 bg-info/5 p-4">
               <div className="flex items-center gap-2 mb-1.5">
@@ -55,8 +55,10 @@ const PreparePopup = ({ open, onClose, onDone }: Props) => {
             </div>
           ))}
         </div>
+      </div>
 
-        <div className="sticky bottom-0 bg-card border-t border-border p-3">
+      <div className="bg-card border-t border-border p-3 shrink-0">
+        <div className="max-w-2xl mx-auto">
           <Button className="w-full" onClick={() => { onDone?.(); onClose(); }}>✓ Mark Prepare as Done</Button>
         </div>
       </div>
