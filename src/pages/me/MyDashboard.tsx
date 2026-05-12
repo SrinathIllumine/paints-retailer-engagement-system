@@ -146,6 +146,7 @@ const StatCard = ({
 
 const MyDashboard = () => {
   const navigate = useNavigate();
+  const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
 
   return (
     <MeLayout title="My Dashboard" showBack>
@@ -347,28 +348,82 @@ const MyDashboard = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4">
-                <ol className="relative border-l border-border/70 ml-1.5 space-y-4 pt-1">
-                  {engagementHistory.map((e, i) => (
-                    <li key={i} className="ml-4">
-                      <span className="absolute -left-[5px] mt-1 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-background" />
-                      <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">
-                        {e.date}
-                      </p>
-                      <p className="text-sm font-medium text-foreground mt-0.5 leading-snug">
-                        {e.title}
-                      </p>
-                      <details className="group mt-1">
-                        <summary className="text-[11px] text-primary font-medium cursor-pointer list-none flex items-center gap-1">
-                          View details
-                          <ChevronRight className="w-3 h-3 transition-transform group-open:rotate-90" />
-                        </summary>
-                        <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                          {e.detail}
-                        </p>
-                      </details>
-                    </li>
-                  ))}
-                </ol>
+                <div className="space-y-4 pt-1">
+                  {engagementHistory.map((entry, i) => {
+                    const isExpanded = expandedEntry === i;
+                    return (
+                      <div
+                        key={i}
+                        className="relative pl-6 border-l-2 border-border pb-4 last:pb-0"
+                      >
+                        <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary" />
+                        <button
+                          className="w-full text-left"
+                          onClick={() => setExpandedEntry(isExpanded ? null : i)}
+                        >
+                          <p className="text-xs text-muted-foreground font-medium">
+                            {entry.date}
+                          </p>
+                          <p className="text-sm text-foreground mt-0.5">
+                            {entry.summary}
+                          </p>
+                          <span className="text-xs text-primary mt-1 inline-flex items-center gap-1">
+                            {isExpanded ? (
+                              <ChevronUp className="w-3 h-3" />
+                            ) : (
+                              <ChevronDown className="w-3 h-3" />
+                            )}
+                            {isExpanded ? "Collapse" : "View details"}
+                          </span>
+                        </button>
+
+                        {isExpanded && (
+                          <div className="mt-3 space-y-3 animate-fade-in">
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                <CheckCircle2 className="w-3 h-3" />
+                                Action Points
+                              </div>
+                              {entry.actionPoints.map((ap, j) => (
+                                <div key={j} className="bg-secondary/40 rounded-lg p-3">
+                                  <p className="text-sm font-medium text-foreground">
+                                    {ap.goal}
+                                  </p>
+                                  <ul className="mt-1.5 space-y-1">
+                                    {ap.bullets.map((b, k) => (
+                                      <li
+                                        key={k}
+                                        className="text-xs text-muted-foreground flex items-start gap-1.5"
+                                      >
+                                        <span className="w-1 h-1 rounded-full bg-primary mt-1.5 shrink-0" />
+                                        {b}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                <AlertTriangle className="w-3 h-3" />
+                                Key Critical Feedback
+                              </div>
+                              {entry.feedback.map((fb, j) => (
+                                <div
+                                  key={j}
+                                  className="bg-warning/5 border border-warning/20 rounded-lg px-3 py-2 text-sm text-foreground/80"
+                                >
+                                  {fb}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
