@@ -298,6 +298,7 @@ const AsmDashboardNew = () => {
       </div>
     </div>
   </div>
-);
+  );
+};
 
 export default AsmDashboardNew;
