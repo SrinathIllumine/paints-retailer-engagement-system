@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Store, ClipboardList, MessageSquareWarning, Lightbulb, BookOpen, CheckCircle2, Key, Send, CheckCheck, Sparkles } from "lucide-react";
 import { dealers } from "@/data/mockData";
-import { type EngageState, newEngageState } from "@/components/me/EngagePopup";
+import { type EngageState, newEngageState, BUSINESS_IDEAS, NEARBY_DGS, EDUCATION_POINTS } from "@/components/me/EngagePopup";
 
 type Insight = { id: string; tag: string; text: string; summary: string };
 type SummaryState = {
@@ -43,30 +43,38 @@ const VisitSummary = () => {
     ...((s.customActionPoint || "").trim() ? [s.customActionPoint!.trim()] : []),
   ];
 
-  const engageBlocks: { key: keyof EngageState; icon: any; title: string; emoji: string }[] = [
-    { key: "objections", icon: MessageSquareWarning, title: "Objections Handled", emoji: "⚠️" },
-    { key: "ideas", icon: Lightbulb, title: "Business Ideas Proposed", emoji: "💡" },
-    { key: "education", icon: BookOpen, title: "Product / Scheme Education", emoji: "📘" },
-  ];
+  const objBody = (engage.objections.summary || engage.objections.text || "").trim();
+  const objMatches = engage.objections.matches || [];
 
-  const sectionBody = (k: keyof EngageState) => {
-    const sec = engage[k];
-    return (sec?.summary || sec?.text || "").trim();
+  const waObjections = () => {
+    if (!objBody && objMatches.length === 0) return "";
+    const lines = ["⚠️ *Objections Handled:*"];
+    if (objBody) lines.push(objBody);
+    objMatches.forEach((m) => {
+      lines.push(`• ${m.label}`);
+      m.bestPractices.forEach((bp) => lines.push(`   - ${bp}`));
+    });
+    return lines.join("\n");
   };
-  const sectionSugs = (k: keyof EngageState) => engage[k]?.suggestions || [];
 
-  const waSection = (label: string, emoji: string, body: string, sugs: string[]) => {
-    if (!body && sugs.length === 0) return "";
-    const lines = [`${emoji} *${label}:*`];
-    if (body) lines.push(body);
-    if (sugs.length) lines.push(...sugs.map((x, i) => `  ${i + 1}. ${x}`));
+  const waIdeas = () => {
+    const lines = ["💡 *Business Ideas Proposed:*"];
+    BUSINESS_IDEAS.forEach((p) => lines.push(`• ${p}`));
+    lines.push("  Nearby DGs:");
+    NEARBY_DGS.forEach((dg) => lines.push(`   - ${dg.name} (${dg.area}) ${dg.phone}`));
+    return lines.join("\n");
+  };
+
+  const waEducation = () => {
+    const lines = ["📘 *Product / Scheme Education:*"];
+    EDUCATION_POINTS.forEach((p) => lines.push(`• ${p}`));
     return lines.join("\n");
   };
 
   const waBlocks = [
-    waSection("Objections Handled", "⚠️", sectionBody("objections"), sectionSugs("objections")),
-    waSection("Business Ideas Proposed", "💡", sectionBody("ideas"), sectionSugs("ideas")),
-    waSection("Product / Scheme Education", "📘", sectionBody("education"), sectionSugs("education")),
+    waObjections(),
+    waIdeas(),
+    waEducation(),
     actionPoints.length ? `✅ *Action Points / Go-Forwards:*\n${actionPoints.map((t) => `• ${t}`).join("\n")}` : "",
     insightItems.length ? `🧠 *New Market Insights:*\n${insightItems.map((x) => `• ${x.tag ? `[${x.tag}] ` : ""}${x.body}`).join("\n")}` : "",
     feedback ? `🔑 *Key Critical Feedback:*\n${feedback}` : "",
@@ -86,35 +94,80 @@ ${waBlocks.join("\n\n")}
     window.open(`https://wa.me/?text=${encodeURIComponent(waMessage)}`, "_blank");
   };
 
-  const EngageCard = ({ k, icon: Icon, title }: { k: keyof EngageState; icon: any; title: string }) => {
-    const body = sectionBody(k);
-    const sugs = sectionSugs(k);
-    if (!body && sugs.length === 0) return null;
+  const ObjectionsCard = () => {
+    if (!objBody && objMatches.length === 0) return null;
     return (
       <Card className="p-3">
         <div className="flex items-center gap-2 mb-2">
-          <Icon className="w-4 h-4 text-primary" />
-          <h4 className="font-display font-bold text-foreground text-sm">{title}</h4>
+          <MessageSquareWarning className="w-4 h-4 text-primary" />
+          <h4 className="font-display font-bold text-foreground text-sm">Objections Handled</h4>
         </div>
-        {body && <p className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed">{body}</p>}
-        {sugs.length > 0 && (
-          <div className="mt-2.5 rounded-lg border border-info/20 bg-info/5 p-2.5">
-            <p className="text-[10px] font-semibold text-info uppercase tracking-wider mb-1 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> AI Suggestions
-            </p>
-            <ol className="space-y-1">
-              {sugs.map((x, i) => (
-                <li key={i} className="text-sm text-foreground/85 flex gap-2">
-                  <span className="text-info font-semibold shrink-0">{i + 1}.</span>
-                  <span>{x}</span>
-                </li>
-              ))}
-            </ol>
+        {objBody && <p className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed">{objBody}</p>}
+        {objMatches.length > 0 && (
+          <div className="mt-2.5 space-y-2">
+            {objMatches.map((m, i) => (
+              <div key={i} className="rounded-lg border border-info/20 bg-info/5 p-2.5">
+                <p className="text-sm font-semibold text-foreground mb-1">{m.label}</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Best practices</p>
+                <ul className="space-y-1">
+                  {m.bestPractices.map((bp, j) => (
+                    <li key={j} className="text-sm text-foreground/85 flex gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-info mt-2 shrink-0" />
+                      <span>{bp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
       </Card>
     );
   };
+
+  const IdeasCard = () => (
+    <Card className="p-3">
+      <div className="flex items-center gap-2 mb-2">
+        <Lightbulb className="w-4 h-4 text-primary" />
+        <h4 className="font-display font-bold text-foreground text-sm">Business Ideas Proposed</h4>
+      </div>
+      <ul className="space-y-1.5">
+        {BUSINESS_IDEAS.map((p, i) => (
+          <li key={i} className="text-sm text-foreground/85 flex gap-2">
+            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+            <span>{p}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-2.5 rounded-lg border border-border bg-secondary/30 p-2.5">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Nearby DGs</p>
+        <ul className="space-y-1">
+          {NEARBY_DGS.map((dg, i) => (
+            <li key={i} className="text-xs text-foreground/85">
+              <span className="font-semibold text-foreground">{dg.name}</span> · {dg.area} · {dg.phone}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Card>
+  );
+
+  const EducationCard = () => (
+    <Card className="p-3">
+      <div className="flex items-center gap-2 mb-2">
+        <BookOpen className="w-4 h-4 text-primary" />
+        <h4 className="font-display font-bold text-foreground text-sm">Product / Scheme Education</h4>
+      </div>
+      <ul className="space-y-1.5">
+        {EDUCATION_POINTS.map((p, i) => (
+          <li key={i} className="text-sm text-foreground/85 flex gap-2">
+            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+            <span>{p}</span>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
 
   return (
     <MeLayout title="Visit Summary" showBack>
@@ -132,7 +185,9 @@ ${waBlocks.join("\n\n")}
           </div>
         </Card>
 
-        {engageBlocks.map((b) => <EngageCard key={b.key} k={b.key} icon={b.icon} title={b.title} />)}
+        <ObjectionsCard />
+        <IdeasCard />
+        <EducationCard />
 
         <Card className="p-3">
           <div className="flex items-center gap-2 mb-2">
