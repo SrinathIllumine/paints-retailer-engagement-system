@@ -147,18 +147,17 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
     }, 400);
   };
 
-  const startListening = () => {
-    const SR = getSR();
-    if (!SR) {
-      setError("Voice not supported in this browser.");
-      return;
-    }
-    setError("");
-    baseTextRef.current = state.objections.transcript.trim();
+  const isAndroid = typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
+
+  const buildRecognizer = (SR: any) => {
     const rec = new SR();
     rec.lang = "en-IN";
-    rec.continuous = true;
+    // Android Chrome's continuous mode is unreliable — it drops audio, throws
+    // "no-speech"/"network" errors, and often stops emitting results after a
+    // brief pause. Use single-shot mode on Android and restart manually.
+    rec.continuous = !isAndroid;
     rec.interimResults = true;
+    rec.maxAlternatives = 1;
     rec.onresult = (e: any) => {
       let interimChunk = "";
       let finalChunk = "";
@@ -178,21 +177,60 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
     rec.onerror = (e: any) => {
       const code = e?.error;
       if (code === "not-allowed" || code === "service-not-allowed") {
-        setError("Microphone permission blocked.");
+        setError("Microphone permission blocked. Enable mic access in browser settings.");
         shouldListenRef.current = false;
+      } else if (code === "audio-capture") {
+        setError("No microphone detected.");
+        shouldListenRef.current = false;
+      } else if (code === "network") {
+        // Transient on Android — let onend restart.
       } else if (code && code !== "no-speech" && code !== "aborted") {
         setError(`Mic: ${code}`);
       }
     };
     rec.onend = () => {
-      if (shouldListenRef.current) { try { rec.start(); return; } catch {} }
+      if (shouldListenRef.current) {
+        // Small delay helps Android Chrome avoid "InvalidStateError" loops.
+        setTimeout(() => {
+          if (!shouldListenRef.current) return;
+          try {
+            const SR2 = getSR();
+            const next = buildRecognizer(SR2);
+            recRef.current = next;
+            next.start();
+          } catch {
+            shouldListenRef.current = false;
+            setListening(false);
+            setInterim("");
+            runMatch(baseTextRef.current.trim());
+          }
+        }, isAndroid ? 250 : 0);
+        return;
+      }
       setListening(false);
       setInterim("");
       runMatch(baseTextRef.current.trim());
     };
+    return rec;
+  };
+
+  const startListening = () => {
+    const SR = getSR();
+    if (!SR) {
+      setError("Voice not supported in this browser.");
+      return;
+    }
+    setError("");
+    baseTextRef.current = state.objections.transcript.trim();
     shouldListenRef.current = true;
-    recRef.current = rec;
-    try { rec.start(); setListening(true); } catch { setListening(true); }
+    try {
+      const rec = buildRecognizer(SR);
+      recRef.current = rec;
+      rec.start();
+      setListening(true);
+    } catch {
+      setListening(true);
+    }
   };
 
   const stopListening = () => {
