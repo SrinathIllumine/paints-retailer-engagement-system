@@ -143,8 +143,10 @@ ${waBlocks.join("\n\n")}
         <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Nearby DGs</p>
         <ul className="space-y-1">
           {NEARBY_DGS.map((dg, i) => (
-            <li key={i} className="text-xs text-foreground/85">
-              <span className="font-semibold text-foreground">{dg.name}</span> · {dg.area} · {dg.phone}
+            <li key={i} className="text-xs text-foreground/85 whitespace-pre-line leading-relaxed">
+              {dg.name && <><span className="font-semibold text-foreground">{dg.name}</span> · </>}
+              {dg.area}
+              {dg.phone && <> · {dg.phone}</>}
             </li>
           ))}
         </ul>
