@@ -17,7 +17,7 @@ const OBJECTION_CATALOGUE: { label: string; keywords: string[]; bestPractices: s
     ],
   },
   {
-    label: "Contractor / site activity is lower compared to last year.",
+    label: "Demand from contractor / site activity is lower compared to last year.",
     keywords: ["contractor", "site", "activity", "project", "construction", "mason", "lower", "less"],
     bestPractices: [
       "Map active contractors / sites still operating in the area and reconnect them to the retailer.",
@@ -25,7 +25,7 @@ const OBJECTION_CATALOGUE: { label: string; keywords: string[]; bestPractices: s
     ],
   },
   {
-    label: "People are delaying painting and renovation work.",
+    label: "Demand is coming down as people are delaying painting and renovation work.",
     keywords: ["delay", "delaying", "paint", "painting", "renovation", "repaint", "postpone", "waiting"],
     bestPractices: [
       "Position products around maintenance, waterproofing, and repair needs instead of full repainting.",
