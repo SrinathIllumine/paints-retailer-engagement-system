@@ -94,35 +94,80 @@ ${waBlocks.join("\n\n")}
     window.open(`https://wa.me/?text=${encodeURIComponent(waMessage)}`, "_blank");
   };
 
-  const EngageCard = ({ k, icon: Icon, title }: { k: keyof EngageState; icon: any; title: string }) => {
-    const body = sectionBody(k);
-    const sugs = sectionSugs(k);
-    if (!body && sugs.length === 0) return null;
+  const ObjectionsCard = () => {
+    if (!objBody && objMatches.length === 0) return null;
     return (
       <Card className="p-3">
         <div className="flex items-center gap-2 mb-2">
-          <Icon className="w-4 h-4 text-primary" />
-          <h4 className="font-display font-bold text-foreground text-sm">{title}</h4>
+          <MessageSquareWarning className="w-4 h-4 text-primary" />
+          <h4 className="font-display font-bold text-foreground text-sm">Objections Handled</h4>
         </div>
-        {body && <p className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed">{body}</p>}
-        {sugs.length > 0 && (
-          <div className="mt-2.5 rounded-lg border border-info/20 bg-info/5 p-2.5">
-            <p className="text-[10px] font-semibold text-info uppercase tracking-wider mb-1 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> AI Suggestions
-            </p>
-            <ol className="space-y-1">
-              {sugs.map((x, i) => (
-                <li key={i} className="text-sm text-foreground/85 flex gap-2">
-                  <span className="text-info font-semibold shrink-0">{i + 1}.</span>
-                  <span>{x}</span>
-                </li>
-              ))}
-            </ol>
+        {objBody && <p className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed">{objBody}</p>}
+        {objMatches.length > 0 && (
+          <div className="mt-2.5 space-y-2">
+            {objMatches.map((m, i) => (
+              <div key={i} className="rounded-lg border border-info/20 bg-info/5 p-2.5">
+                <p className="text-sm font-semibold text-foreground mb-1">{m.label}</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Best practices</p>
+                <ul className="space-y-1">
+                  {m.bestPractices.map((bp, j) => (
+                    <li key={j} className="text-sm text-foreground/85 flex gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-info mt-2 shrink-0" />
+                      <span>{bp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
       </Card>
     );
   };
+
+  const IdeasCard = () => (
+    <Card className="p-3">
+      <div className="flex items-center gap-2 mb-2">
+        <Lightbulb className="w-4 h-4 text-primary" />
+        <h4 className="font-display font-bold text-foreground text-sm">Business Ideas Proposed</h4>
+      </div>
+      <ul className="space-y-1.5">
+        {BUSINESS_IDEAS.map((p, i) => (
+          <li key={i} className="text-sm text-foreground/85 flex gap-2">
+            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+            <span>{p}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-2.5 rounded-lg border border-border bg-secondary/30 p-2.5">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Nearby DGs</p>
+        <ul className="space-y-1">
+          {NEARBY_DGS.map((dg, i) => (
+            <li key={i} className="text-xs text-foreground/85">
+              <span className="font-semibold text-foreground">{dg.name}</span> · {dg.area} · {dg.phone}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Card>
+  );
+
+  const EducationCard = () => (
+    <Card className="p-3">
+      <div className="flex items-center gap-2 mb-2">
+        <BookOpen className="w-4 h-4 text-primary" />
+        <h4 className="font-display font-bold text-foreground text-sm">Product / Scheme Education</h4>
+      </div>
+      <ul className="space-y-1.5">
+        {EDUCATION_POINTS.map((p, i) => (
+          <li key={i} className="text-sm text-foreground/85 flex gap-2">
+            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+            <span>{p}</span>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
 
   return (
     <MeLayout title="Visit Summary" showBack>
@@ -140,7 +185,9 @@ ${waBlocks.join("\n\n")}
           </div>
         </Card>
 
-        {engageBlocks.map((b) => <EngageCard key={b.key} k={b.key} icon={b.icon} title={b.title} />)}
+        <ObjectionsCard />
+        <IdeasCard />
+        <EducationCard />
 
         <Card className="p-3">
           <div className="flex items-center gap-2 mb-2">
