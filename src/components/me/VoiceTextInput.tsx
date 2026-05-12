@@ -243,7 +243,7 @@ const VoiceTextInput = ({ category, placeholder, label = "Your note", value, onC
     <div className="space-y-3">
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs font-medium text-muted-foreground">Your note</span>
+          <span className="text-xs font-medium text-muted-foreground">{label}</span>
           {supportsVoice && (
             <Button
               type="button"
