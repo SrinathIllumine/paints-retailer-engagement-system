@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { X, ChevronRight, CheckCircle2 } from "lucide-react";
+import { X, ChevronRight, CheckCircle2, Search, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 export type EngageState = {
   objections: string[];
