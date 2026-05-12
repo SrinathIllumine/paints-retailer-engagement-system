@@ -178,6 +178,7 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
                 <VoiceTextInput
                   category={sec.category}
                   placeholder={sec.placeholder}
+                  label={sec.label}
                   value={data.text}
                   onChange={(v) => update(sec.key, { text: v })}
                   summary={data.summary}
