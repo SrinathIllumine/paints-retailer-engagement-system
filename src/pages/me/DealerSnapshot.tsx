@@ -260,16 +260,6 @@ const DealerSnapshot = () => {
           </div>
         )}
 
-        {/* Current Scenario */}
-        <div className="animate-slide-up" style={{ animationDelay: "60ms", animationFillMode: "backwards" }}>
-          <h3 className="text-xs font-bold text-primary mb-2 uppercase tracking-[0.18em]">Current Scenario</h3>
-          <Card className="bg-info/5 border-info/20 p-4">
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              Long-standing retailer since 2014. At this point in time, his sales are coming down w.r.t JK.
-            </p>
-          </Card>
-        </div>
-
         {/* Customized Engagement Plan — sequential checklist */}
         <div className="animate-slide-up" style={{ animationDelay: "100ms", animationFillMode: "backwards" }}>
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Customized Engagement Plan</h3>
