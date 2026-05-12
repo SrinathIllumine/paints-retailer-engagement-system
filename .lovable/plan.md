@@ -1,91 +1,61 @@
-## 1. Retailer Snapshot — Remove "Current Scenario"
+## DURING popup (`src/components/me/EngagePopup.tsx`) — full restructure
 
-`src/pages/me/DealerSnapshot.tsx`
-- Delete the entire "Current Scenario" block (lines ~263–271).
-- Remaining sections (header, plan card) reflow naturally — no extra spacing fixes needed since they use the same `space-y-4` parent.
+### Layout
 
-## 2. Fullscreen popup shell (Before / During / After)
+- Replace the 3-stacked-card layout with an accordion (reuse the `Q` component pattern from `DiagnozePopup.tsx`: clickable header + chevron, body conditionally rendered).
+- Drop the "Section 1 / Section 2 / Section 3" tag labels. Headers show only the question text, with a small `Q1.` / `Q2.` / `Q3.` prefix.
+- Single-open behavior: opening one question collapses the others. Q1 is open by default when the popup opens.
+- Compact spacing (`space-y-2`, smaller paddings) so all 3 question rows fit within the viewport without scrolling when collapsed; only the open question's body scrolls if needed (inner `overflow-y-auto`).
 
-Convert `PreparePopup`, `EngagePopup`, and `DiagnozePopup` from bottom-sheet style to true fullscreen on every breakpoint.
+### Q1 — "Would you like help to handle any retailer objections?"
 
-Replace the current outer container:
-```
-fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center sm:p-4
-  └ bg-card w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[92vh] ...
-```
-with a uniform fullscreen shell:
-```
-fixed inset-0 z-50 bg-background flex flex-col
-  ├ sticky top header: back/close button + label (BEFORE/DURING/AFTER) + title
-  ├ flex-1 overflow-y-auto content area
-  └ sticky bottom footer with primary CTA
-```
-- Header uses a left-aligned back arrow (`ArrowLeft`) instead of a right `X` to match a real page nav, plus the existing tag + title.
-- Container becomes opaque (`bg-background`), no rounded corners, no max-width, fills the viewport on web and mobile.
-- Content scrolls inside the middle region; header and footer stay fixed.
+- Keep the existing `VoiceTextInput` (voice + textarea + AI summarize).
+- Replace the current generic "Get suggestions" output with an **intelligent objection matcher**:
+  - Maintain a small in-file catalogue of canonical retailer objections (e.g. Margin/price, Stock/supply, Painter influence, Competitor scheme, Quality perception, Delivery delay), each with: `keywords[]`, `label`, `bestPractices[]` (2–3 short tactics).
+  - On voice/text update (debounced) or via the existing "Get suggestions" button, score the catalogue against the captured text using the same keyword approach already used in `EngagePopup`, and surface the top 1–2 matches.
+  - Render matches as cards: objection label + a "Best practices to handle this" bullet list.
+  - Keep all matched objections + best-practice text in `state.objections` so they flow into the summary.
 
-## 3. DURING popup — full redesign
+### Q2 — "Propose new business building ideas"
 
-Rewrite `src/components/me/EngagePopup.tsx` content. Drop the current flashpoint search/best-practice list entirely.
+- Remove `VoiceTextInput` and the AI suggestions block entirely.
+- Show two static selectable, non-editable bullet points:
+  1. Track the new construction sites and approach their site supervisors.
+  2. Expand your contractor base by getting in touch with JK's DGs. Below this, a small expandable "Show nearby DG details" panel listing 2–3 mock DGs (name, area, phone) — pulled from a local mock array inside the file.
+- Persist these as the body for the "Business Ideas Proposed" block in the visit summary (always present, no user input needed).
 
-New `EngageState` shape:
-```ts
-type EngageSection = { text: string; summary: string; suggestions: string[] };
-export type EngageState = {
-  objections: EngageSection;       // Section 1
-  ideas: EngageSection;            // Section 2
-  education: EngageSection;        // Section 3
-  // legacy fields kept optional only if still referenced elsewhere
-};
-```
-Update `DealerSnapshot.tsx` initial state and the `navigate(..., { state })` payload accordingly. Update `VisitSummary.tsx` typing.
+### Q3 — "Educate on new products and/or schemes"
 
-Three stacked sections inside the scroll area, each as a card:
-1. "Would you like help to handle any retailer objections?"
-2. "Propose new business building ideas"
-3. "Educate on new products and/or schemes"
+- Remove `VoiceTextInput` and the AI suggestions block.
+- Show two static selectable bullet points:
+  1. Promote the newly launched small-sized packs for repainting projects.
+  2. Talk about the new "Painter Loyalty Scheme" launched by JK.
+- Persist these as the body for the "Product / Scheme Education" block in the summary.
 
-Each card contains:
-- A `VoiceTextInput` (already supports text + voice + AI summarize). Use a meaningful `category` per section ("Objection", "Business Idea", "Product/Scheme") and a tailored placeholder hint.
-- A "Get suggestions" button below the input. On click, run a local mock generator (same pattern as `mockSummarize` in `VoiceTextInput.tsx`) that returns 3 short bullet recommendations derived from keywords in the entered text. Store them in `suggestions[]` and render as a styled list with a `Sparkles` icon header ("AI Suggestions"). Re-running replaces the list; an Edit affordance is not needed.
-- Empty input → button disabled with helper text.
+### EngageState shape changes
 
-Voice recording state already shows a pulsing dot via `VoiceTextInput`; no new indicator needed.
+Update `EngageState` so the summary screen has structured data:
 
-Footer CTA stays "Complete Engagement Session".
+- `objections`: keep `text`, `summary`, plus new `matches: { label: string; bestPractices: string[] }[]`.
+- `ideas`: change to a fixed payload `{ points: string[]; dgDetails: {name, area, phone}[] }`.
+- `education`: change to fixed payload `{ points: string[] }`.
+- Update `newEngageState()` accordingly with the static content pre-filled (so even if the ME just clicks through, Q2/Q3 content reaches the summary).
 
-## 4. Visit Summary + WhatsApp preview
+## Visit Summary (`src/pages/me/VisitSummary.tsx`)
 
-`src/pages/me/VisitSummary.tsx`
-- Read new `engage` payload + existing `diagnoze` payload from `loc.state`.
-- Replace the current "Objections Raised" single section with three structured sections derived from the new DURING data:
-  - "Objections Handled" — input summary + AI suggestions
-  - "Business Ideas Proposed" — input summary + AI suggestions
-  - "Product / Scheme Education Shared" — input summary + AI suggestions
-- Keep Topics Discussed, Action Points, New Market Insights, Key Critical Feedback as today (sourced from AFTER popup).
-- Rebuild `waMessage` to mirror the on-screen sections in the same order with section emojis:
-  ```
-  ⚠️ Objections Handled
-  💡 Business Ideas Proposed
-  📘 Product / Scheme Education
-  ✅ Action Points
-  🧠 Market Insights
-  🔑 Key Feedback
-  ```
-  Each section prints the user's note (or AI summary if present) followed by the suggestion bullets when available. Skip empty sections cleanly so the WhatsApp message stays readable.
-- WhatsApp preview block already renders `waMessage` verbatim — no further change.
+- "Objections Handled" card: show the captured note/summary, then a sub-block listing each matched objection with its best-practice bullets (replacing the current generic numbered AI suggestions list).
+- "Business Ideas Proposed" card: render the two static bullets + a compact DG details list.
+- "Product / Scheme Education" card: render the two static bullets.
 
-## 5. Polish
+## WhatsApp preview (same file)
 
-- All new copy uses existing semantic tokens (`primary`, `info`, `muted-foreground`, etc.) — no hardcoded colors.
-- Placeholder hints per section:
-  - Objections: "e.g. Retailer says JK margins are lower than competition…"
-  - Ideas: "e.g. Joint contractor meet, in-shop display refresh…"
-  - Education: "e.g. New WallMaxx scheme, updated PPC pricing…"
-- Verify the lock/sequence logic in `DealerSnapshot.tsx` still works (Engage completion only requires clicking the footer CTA — unchanged).
+Update the `waBlocks` builder so:
 
-## Technical notes
+- Objections section prints: the ME's note (if any) + each matched objection as `• <label>` with indented best-practice lines.
+- Business Ideas section always prints the two bullets + DG names/areas.
+- Product/Scheme section always prints the two bullets.
 
-- No backend / Lovable Cloud work in this pass; suggestions are generated client-side with a deterministic mock similar to `mockSummarize`. We can wire a real LLM call later via Lovable AI Gateway if desired.
-- Keep `OBJECTIONS` export removed from `EngagePopup.tsx`; remove the now-dead `import { OBJECTIONS }` in `VisitSummary.tsx`.
-- No route or data-model changes outside the three popup files, `DealerSnapshot.tsx`, and `VisitSummary.tsx`.
+## Out of scope
+
+- No changes to BEFORE (Prepare) or AFTER (Diagnoze) popups beyond what's already in place.
+- No backend/data-model changes; all new content stays in component-level mock data.
