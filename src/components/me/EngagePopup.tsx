@@ -79,8 +79,8 @@ export type EngageState = {
 
 export const newEngageState = (): EngageState => ({
   objections: { transcript: "", matches: [] },
-  ideas: { selected: [] },
-  education: { selected: [] },
+  ideas: { selected: BUSINESS_IDEAS.map((_, i) => i) },
+  education: { selected: EDUCATION_POINTS.map((_, i) => i) },
 });
 
 type Props = {
