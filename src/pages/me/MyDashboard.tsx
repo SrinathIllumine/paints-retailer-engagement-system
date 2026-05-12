@@ -179,7 +179,7 @@ const MyDashboard = () => {
           </p>
           <div className="grid grid-cols-3 gap-2">
             <StatCard icon={Briefcase} label="Exp. in JK" value="3.5 yrs" />
-            <StatCard icon={Store} label="Total Retailers" value="42" />
+            <StatCard icon={Store} label="Total Retailers" value="76" />
             <StatCard icon={Users} label="Engaged" value="28" />
           </div>
         </div>
