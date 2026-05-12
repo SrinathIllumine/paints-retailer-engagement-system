@@ -20,7 +20,7 @@ import Coverage from "./pages/leadership/Coverage.tsx";
 import Leaderboard from "./pages/leadership/Leaderboard.tsx";
 import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
 import ASMObjections from "./pages/asm/ASMObjections.tsx";
-import ASMAllRetailers from "./pages/asm/ASMAllRetailers.tsx";
+import ASMLeaderboard from "./pages/asm/ASMLeaderboard.tsx";
 import ASMInsights from "./pages/asm/ASMInsights.tsx";
 import AsmDashboardNew from "./pages/AsmDashboardNew.tsx";
 
@@ -50,7 +50,7 @@ const App = () => (
           {/* ASM Analytics App */}
           <Route path="/asm" element={<ASMDashboard />} />
           <Route path="/asm/objections" element={<ASMObjections />} />
-          <Route path="/asm/retailers" element={<ASMAllRetailers />} />
+          <Route path="/asm/retailers" element={<ASMLeaderboard />} />
           <Route path="/asm/insights" element={<ASMInsights />} />
           {/* Backwards-compatible aliases */}
           <Route path="/asm-dashboard-new" element={<AsmDashboardNew />} />
