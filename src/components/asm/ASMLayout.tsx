@@ -26,6 +26,12 @@ const navItems = [
     path: "/asm",
   },
   {
+    icon: Lightbulb,
+    label: "Market Insights",
+    sub: "Collated insights from across markets in Pune",
+    path: "/asm/insights",
+  },
+  {
     icon: AlertTriangle,
     label: "Retailer Objections",
     sub: "Top objections raised in my area",
@@ -36,12 +42,6 @@ const navItems = [
     label: "Leaderboard",
     sub: "ME Leaderboard w.r.t Sales & Engagement Levels",
     path: "/asm/retailers",
-  },
-  {
-    icon: Lightbulb,
-    label: "Market Insights",
-    sub: "Collated insights from across markets in Pune",
-    path: "/asm/insights",
   },
 ];
 
