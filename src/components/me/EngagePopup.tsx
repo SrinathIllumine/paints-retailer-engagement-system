@@ -93,13 +93,14 @@ const generateSuggestions = (kind: SectionKind, text: string): string[] => {
 };
 
 // ----- Section card -----
-const SECTIONS: { key: SectionKind; icon: any; tag: string; title: string; placeholder: string; category: string }[] = [
+const SECTIONS: { key: SectionKind; icon: any; tag: string; title: string; placeholder: string; label: string; category: string }[] = [
   {
     key: "objections",
     icon: MessageSquareWarning,
     tag: "Section 1",
     title: "Would you like help to handle any retailer objections?",
     placeholder: "e.g. Retailer says JK margins are lower than competition…",
+    label: "Type your objections",
     category: "Objection",
   },
   {
@@ -108,6 +109,7 @@ const SECTIONS: { key: SectionKind; icon: any; tag: string; title: string; place
     tag: "Section 2",
     title: "Propose new business building ideas",
     placeholder: "e.g. Joint contractor meet, in-shop display refresh…",
+    label: "Type business ideas",
     category: "Business Idea",
   },
   {
@@ -116,6 +118,7 @@ const SECTIONS: { key: SectionKind; icon: any; tag: string; title: string; place
     tag: "Section 3",
     title: "Educate on new products and/or schemes",
     placeholder: "e.g. New WallMaxx scheme, updated PPC pricing…",
+    label: "Type education notes",
     category: "Product / Scheme",
   },
 ];
