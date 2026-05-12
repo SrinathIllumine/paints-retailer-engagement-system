@@ -1,67 +1,92 @@
-# Polish ASM Dashboard (new) — Visual Refinement
+## Goal
 
-Target file: `src/pages/AsmDashboardNew.tsx` only. No business logic / wording changes.
+Restructure the ASM Analytics app so each tab is sourced from the data shown in `AsmDashboardNew` (`/asm-dashboard-new`), but rendered using the existing ASM Analytics UI shell (`ASMLayout`, shadcn `Card`, `Table`, `Dialog`, current typography and tokens). No look-and-feel from `AsmDashboardNew` is copied — only its data, structure and copy.
 
-## 1. Header sub-tagline
-- Bump "Ravi Kumar, ASM, Pune | Team of 6 MEs | 6 markets" from `text-[12px] text-muted-foreground` to `text-sm font-semibold text-foreground` and increase bottom margin so it reads as a real subtitle.
-- Use a stronger separator color (`text-muted-foreground/40`) between the pipes.
+## 1. Sidebar — reorder tabs
 
-## 2. Shared visual language (match ASM Analytics)
-Adopt the same look used in `EngagementQuality.tsx` / `ObjectionsAndDonut.tsx` / `MarketInsights.tsx`:
-- Section eyebrow: `text-[11px] uppercase tracking-wide text-muted-foreground font-medium` over a `text-[15px] font-medium text-foreground` title (replaces the bold 14px titles currently used).
-- Cards: keep `bg-card border rounded-lg`, but use `p-4` and consistent inner spacing (`mb-3` / `mb-4` rhythm).
-- Body text: `text-[12px]` foreground, `text-[11px]` muted for support copy. Eliminate the mixed 10/11/12/13/14px sizes presently in use.
-- Pills: switch from `bg-*/15` semantic tints to the analytics palette (`#E1F5EE/#1D9E75`, `#FAEEDA/#BA7517`, `#FCEBEB/#E24B4A`) via a shared `tier()`-style helper, so HIGH/MODERATE/LOW pills look identical to the analytics quality-score pills.
+In `src/components/asm/ASMLayout.tsx`, reorder `navItems` to:
 
-## 3. Section 1 — Engagement Quality bar chart
-- Wrap in the new eyebrow + title pattern.
-- Replace pastel blue with the analytics green/orange/red tier colors per bar (Feb 80→green, Mar 85→green, Apr 70→orange) using `<Cell>`.
-- Reduce bar size, tighten margins, drop the in-chart "Engagement Quality" Y-axis label (use the eyebrow copy instead) so the plot is not cramped.
-- Move the "Decline" annotation to a small inline chip above the Apr bar using absolute positioning tied to the bar (not a fixed `right-[24%]`). Use `text-[11px]`.
-- "Click to view →" CTA: keep destructive color but `text-[11px] font-medium`.
+1. Engagement Quality → `/asm`
+2. Market Insights → `/asm/insights`
+3. Retailer Objections → `/asm/objections`
+4. Leaderboard → `/asm/retailers` (route stays the same; page is repurposed to a Leaderboard view, see §4)
 
-## 4. Section 2 — Collated insights
-- Eyebrow + title + supporting line ("3 of 10 shown this week").
-- Each insight becomes a row matching the analytics flagged-intel pattern: small left color dot + category pill (right) + headline (medium) + muted sub-line. Border-top dividers between rows.
-- Consistent `text-[12px]` headline, `text-[11px]` muted sub-line.
-- CTA aligned right, same style as Section 1.
+Sub-text is left as already configured.
 
-## 5. Section 3 — Pie chart (key fix)
-- Replace external string labels with an internal donut + side legend (mirrors `ObjectionsAndDonut.tsx`):
-  - `innerRadius="55%"` `outerRadius="90%"`, no Pie `label`/`labelLine`.
-  - Two-column layout inside the card: donut left, legend list right with name + % rows separated by border-t (same as analytics legend).
-  - Card uses `overflow-hidden`; donut wrapper is a fixed flex container so labels can never escape.
-- Colors switch to the analytics palette (`#1D9E75`, `#EF9F27`, `#D85A30`, `#378ADD`, `#E24B4A`).
-- All legend text `text-[12px]` foreground / `text-[11px]` muted — consistent with rest of page.
+## 2. Engagement Quality (`ASMDashboard.tsx`) — rebuild
 
-## 6. Section 4 — ME Leaderboard
-- Remove background-color pills on Engagement Quality and Sales Growth columns. Render value as plain colored text: `text-success` (HIGH), `text-warning` (MODERATE), `text-destructive` (LOW), `font-semibold text-[12px]`.
-- Status column keeps a colored text label (no filled background) with a small leading dot, matching analytics flagged-intel rows. Drop the `destructive-strong` filled chip.
-- Tighten table typography: header `text-[10px] uppercase tracking-wide text-muted-foreground`, cells `text-[12px]`, row padding `py-2`, hover `hover:bg-muted/40`.
+Strip the page down to two sections only:
 
-## 7. Popups (Dialogs)
-All three dialogs:
-- `DialogContent` gets `bg-card text-foreground border-border` (explicit) and consistent `max-w-3xl` / `max-w-4xl` sizing scaled to content; padding `p-6`; scroll area `max-h-[75vh]`.
-- `DialogTitle` uses display-style: `text-lg font-semibold text-foreground`, with a `text-xs text-muted-foreground` sub-label.
+**a. Top identity card (kept, slightly extended)**
+- Reuse the existing avatar + name + location card (Rajesh Kumar · ASM · Pune).
+- Replace the right-hand "Area in-charge" block with three inline summary chips: `Team of 6 MEs`, `6 markets`, `Pune region`. Use existing `text-xs text-muted-foreground` + `text-sm font-semibold` styling — no new colors.
 
-Section 1 popup (ME × Engagement table):
-- Header row uses analytics-style uppercase tiny labels.
-- Switch tinted pills to plain colored text (same rule as the leaderboard) so values stay readable on light bg. Keep one accent pill only on the "Overall EQ" score column for emphasis (analytics tier pill).
-- Add zebra striping (`even:bg-muted/30`) and aligned numeric columns.
+**b. "Quality of retailer engagement" bar chart card**
+- New `Card` containing a Recharts `BarChart`.
+- X-axis: market areas — `Pune City`, `Wakad`, `Baner`, `Kothrud`, `Hinjewadi` (replaces months from AsmDashboardNew).
+- Y-axis: engagement quality % (0–100).
+- Data values per area sourced from the `meDetail` rows in AsmDashboardNew (Aditya 90, Shivam 40, Dheeraj 65, Raj 90, Sagar 95). Bar color tier (green/orange/red) follows AsmDashboardNew thresholds but using existing semantic tokens (`success`, `warning`, `destructive`) so it stays inside the current design system.
+- Company benchmark = 80%, drawn as `ReferenceLine` with a `Label` rendered with extra right margin so the "Company Benchmark" text is fully visible (right margin ~120px, label `position="right"`, never clipped).
+- Bottom-right CTA "Click to view detailed list →" using a small ghost/link button consistent with current ASM Analytics (`text-primary text-sm font-medium hover:underline`), opens the dialog described in §3.
 
-Section 2 popup (Insights from the Market):
-- Two-column readable layout: numbered category title on a sticky left rail (`md:grid-cols-[180px_1fr]`), items on the right with `text-[13px]` headline + `text-[12px] text-muted-foreground` body.
-- Consistent vertical rhythm (`space-y-4` between sub-items, `space-y-8` between sections), divider between sections.
+Remove: SNAPSHOT KPI grid, ME-wise breakdown table, Daily engagement coverage card, Quarterly leaderboard, MEProfileDialog wiring, and any imports that become unused.
 
-Section 3 popup (Top 5 objections):
-- Quote line in foreground (drop italic, keep medium weight) with a small left accent bar in the category color; explanation in muted; `space-y-3` between objections, `space-y-6` between categories.
-- Category header reuses the eyebrow style for consistency.
+## 3. Engagement Quality detail dialog (popup)
 
-## 8. Cleanup
-- Remove `Pill`/`StatusPill` if unused after the changes, or repurpose into a single `tierColor()` helper returning `{text, bg}` so analytics-style pills can still be used selectively (Section 1 popup score column).
-- Remove unused imports.
+Inside `ASMDashboard.tsx`, add a shadcn `Dialog` opened by the CTA above. Use existing `Table` styling (header uppercase muted, alternating rows already used elsewhere in ASM Analytics).
 
-## Technical notes
-- All new colors added inline via the established analytics palette constants (kept local to the file to avoid touching `index.css`/`tailwind.config.ts`).
-- Recharts: rely on `ResponsiveContainer` + parent fixed/flex height to prevent label overflow; pie no longer uses external `label` so the wrapping concern in the user's screenshot is resolved.
-- No data, route, or business-wording changes.
+Columns, in this exact order — `Discussion points` removed:
+
+1. Area
+2. ME
+3. Retailers covered
+4. Overall engagement quality
+5. Avg. time spent
+6. Preparation
+
+Rows = the 5 entries from AsmDashboardNew `meDetail`. For tier coloring, render `HIGH/MODERATE/LOW` and the `9/10` style values using small pills built from existing tokens (`bg-success/10 text-success`, `bg-warning/10 text-warning`, `bg-destructive/10 text-destructive`) — no inline hex from the AsmDashboardNew palette.
+
+## 4. Leaderboard tab (`ASMAllRetailers.tsx` → repurposed)
+
+Replace the entire All-Retailers page contents with a Leaderboard page sourced from AsmDashboardNew's `leaderboard` data.
+
+- Page title: "ME Leaderboard", subtitle "ME leaderboard w.r.t. sales & engagement levels", with the same `MapPin` Pune line used on other ASM pages.
+- Single `Card` containing a shadcn `Table` with columns: `#`, `ME`, `Area`, `Engagement Quality`, `Sales Growth`, `Status`.
+- Rows: the 5 leaderboard entries from AsmDashboardNew (Aditya, Shivam, Dheeraj, Raj, Sagar).
+- HIGH / MODERATE / LOW rendered with the same semantic-token pills as §3.
+- Status column ("Top Performer", "Can Improve", "Needs significant Improvement", "Needs immediate attention") rendered using the existing `Badge` component with semantic variants:
+  - green → `bg-success/10 text-success`
+  - orange → `bg-warning/10 text-warning`
+  - red / red-strong → `bg-destructive/10 text-destructive` (red-strong adds `font-semibold`)
+- Keep the existing route `/asm/retailers` so the sidebar entry continues to work; rename the default export to `ASMLeaderboard` and update the import in `src/App.tsx`. File is renamed to `src/pages/asm/ASMLeaderboard.tsx`; old `ASMAllRetailers.tsx` is deleted.
+
+## 5. Retailer Objections (`ASMObjections.tsx`) — trim
+
+Keep only the pie-chart card. Remove the "Retailer-wise objections" table card and the "Market area objection view" table card, plus their search input, helpers, and unused imports (`Input`, `Badge`, `Search`, `Clock`, `useMemo`, etc.).
+
+Pie-chart updates:
+- Replace `objectionBreakdown` data with the 5 entries from AsmDashboardNew `objections`: Competition Related 45, Product quality 30, Scheme related 9, SKU Space related 7, Working Capital related 3.
+- Slice colors continue to use the current ASM Analytics `COLORS` HSL array (no inline hex from AsmDashboardNew) so the donut visually matches the rest of the app.
+- Keep the donut/pie sizing from the current page; render percentage labels as already done.
+
+CTA inside the same card, bottom-right: a link-style button "See top 5 objections in the area →" (`text-primary text-sm font-medium hover:underline`) that opens a shadcn `Dialog`.
+
+Dialog content is sourced verbatim from the AsmDashboardNew section-3 popup ("Top 5 objections in Pune"), grouped by category (Competition-related, Product-quality related, Scheme-related) with the exact `q`/`e` items already authored there. Render with current ASM Analytics styling: section eyebrow in `text-xs uppercase text-muted-foreground`, each item as `border-l-2 border-primary/40 pl-3` (no AsmDashboardNew palette hex), quote in `text-sm font-medium text-foreground`, explanation in `text-xs text-muted-foreground`.
+
+## 6. Market Insights (`ASMInsights.tsx`)
+
+No structural change required — it stays as the current ASM Analytics insights page (already in the right slot in the new sidebar order). Out of scope for this plan.
+
+## Files touched
+
+- `src/components/asm/ASMLayout.tsx` — reorder `navItems`.
+- `src/pages/asm/ASMDashboard.tsx` — full rewrite per §2 + §3.
+- `src/pages/asm/ASMAllRetailers.tsx` → renamed/replaced by `src/pages/asm/ASMLeaderboard.tsx` per §4.
+- `src/pages/asm/ASMObjections.tsx` — trimmed per §5.
+- `src/App.tsx` — update the `/asm/retailers` import to `ASMLeaderboard`.
+
+## Out of scope
+
+- `AsmDashboardNew.tsx` itself remains unchanged; it's only used as a data/copy source.
+- Market Insights page is not modified.
+- No design-token, color, or typography changes; no new shadcn components introduced.
