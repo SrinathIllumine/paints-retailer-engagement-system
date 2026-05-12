@@ -178,8 +178,10 @@ const DiagnozePopup = ({ open, onClose, state, setState, onGenerate }: Props) =>
             </div>
           </Q>
         </div>
+      </div>
 
-        <div className="bg-card border-t border-border p-3">
+      <div className="bg-card border-t border-border p-3 shrink-0">
+        <div className="max-w-2xl mx-auto">
           <Button className="w-full" onClick={onGenerate}>
             <ClipboardList className="w-4 h-4 mr-1.5" /> Generate Visit Summary
           </Button>
