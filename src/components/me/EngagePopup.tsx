@@ -71,6 +71,14 @@ type Props = {
 
 const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [query, setQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const filtered = OBJECTIONS.filter(
+    (o) =>
+      !state.objections.includes(o.id) &&
+      (o.label.toLowerCase().includes(query.toLowerCase()) ||
+        o.sub.toLowerCase().includes(query.toLowerCase()))
+  );
   if (!open) return null;
 
   const toggleObj = (id: string) => {
