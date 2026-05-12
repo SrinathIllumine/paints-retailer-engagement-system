@@ -4,6 +4,30 @@ import MeLayout from "@/components/me/MeLayout";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { dealers } from "@/data/mockData";
+import { Send, CheckCheck } from "lucide-react";
+
+const todayStr = () => new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
+const buildWaMessage = (dealerName: string) =>
+`*Visit Summary — ${dealerName}*
+📅 ${todayStr()}
+👤 Manish Kumar from JK
+🏪 ${dealerName} (Owner / In-shop)
+
+✅ *Action Points / Go-Forwards:*
+• Share JK premium grade samples with key builder contacts
+• Follow up on credit terms objection within 3 days
+
+🧠 *New Market Insights:*
+• Demand for white cement rising in nearby residential projects
+
+🔑 *Key Critical Feedback:*
+Retailer flagged credit cycle is shorter than competitor. Wants combo schemes with putty.
+
+— JK Cement ME Team`;
 import {
   Accordion,
   AccordionContent,
