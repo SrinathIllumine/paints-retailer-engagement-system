@@ -266,7 +266,7 @@ const DealerSnapshot = () => {
           <Card className="bg-info/5 border-info/20 divide-y divide-info/15 overflow-hidden">
             {([
               { key: "prepare", label: "BEFORE", subtitle: "Preparation points before the meeting", locked: false },
-              { key: "engage", label: "DURING", subtitle: "Engagement during the conversation", locked: !completed.prepare },
+              { key: "engage", label: "DURING", subtitle: "Engagement during the conversation", locked: false },
               { key: "diagnoze", label: "AFTER", subtitle: "Diagnosis post conversation", locked: !completed.engage },
             ] as const).map((row) => {
               const done = completed[row.key];
