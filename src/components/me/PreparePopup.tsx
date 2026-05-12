@@ -33,7 +33,7 @@ const PreparePopup = ({ open, onClose, onDone }: Props) => {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="min-w-0">
-          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">Prepare</p>
+          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.18em]">BEFORE</p>
           <h3 className="font-display font-bold text-foreground text-sm leading-tight mt-0.5 truncate">
             Preparation Points Before Meeting the Retailer
           </h3>
@@ -59,7 +59,7 @@ const PreparePopup = ({ open, onClose, onDone }: Props) => {
 
       <div className="bg-card border-t border-border p-3 shrink-0">
         <div className="max-w-2xl mx-auto">
-          <Button className="w-full" onClick={() => { onDone?.(); onClose(); }}>✓ Mark Prepare as Done</Button>
+          <Button className="w-full" onClick={() => { onDone?.(); onClose(); }}>✓ Mark as Done</Button>
         </div>
       </div>
     </div>
