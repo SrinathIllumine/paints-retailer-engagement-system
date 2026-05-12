@@ -6,6 +6,7 @@ import { Mic, MicOff, Sparkles, Loader2, Pencil } from "lucide-react";
 type Props = {
   category: string;
   placeholder?: string;
+  label?: string;
   value: string;
   onChange: (next: string) => void;
   summary: string;
