@@ -275,9 +275,9 @@ const DealerSnapshot = () => {
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Customized Engagement Plan</h3>
           <Card className="bg-info/5 border-info/20 divide-y divide-info/15 overflow-hidden">
             {([
-              { key: "prepare", label: "PREPARE", subtitle: "Before The Conversation", locked: false },
-              { key: "engage", label: "ENGAGE", subtitle: "During The Conversation", locked: !completed.prepare },
-              { key: "diagnoze", label: "DIAGNOZE", subtitle: "Post Conversation", locked: !completed.engage },
+              { key: "prepare", label: "BEFORE", subtitle: "Preparation points before the meeting", locked: false },
+              { key: "engage", label: "DURING", subtitle: "Engagement during the conversation", locked: !completed.prepare },
+              { key: "diagnoze", label: "AFTER", subtitle: "Diagnosis post conversation", locked: !completed.engage },
             ] as const).map((row) => {
               const done = completed[row.key];
               const locked = row.locked && !done;
@@ -292,23 +292,27 @@ const DealerSnapshot = () => {
                     }
                     setPhase(row.key);
                   }}
-                  className={`w-full flex items-center justify-between px-4 py-3.5 text-left transition-colors active:scale-[0.99] ${locked ? "opacity-40 cursor-not-allowed" : "hover:bg-info/5"}`}
+                  className={`w-full flex items-center justify-between px-5 py-6 text-left transition-colors active:scale-[0.99] ${locked ? "opacity-40 cursor-not-allowed" : "hover:bg-info/5"}`}
                   aria-disabled={locked}
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="flex items-center gap-3 min-w-0">
                     {done ? (
-                      <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
+                      <CheckCircle2 className="w-7 h-7 text-success shrink-0" />
                     ) : (
-                      <Circle className="w-5 h-5 text-muted-foreground shrink-0" />
+                      <Circle className="w-7 h-7 text-muted-foreground shrink-0" />
                     )}
-                    <span className="font-display font-bold text-primary text-sm tracking-wider">{row.label}</span>
-                    <ArrowRight className="w-4 h-4 text-primary shrink-0" />
-                    <span className="text-sm text-foreground/85 truncate">{row.subtitle}</span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-display font-bold text-primary text-xl tracking-wider">{row.label}</span>
+                        <ArrowRight className="w-5 h-5 text-primary shrink-0" />
+                      </div>
+                      <p className="text-sm text-foreground/80 mt-1">{row.subtitle}</p>
+                    </div>
                   </div>
                   {locked ? (
-                    <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <Lock className="w-5 h-5 text-muted-foreground shrink-0" />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
                   )}
                 </button>
               );
@@ -321,7 +325,7 @@ const DealerSnapshot = () => {
           </Card>
           {lockMsg && (
             <p className="text-xs text-muted-foreground mt-2 px-1 animate-fade-in">
-              Complete {lockMsg === "engage" ? "PREPARE" : "ENGAGE"} first.
+              Complete {lockMsg === "engage" ? "BEFORE" : "DURING"} first.
             </p>
           )}
         </div>
