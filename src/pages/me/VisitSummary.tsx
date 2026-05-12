@@ -131,51 +131,63 @@ ${waBlocks.join("\n\n")}
     );
   };
 
-  const IdeasCard = () => (
-    <Card className="p-3">
-      <div className="flex items-center gap-2 mb-2">
-        <Lightbulb className="w-4 h-4 text-primary" />
-        <h4 className="font-display font-bold text-foreground text-sm">Business Ideas Proposed</h4>
-      </div>
-      <ul className="space-y-1.5">
-        {BUSINESS_IDEAS.map((p, i) => (
-          <li key={i} className="text-sm text-foreground/85 flex gap-2">
-            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
-            <span>{p}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-2.5 rounded-lg border border-border bg-secondary/30 p-2.5">
-        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Nearby DGs</p>
-        <ul className="space-y-1">
-          {NEARBY_DGS.map((dg, i) => (
-            <li key={i} className="text-xs text-foreground/85 whitespace-pre-line leading-relaxed">
-              {dg.name && <><span className="font-semibold text-foreground">{dg.name}</span> · </>}
-              {dg.area}
-              {dg.phone && <> · {dg.phone}</>}
+  const selectedIdeas = (engage.ideas?.selected || []).map((i) => BUSINESS_IDEAS[i]).filter(Boolean);
+  const selectedEducation = (engage.education?.selected || []).map((i) => EDUCATION_POINTS[i]).filter(Boolean);
+  const showDG = (engage.ideas?.selected || []).includes(1);
+
+  const IdeasCard = () => {
+    if (selectedIdeas.length === 0) return null;
+    return (
+      <Card className="p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <Lightbulb className="w-4 h-4 text-primary" />
+          <h4 className="font-display font-bold text-foreground text-sm">Business Ideas Proposed</h4>
+        </div>
+        <ul className="space-y-1.5">
+          {selectedIdeas.map((p, i) => (
+            <li key={i} className="text-sm text-foreground/85 flex gap-2">
+              <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+              <span>{p}</span>
             </li>
           ))}
         </ul>
-      </div>
-    </Card>
-  );
+        {showDG && (
+          <div className="mt-2.5 rounded-lg border border-border bg-secondary/30 p-2.5">
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Nearby DG</p>
+            <ul className="space-y-1">
+              {NEARBY_DGS.map((dg, i) => (
+                <li key={i} className="text-xs text-foreground/85 leading-relaxed">
+                  {dg.name && <><span className="font-semibold text-foreground">{dg.name}</span> · </>}
+                  {dg.area}
+                  {dg.phone && <> · {dg.phone}</>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </Card>
+    );
+  };
 
-  const EducationCard = () => (
-    <Card className="p-3">
-      <div className="flex items-center gap-2 mb-2">
-        <BookOpen className="w-4 h-4 text-primary" />
-        <h4 className="font-display font-bold text-foreground text-sm">Product / Scheme Education</h4>
-      </div>
-      <ul className="space-y-1.5">
-        {EDUCATION_POINTS.map((p, i) => (
-          <li key={i} className="text-sm text-foreground/85 flex gap-2">
-            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
-            <span>{p}</span>
-          </li>
-        ))}
-      </ul>
-    </Card>
-  );
+  const EducationCard = () => {
+    if (selectedEducation.length === 0) return null;
+    return (
+      <Card className="p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <BookOpen className="w-4 h-4 text-primary" />
+          <h4 className="font-display font-bold text-foreground text-sm">Product / Scheme Education</h4>
+        </div>
+        <ul className="space-y-1.5">
+          {selectedEducation.map((p, i) => (
+            <li key={i} className="text-sm text-foreground/85 flex gap-2">
+              <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+    );
+  };
 
   return (
     <MeLayout title="Visit Summary" showBack>
