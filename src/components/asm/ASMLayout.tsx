@@ -21,8 +21,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const navItems = [
   {
     icon: Users,
-    label: "Leaderboard",
-    sub: "How are MEs engaging with retailers?",
+    label: "Engagement Quality",
+    sub: "ME Leaderboard w.r.t Sales & Engagement Levels",
     path: "/asm",
   },
   {
