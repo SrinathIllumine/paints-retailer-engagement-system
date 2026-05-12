@@ -1,66 +1,44 @@
+# ASM Reports — Visual Refinements
 
-## ASM Reports — layout & content refinements
+All edits scoped to `src/pages/AsmDashboardNew.tsx`. No routing or data changes.
 
-All changes are scoped to `src/pages/AsmDashboardNew.tsx`. No backend, no routing changes.
+## 1. Header & typography consistency
 
-### 1. Fit all 4 cards in a single screen view
+- Replace the small grey sub-header strip with a richer header block:
+  - Avatar (shadcn `Avatar`, ~48px) of Ravi Kumar on the left (initials fallback "RK").
+  - Beside it: **"Ravi Kumar"** at `text-[18px] font-bold`, sub-line "ASM, Pune" at `text-[12px] text-muted-foreground`.
+  - Below avatar row: two compact stats — **Total MEs: 6** and **Total Markets: 6** — as small pill chips.
+- Standardize type scale across all 4 cards:
+  - Card titles: `text-[15px] font-bold`
+  - Card sub-captions (italic dates): `text-[11px]`
+  - All body content (table cells, heatmap cells, insight text): `text-[12px]`
+  - Table headers: `text-[12px] font-semibold`
+- Page H1 ("ASM Reports") stays `text-[20px] font-bold`.
 
-- Tighten the page wrapper: reduce vertical padding (`py-4`), shrink header margin and sub-header strip.
-- Reduce card padding (`p-3`), title sizes (`text-[14px]`), and inter-card gap (`gap-3`).
-- Make each card a fixed-height panel so the 2×2 grid fits the viewport (~`h-[calc((100vh-160px)/2)]`) with internal scroll for tables/legend overflow only.
-- Shrink pie chart height (~220px) and table row padding so cards stay compact.
+## 2. Heatmap — red-only background
 
-### 2. Reorder the 2×2 grid
+- In `heatColor()`:
+  - `>= 80` → `text-success` only (no background; transparent cell)
+  - `>= 40` → `text-warning` only (no background)
+  - `< 40` → keep `bg-destructive/15 text-destructive` (red background retained)
+- Cell wrapper keeps padding/centering so alignment is unchanged; only the green/yellow fills disappear.
 
-```text
-┌──────────────────────────┬──────────────────────────┐
-│ 1. Engagement Reports    │ 2. Top Retailer          │
-│    (top-left)            │    Objections (top-right)│
-├──────────────────────────┼──────────────────────────┤
-│ 3. Retailer Engagement   │ 4. Key Market Insights   │
-│    Coverage Heatmap      │    (bottom-right)        │
-│    (bottom-left)         │                          │
-└──────────────────────────┴──────────────────────────┘
-```
+## 3. Key Market Insights — neutral styling + View all
 
-Rename card 4 header to **"Key Market Insights"**.
+- Remove the colored left accent bar, the colored category pills, and the lucide icon badges (`Lightbulb`, `MapPin`).
+- Each insight becomes a clean card: white background, neutral border, small uppercase muted category label, bold one-line takeaway, supporting line in muted text.
+- Add a **"View all →"** ghost link at bottom-right of the card that opens a shadcn `Dialog` titled "All Market Insights" listing the same two insights plus 3 more sample entries (Demand, Product Quality, Customer Behavior) in the same neutral style.
 
-### 3. Redesign Key Market Insights card
+## 4. Top Retailer Objections — inline legend with %
 
-Replace the two flat grey blocks with a more visually engaging layout:
+- Remove the recharts `<Legend>` at the bottom.
+- Render a custom legend list to the right of (or below, depending on space) the pie:
+  - Color swatch + name + `value%` on one line each, e.g. `■ Demand related — 30%`.
+- Pie keeps its slice `%` labels; tooltip retained.
 
-- Two stacked insight items, each on a white card surface with a left accent bar in `--primary` (4px wide).
-- Each insight has:
-  - A small colored pill badge for the category (e.g. "Scheme-related" in primary tint, "Hinjewadi" in accent tint) at the top.
-  - A bold one-line takeaway in `text-foreground`.
-  - A short supporting line in `text-muted-foreground`.
-  - A small lucide icon (e.g. `Lightbulb` for common, `MapPin` for market-specific) in a soft circular badge on the right.
-- Subtle hover lift (`hover:shadow-md transition`) for parity with the other cards.
+## Technical notes
 
-Stays within design tokens (no raw colors).
-
-### 4. Heatmap column changes
-
-- Remove the **ME** column.
-- Add a new **Overall Engagement Quality** column immediately to the right of **Area**, showing the average of E1 + E2 + E3 (rounded), color-coded with the same `heatColor()` helper.
-- Keep the existing three engagement columns unchanged.
-
-Resulting columns: `Area | Overall Engagement Quality | Engagement 1 | Engagement 2 | Engagement 3`.
-
-### 5. Engagement Reports — top 3 + View More
-
-- Render only the first 3 rows of the `reports` array by default.
-- Add a **View more** button (ghost/link style, primary color) at the bottom-right of the card.
-- Clicking opens a Dialog (shadcn `Dialog`) titled "All Engagement Reports" containing the full table with the same columns, including per-row "View Report" links that preserve the existing `state` payload.
-
-### Technical notes
-
-- Use existing shadcn `Dialog` for the View More modal; no new dependencies.
-- Use `useState` to control the dialog.
-- Compute heatmap "Overall" inline: `Math.round((e1 + e2 + e3) / 3)`.
-- All colors via design tokens (`--primary`, `--muted`, `--success`, `--warning`, `--destructive`, etc.). No hard-coded hex except the existing pie chart palette.
-- No changes to `App.tsx`, routes, or the visit-summary page.
-
-### Files to edit
-
-- `src/pages/AsmDashboardNew.tsx` — only file touched.
+- Uses existing semantic tokens (`--success`, `--warning`, `--destructive`, `--primary`, `--muted-foreground`).
+- New imports: `Avatar`, `AvatarFallback` (already available). Drop unused `Lightbulb`, `MapPin` imports.
+- New local state for the "All Market Insights" dialog (alongside existing `showAllReports`).
+- 2×2 grid sizing and viewport-fit behavior preserved.

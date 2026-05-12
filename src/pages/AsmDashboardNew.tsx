@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Lightbulb, MapPin } from "lucide-react";
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { ArrowLeft } from "lucide-react";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import {
   Table,
   TableBody,
@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type ReportRow = {
   me: string;
@@ -101,9 +102,10 @@ const heatmap = [
   { area: "Hinjewadi", e1: 5, e2: 0, e3: 0 },
 ];
 
+// Red background only for low values; green/yellow keep text color but no background.
 const heatColor = (v: number) => {
-  if (v >= 80) return "bg-success/15 text-success";
-  if (v >= 40) return "bg-warning/15 text-warning";
+  if (v >= 80) return "text-success";
+  if (v >= 40) return "text-warning";
   return "bg-destructive/15 text-destructive";
 };
 
@@ -115,24 +117,42 @@ const objections = [
   { name: "Working Capital related", value: 16, color: "#EF9F27" },
 ];
 
+const allInsights = [
+  { category: "Common · Scheme", title: "Retailers prefer simple schemes over complex tier-structures.", detail: "JK's 4-tier slab + bonus SKU structure is hard for retailers to understand." },
+  { category: "Hinjewadi · Competition", title: "Chetak Paints reps targeting our top contractor-focused dealers.", detail: "Three of our retailers report being approached in the last 2 weeks." },
+  { category: "Pune · Demand", title: "Housing project demand rising in Hadapsar sector 62–78.", detail: "7 retailers report low stock levels ahead of June–July peak." },
+  { category: "Common · Product Quality", title: "Putty settling time complaint raised for 3rd consecutive week.", detail: "Possible batch quality issue, QC escalation pending." },
+  { category: "Kothrud · Customer Behavior", title: "Contractors increasingly asking for premium finish products.", detail: "Shift away from economy SKUs across 6 dealers in last month." },
+];
+
+const InsightCard = ({ category, title, detail }: { category: string; title: string; detail: string }) => (
+  <div className="bg-card border rounded-lg px-3 py-2.5 hover:shadow-sm transition-shadow">
+    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">
+      {category}
+    </p>
+    <p className="text-[12px] font-bold text-foreground leading-snug mb-1">{title}</p>
+    <p className="text-[12px] text-muted-foreground leading-relaxed">{detail}</p>
+  </div>
+);
+
 const ReportsTable = ({ rows }: { rows: ReportRow[] }) => (
   <Table>
     <TableHeader>
       <TableRow>
-        <TableHead className="font-bold py-2 h-8">ME</TableHead>
-        <TableHead className="font-bold py-2 h-8">Area</TableHead>
-        <TableHead className="font-bold py-2 h-8">Retailer Engaged</TableHead>
-        <TableHead className="font-bold py-2 h-8">Report</TableHead>
-        <TableHead className="font-bold py-2 h-8">Time</TableHead>
+        <TableHead className="text-[12px] font-semibold py-2 h-8">ME</TableHead>
+        <TableHead className="text-[12px] font-semibold py-2 h-8">Area</TableHead>
+        <TableHead className="text-[12px] font-semibold py-2 h-8">Retailer Engaged</TableHead>
+        <TableHead className="text-[12px] font-semibold py-2 h-8">Report</TableHead>
+        <TableHead className="text-[12px] font-semibold py-2 h-8">Time</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       {rows.map((r) => (
         <TableRow key={r.me + r.retailer}>
-          <TableCell className="py-2">{r.me}</TableCell>
-          <TableCell className="py-2">{r.area}</TableCell>
-          <TableCell className="py-2">{r.retailer}</TableCell>
-          <TableCell className="py-2">
+          <TableCell className="py-2 text-[12px]">{r.me}</TableCell>
+          <TableCell className="py-2 text-[12px]">{r.area}</TableCell>
+          <TableCell className="py-2 text-[12px]">{r.retailer}</TableCell>
+          <TableCell className="py-2 text-[12px]">
             <Link
               to={`/me/visit-summary/${r.dealerId}`}
               state={r.state}
@@ -141,7 +161,7 @@ const ReportsTable = ({ rows }: { rows: ReportRow[] }) => (
               View Report
             </Link>
           </TableCell>
-          <TableCell className="py-2 text-muted-foreground">{r.time}</TableCell>
+          <TableCell className="py-2 text-[12px] text-muted-foreground">{r.time}</TableCell>
         </TableRow>
       ))}
     </TableBody>
@@ -151,12 +171,13 @@ const ReportsTable = ({ rows }: { rows: ReportRow[] }) => (
 const AsmDashboardNew = () => {
   const navigate = useNavigate();
   const [showAllReports, setShowAllReports] = useState(false);
+  const [showAllInsights, setShowAllInsights] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-screen-xl mx-auto px-5 py-3">
         {/* Header */}
-        <header className="flex items-center justify-between mb-2">
+        <header className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate("/")}
@@ -169,22 +190,32 @@ const AsmDashboardNew = () => {
           </div>
         </header>
 
-        {/* Sub-header strip */}
-        <div className="bg-muted rounded-md px-3 py-1.5 mb-3 text-[12px] text-muted-foreground">
-          <span className="font-bold text-foreground">Ravi Kumar, ASM, Pune</span>
-          <span className="mx-2">|</span>
-          <span>Team of 6 MEs</span>
-          <span className="mx-2">|</span>
-          <span>6 markets</span>
+        {/* Profile block */}
+        <div className="flex items-center gap-3 mb-3">
+          <Avatar className="h-12 w-12 border">
+            <AvatarFallback className="bg-primary/10 text-primary font-semibold">RK</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="text-[18px] font-bold text-foreground leading-tight">Ravi Kumar</span>
+            <span className="text-[12px] text-muted-foreground leading-tight">ASM, Pune</span>
+            <div className="flex gap-1.5 mt-1">
+              <span className="text-[11px] bg-muted text-foreground rounded-full px-2 py-0.5">
+                Total MEs: <span className="font-semibold">6</span>
+              </span>
+              <span className="text-[11px] bg-muted text-foreground rounded-full px-2 py-0.5">
+                Total Markets: <span className="font-semibold">6</span>
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* 2x2 grid — fits in viewport */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ height: "calc(100vh - 110px)" }}>
-          {/* Card 1 — Engagement Reports (top-left) */}
+        {/* 2x2 grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ height: "calc(100vh - 170px)" }}>
+          {/* Card 1 — Engagement Reports */}
           <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[14px] font-bold text-foreground">
+            <h2 className="text-[15px] font-bold text-foreground">
               1. Engagement Reports{" "}
-              <span className="font-normal text-muted-foreground">(Area-level)</span>
+              <span className="text-[12px] font-normal text-muted-foreground">(Area-level)</span>
             </h2>
             <p className="text-[11px] italic text-muted-foreground mb-2">
               Recent Reports (as on 12th May 2026)
@@ -195,7 +226,7 @@ const AsmDashboardNew = () => {
             <div className="flex justify-end pt-2">
               <Dialog open={showAllReports} onOpenChange={setShowAllReports}>
                 <DialogTrigger asChild>
-                  <Button variant="link" size="sm" className="text-primary h-auto p-0">
+                  <Button variant="link" size="sm" className="text-primary h-auto p-0 text-[12px]">
                     View more →
                   </Button>
                 </DialogTrigger>
@@ -211,60 +242,73 @@ const AsmDashboardNew = () => {
             </div>
           </div>
 
-          {/* Card 2 — Top Retailer Objections (top-right) */}
+          {/* Card 2 — Top Retailer Objections */}
           <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[14px] font-bold text-foreground mb-1">
+            <h2 className="text-[15px] font-bold text-foreground mb-2">
               2. Top Retailer Objections{" "}
-              <span className="font-normal text-muted-foreground">(in the area)</span>
+              <span className="text-[12px] font-normal text-muted-foreground">(in the area)</span>
             </h2>
-            <div className="flex-1 min-h-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={objections}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="45%"
-                    outerRadius="65%"
-                    label={({ value }) => `${value}%`}
-                    labelLine={false}
-                  >
-                    {objections.map((o) => (
-                      <Cell key={o.name} fill={o.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(v: number) => `${v}%`} />
-                  <Legend wrapperStyle={{ fontSize: 10 }} />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="flex-1 min-h-0 grid grid-cols-5 gap-2">
+              <div className="col-span-3 min-h-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={objections}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius="80%"
+                      label={({ value }) => `${value}%`}
+                      labelLine={false}
+                    >
+                      {objections.map((o) => (
+                        <Cell key={o.name} fill={o.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(v: number) => `${v}%`} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <ul className="col-span-2 flex flex-col justify-center gap-1.5 text-[12px]">
+                {objections.map((o) => (
+                  <li key={o.name} className="flex items-center gap-2">
+                    <span
+                      className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
+                      style={{ background: o.color }}
+                    />
+                    <span className="flex-1 truncate">{o.name}</span>
+                    <span className="font-semibold text-foreground">{o.value}%</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
-          {/* Card 3 — Heatmap (bottom-left) */}
+          {/* Card 3 — Heatmap */}
           <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[14px] font-bold text-foreground">
+            <h2 className="text-[15px] font-bold text-foreground">
               3. Retailer Engagement Coverage Heatmap
             </h2>
             <p className="text-[11px] italic text-muted-foreground mb-2">
               Overall coverage from 12th March till 12th May
             </p>
             <div className="flex-1 overflow-auto">
-              <table className="w-full text-[11px]">
+              <table className="w-full text-[12px]">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-1.5 pr-2 font-bold">Area</th>
-                    <th className="text-center py-1.5 px-1 font-bold">
+                    <th className="text-left py-1.5 pr-2 font-semibold">Area</th>
+                    <th className="text-center py-1.5 px-1 font-semibold">
                       Overall Engagement Quality
                     </th>
                     <th className="text-center py-1.5 px-1 font-normal">
-                      E1: <span className="font-bold">Value Prop</span>
+                      E1: <span className="font-semibold">Value Prop</span>
                     </th>
                     <th className="text-center py-1.5 px-1 font-normal">
-                      E2: <span className="font-bold">Contractor Base</span>
+                      E2: <span className="font-semibold">Contractor Base</span>
                     </th>
                     <th className="text-center py-1.5 px-1 font-normal">
-                      E3: <span className="font-bold">Service</span>
+                      E3: <span className="font-semibold">Service</span>
                     </th>
                   </tr>
                 </thead>
@@ -288,7 +332,7 @@ const AsmDashboardNew = () => {
                             <div className={`rounded-md px-2 py-1 text-center font-medium ${heatColor(c.v)}`}>
                               <div>{c.v}%</div>
                               {c.sub && (
-                                <div className="text-[9px] opacity-70 font-normal">{c.sub}</div>
+                                <div className="text-[10px] opacity-70 font-normal">{c.sub}</div>
                               )}
                             </div>
                           </td>
@@ -301,58 +345,36 @@ const AsmDashboardNew = () => {
             </div>
           </div>
 
-          {/* Card 4 — Key Market Insights (bottom-right) */}
+          {/* Card 4 — Key Market Insights */}
           <div className="bg-card border rounded-lg p-3 flex flex-col overflow-hidden">
-            <h2 className="text-[14px] font-bold text-foreground mb-2">
+            <h2 className="text-[15px] font-bold text-foreground mb-2">
               4. Key Market Insights
             </h2>
 
-            <div className="flex-1 overflow-auto space-y-2.5">
-              {/* Insight 1 */}
-              <div className="relative bg-card border rounded-lg pl-4 pr-3 py-2.5 hover:shadow-md transition-shadow overflow-hidden">
-                <span className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
-                <div className="flex items-start gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="inline-block bg-primary/10 text-primary text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-                        Common · Scheme
-                      </span>
-                    </div>
-                    <p className="text-[12px] font-bold text-foreground leading-snug mb-1">
-                      Retailers prefer simple schemes over complex tier-structures.
-                    </p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      JK's 4-tier slab + bonus SKU structure is hard for retailers to understand.
-                    </p>
-                  </div>
-                  <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Lightbulb className="w-4 h-4 text-primary" />
-                  </div>
-                </div>
-              </div>
+            <div className="flex-1 overflow-auto space-y-2">
+              {allInsights.slice(0, 2).map((it) => (
+                <InsightCard key={it.title} {...it} />
+              ))}
+            </div>
 
-              {/* Insight 2 */}
-              <div className="relative bg-card border rounded-lg pl-4 pr-3 py-2.5 hover:shadow-md transition-shadow overflow-hidden">
-                <span className="absolute left-0 top-0 bottom-0 w-1 bg-warning" />
-                <div className="flex items-start gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="inline-block bg-warning/15 text-warning text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-                        Hinjewadi · Competition
-                      </span>
-                    </div>
-                    <p className="text-[12px] font-bold text-foreground leading-snug mb-1">
-                      Chetak Paints reps targeting our top contractor-focused dealers.
-                    </p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      Three of our retailers report being approached in the last 2 weeks.
-                    </p>
+            <div className="flex justify-end pt-2">
+              <Dialog open={showAllInsights} onOpenChange={setShowAllInsights}>
+                <DialogTrigger asChild>
+                  <Button variant="link" size="sm" className="text-primary h-auto p-0 text-[12px]">
+                    View all →
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>All Market Insights</DialogTitle>
+                  </DialogHeader>
+                  <div className="max-h-[70vh] overflow-auto space-y-2">
+                    {allInsights.map((it) => (
+                      <InsightCard key={it.title} {...it} />
+                    ))}
                   </div>
-                  <div className="shrink-0 w-8 h-8 rounded-full bg-warning/15 flex items-center justify-center">
-                    <MapPin className="w-4 h-4 text-warning" />
-                  </div>
-                </div>
-              </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
