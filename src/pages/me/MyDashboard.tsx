@@ -207,7 +207,7 @@ const MyDashboard = () => {
                   {recentlyVisited.map((r) => (
                     <button
                       key={r.id}
-                      onClick={() => navigate(`/me/dealer/${r.id}`)}
+                      onClick={() => navigate(`/me/visit-summary/${r.id}`)}
                       className="w-full text-left p-3 rounded-lg border border-border/60 bg-background hover:bg-accent/40 active:scale-[0.99] transition-all"
                     >
                       <div className="flex items-start justify-between gap-2">
