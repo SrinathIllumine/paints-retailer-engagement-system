@@ -43,30 +43,38 @@ const VisitSummary = () => {
     ...((s.customActionPoint || "").trim() ? [s.customActionPoint!.trim()] : []),
   ];
 
-  const engageBlocks: { key: keyof EngageState; icon: any; title: string; emoji: string }[] = [
-    { key: "objections", icon: MessageSquareWarning, title: "Objections Handled", emoji: "⚠️" },
-    { key: "ideas", icon: Lightbulb, title: "Business Ideas Proposed", emoji: "💡" },
-    { key: "education", icon: BookOpen, title: "Product / Scheme Education", emoji: "📘" },
-  ];
+  const objBody = (engage.objections.summary || engage.objections.text || "").trim();
+  const objMatches = engage.objections.matches || [];
 
-  const sectionBody = (k: keyof EngageState) => {
-    const sec = engage[k];
-    return (sec?.summary || sec?.text || "").trim();
+  const waObjections = () => {
+    if (!objBody && objMatches.length === 0) return "";
+    const lines = ["⚠️ *Objections Handled:*"];
+    if (objBody) lines.push(objBody);
+    objMatches.forEach((m) => {
+      lines.push(`• ${m.label}`);
+      m.bestPractices.forEach((bp) => lines.push(`   - ${bp}`));
+    });
+    return lines.join("\n");
   };
-  const sectionSugs = (k: keyof EngageState) => engage[k]?.suggestions || [];
 
-  const waSection = (label: string, emoji: string, body: string, sugs: string[]) => {
-    if (!body && sugs.length === 0) return "";
-    const lines = [`${emoji} *${label}:*`];
-    if (body) lines.push(body);
-    if (sugs.length) lines.push(...sugs.map((x, i) => `  ${i + 1}. ${x}`));
+  const waIdeas = () => {
+    const lines = ["💡 *Business Ideas Proposed:*"];
+    BUSINESS_IDEAS.forEach((p) => lines.push(`• ${p}`));
+    lines.push("  Nearby DGs:");
+    NEARBY_DGS.forEach((dg) => lines.push(`   - ${dg.name} (${dg.area}) ${dg.phone}`));
+    return lines.join("\n");
+  };
+
+  const waEducation = () => {
+    const lines = ["📘 *Product / Scheme Education:*"];
+    EDUCATION_POINTS.forEach((p) => lines.push(`• ${p}`));
     return lines.join("\n");
   };
 
   const waBlocks = [
-    waSection("Objections Handled", "⚠️", sectionBody("objections"), sectionSugs("objections")),
-    waSection("Business Ideas Proposed", "💡", sectionBody("ideas"), sectionSugs("ideas")),
-    waSection("Product / Scheme Education", "📘", sectionBody("education"), sectionSugs("education")),
+    waObjections(),
+    waIdeas(),
+    waEducation(),
     actionPoints.length ? `✅ *Action Points / Go-Forwards:*\n${actionPoints.map((t) => `• ${t}`).join("\n")}` : "",
     insightItems.length ? `🧠 *New Market Insights:*\n${insightItems.map((x) => `• ${x.tag ? `[${x.tag}] ` : ""}${x.body}`).join("\n")}` : "",
     feedback ? `🔑 *Key Critical Feedback:*\n${feedback}` : "",
