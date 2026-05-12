@@ -23,6 +23,7 @@ export type MarketInsight = {
 
 export type DiagnozeState = {
   topicsCovered: string[];
+  customActionPoint?: string;
   insights: MarketInsight[];
   feedbackText: string;
   feedbackSummary: string;
