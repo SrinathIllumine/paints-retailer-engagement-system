@@ -19,8 +19,8 @@ const Leaderboard = () => (
   <LeadershipLayout>
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Leaderboard</p>
-        <h1 className="font-display text-2xl font-bold text-foreground">Leaderboard</h1>
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Engagement Quality</p>
+        <h1 className="font-display text-2xl font-bold text-foreground">Engagement Quality</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Rankings focused on engagement consistency, Engagement Units coverage, and objection intensity.
         </p>

@@ -21,7 +21,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const navItems = [
   {
     icon: Users,
-    label: "ME View",
+    label: "Leaderboard",
     sub: "How are MEs engaging with retailers?",
     path: "/asm",
   },
