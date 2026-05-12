@@ -212,8 +212,7 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
       if (shouldListenRef.current) { try { rec.start(); return; } catch {} }
       setListening(false);
       setInterim("");
-      const finalText = baseTextRef.current.trim();
-      if (finalText) runMatch(finalText);
+      runMatch(baseTextRef.current.trim());
     };
     shouldListenRef.current = true;
     recRef.current = rec;
