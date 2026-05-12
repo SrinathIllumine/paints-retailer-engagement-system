@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import {
   Table,
@@ -9,12 +10,78 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const reports = [
-  { me: "Aditya Salve", area: "Pune City", retailer: "Deshpande Hardware", time: "2 hours ago" },
-  { me: "Shivam K", area: "Wakad", retailer: "Bhagwati Stores", time: "1 day ago" },
-  { me: "Dheeraj M", area: "Baner", retailer: "Madhu Paints & Hardware", time: "2 days ago" },
-  { me: "Raj Kumar", area: "Kothrud", retailer: "Deep Electricals & Paints", time: "2 days ago" },
-  { me: "Sagar", area: "Hinjewadi", retailer: "Jai Stores", time: "2 days ago" },
+type ReportRow = {
+  me: string;
+  area: string;
+  retailer: string;
+  time: string;
+  dealerId: string;
+  state: {
+    objections: string[];
+    actionPoints: string[];
+    topicsCovered: string[];
+    insights: { id: string; tag: string; text: string; summary: string }[];
+    feedbackText: string;
+    feedbackSummary: string;
+  };
+};
+
+const reports: ReportRow[] = [
+  {
+    me: "Aditya Salve", area: "Pune City", retailer: "Deshpande Hardware", time: "2 hours ago", dealerId: "9",
+    state: {
+      topicsCovered: ["Walked through JK Putty value proposition", "Reviewed current SKU mix and shelf placement"],
+      objections: ["pricing", "weak-support"],
+      actionPoints: ["Share updated price list and trade scheme by Friday", "Schedule contractor meet at shop next month"],
+      insights: [{ id: "i1", tag: "Competition", text: "UltraTech offering 3% extra discount in Pune City this month.", summary: "UltraTech offering 3% extra discount in Pune City this month." }],
+      feedbackText: "Service response time has improved but delivery still inconsistent in peak weeks.",
+      feedbackSummary: "Service response time has improved but delivery still inconsistent in peak weeks.",
+    },
+  },
+  {
+    me: "Shivam K", area: "Wakad", retailer: "Bhagwati Stores", time: "1 day ago", dealerId: "2",
+    state: {
+      topicsCovered: ["Introduced new JK Wall Putty pack sizes", "Discussed contractor loyalty program"],
+      objections: ["no-demand"],
+      actionPoints: ["Drop trial stock of 5kg pack next visit", "Connect retailer with 2 active painters in Wakad"],
+      insights: [{ id: "i1", tag: "Demand", text: "Housing project demand rising in Wakad sector — 4 retailers report low stock.", summary: "Housing project demand rising in Wakad sector — 4 retailers report low stock." }],
+      feedbackText: "Wants more in-shop branding material and a demo session for painters.",
+      feedbackSummary: "Needs in-shop branding and painter demo support.",
+    },
+  },
+  {
+    me: "Dheeraj M", area: "Baner", retailer: "Madhu Paints & Hardware", time: "2 days ago", dealerId: "6",
+    state: {
+      topicsCovered: ["Reviewed last quarter offtake vs target", "Aligned on summer scheme communication"],
+      objections: ["preference-shift", "stock"],
+      actionPoints: ["Resolve pending stock complaint with depot by EoD", "Send WhatsApp creative for summer scheme"],
+      insights: [{ id: "i1", tag: "Scheme", text: "Retailers want extension of Putty cashback offer beyond May 15.", summary: "Retailers want extension of Putty cashback offer beyond May 15." }],
+      feedbackText: "Happy with relationship but feels JK is losing shelf share to Birla in Baner.",
+      feedbackSummary: "Losing shelf share to Birla in Baner — needs counter strategy.",
+    },
+  },
+  {
+    me: "Raj Kumar", area: "Kothrud", retailer: "Deep Electricals & Paints", time: "2 days ago", dealerId: "8",
+    state: {
+      topicsCovered: ["Walked through differentiated service commitment", "Joint planning for next 30 days"],
+      objections: ["weak-support"],
+      actionPoints: ["ASM to do joint visit with retailer's top 3 contractors", "Set up monthly sales review cadence"],
+      insights: [{ id: "i1", tag: "Customer Behavior", text: "Contractors in Kothrud increasingly asking for premium finish products.", summary: "Contractors in Kothrud increasingly asking for premium finish products." }],
+      feedbackText: "Strong relationship; wants exclusive pricing for institutional projects he is bidding on.",
+      feedbackSummary: "Wants exclusive institutional pricing support.",
+    },
+  },
+  {
+    me: "Sagar", area: "Hinjewadi", retailer: "Jai Stores", time: "2 days ago", dealerId: "1",
+    state: {
+      topicsCovered: ["Discussed entry of Chetak Paints in Hinjewadi", "Reviewed JK product range for IT-park residential demand"],
+      objections: ["preference-shift", "pricing"],
+      actionPoints: ["Share competitor counter-pitch deck", "Activate retailer for upcoming Hinjewadi housing launch"],
+      insights: [{ id: "i1", tag: "Competition", text: "Chetak Paints reps visiting top contractor-focused dealers in Hinjewadi.", summary: "Chetak Paints reps visiting top contractor-focused dealers in Hinjewadi." }],
+      feedbackText: "Worried about losing key contractors to Chetak's aggressive scheme push.",
+      feedbackSummary: "Concerned about Chetak's contractor push in Hinjewadi.",
+    },
+  },
 ];
 
 const heatmap = [
