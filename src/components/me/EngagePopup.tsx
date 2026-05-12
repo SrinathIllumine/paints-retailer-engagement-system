@@ -78,7 +78,7 @@ export const BUSINESS_IDEAS = [
 
 export const NEARBY_DGS = [
   { name: "Ramesh Yadav", area: "Sector 14, Gurgaon", phone: "+91 98100 12345" },
-  { name: "Suresh Kumar", area: "Old Railway Road", phone: "+91 98100 67890" },
+  { name: "", area: "Sector 14, Pune\n·\n+91 98100 12345", phone: "" },
   { name: "Vikas Sharma", area: "DLF Phase 3", phone: "+91 98103 55512" },
 ];
 
