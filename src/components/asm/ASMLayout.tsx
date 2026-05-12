@@ -34,7 +34,7 @@ const navItems = [
   {
     icon: Store,
     label: "Leaderboard",
-    sub: "Collated insights from across markets in Pune",
+    sub: "Top retailer objections in my area",
     path: "/asm/retailers",
   },
   {
