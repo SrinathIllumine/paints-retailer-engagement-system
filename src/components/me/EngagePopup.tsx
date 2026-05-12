@@ -314,61 +314,49 @@ const EngagePopup = ({ open, onClose, state, setState, onComplete }: Props) => {
             )}
           </section>
 
-          {/* Q2 — selectable list */}
+          {/* Q2 — static list */}
           <section className="rounded-xl border border-border bg-card overflow-hidden">
             <QHeader icon={Lightbulb} title="Propose new business building ideas" isOpen={openQ === 2} onToggle={() => toggle(2)} />
             {openQ === 2 && (
               <div className="px-3 pb-3 pt-1 border-t border-border/60 space-y-2">
-                {BUSINESS_IDEAS.map((p, i) => {
-                  const checked = state.ideas.selected.includes(i);
-                  return (
-                    <label
-                      key={i}
-                      className={`flex items-start gap-2.5 rounded-lg border p-2.5 cursor-pointer transition-colors ${checked ? "border-primary/40 bg-primary/5" : "border-border"}`}
-                    >
-                      <Checkbox checked={checked} onCheckedChange={() => toggleSelection("ideas", i)} className="mt-0.5" />
-                      <div className="text-sm text-foreground/90 flex-1">
-                        <span>{p}</span>
-                        {i === 1 && checked && (
-                          <div className="mt-2 rounded-md border border-border bg-secondary/30 p-2">
-                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Nearby DG</p>
-                            {NEARBY_DGS.map((dg, j) => (
-                              <div key={j} className="text-xs">
-                                <p className="font-semibold text-foreground">{dg.name}</p>
-                                <p className="text-muted-foreground flex items-center gap-1 mt-0.5 flex-wrap">
-                                  <MapPin className="w-3 h-3" /> {dg.area}
-                                  <span className="mx-1">·</span>
-                                  <Phone className="w-3 h-3" /> {dg.phone}
-                                </p>
-                              </div>
-                            ))}
+                {BUSINESS_IDEAS.map((p, i) => (
+                  <div key={i} className="rounded-lg border border-border p-2.5">
+                    <div className="text-sm text-foreground/90 flex gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                      <span className="flex-1">{p}</span>
+                    </div>
+                    {i === 1 && (
+                      <div className="mt-2 rounded-md border border-border bg-secondary/30 p-2">
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Nearby DG</p>
+                        {NEARBY_DGS.map((dg, j) => (
+                          <div key={j} className="text-xs">
+                            <p className="font-semibold text-foreground">{dg.name}</p>
+                            <p className="text-muted-foreground flex items-center gap-1 mt-0.5 flex-wrap">
+                              <MapPin className="w-3 h-3" /> {dg.area}
+                              <span className="mx-1">·</span>
+                              <Phone className="w-3 h-3" /> {dg.phone}
+                            </p>
                           </div>
-                        )}
+                        ))}
                       </div>
-                    </label>
-                  );
-                })}
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </section>
 
-          {/* Q3 — selectable list */}
+          {/* Q3 — static list */}
           <section className="rounded-xl border border-border bg-card overflow-hidden">
             <QHeader icon={BookOpen} title="Educate on new products and/or schemes" isOpen={openQ === 3} onToggle={() => toggle(3)} />
             {openQ === 3 && (
               <div className="px-3 pb-3 pt-1 border-t border-border/60 space-y-2">
-                {EDUCATION_POINTS.map((p, i) => {
-                  const checked = state.education.selected.includes(i);
-                  return (
-                    <label
-                      key={i}
-                      className={`flex items-start gap-2.5 rounded-lg border p-2.5 cursor-pointer transition-colors ${checked ? "border-primary/40 bg-primary/5" : "border-border"}`}
-                    >
-                      <Checkbox checked={checked} onCheckedChange={() => toggleSelection("education", i)} className="mt-0.5" />
-                      <span className="text-sm text-foreground/90">{p}</span>
-                    </label>
-                  );
-                })}
+                {EDUCATION_POINTS.map((p, i) => (
+                  <div key={i} className="rounded-lg border border-border p-2.5 text-sm text-foreground/90 flex gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                    <span className="flex-1">{p}</span>
+                  </div>
+                ))}
               </div>
             )}
           </section>
