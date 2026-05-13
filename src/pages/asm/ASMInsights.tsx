@@ -132,9 +132,9 @@ const insights: Insight[] = [
     id: "i9",
     category: "Customer",
     marketArea: "Pune SW",
-    title: "Buying behaviour: smaller, more frequent orders",
+    title: "Many Contractors in Pune are using JK Putty finish for ‘premium interior repaint jobs’",
     summary:
-      "Contractors are placing 2–3 smaller orders per month instead of one large one. Driven by cash-flow caution. Affects our minimum-order incentives.",
+      "Contractors report choosing JK Putty more often in repainting of premium flats and bungalows where homeowners are sensitive to wall feel and lighting appearance. Helps them achieve a cleaner final paint finish with fewer visible surface marks.\n(other locations can also leverage this insight)",
     tags: ["buying-behavior", "frequency", "incentive-fit"],
     trend: "up",
     reportedAt: "14 Apr",
