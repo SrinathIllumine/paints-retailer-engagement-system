@@ -60,7 +60,7 @@ const insights: Insight[] = [
     id: "i3",
     category: "Competition",
     marketArea: "Pimpri Chinchwad",
-    title: "Asian Paints bundling Putty SKUs",
+    title: "Asian Paints is locking-in retailers with Putty SKUs by bundling with Paints",
     summary:
       "Sudden spike in Asian Paints Putty SKUs in Pimpri Chinchwad.\nRetailers are getting attractive schemes on Paints only if they buy bundled Putty purchases above 50 bags.\nOur retailers report this is changing their decision on monthly putty orders.",
     tags: ["bundling", "lock-in", "sku-strategy"],
