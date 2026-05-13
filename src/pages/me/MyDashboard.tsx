@@ -101,7 +101,7 @@ const insightRetailers = [
     id: "1",
     name: "Jai Maharashtra Hardware & Electricals",
     count: 3,
-    note: "Demand for white cement rising in \u200BHinjenwadi residential projects. Asked for combo schemes with putty.",
+    note: "Demand for white cement rising in Hinjewadi residential projects. Asked for combo schemes with putty.",
   },
   {
     id: "5",
@@ -139,7 +139,7 @@ const engagementHistory = [
     date: "Apr 8, 2026",
     summary: "Visited Jai Maharashtra Hardware – product range discussion",
     actionPoints: [
-      { goal: "Log market insight on white cement demand in \u200BHinjenwadi", bullets: ["Update insights tracker", "Flag to ASM for area-level view"] },
+      { goal: "Log market insight on white cement demand in Hinjewadi", bullets: ["Update insights tracker", "Flag to ASM for area-level view"] },
     ],
     feedback: ["Packaging dampness during monsoon raised again"],
   },
