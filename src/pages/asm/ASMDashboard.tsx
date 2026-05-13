@@ -54,7 +54,7 @@ const engagementByArea = [
   { area: "Baner", value: 65 },
   { area: "Yerwada", value: 70 },
   { area: "Kothrud", value: 90 },
-  { area: "Hinjewadi", value: 95 },
+  { area: "\u200BHinjenwadi", value: 95 },
 ].map((d) => ({ ...d, tier: tierFromValue(d.value) }));
 
 interface MeDetailRow {
@@ -72,7 +72,7 @@ const meDetail: MeDetailRow[] = [
   { area: "Baner",     me: "Dheeraj M",    covered: "150/200", eq: { label: "6.5/10", tier: "moderate" }, time: { label: "8 min", tier: "moderate" }, prep: "low" },
   { area: "Kothrud",   me: "Raj Kumar",    covered: "190/200", eq: { label: "9/10", tier: "high" }, time: { label: "15 min", tier: "high" }, prep: "high" },
   { area: "Yerwada",   me: "Mayank",       covered: "160/200", eq: { label: "7/10", tier: "moderate" }, time: { label: "9 min", tier: "moderate" }, prep: "low" },
-  { area: "Hinjewadi", me: "Sagar",        covered: "180/200", eq: { label: "9.5/10", tier: "high" }, time: { label: "15 min", tier: "high" }, prep: "high" },
+  { area: "\u200BHinjenwadi", me: "Sagar",        covered: "180/200", eq: { label: "9.5/10", tier: "high" }, time: { label: "15 min", tier: "high" }, prep: "high" },
 ];
 
 const Pill = ({ tier, children }: { tier: Tier; children: React.ReactNode }) => (
