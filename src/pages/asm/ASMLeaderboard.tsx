@@ -40,7 +40,7 @@ const leaderboard: Row[] = [
   { me: "Shivam K",     area: "Wakad",     eq: "moderate", sales: "high",     status: { label: "Can Improve", tone: "orange" } },
   { me: "Dheeraj M",    area: "Baner",     eq: "low",      sales: "moderate", status: { label: "Needs significant Improvement", tone: "red" } },
   { me: "Raj Kumar",    area: "Kothrud",   eq: "low",      sales: "moderate", status: { label: "Needs significant Improvement", tone: "red" } },
-  { me: "Sagar",        area: "Hinjewadi", eq: "low",      sales: "low",      status: { label: "Needs immediate attention", tone: "red-strong" } },
+  { me: "Sagar",        area: "\u200BHinjenwadi", eq: "low",      sales: "low",      status: { label: "Needs immediate attention", tone: "red-strong" } },
   { me: "Mayank",       area: "Yerwada",   eq: "moderate", sales: "moderate", status: { label: "Can Improve", tone: "orange" } },
 ];
 
