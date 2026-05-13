@@ -235,7 +235,7 @@ const ASMInsights = () => {
 
         {filtered.length === 0 && (
           <Card className="p-8 text-center text-sm text-muted-foreground">
-            No insights in this category yet
+            {filter === "Demand" ? "No demand-related insights" : "No insights in this category yet"}
           </Card>
         )}
       </div>
