@@ -105,18 +105,6 @@ const insights: Insight[] = [
     reportedBy: "Ravi Kumar",
   },
   {
-    id: "i7",
-    category: "Schemes",
-    marketArea: "Pune South",
-    title: "Asks for simpler retailer loyalty programme",
-    summary:
-      "Loyal retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers.",
-    tags: ["loyalty", "ask", "redesign"],
-    trend: "flat",
-    reportedAt: "08 Apr",
-    reportedBy: "Anita Deshmukh",
-  },
-  {
     id: "i8",
     category: "Contractor",
     marketArea: "Pune NE",
@@ -139,30 +127,6 @@ const insights: Insight[] = [
     trend: "up",
     reportedAt: "14 Apr",
     reportedBy: "Vikas Patil",
-  },
-  {
-    id: "i10",
-    category: "Demand",
-    marketArea: "Pune North",
-    title: "Demand dip after early monsoon",
-    summary:
-      "Early monsoon onset has paused 30+ small construction sites in Pune North. Retailers expect ~20% softer demand for the next 3 weeks.",
-    tags: ["seasonal", "demand-drop", "monsoon"],
-    trend: "down",
-    reportedAt: "23 Apr",
-    reportedBy: "Priya Nair",
-  },
-  {
-    id: "i11",
-    category: "Demand",
-    marketArea: "Pune West",
-    title: "Festival-led spike expected in white cement",
-    summary:
-      "Retailers report contractors stocking up for festival re-finishing work. White cement and putty enquiries up week-on-week.",
-    tags: ["festival", "spike", "white-cement"],
-    trend: "up",
-    reportedAt: "17 Apr",
-    reportedBy: "Ravi Kumar",
   },
 ];
 
