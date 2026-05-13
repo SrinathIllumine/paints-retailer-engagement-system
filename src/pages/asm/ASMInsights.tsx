@@ -96,9 +96,9 @@ const insights: Insight[] = [
     id: "i6",
     category: "Schemes",
     marketArea: "Pune West",
-    title: "Asks for simpler retailer loyalty programme for mid-tier retailers",
+    title: "Mid-tier retailers want better schemes",
     summary:
-      "Retailers are preferring schemes that are simple with less complex tier-structures (instead of complex-schemes with which run into multiple pages - for e.g. Retailers say JK's 4-tier slab + bonus SKU structure is hard to explain to contractors )",
+      "Majority (i.e. mid-tier) retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers.",
     tags: ["complexity", "communication", "asks"],
     trend: "down",
     reportedAt: "21 Apr",
