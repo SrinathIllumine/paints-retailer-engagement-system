@@ -17,7 +17,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 
-type Category = "Competition" | "Product Quality" | "Schemes" | "Customer" | "Demand";
+type Category = "Competition" | "Product Quality" | "Schemes" | "Contractor" | "Demand";
 
 interface Insight {
   id: string;
@@ -118,7 +118,7 @@ const insights: Insight[] = [
   },
   {
     id: "i8",
-    category: "Customer",
+    category: "Contractor",
     marketArea: "Pune NE",
     title: "Contractor buying behaviour: smaller, more frequent orders",
     summary:
@@ -130,7 +130,7 @@ const insights: Insight[] = [
   },
   {
     id: "i9",
-    category: "Customer",
+    category: "Contractor",
     marketArea: "Pune SW",
     title: "Many Contractors in Pune are using JK Putty finish for ‘premium interior repaint jobs’",
     summary:
@@ -173,7 +173,7 @@ const categoryMeta: Record<
   Competition: { icon: Swords, tone: "text-primary", bg: "bg-primary/10" },
   "Product Quality": { icon: PackageX, tone: "text-warning", bg: "bg-warning/10" },
   Schemes: { icon: Tag, tone: "text-info", bg: "bg-info/10" },
-  Customer: { icon: UserCircle, tone: "text-success", bg: "bg-success/10" },
+  Contractor: { icon: UserCircle, tone: "text-success", bg: "bg-success/10" },
   Demand: { icon: TrendingUp, tone: "text-foreground", bg: "bg-secondary" },
 };
 
