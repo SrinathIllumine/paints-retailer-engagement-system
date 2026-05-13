@@ -7,7 +7,7 @@ const cards = [
   {
     n: 1,
     tag: "Long-term Relationship Building",
-    title: "Your sales volumne with JK has been coming down. What can we do to reverse it?",
+    title: "Your sales volume with JK has been coming down. What can we do to reverse it?",
     body: "Try to diagnose why it is coming down. Is there a competitor? Is there an issue with the pricing?",
   },
   {
