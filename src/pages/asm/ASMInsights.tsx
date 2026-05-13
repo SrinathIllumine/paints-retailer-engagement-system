@@ -200,7 +200,7 @@ const ASMInsights = () => {
             </h1>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
               <MapPin className="w-3.5 h-3.5" />
-              Maharashtra · {insights.length} ground signals from MEs
+              Pune · 8 ground signals from MEs
             </p>
           </div>
           <Button size="sm" variant="outline" className="text-xs">
