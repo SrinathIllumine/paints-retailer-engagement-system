@@ -35,8 +35,8 @@ const insights: Insight[] = [
   {
     id: "i1",
     category: "Competition",
-    marketArea: "Panvel",
-    title: "Chetak Paints aggressively entering Panvel",
+    marketArea: "\u200BHinjenwadi",
+    title: "Chetak Paints aggressively entering \u200BHinjenwadi",
     summary:
       "Local sales reps from Chetak are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks.",
     tags: ["new-entrant", "contractor-pull", "discount-pressure"],
