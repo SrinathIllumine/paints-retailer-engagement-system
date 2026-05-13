@@ -120,9 +120,9 @@ const insights: Insight[] = [
     id: "i8",
     category: "Customer",
     marketArea: "Pune NE",
-    title: "Contractor preference shifting to faster-setting cement",
+    title: "Contractor buying behaviour: smaller, more frequent orders",
     summary:
-      "Younger contractors in commercial projects are explicitly asking for faster-setting variants. Older base still prefers standard PPC.",
+      "Contractors are placing 2–3 smaller orders per month instead of one large one. Driven by cash-flow caution. Affects our minimum-order incentives.",
     tags: ["contractor", "preference-shift", "product-fit"],
     trend: "up",
     reportedAt: "19 Apr",
