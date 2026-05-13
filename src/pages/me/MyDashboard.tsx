@@ -9,11 +9,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { dealers } from "@/data/mockData";
 import { Send, CheckCheck } from "lucide-react";
 
-const todayStr = () => new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+const formatDate = (d: Date) => d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
-const buildWaMessage = (dealerName: string) =>
+const dateFromLastVisit = (lastVisit: string) => {
+  const d = new Date();
+  const lv = lastVisit.toLowerCase();
+  if (lv === "yesterday") d.setDate(d.getDate() - 1);
+  else {
+    const m = lv.match(/(\d+)\s*days?\s*ago/);
+    if (m) d.setDate(d.getDate() - parseInt(m[1], 10));
+  }
+  return formatDate(d);
+};
+
+const buildWaMessage = (dealerName: string, visitDate: string) =>
 `*Visit Summary — ${dealerName}*
-📅 ${todayStr()}
+📅 ${visitDate}
 👤 Manish Kumar from JK
 🏪 ${dealerName} (Owner / In-shop)
 
@@ -173,8 +184,10 @@ const MyDashboard = () => {
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
   const [summaryDealerId, setSummaryDealerId] = useState<string | null>(null);
   const summaryDealer = summaryDealerId ? dealers.find((d) => d.id === summaryDealerId) : null;
-  const summaryName = summaryDealer?.name ?? recentlyVisited.find((r) => r.id === summaryDealerId)?.name ?? "";
-  const waMessage = summaryDealerId ? buildWaMessage(summaryName) : "";
+  const summaryRecent = recentlyVisited.find((r) => r.id === summaryDealerId);
+  const summaryName = summaryDealer?.name ?? summaryRecent?.name ?? "";
+  const summaryVisitDate = summaryRecent ? dateFromLastVisit(summaryRecent.lastVisit) : formatDate(new Date());
+  const waMessage = summaryDealerId ? buildWaMessage(summaryName, summaryVisitDate) : "";
   const shareWa = () => window.open(`https://wa.me/?text=${encodeURIComponent(waMessage)}`, "_blank");
 
   return (
@@ -208,7 +221,7 @@ const MyDashboard = () => {
           </p>
           <div className="grid grid-cols-3 gap-2">
             <StatCard icon={Briefcase} label="Exp. in JK" value="3.5 yrs" />
-            <StatCard icon={Store} label="Total Retailers" value="76" />
+            <StatCard icon={Store} label="Total Retailers" value="200" />
             <StatCard icon={Users} label="Engaged" value="28" />
           </div>
         </div>
