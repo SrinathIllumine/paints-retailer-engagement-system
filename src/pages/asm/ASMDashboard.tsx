@@ -91,6 +91,14 @@ const Pill = ({ tier, children }: { tier: Tier; children: React.ReactNode }) => 
 
 const ASMDashboard = () => {
   const [openDetail, setOpenDetail] = useState(false);
+  const [range, setRange] = useState<TrendRange>("6m");
+
+  const trendData =
+    range === "6m"
+      ? engagementTrendAll.slice(-6)
+      : range === "1y"
+      ? engagementTrendAll.slice(-12)
+      : engagementTrendAll;
 
   return (
     <ASMLayout hideFilters>
