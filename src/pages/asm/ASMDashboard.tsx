@@ -47,15 +47,23 @@ const tierPill: Record<Tier, string> = {
 const tierFromValue = (v: number): Tier =>
   v >= 80 ? "high" : v >= 60 ? "moderate" : "low";
 
-// Engagement quality by market area (sourced from AsmDashboardNew meDetail)
-const engagementByArea = [
-  { area: "Pune City", value: 90 },
-  { area: "Wakad", value: 40 },
-  { area: "Baner", value: 65 },
-  { area: "Yerwada", value: 70 },
-  { area: "Kothrud", value: 90 },
-  { area: "Hinjewadi", value: 95 },
+// Engagement quality trend over months
+const engagementTrendAll = [
+  { month: "May '25", value: 62 },
+  { month: "Jun '25", value: 68 },
+  { month: "Jul '25", value: 72 },
+  { month: "Aug '25", value: 70 },
+  { month: "Sep '25", value: 75 },
+  { month: "Oct '25", value: 78 },
+  { month: "Nov '25", value: 82 },
+  { month: "Dec '25", value: 80 },
+  { month: "Jan '26", value: 83 },
+  { month: "Feb '26", value: 80 },
+  { month: "Mar '26", value: 85 },
+  { month: "Apr '26", value: 70 },
 ].map((d) => ({ ...d, tier: tierFromValue(d.value) }));
+
+type TrendRange = "6m" | "1y" | "all";
 
 interface MeDetailRow {
   area: string;
@@ -83,6 +91,14 @@ const Pill = ({ tier, children }: { tier: Tier; children: React.ReactNode }) => 
 
 const ASMDashboard = () => {
   const [openDetail, setOpenDetail] = useState(false);
+  const [range, setRange] = useState<TrendRange>("6m");
+
+  const trendData =
+    range === "6m"
+      ? engagementTrendAll.slice(-6)
+      : range === "1y"
+      ? engagementTrendAll.slice(-12)
+      : engagementTrendAll;
 
   return (
     <ASMLayout hideFilters>
@@ -118,7 +134,7 @@ const ASMDashboard = () => {
           </div>
         </Card>
 
-        {/* B. Quality of retailer engagement — bar chart */}
+        {/* B. Quality of retailer engagement — trend */}
         <Card className="p-5">
           <div className="flex items-start justify-between mb-4 gap-3 flex-wrap">
             <div>
@@ -126,23 +142,44 @@ const ASMDashboard = () => {
                 Quality of retailer engagement
               </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Engagement quality by market area · benchmark vs company target
+                Engagement quality trend · benchmark vs company target
               </p>
             </div>
-            <span className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded-md px-2 py-1">
-              <span className="inline-block w-6 border-t-2 border-dashed border-muted-foreground/70" />
-              Company Benchmark (80%)
-            </span>
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="inline-flex rounded-md border border-border bg-muted/30 p-0.5 text-xs">
+                {([
+                  { k: "6m", l: "Last 6 months" },
+                  { k: "1y", l: "Last 1 year" },
+                  { k: "all", l: "All time" },
+                ] as { k: TrendRange; l: string }[]).map((opt) => (
+                  <button
+                    key={opt.k}
+                    onClick={() => setRange(opt.k)}
+                    className={`px-2.5 py-1 rounded ${
+                      range === opt.k
+                        ? "bg-background text-foreground shadow-sm font-medium"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {opt.l}
+                  </button>
+                ))}
+              </div>
+              <span className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded-md px-2 py-1">
+                <span className="inline-block w-6 border-t-2 border-dashed border-muted-foreground/70" />
+                Company Benchmark (80%)
+              </span>
+            </div>
           </div>
 
           <div className="h-[340px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={engagementByArea}
+                data={trendData}
                 margin={{ top: 24, right: 16, left: 0, bottom: 8 }}
               >
                 <XAxis
-                  dataKey="area"
+                  dataKey="month"
                   tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
                   axisLine={false}
                   tickLine={false}
@@ -164,7 +201,7 @@ const ASMDashboard = () => {
                 <Bar
                   dataKey="value"
                   radius={[6, 6, 0, 0]}
-                  barSize={56}
+                  barSize={range === "all" ? 32 : 48}
                   label={{
                     position: "top",
                     fontSize: 12,
@@ -172,8 +209,8 @@ const ASMDashboard = () => {
                     formatter: (v: number) => `${v}%`,
                   }}
                 >
-                  {engagementByArea.map((d) => (
-                    <Cell key={d.area} fill={tierFill[d.tier]} />
+                  {trendData.map((d) => (
+                    <Cell key={d.month} fill={tierFill[d.tier]} />
                   ))}
                 </Bar>
               </BarChart>
