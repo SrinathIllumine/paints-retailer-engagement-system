@@ -134,7 +134,7 @@ const ASMDashboard = () => {
           </div>
         </Card>
 
-        {/* B. Quality of retailer engagement — bar chart */}
+        {/* B. Quality of retailer engagement — trend */}
         <Card className="p-5">
           <div className="flex items-start justify-between mb-4 gap-3 flex-wrap">
             <div>
@@ -142,23 +142,44 @@ const ASMDashboard = () => {
                 Quality of retailer engagement
               </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Engagement quality by market area · benchmark vs company target
+                Engagement quality trend · benchmark vs company target
               </p>
             </div>
-            <span className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded-md px-2 py-1">
-              <span className="inline-block w-6 border-t-2 border-dashed border-muted-foreground/70" />
-              Company Benchmark (80%)
-            </span>
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="inline-flex rounded-md border border-border bg-muted/30 p-0.5 text-xs">
+                {([
+                  { k: "6m", l: "Last 6 months" },
+                  { k: "1y", l: "Last 1 year" },
+                  { k: "all", l: "All time" },
+                ] as { k: TrendRange; l: string }[]).map((opt) => (
+                  <button
+                    key={opt.k}
+                    onClick={() => setRange(opt.k)}
+                    className={`px-2.5 py-1 rounded ${
+                      range === opt.k
+                        ? "bg-background text-foreground shadow-sm font-medium"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {opt.l}
+                  </button>
+                ))}
+              </div>
+              <span className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded-md px-2 py-1">
+                <span className="inline-block w-6 border-t-2 border-dashed border-muted-foreground/70" />
+                Company Benchmark (80%)
+              </span>
+            </div>
           </div>
 
           <div className="h-[340px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={engagementByArea}
+                data={trendData}
                 margin={{ top: 24, right: 16, left: 0, bottom: 8 }}
               >
                 <XAxis
-                  dataKey="area"
+                  dataKey="month"
                   tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
                   axisLine={false}
                   tickLine={false}
@@ -180,7 +201,7 @@ const ASMDashboard = () => {
                 <Bar
                   dataKey="value"
                   radius={[6, 6, 0, 0]}
-                  barSize={56}
+                  barSize={range === "all" ? 32 : 48}
                   label={{
                     position: "top",
                     fontSize: 12,
@@ -188,8 +209,8 @@ const ASMDashboard = () => {
                     formatter: (v: number) => `${v}%`,
                   }}
                 >
-                  {engagementByArea.map((d) => (
-                    <Cell key={d.area} fill={tierFill[d.tier]} />
+                  {trendData.map((d) => (
+                    <Cell key={d.month} fill={tierFill[d.tier]} />
                   ))}
                 </Bar>
               </BarChart>
