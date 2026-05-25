@@ -47,15 +47,23 @@ const tierPill: Record<Tier, string> = {
 const tierFromValue = (v: number): Tier =>
   v >= 80 ? "high" : v >= 60 ? "moderate" : "low";
 
-// Engagement quality by market area (sourced from AsmDashboardNew meDetail)
-const engagementByArea = [
-  { area: "Pune City", value: 90 },
-  { area: "Wakad", value: 40 },
-  { area: "Baner", value: 65 },
-  { area: "Yerwada", value: 70 },
-  { area: "Kothrud", value: 90 },
-  { area: "Hinjewadi", value: 95 },
+// Engagement quality trend over months
+const engagementTrendAll = [
+  { month: "May '25", value: 62 },
+  { month: "Jun '25", value: 68 },
+  { month: "Jul '25", value: 72 },
+  { month: "Aug '25", value: 70 },
+  { month: "Sep '25", value: 75 },
+  { month: "Oct '25", value: 78 },
+  { month: "Nov '25", value: 82 },
+  { month: "Dec '25", value: 80 },
+  { month: "Jan '26", value: 83 },
+  { month: "Feb '26", value: 80 },
+  { month: "Mar '26", value: 85 },
+  { month: "Apr '26", value: 70 },
 ].map((d) => ({ ...d, tier: tierFromValue(d.value) }));
+
+type TrendRange = "6m" | "1y" | "all";
 
 interface MeDetailRow {
   area: string;
