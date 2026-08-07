@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "jk-retailer-engagement-system",
+      "version": "0.1.0",
+      "title": "JK Retailer Engagement System"
+    },
+    "tools": [
+      {
+        "name": "list_retailers",
+        "title": "List retailers",
+        "description": "List retailers (dealers) in the Pune trading area with their segment, engagement score, openness and last visit outcome. Optionally filter by segment or area.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "segment": {
+              "type": "string",
+              "enum": [
+                "new",
+                "loyal",
+                "inactive",
+                "declining"
+              ],
+              "description": "Filter by retailer segment."
+            },
+            "area": {
+              "type": "string",
+              "description": "Filter by market area, e.g. 'Hinjewadi'."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_retailer",
+        "title": "Get retailer snapshot",
+        "description": "Get the full snapshot for one retailer by id, dealer code, or (partial) name.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Retailer id, dealer code, or part of the name."
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_market_insights",
+        "title": "List market insights",
+        "description": "List field-reported market insights (competition, product quality, schemes, customer, demand) with frequency and actionability.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "string",
+              "enum": [
+                "Competition",
+                "Product Quality",
+                "Schemes",
+                "Customer",
+                "Demand"
+              ],
+              "description": "Filter by insight category."
+            },
+            "state": {
+              "type": "string",
+              "description": "Filter to insights reported in a given state."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_objections",
+        "title": "List retailer objections",
+        "description": "Retailer objection mix — overall share, per-state counts and per-area breakdown. Optionally scope to one state.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "description": "Restrict counts to a single state, e.g. 'Maharashtra'."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_engagement_playbook",
+        "title": "Get engagement playbook",
+        "description": "Field engagement playbook: conversation themes, discussion points, common retailer objections and the recommended responses / best practices.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "theme": {
+              "type": "string",
+              "description": "Filter themes by id or part of the title."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_engagement_overview",
+        "title": "Get engagement overview",
+        "description": "National retailer-engagement overview: headline KPIs, month-on-month trend, per-state coverage and the top-performing marketing executives.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "description": "Restrict the state breakdown to one state."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
