@@ -10,9 +10,9 @@ const Index = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="max-w-4xl w-full space-y-8 animate-slide-up">
         <div className="text-center space-y-2">
-          <p className="text-muted-foreground text-sm font-medium tracking-wide mb-1">Paints</p>
+          <p className="text-muted-foreground text-lg font-medium tracking-wide mb-1">Paints</p>
           <h1 className="font-display font-bold text-4xl text-foreground">Retailer Engagement System</h1>
-          <p className="text-muted-foreground text-lg">Select your interface to continue</p>
+          <p className="text-muted-foreground text-sm">Select your interface to continue</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
