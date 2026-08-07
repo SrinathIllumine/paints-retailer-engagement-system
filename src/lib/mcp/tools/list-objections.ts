@@ -1,7 +1,7 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { objectionTypes, stateObjectionMatrix, areaObjections } from "@/data/leadershipData";
-import { objectionBreakdown } from "@/data/mockData";
+import { objectionTypes, stateObjectionMatrix, areaObjections } from "../../../data/leadershipData";
+import { objectionBreakdown } from "../../../data/mockData";
 
 export default defineTool({
   name: "list_objections",

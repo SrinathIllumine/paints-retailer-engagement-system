@@ -11,7 +11,7 @@ import {
   momTrend,
   states,
   topMEs,
-} from "@/data/leadershipData";
+} from "../../../data/leadershipData";
 
 export default defineTool({
   name: "get_engagement_overview",

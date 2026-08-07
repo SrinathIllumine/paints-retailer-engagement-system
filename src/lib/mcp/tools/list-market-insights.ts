@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { nationalInsights } from "@/data/leadershipData";
+import { nationalInsights } from "../../../data/leadershipData";
 
 export default defineTool({
   name: "list_market_insights",

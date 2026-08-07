@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { engagementThemes, discussionPoints } from "@/data/mockData";
+import { engagementThemes, discussionPoints } from "../../../data/mockData";
 
 export default defineTool({
   name: "get_engagement_playbook",

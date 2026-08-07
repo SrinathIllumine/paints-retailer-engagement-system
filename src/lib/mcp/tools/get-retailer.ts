@@ -1,6 +1,6 @@
 import { defineTool, ToolError } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { dealers } from "@/data/mockData";
+import { dealers } from "../../../data/mockData";
 
 export default defineTool({
   name: "get_retailer",
