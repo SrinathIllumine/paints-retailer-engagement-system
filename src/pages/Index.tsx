@@ -10,11 +10,8 @@ const Index = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="max-w-4xl w-full space-y-8 animate-slide-up">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            Retailer Engagement Platform
-          </div>
-          <h1 className="font-display font-bold text-4xl text-foreground">JK Cement</h1>
+          <p className="text-muted-foreground text-sm font-medium tracking-wide mb-1">Paints</p>
+          <h1 className="font-display font-bold text-4xl text-foreground">Retailer Engagement System</h1>
           <p className="text-muted-foreground text-lg">Select your interface to continue</p>
         </div>
 
