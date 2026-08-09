@@ -59,9 +59,9 @@ export const dealers: Dealer[] = [
   { id: "1", name: "Jai Maharashtra Hardware & Electricals", location: "Hinjewadi, Pimpri-Chinchwad, MH", type: "loyal", engagementScore: 85, openness: "high", lastVisit: "Last visited: 2 days ago", lastOutcome: "Positive – productive conversation on product range", area: "Hinjewadi", dealerCode: "JMH-001", revenueCategory: "A", lat: 18.520, lng: 73.840 },
   { id: "2", name: "Sharma Building Materials", location: "Pune West, MH", type: "new", engagementScore: 40, openness: "medium", lastVisit: "Last visited: 1 week ago", lastOutcome: "Introduction completed", area: "Pune West", dealerCode: "SBM-002", revenueCategory: "B", lat: 18.530, lng: 73.920 },
   { id: "3", name: "Krishna Traders", location: "Pune South, MH", type: "declining", engagementScore: 30, openness: "low", lastVisit: "Last visited: 3 weeks ago", lastOutcome: "Unresponsive – competitor focus", area: "Pune South", dealerCode: "KT-003", revenueCategory: "C", lat: 18.480, lng: 73.870 },
-  { id: "4", name: "Gupta Cement House", location: "Pune North, MH", type: "inactive", engagementScore: 20, openness: "low", lastVisit: "Last visited: 1 month ago", lastOutcome: "Shop closed during visit", area: "Pune North", dealerCode: "GCH-004", revenueCategory: "C", lat: 18.570, lng: 73.850 },
+  { id: "4", name: "Gupta Paint House", location: "Pune North, MH", type: "inactive", engagementScore: 20, openness: "low", lastVisit: "Last visited: 1 month ago", lastOutcome: "Shop closed during visit", area: "Pune North", dealerCode: "GPH-004", revenueCategory: "C", lat: 18.570, lng: 73.850 },
   { id: "5", name: "Rajesh Construction Supply", location: "Pune NE, MH", type: "loyal", engagementScore: 92, openness: "high", lastVisit: "Last visited: Yesterday", lastOutcome: "Great discussion on expanding product range", area: "Pune NE", dealerCode: "RCS-005", revenueCategory: "A", lat: 18.560, lng: 73.930 },
-  { id: "6", name: "Patel & Sons Hardware", location: "Pune NE, MH", type: "new", engagementScore: 55, openness: "high", lastVisit: "Last visited: 3 days ago", lastOutcome: "First meeting – willing to explore JK products", area: "Pune NE", dealerCode: "PSH-006", revenueCategory: "B", lat: 18.490, lng: 73.920 },
+  { id: "6", name: "Patel & Sons Hardware", location: "Pune NE, MH", type: "new", engagementScore: 55, openness: "high", lastVisit: "Last visited: 3 days ago", lastOutcome: "First meeting – willing to explore our products", area: "Pune NE", dealerCode: "PSH-006", revenueCategory: "B", lat: 18.490, lng: 73.920 },
   { id: "7", name: "Singh Building Centre", location: "Pune SW, MH", type: "declining", engagementScore: 35, openness: "medium", lastVisit: "Last weeks ago", lastOutcome: "Needs more engagement attention", area: "Pune SW", dealerCode: "SBC-007", revenueCategory: "B", lat: 18.560, lng: 73.810 },
   { id: "8", name: "Mahalaxmi Traders", location: "Pune SW, MH", type: "loyal", engagementScore: 78, openness: "high", lastVisit: "Last visited: 4 days ago", lastOutcome: "Strong relationship – regular engagement", area: "Pune SW", dealerCode: "MT-008", revenueCategory: "A", lat: 18.490, lng: 73.820 },
   { id: "9", name: "Deshpande Hardware Stores", location: "Pune North, MH", type: "inactive", engagementScore: 38, openness: "medium", lastVisit: "Last visited: 5 weeks ago", lastOutcome: "Open to re-engagement – cited service gaps", area: "Pune North", dealerCode: "DHS-009", revenueCategory: "B", lat: 18.580, lng: 73.860 },
@@ -70,28 +70,28 @@ export const dealers: Dealer[] = [
 export const engagementThemes: EngagementTheme[] = [
   {
     id: "et1",
-    title: "Alignment to JK's Vision of Multi-Products",
-    subtitle: "Help retailers see the opportunity in a multi-product portfolio",
+    title: "Alignment to our Vision of Waterproofing & Protective Solutions",
+    subtitle: "Help retailers see the opportunity in a complete waterproofing and protective solutions portfolio",
     icon: "Layers",
     color: "primary",
     discussionPoints: [
       {
         id: "dp1",
         title: "Higher Profit Pool",
-        description: "Multi-product play increases margins vs single-product reliance",
-        detail: "Retailers stocking putty, white cement, and paints see 25-35% higher margins compared to cement-only retailers. The multi-product portfolio reduces dependency on seasonal cement demand and creates year-round revenue streams.",
+        description: "A solutions play increases margins vs single-category reliance",
+        detail: "Retailers stocking waterproofing solutions, dampness & leakage treatments, and protective coatings see 25-35% higher margins compared to single-category retailers. This complete solutions portfolio reduces dependency on seasonal demand and creates year-round revenue streams.",
       },
       {
         id: "dp2",
         title: "Full Customer Solution",
         description: "Capture the entire demand cycle from base to finish",
-        detail: "When a contractor visits your shop for cement, they also need putty, white cement, and paints. By offering the complete JK range, you become a one-stop solution - reducing customer leakage to competitors.",
+        detail: "When a contractor visits your shop for exterior paints, they also need waterproofing solutions, primers, and putty. By offering the complete product range, you become a one-stop solution - reducing customer leakage to competitors.",
       },
       {
         id: "dp3",
         title: "Low-Risk Expansion",
         description: "Begin with limited SKUs and scale gradually with company support",
-        detail: "Start with just 5-8 SKUs across categories. JK provides free display materials, and a dedicated support team. Scale up only when you see traction - zero pressure, full flexibility.",
+        detail: "Start with just 5-8 SKUs across categories. We provide free display materials, and a dedicated support team. Scale up only when you see traction - zero pressure, full flexibility.",
       },
     ],
     whatIfs: [
@@ -110,7 +110,7 @@ export const engagementThemes: EngagementTheme[] = [
       {
         id: "wi3",
         label: "No space in the shop",
-        peerLearning: "JK's compact multi-product display stand takes just 4 sq ft and is designed for small shops. It's provided free and positioned for visibility.",
+        peerLearning: "Our compact display stand for waterproofing and protective solutions takes just 4 sq ft and is designed for small shops. It's provided free and positioned for visibility.",
         dealerStory: "",
       },
       {
@@ -132,32 +132,32 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp4",
         title: "Quick Wins Strategy",
         description: "Focus on high-demand, fast-moving SKUs first",
-        detail: "Start with JK's top 5 best-selling SKUs in your area. These products have proven demand and quick turnaround - giving you confidence and cash flow within the first 2-3 weeks.",
+        detail: "Start with our top 5 best-selling SKUs in your area. These products have proven demand and quick turnaround - giving you confidence and cash flow within the first 2-3 weeks.",
       },
       {
         id: "dp5",
         title: "Contractor Network Building",
-        description: "Connect with local contractors through JK's network",
-        detail: "JK facilitates introductions to active contractors in your area. Building relationships with contractors creates a sustainable pull for JK products through your shop.",
+        description: "Connect with local contractors through our network",
+        detail: "We facilitate introductions to active contractors in your area. Building relationships with contractors creates a sustainable pull for our products through your shop.",
       },
       {
         id: "dp6",
         title: "Marketing & Visibility Support",
         description: "Free in-shop branding and local marketing campaigns",
-        detail: "JK provides shop board branding, product displays, and local advertising support at zero cost. This establishes you as an authorized JK retailer and drives footfall from day one.",
+        detail: "We provide shop board branding, product displays, and local advertising support at zero cost. This establishes you as an authorized retailer and drives footfall from day one.",
       },
     ],
     whatIfs: [
       {
         id: "wi5",
         label: "I already have established brands",
-        peerLearning: "JK doesn't replace your existing brands - it adds a premium tier. Retailers who added JK alongside existing brands saw increased footfall without cannibalizing existing sales.",
+        peerLearning: "Our range doesn't replace your existing brands - it adds a premium tier. Retailers who added it alongside existing brands saw increased footfall without cannibalizing existing sales.",
         dealerStory: "",
       },
       {
         id: "wi6",
         label: "I'm not sure about the quality",
-        peerLearning: "JK Cement has 40+ years of trust. Free product samples are available for you and your contractors to test. Most retailers who tested the products were convinced by the quality.",
+        peerLearning: "We have 40+ years of trust in the paints industry. Free product samples are available for you and your contractors to test. Most retailers who tested the products were convinced by the quality.",
         dealerStory: "",
       },
     ],
@@ -172,33 +172,33 @@ export const engagementThemes: EngagementTheme[] = [
       {
         id: "dp7",
         title: "Contractor Engagement",
-        description: "Build lasting relationships with contractors who use JK products",
+        description: "Build lasting relationships with contractors who use our products",
         detail: "Engage contractors through product training, knowledge sharing, and consistent quality. This positions you as a trusted partner and knowledge hub in your area.",
       },
       {
         id: "dp8",
         title: "Technical Training Sessions",
         description: "Free training builds contractor confidence and trust",
-        detail: "JK conducts free application training for contractors at your shop. This positions you as a knowledge hub, builds trust, and ensures contractors apply products correctly - reducing complaints.",
+        detail: "We conduct free application training for contractors at your shop. This positions you as a knowledge hub, builds trust, and ensures contractors apply products correctly - reducing complaints.",
       },
       {
         id: "dp9",
         title: "Painter Meet Programs",
         description: "Organized events to engage painters in your area",
-        detail: "JK sponsors painter meets with product demos, lucky draws, and networking. These events build your reputation as a community hub and create word-of-mouth demand for JK products.",
+        detail: "We sponsor painter meets with product demos, lucky draws, and networking. These events build your reputation as a community hub and create word-of-mouth demand for our products.",
       },
     ],
     whatIfs: [
       {
         id: "wi7",
         label: "Contractors prefer other brands",
-        peerLearning: "Contractors follow quality and support. Once contractors attend a JK training session and experience the product, most build a preference over time through consistent results.",
+        peerLearning: "Contractors follow quality and support. Once contractors attend our training session and experience the product, most build a preference over time through consistent results.",
         dealerStory: "",
       },
       {
         id: "wi8",
         label: "I don't know enough contractors",
-        peerLearning: "JK's field team helps identify and connect you with active contractors in your area. On average, each new retailer is introduced to 8-12 contractors within the first month.",
+        peerLearning: "Our field team helps identify and connect you with active contractors in your area. On average, each new retailer is introduced to 8-12 contractors within the first month.",
         dealerStory: "",
       },
     ],
@@ -208,31 +208,31 @@ export const engagementThemes: EngagementTheme[] = [
 export const discussionPoints: DiscussionPoint[] = [
   {
     id: "1",
-    title: "JK Product Range – Multi-Product Awareness",
+    title: "Product Range – Waterproofing & Protective Solutions Awareness",
     bullets: [
-      "JK Cement offers a comprehensive product portfolio across categories",
-      "Product range covers cement, white cement, putty, and paints",
+      "We offer a comprehensive product portfolio across categories",
+      "Product range covers interior paints, exterior paints, putty, and waterproofing solutions",
       "Opportunity to become a one-stop solution for contractors",
       "Marketing support with in-shop branding and visibility materials",
     ],
     objections: [
-      { id: "o1", label: "Already selling other brands", response: "JK complements existing brands as a premium option. More product choices mean more footfall and a stronger position as a go-to retailer." },
-      { id: "o2", label: "Demand-related in my area", response: "Demand often starts with visibility. Retailers in similar markets found that once JK products were displayed, contractor enquiries followed naturally." },
+      { id: "o1", label: "Already selling other brands", response: "Our range complements existing brands as a premium option. More product choices mean more footfall and a stronger position as a go-to retailer." },
+      { id: "o2", label: "Demand-related in my area", response: "Demand often starts with visibility. Retailers in similar markets found that once our products were displayed, contractor enquiries followed naturally." },
       { id: "o3", label: "Not sure about stocking new products", response: "Start with a small trial of fast-moving SKUs. Assess traction over 30 days before deciding on next steps." },
     ],
   },
   {
     id: "2",
-    title: "JK White Cement – Seasonal Opportunity",
+    title: "Premium Emulsion Paints – Seasonal Opportunity",
     bullets: [
-      "Festival season typically sees higher demand for white cement",
+      "Festival season typically sees higher demand for premium emulsion paints",
       "New consumer-friendly packaging in 1kg and 5kg packs",
-      "JK provides display materials for in-shop visibility",
+      "We provide display materials for in-shop visibility",
       "Contractor demand remains strong year-round",
     ],
     objections: [
-      { id: "o4", label: "No space in shop", response: "JK's compact display stand takes just 2 sq ft and is designed for small shops. It's positioned to draw attention without taking floor space." },
-      { id: "o5", label: "What if it doesn't sell", response: "White cement has consistent year-round demand. Start with a small quantity and scale based on actual sell-through." },
+      { id: "o4", label: "No space in shop", response: "Our compact display stand takes just 2 sq ft and is designed for small shops. It's positioned to draw attention without taking floor space." },
+      { id: "o5", label: "What if it doesn't sell", response: "Our premium emulsion range has consistent year-round demand. Start with a small quantity and scale based on actual sell-through." },
     ],
   },
   {
@@ -240,12 +240,12 @@ export const discussionPoints: DiscussionPoint[] = [
     title: "Relationship & Trust Building",
     bullets: [
       "Check on any pending issues or service gaps",
-      "Discuss retailer's business growth and how JK can support",
+      "Discuss retailer's business growth and how we can support",
       "Share success stories from similar retailers in the region",
       "Understand competitive landscape in the retailer's area",
     ],
     objections: [
-      { id: "o6", label: "JK delivery is often delayed", response: "We've expanded distribution points in your zone. Share any specific incidents and I'll escalate immediately for resolution." },
+      { id: "o6", label: "Delivery is often delayed", response: "We've expanded distribution points in your zone. Share any specific incidents and I'll escalate immediately for resolution." },
     ],
   },
   {
@@ -258,7 +258,7 @@ export const discussionPoints: DiscussionPoint[] = [
       "Ongoing ME support for business growth conversations",
     ],
     objections: [
-      { id: "o7", label: "I don't see enough support from JK", response: "JK is committed to being a long-term partner. Let's identify specific areas where you need more support and we'll work on it together." },
+      { id: "o7", label: "I don't see enough support from the company", response: "We're committed to being a long-term partner. Let's identify specific areas where you need more support and we'll work on it together." },
     ],
   },
   {

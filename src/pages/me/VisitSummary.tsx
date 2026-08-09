@@ -95,12 +95,12 @@ const VisitSummary = () => {
   const waMessage =
 `*Visit Summary — ${dealer.name}*
 📅 ${todayStr()}
-👤 Manish Kumar from JK
+👤 Manish Kumar
 🏪 ${dealer.name} (Owner / In-shop)
 
 ${waBlocks.join("\n\n")}
 
-— JK Cement ME Team`;
+— Paints ME Team`;
 
   const share = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(waMessage)}`, "_blank");
@@ -206,7 +206,7 @@ ${waBlocks.join("\n\n")}
         <Card className="p-3 bg-info/5 border-info/20">
           <div className="grid grid-cols-1 gap-1.5 text-sm">
             <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-info" /><span className="text-muted-foreground">Date:</span><span className="font-medium text-foreground">{todayStr()}</span></div>
-            <div className="flex items-center gap-2"><User className="w-4 h-4 text-info" /><span className="text-muted-foreground">ME:</span><span className="font-medium text-foreground">Manish Kumar from JK</span></div>
+            <div className="flex items-center gap-2"><User className="w-4 h-4 text-info" /><span className="text-muted-foreground">ME:</span><span className="font-medium text-foreground">Manish Kumar</span></div>
             <div className="flex items-center gap-2"><Store className="w-4 h-4 text-info" /><span className="text-muted-foreground">Retailer:</span><span className="font-medium text-foreground truncate">{dealer.name} (Owner / In-shop)</span></div>
           </div>
         </Card>

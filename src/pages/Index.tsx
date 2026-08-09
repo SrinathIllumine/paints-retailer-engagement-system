@@ -40,7 +40,7 @@ const Index = () => {
             </div>
             <h2 className="font-display font-bold text-xl text-foreground mb-1">Leadership App</h2>
             <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">
-              {`Enables leadership of JK to have:
+              {`Enables leadership of the paints business to have:
 -> strategic vision of retailer networks
 -> high-quality engagement at ME level`}
             </p>

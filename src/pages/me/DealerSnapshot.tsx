@@ -20,10 +20,10 @@ const revenueLabelMap: Record<string, string> = {
 const engagementHistory = [
   {
     date: "Apr 12, 2026",
-    summary: "Discussed multi-product portfolio expansion opportunity",
+    summary: "Discussed dampness & leakage solutions expansion opportunity",
     actionPoints: [
-      { goal: "I'll try JK product samples with 2-3 contractors before the next visit", bullets: ["Request 3 sample kits from JK", "Identify 2-3 contractor contacts for trial"] },
-      { goal: "I'll set up a JK compact display stand near my counter this week", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
+      { goal: "I'll try our paint product samples with 2-3 contractors before the next visit", bullets: ["Request 3 sample kits from the company", "Identify 2-3 contractor contacts for trial"] },
+      { goal: "I'll set up a compact display stand near my counter this week", bullets: ["Coordinate with ME for stand delivery", "Choose location with high visibility"] },
     ],
     feedback: ["Packaging feels weak during monsoon handling", "Customers are interested more on competitor brands for paints"],
   },
@@ -31,7 +31,7 @@ const engagementHistory = [
     date: "Apr 5, 2026",
     summary: "Relationship building and understanding retailer business goals",
     actionPoints: [
-      { goal: "My top priority will be to map JK's product range to my growth plans", bullets: ["List product categories of interest", "Identify top-selling segments in my shop"] },
+      { goal: "My top priority will be to map our product range to my growth plans", bullets: ["List product categories of interest", "Identify top-selling segments in my shop"] },
     ],
     feedback: ["I'd appreciate more product knowledge sessions for my staff"],
   },
@@ -50,10 +50,10 @@ const engagementHistory = [
 const getProfileDetails = (dealer: typeof dealers[0]) => ({
   joiningDate: "Jan 2014",
   revenue: revenueLabelMap[dealer.revenueCategory],
-  productsHandled: ["Cement", "White Cement", "Putty", "Paints"],
+  productsHandled: ["Interior Paints", "Exterior Paints", "Putty", "Waterproofing Solutions"],
   totalEngagements: 3,
   dimensions: {
-    alignmentToJK: dealer.type === "loyal" ? 82 : dealer.type === "new" ? 45 : dealer.type === "declining" ? 28 : 15,
+    alignmentToBrand: dealer.type === "loyal" ? 82 : dealer.type === "new" ? 45 : dealer.type === "declining" ? 28 : 15,
     valueProposition: dealer.type === "loyal" ? 75 : dealer.type === "new" ? 38 : dealer.type === "declining" ? 32 : 20,
     marketAwareness: dealer.type === "loyal" ? 91 : dealer.type === "new" ? 65 : dealer.type === "declining" ? 55 : 40,
   },
@@ -158,7 +158,7 @@ const DealerSnapshot = () => {
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Generic Details</h4>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-secondary/50 rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Joining Date as JK retailer</p>
+                      <p className="text-xs text-muted-foreground">Joining Date as retailer</p>
                       <p className="text-sm font-semibold text-foreground">{profile.joiningDate}</p>
                     </div>
                     <div className="bg-secondary/50 rounded-lg p-3">
@@ -166,7 +166,7 @@ const DealerSnapshot = () => {
                       <p className="text-sm font-semibold text-foreground">{profile.revenue}</p>
                     </div>
                     <div className="bg-secondary/50 rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Engagements with JK (This Year)</p>
+                      <p className="text-xs text-muted-foreground">Engagements (This Year)</p>
                       <p className="text-sm font-semibold text-foreground">{profile.totalEngagements}</p>
                     </div>
                     <div className="bg-secondary/50 rounded-lg p-3">

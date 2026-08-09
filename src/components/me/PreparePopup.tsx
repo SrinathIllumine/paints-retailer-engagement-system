@@ -7,14 +7,14 @@ const cards = [
   {
     n: 1,
     tag: "Long-term Relationship Building",
-    title: "Your sales volume with JK has been coming down. What can we do to reverse it?",
+    title: "Your sales volume with us has been coming down. What can we do to reverse it?",
     body: "Try to diagnose why it is coming down. Is there a competitor? Is there an issue with the pricing?",
   },
   {
     n: 2,
     tag: "BUSINESS BUILDING",
     title: "Potential Opportunities in your area identified by DGs",
-    body: "For example: (i) JK WallMaxx is highly popular in Hinjewadi — there is already an existing demand, the retailer can capitalize on that. (ii) Suggest a better scheme than the competition.",
+    body: "For example: (i) our waterproofing solution is highly popular in Hinjewadi — there is already an existing demand, the retailer can capitalize on that. (ii) Suggest a better scheme than the competition.",
   },
   {
     n: 3,

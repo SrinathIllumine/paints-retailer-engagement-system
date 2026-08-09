@@ -38,47 +38,47 @@ const bestPracticesMap: Record<string, string[]> = {
   wi1: [
     "Start with a small trial batch to test actual demand before committing further",
     "Ask 3-4 regular contractors what products they currently source from elsewhere",
-    "Place JK products near high-traffic areas in the shop for passive visibility",
+    "Place our products near high-traffic areas in the shop for passive visibility",
     "Track weekly enquiries for 30 days to build a real demand picture",
   ],
   wi2: [
-    "Begin with JK's minimum order quantity to limit initial outlay",
+    "Begin with our minimum order quantity to limit initial outlay",
     "Focus on fast-moving SKUs that turn over within 2-3 weeks",
     "Monitor sell-through rates to guide future ordering decisions",
     "Reinvest initial margins into gradually expanding the range",
   ],
   wi3: [
-    "Use JK's compact 4 sq ft display stand designed for small shops",
+    "Use our compact 4 sq ft display stand designed for small shops",
     "Position near the billing counter for maximum visibility with minimal space",
     "Rotate slow-moving items monthly to keep the display fresh",
-    "Stack vertically using wall-mounted shelving provided by JK",
+    "Stack vertically using wall-mounted shelving provided by us",
   ],
   wi4: [
     "Start with the top 3 proven sellers in your market segment",
     "Set a 30-day review checkpoint to assess traction before expanding",
-    "Connect with 2-3 nearby retailers who successfully added JK products",
+    "Connect with 2-3 nearby retailers who successfully added our products",
     "Track customer feedback to build confidence in the product range",
   ],
   wi5: [
-    "Position JK as a premium complement, not a replacement for existing brands",
+    "Position our range as a premium complement, not a replacement for existing brands",
     "Create a clear display showing good-better-best options for customers",
     "Let customers choose - more options mean more footfall and higher basket value",
-    "Highlight JK's unique product strengths in conversations with contractors",
+    "Highlight our unique product strengths in conversations with contractors",
   ],
   wi6: [
-    "Request free JK product samples for personal testing before stocking",
+    "Request free product samples for personal testing before stocking",
     "Arrange a contractor application demo at a local site",
-    "Share JK's quality certifications and test reports with enquiring buyers",
+    "Share our quality certifications and test reports with enquiring buyers",
     "Start with one product category and validate quality before expanding",
   ],
   wi7: [
     "Organize a hands-on training session for 5-8 key contractors",
     "Share a side-by-side performance comparison to show contractor benefits",
-    "Offer exclusive first-access to new JK products through your shop",
+    "Offer exclusive first-access to new products through your shop",
     "Build trust through consistent product quality and availability",
   ],
   wi8: [
-    "Request JK field team to introduce you to 8-10 active local contractors",
+    "Request our field team to introduce you to 8-10 active local contractors",
     "Host a small painter meet at your shop for product awareness",
     "Build relationships with contractors through regular engagement",
     "Start with one painter meet and grow based on response",
@@ -88,20 +88,20 @@ const bestPracticesMap: Record<string, string[]> = {
 const themePositiveTakeaways: Record<string, string[]> = {
   et1: [
     "I'll try 2–3 relevant SKUs with contractors before the next meeting to see if it works for me",
-    "I'll introduce JK products to existing contractor network and get their feedback",
+    "I'll introduce our products to existing contractor network and get their feedback",
     "To test product performance at select customer sites will be my top priority",
     "Will share contractor feedback regarding the new paint in next meeting",
   ],
   et2: [
     "I'll place initial order of fast-moving SKUs this week to test the waters",
     "Connecting with 3 local contractors for product trials will give me some market exposure",
-    "I'll set up JK product display in high-visibility area to gain more attention",
+    "I'll set up a product display in high-visibility area to gain more attention",
     "Share first-month performance review in next visit",
   ],
   et3: [
-    "My aim is to identify 5 key contractors for JK engagement",
+    "My aim is to identify 5 key contractors for deeper engagement",
     "I'll organize a hands-on product demo at shop to gain contractors' and painters' trust.",
-    "We can invite painters to the upcoming JK meet event",
+    "We can invite painters to the upcoming brand meet event",
     "I'll collect contractor feedback after first application to understand more about the product",
   ],
 };
@@ -110,7 +110,7 @@ const themePositiveTakeaways: Record<string, string[]> = {
 const themeGoForwards: Record<string, string[]> = {
   et1: [
     "Schedule follow-up visit within 2 weeks to review trial outcomes",
-    "Share JK multi-product brochure on WhatsApp by tomorrow",
+    "Share our waterproofing & protective solutions brochure on WhatsApp by tomorrow",
     "Coordinate with ASM to arrange contractor meet next month",
   ],
   et2: [
@@ -128,7 +128,7 @@ const themeGoForwards: Record<string, string[]> = {
 const MARKET_INSIGHT_SECTIONS = [
   { key: "competition", label: "Competition", placeholder: "What competitors are doing — schemes, pricing, push, new SKUs…" },
   { key: "demand", label: "Demand", placeholder: "Demand patterns — projects, seasonality, slow/fast movers…" },
-  { key: "productQuality", label: "Product Quality", placeholder: "Any complaints, observations on JK or competitor product quality…" },
+  { key: "productQuality", label: "Product Quality", placeholder: "Any complaints, observations on our or competitor product quality…" },
   { key: "schemes", label: "Schemes", placeholder: "Scheme feedback — what's working, what's missing, retailer asks…" },
   { key: "customerRelated", label: "Customer Related", placeholder: "End-customer behaviour — preferences, brand pull, painter influence…" },
 ] as const;

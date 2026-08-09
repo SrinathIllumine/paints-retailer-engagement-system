@@ -25,20 +25,20 @@ const dateFromLastVisit = (lastVisit: string) => {
 const buildWaMessage = (dealerName: string, visitDate: string) =>
 `*Visit Summary — ${dealerName}*
 📅 ${visitDate}
-👤 Manish Kumar from JK
+👤 Manish Kumar
 🏪 ${dealerName} (Owner / In-shop)
 
 ✅ *Action Points / Go-Forwards:*
-• Share JK premium grade samples with key builder contacts
+• Share premium-grade product samples with key builder contacts
 • Follow up on credit terms objection within 3 days
 
 🧠 *New Market Insights:*
-• Demand for white cement rising in nearby residential projects
+• Demand for waterproofing solutions rising in nearby residential projects
 
 🔑 *Key Critical Feedback:*
 Retailer flagged credit cycle is shorter than competitor. Wants combo schemes with putty.
 
-— JK Cement ME Team`;
+— Paints ME Team`;
 import {
   Accordion,
   AccordionContent,
@@ -101,7 +101,7 @@ const insightRetailers = [
     id: "1",
     name: "Jai Maharashtra Hardware & Electricals",
     count: 3,
-    note: "Demand for white cement rising in Hinjewadi residential projects. Asked for combo schemes with putty.",
+    note: "Demand for waterproofing solutions rising in Hinjewadi residential projects. Asked for combo schemes with putty.",
   },
   {
     id: "5",
@@ -120,9 +120,9 @@ const insightRetailers = [
 const engagementHistory = [
   {
     date: "Apr 12, 2026",
-    summary: "Visited Rajesh Construction Supply – multi-product alignment",
+    summary: "Visited Rajesh Construction Supply – waterproofing solutions alignment",
     actionPoints: [
-      { goal: "Share JK premium grade samples with 2 builder contacts", bullets: ["Pick up sample kits from depot", "Schedule on-site demo next week"] },
+      { goal: "Share premium-grade product samples with 2 builder contacts", bullets: ["Pick up sample kits from depot", "Schedule on-site demo next week"] },
       { goal: "Resolve credit terms objection raised during visit", bullets: ["Loop in ASM for revised terms", "Confirm decision with retailer in 3 days"] },
     ],
     feedback: ["Retailer flagged credit cycle is shorter than competitor", "Wants combo schemes with putty"],
@@ -139,7 +139,7 @@ const engagementHistory = [
     date: "Apr 8, 2026",
     summary: "Visited Jai Maharashtra Hardware – product range discussion",
     actionPoints: [
-      { goal: "Log market insight on white cement demand in Hinjewadi", bullets: ["Update insights tracker", "Flag to ASM for area-level view"] },
+      { goal: "Log market insight on waterproofing solutions demand in Hinjewadi", bullets: ["Update insights tracker", "Flag to ASM for area-level view"] },
     ],
     feedback: ["Packaging dampness during monsoon raised again"],
   },
@@ -220,7 +220,7 @@ const MyDashboard = () => {
             Basic Details
           </p>
           <div className="grid grid-cols-3 gap-2">
-            <StatCard icon={Briefcase} label="Exp. in JK" value="3.5 yrs" />
+            <StatCard icon={Briefcase} label="Experience" value="3.5 yrs" />
             <StatCard icon={Store} label="Total Retailers" value="200" />
             <StatCard icon={Users} label="Engaged" value="28" />
           </div>

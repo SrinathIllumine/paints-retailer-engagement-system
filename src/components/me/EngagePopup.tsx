@@ -56,8 +56,8 @@ const matchObjections = (text: string): ObjectionMatch[] => {
 // ---------------- Static Q2 / Q3 content ----------------
 
 export const BUSINESS_IDEAS = [
-  "Trending in the area - many new construction sites are coming up. You may approach the site supervisors to share JK's multi-product portfolio - Putty, Paints & White Cement.",
-  "A business growth session can be organized by JK team for your contractors - where they understand how their business can grow using JK's unique value proposition.",
+  "Trending in the area - many new construction sites are coming up. You may approach the site supervisors to share our complete solutions range - Waterproofing Solutions, Dampness & Leakage Treatments & Protective Coatings.",
+  "A business growth session can be organized by our team for your contractors - where they understand how their business can grow using our unique value proposition.",
 ];
 
 export const NEARBY_DGS = [
@@ -66,7 +66,7 @@ export const NEARBY_DGS = [
 
 export const EDUCATION_POINTS = [
   "Promote the newly launched small-sized packs for repainting projects.",
-  'Talk about the new "Painter Loyalty Scheme" launched by JK.',
+  'Talk about the new "Painter Loyalty Scheme" launched by the company.',
 ];
 
 // ---------------- State types ----------------

@@ -19,7 +19,7 @@ type ThemeData = {
   retailerIdeas?: RetailerIdea | null;
 };
 
-const ME_NAME = "Manish Kumar from JK";
+const ME_NAME = "Manish Kumar";
 const RETAILER_CONTACT = "Owner / In-shop";
 
 const formatToday = () => {
@@ -55,7 +55,7 @@ const VisitNotes = () => {
       }
     });
     if (bullets.length === 0) {
-      bullets.push("Alignment to JK's Vision of Multi-Products: Higher Profit Pool");
+      bullets.push("Alignment to our Vision of Waterproofing & Protective Solutions: Higher Profit Pool");
       bullets.push("Getting Initial Success as a New Retailer: Quick Wins Strategy");
     }
     return bullets;
@@ -140,7 +140,7 @@ ${insightsToText(marketInsights)}
 💡 *Retailer Ideas:*
 ${retailerIdeas.length === 0 ? "• No ideas captured" : bulletsToText(retailerIdeas)}
 
-- JK Cement ME Team`;
+- Paints ME Team`;
 
   return (
     <MeLayout title="Visit Summary" showBack>
