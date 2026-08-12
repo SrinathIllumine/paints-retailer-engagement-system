@@ -1,37 +1,22 @@
 import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { TrendingUp, AlertTriangle, Lightbulb, Pentagon, Trophy, LogOut } from "lucide-react";
+import { Map, Lightbulb, AlertTriangle, LogOut } from "lucide-react";
 
 const navItems = [
   {
-    icon: TrendingUp,
-    label: "National Engagement",
-    sub: "How are ME–retailer engagements improving on the ground?",
+    icon: Map,
+    label: "What is the engagement quality across markets in the country?",
     path: "/leadership",
   },
   {
-    icon: AlertTriangle,
-    label: "Retailer Objections",
-    sub: "What are common objection patterns across retailers in the country?",
-    path: "/leadership/objections",
-  },
-  {
     icon: Lightbulb,
-    label: "Market Intelligence",
-    sub: "What patterns are emerging from the ground across the states?",
+    label: "What are the repeated insights across markets?",
     path: "/leadership/insights",
   },
   {
-    icon: Pentagon,
-    label: "Engagement Coverage",
-    sub: "What's the coverage of the Engagement Units across the retail network?",
-    path: "/leadership/coverage",
-  },
-  {
-    icon: Trophy,
-    label: "Engagement Quality",
-    sub: "Top MEs, top & bottom states, top objections",
-    path: "/leadership/leaderboard",
+    icon: AlertTriangle,
+    label: "Key retailer objections which are repeating across dealers?",
+    path: "/leadership/objections",
   },
 ];
 
@@ -43,8 +28,8 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
     <div className="min-h-screen bg-background flex w-full">
       <aside className="w-72 bg-sidebar border-r border-sidebar-border flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-5 border-b border-sidebar-border">
-          <h1 className="font-display font-bold text-lg text-sidebar-foreground">JK Cement</h1>
-          <p className="text-xs text-sidebar-foreground/60 mt-0.5">Leadership Analytics</p>
+          <h1 className="font-display font-bold text-lg text-sidebar-foreground">Paints</h1>
+          <p className="text-xs text-sidebar-foreground/60 mt-0.5">Leadership Reports</p>
         </div>
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
@@ -60,16 +45,7 @@ const LeadershipLayout = ({ children }: { children: ReactNode }) => {
                 }`}
               >
                 <item.icon className="w-4 h-4 mt-0.5 shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-sm font-medium leading-tight">{item.label}</p>
-                  <p
-                    className={`text-[11px] leading-snug mt-0.5 ${
-                      active ? "text-sidebar-primary-foreground/80" : "text-sidebar-foreground/55"
-                    }`}
-                  >
-                    {item.sub}
-                  </p>
-                </div>
+                <p className="text-sm font-medium leading-snug min-w-0">{item.label}</p>
               </button>
             );
           })}

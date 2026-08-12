@@ -16,8 +16,6 @@ import MyDashboard from "./pages/me/MyDashboard.tsx";
 import Dashboard from "./pages/leadership/Dashboard.tsx";
 import Objections from "./pages/leadership/Objections.tsx";
 import Insights from "./pages/leadership/Insights.tsx";
-import Coverage from "./pages/leadership/Coverage.tsx";
-import Leaderboard from "./pages/leadership/Leaderboard.tsx";
 import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
 import ASMObjections from "./pages/asm/ASMObjections.tsx";
 import ASMLeaderboard from "./pages/asm/ASMLeaderboard.tsx";
@@ -45,8 +43,6 @@ const App = () => (
           <Route path="/leadership" element={<Dashboard />} />
           <Route path="/leadership/objections" element={<Objections />} />
           <Route path="/leadership/insights" element={<Insights />} />
-          <Route path="/leadership/coverage" element={<Coverage />} />
-          <Route path="/leadership/leaderboard" element={<Leaderboard />} />
           {/* ASM Analytics App */}
           <Route path="/asm" element={<ASMDashboard />} />
           <Route path="/asm/objections" element={<ASMObjections />} />
