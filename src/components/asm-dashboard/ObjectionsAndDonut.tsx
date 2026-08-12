@@ -3,12 +3,12 @@ import { Pie, PieChart, ResponsiveContainer } from "recharts";
 const objections = [
   { text: '"Competitor brand offering better margin / discount"', cat: "Competition", count: 38, barColor: "#1D9E75", pillBg: "#E1F5EE", pillText: "#085041" },
   { text: '"Not enough credit period — cash flow is tight"', cat: "Working capital", count: 29, barColor: "#D85A30", pillBg: "#FAECE7", pillText: "#4A1B0C" },
-  { text: '"End-customer demand for White Cement is low"', cat: "Demand", count: 26, barColor: "#BA7517", pillBg: "#FAEEDA", pillText: "#412402" },
+  { text: '"End-customer demand for Waterproofing Solutions is low"', cat: "Demand", count: 26, barColor: "#BA7517", pillBg: "#FAEEDA", pillText: "#412402" },
   { text: '"No shelf space — other brands occupy prime slots"', cat: "SKU space", count: 22, barColor: "#378ADD", pillBg: "#E6F1FB", pillText: "#042C53" },
-  { text: '"JK Paints not moving — customers prefer established brands"', cat: "Demand", count: 19, barColor: "#BA7517", pillBg: "#FAEEDA", pillText: "#412402" },
-  { text: '"Putty quality inconsistency — painters complaining"', cat: "Product quality", count: 14, barColor: "#E24B4A", pillBg: "#FCEBEB", pillText: "#501313" },
+  { text: '"Our Paints not moving — customers prefer established brands"', cat: "Demand", count: 19, barColor: "#BA7517", pillBg: "#FAEEDA", pillText: "#412402" },
+  { text: '"Primer quality inconsistency — painters complaining"', cat: "Product quality", count: 14, barColor: "#E24B4A", pillBg: "#FCEBEB", pillText: "#501313" },
   { text: '"Delivery delays disrupting stock planning"', cat: "Working capital", count: 11, barColor: "#D85A30", pillBg: "#FAECE7", pillText: "#4A1B0C" },
-  { text: '"No active scheme on White Cement unlike competitors"', cat: "Competition", count: 9, barColor: "#1D9E75", pillBg: "#E1F5EE", pillText: "#085041" },
+  { text: '"No active scheme on Waterproofing Solutions unlike competitors"', cat: "Competition", count: 9, barColor: "#1D9E75", pillBg: "#E1F5EE", pillText: "#085041" },
 ];
 
 const donutData = [

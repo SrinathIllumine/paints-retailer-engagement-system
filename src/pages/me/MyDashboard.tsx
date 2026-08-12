@@ -36,7 +36,7 @@ const buildWaMessage = (dealerName: string, visitDate: string) =>
 • Demand for waterproofing solutions rising in nearby residential projects
 
 🔑 *Key Critical Feedback:*
-Retailer flagged credit cycle is shorter than competitor. Wants combo schemes with putty.
+Retailer flagged credit cycle is shorter than competitor. Wants combo schemes with primers.
 
 — Paints ME Team`;
 import {
@@ -101,7 +101,7 @@ const insightRetailers = [
     id: "1",
     name: "Jai Maharashtra Hardware & Electricals",
     count: 3,
-    note: "Demand for waterproofing solutions rising in Hinjewadi residential projects. Asked for combo schemes with putty.",
+    note: "Demand for waterproofing solutions rising in Hinjewadi residential projects. Asked for combo schemes with primers.",
   },
   {
     id: "5",
@@ -125,7 +125,7 @@ const engagementHistory = [
       { goal: "Share premium-grade product samples with 2 builder contacts", bullets: ["Pick up sample kits from depot", "Schedule on-site demo next week"] },
       { goal: "Resolve credit terms objection raised during visit", bullets: ["Loop in ASM for revised terms", "Confirm decision with retailer in 3 days"] },
     ],
-    feedback: ["Retailer flagged credit cycle is shorter than competitor", "Wants combo schemes with putty"],
+    feedback: ["Retailer flagged credit cycle is shorter than competitor", "Wants combo schemes with primers"],
   },
   {
     date: "Apr 10, 2026",

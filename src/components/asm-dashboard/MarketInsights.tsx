@@ -7,10 +7,10 @@ const cards = [
 ];
 
 const flagged = [
-  { color: "#EF9F27", text: "UltraTech running 3% extra discount in Wakad & Kothrud — 18 retailers flagged, 4 signalling shelf space reallocation by May 10" },
+  { color: "#EF9F27", text: "Nerolac running 3% extra discount in Wakad & Kothrud — 18 retailers flagged, 4 signalling shelf space reallocation by May 10" },
   { color: "#1D9E75", text: "Housing project demand rising in Hadapsar sector 62–78, 7 retailers report low stock levels ahead of June–July peak" },
-  { color: "#378ADD", text: "12 retailers requesting extension of Putty cashback offer beyond May 15 — scheme team follow-up needed urgently" },
-  { color: "#E24B4A", text: "Putty settling time complaint raised for 3rd consecutive week — possible batch quality issue, QC escalation pending" },
+  { color: "#378ADD", text: "12 retailers requesting extension of Primer cashback offer beyond May 15 — scheme team follow-up needed urgently" },
+  { color: "#E24B4A", text: "Primer settling time complaint raised for 3rd consecutive week — possible batch quality issue, QC escalation pending" },
 ];
 
 const MarketInsights = () => (

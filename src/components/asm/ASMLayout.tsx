@@ -62,7 +62,7 @@ const ASMLayout = ({ children, hideFilters = false }: Props) => {
       <aside className="w-72 bg-sidebar border-r border-sidebar-border flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-5 border-b border-sidebar-border">
           <h1 className="font-display font-bold text-lg text-sidebar-foreground">
-            JK Cement
+            Paints
           </h1>
           <p className="text-xs text-sidebar-foreground/60 mt-0.5">
             ASM Analytics

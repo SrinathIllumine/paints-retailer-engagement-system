@@ -39,13 +39,13 @@ const topObjections: { cat: string; items: { q: string; e: string }[] }[] = [
     items: [
       { q: "Competitor schemes are more visible and frequent.", e: "Retailers feel other brands are more active with scratch cards, gifts, or painter rewards." },
       { q: "Customers recognize competitor paint shades faster.", e: "Strong tinting/touchpoint presence from larger paint brands." },
-      { q: "Competitors are doing more painter meets and site activities.", e: "Retailers feel JK's activation has become weak compared to others." },
+      { q: "Competitors are doing more painter meets and site activities.", e: "Retailers feel our activation has become weak compared to others." },
     ],
   },
   {
     cat: "Product-quality related",
     items: [
-      { q: "Retailers feel product consistency changes batch-to-batch.", e: "Especially around workability, smoothness, or drying behavior in putty." },
+      { q: "Retailers feel product consistency changes batch-to-batch.", e: "Especially around workability, smoothness, or drying behavior in the primer." },
     ],
   },
   {

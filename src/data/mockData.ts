@@ -85,7 +85,7 @@ export const engagementThemes: EngagementTheme[] = [
         id: "dp2",
         title: "Full Customer Solution",
         description: "Capture the entire demand cycle from base to finish",
-        detail: "When a contractor visits your shop for exterior paints, they also need waterproofing solutions, primers, and putty. By offering the complete product range, you become a one-stop solution - reducing customer leakage to competitors.",
+        detail: "When a contractor visits your shop for exterior paints, they also need waterproofing solutions, primers, and interior paints. By offering the complete product range, you become a one-stop solution - reducing customer leakage to competitors.",
       },
       {
         id: "dp3",
@@ -211,7 +211,7 @@ export const discussionPoints: DiscussionPoint[] = [
     title: "Product Range – Waterproofing & Protective Solutions Awareness",
     bullets: [
       "We offer a comprehensive product portfolio across categories",
-      "Product range covers interior paints, exterior paints, putty, and waterproofing solutions",
+      "Product range covers interior paints, exterior paints, primers, and waterproofing solutions",
       "Opportunity to become a one-stop solution for contractors",
       "Marketing support with in-shop branding and visibility materials",
     ],

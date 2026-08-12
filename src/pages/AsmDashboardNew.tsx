@@ -232,8 +232,8 @@ const AsmDashboardNew = () => {
                   h: "Local sales reps from Chetak Paints (new local competitor) are visiting our top contractor-focused dealers.",
                   p: "Three of our retailers report being approached in the last 2 weeks." },
                 { dot: PALETTE.orange.bar, cat: "Packaging", catBg: PALETTE.orange.bg, catText: PALETTE.orange.text,
-                  h: "Retailers pull back on JK Putty orders over packaging concerns.",
-                  p: "JK Putty's single-layer packaging fails to withstand high moisture levels during the monsoon, leading to rapid deterioration in quality." },
+                  h: "Retailers pull back on our Primer orders over packaging concerns.",
+                  p: "Our Primer's single-layer packaging fails to withstand high moisture levels during the monsoon, leading to rapid deterioration in quality." },
                 { dot: PALETTE.blue, cat: "Scheme", catBg: "#E6F1FB", catText: "#042C53",
                   h: "Mid-tier retailers want better schemes.",
                   p: "Majority (i.e. mid-tier) retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers." },
@@ -398,27 +398,27 @@ const AsmDashboardNew = () => {
                 items: [
                   { h: "Chetak Paints aggressively entering Panvel", p: "Local sales reps from Chetak are visiting our top contractor-focused dealers. Three of our retailers report being approached in the last 2 weeks." },
                   { h: "Birla Opus piloting EMI payments for retailers", p: "Birla offering 30/60/90 day EMI on bulk orders. Two retailers have already signed up. Particularly attractive to declining retailers with working-capital pressure." },
-                  { h: "Asian Paints is locking-in retailers with Putty SKUs by bundling with Paints", p: "Sudden spike in Asian Paints Putty SKUs in Pimpri Chinchwad. Retailers are getting attractive schemes on Paints only if they buy bundled Putty purchases above 50 bags. Our retailers report this is changing their decision on monthly putty orders." },
+                  { h: "Asian Paints is locking-in retailers with Primer SKUs by bundling with Paints", p: "Sudden spike in Asian Paints Primer SKUs in Pimpri Chinchwad. Retailers are getting attractive schemes on Paints only if they buy bundled Primer purchases above 50 units. Our retailers report this is changing their decision on monthly primer orders." },
                 ],
               },
               {
                 num: 2, title: "Product Quality",
                 items: [
-                  { h: "Retailers pull back on JK Putty orders over packaging concerns", p: "Ahead of the monsoon season, retailers are signaling reluctance to stock JK Putty due to ongoing packaging issues. They report that the product's single-layer packaging fails to withstand high moisture levels during the monsoon, leading to rapid deterioration in quality and rendering the product unusable." },
-                  { h: "[Positive Feedback] JK Paint Users Happy with Shade Consistencies – This can be part of core value proposition / campaigns", p: "Painters are highlighting consistent coverage and zero shade variation in JK Paint products. This is leading to optimal material consumption & even finish, especially on larger surfaces. This can be part of our core value proposition – or ad campaigns." },
+                  { h: "Retailers pull back on our Primer orders over packaging concerns", p: "Ahead of the monsoon season, retailers are signaling reluctance to stock our Primer due to ongoing packaging issues. They report that the product's single-layer packaging fails to withstand high moisture levels during the monsoon, leading to rapid deterioration in quality and rendering the product unusable." },
+                  { h: "[Positive Feedback] Our Paint Users Happy with Shade Consistencies – This can be part of core value proposition / campaigns", p: "Painters are highlighting consistent coverage and zero shade variation in our paint products. This is leading to optimal material consumption & even finish, especially on larger surfaces. This can be part of our core value proposition – or ad campaigns." },
                 ],
               },
               {
                 num: 3, title: "Schemes Related",
                 items: [
-                  { h: "Retailers are asking for simpler retailer scheme structures (instead of multi-tier incentive mechanisms)", p: "Retailers are preferring schemes that are simple with less complex tier-structures (instead of complex-schemes with which run into multiple pages — for e.g. Retailers say JK's 4-tier slab + bonus SKU structure is hard to explain to contractors." },
+                  { h: "Retailers are asking for simpler retailer scheme structures (instead of multi-tier incentive mechanisms)", p: "Retailers are preferring schemes that are simple with less complex tier-structures (instead of complex-schemes with which run into multiple pages — for e.g. Retailers say our 4-tier slab + bonus SKU structure is hard to explain to contractors." },
                   { h: "Mid-tier retailers want better schemes", p: "Majority (i.e. mid-tier) retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers." },
                 ],
               },
               {
                 num: 4, title: "Contractor Related",
                 items: [
-                  { h: "Many Contractors in Pune are using JK Putty finish for 'premium interior repaint jobs' — (other locations can also leverage this insight)", p: "Contractors report choosing JK Putty more often in repainting of premium flats and bungalows where homeowners are sensitive to wall feel and lighting appearance. Helps them achieve a cleaner final paint finish with fewer visible surface marks." },
+                  { h: "Many Contractors in Pune are switching to our Primer for 'premium interior repaint jobs' — (other locations can also leverage this insight)", p: "Contractors report choosing our Primer more often in repainting of premium flats and bungalows where homeowners are sensitive to wall feel and lighting appearance. Helps them achieve a cleaner final paint finish with fewer visible surface marks." },
                   { h: "Contractor buying behaviour: smaller, more frequent orders", p: "Contractors are placing 2–3 smaller orders per month instead of one large one. Driven by cash-flow caution. Affects our minimum-order incentives." },
                 ],
               },
@@ -462,13 +462,13 @@ const AsmDashboardNew = () => {
                 items: [
                   { q: "Competitor schemes are more visible and frequent.", e: "Retailers feel other brands are more active with scratch cards, gifts, or painter rewards." },
                   { q: "Customers recognize competitor paint shades faster.", e: "Strong tinting/touchpoint presence from larger paint brands." },
-                  { q: "Competitors are doing more painter meets and site activities.", e: "Retailers feel JK's activation has become weak compared to others." },
+                  { q: "Competitors are doing more painter meets and site activities.", e: "Retailers feel our activation has become weak compared to others." },
                 ],
               },
               {
                 cat: "Product-quality related", color: PALETTE.red.bar,
                 items: [
-                  { q: "Retailers feel product consistency changes batch-to-batch.", e: "Especially around workability, smoothness, or drying behavior in putty." },
+                  { q: "Retailers feel product consistency changes batch-to-batch.", e: "Especially around workability, smoothness, or drying behavior in the primer." },
                 ],
               },
               {

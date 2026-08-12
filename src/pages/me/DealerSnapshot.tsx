@@ -50,7 +50,7 @@ const engagementHistory = [
 const getProfileDetails = (dealer: typeof dealers[0]) => ({
   joiningDate: "Jan 2014",
   revenue: revenueLabelMap[dealer.revenueCategory],
-  productsHandled: ["Interior Paints", "Exterior Paints", "Putty", "Waterproofing Solutions"],
+  productsHandled: ["Interior Paints", "Exterior Paints", "Primers", "Waterproofing Solutions"],
   totalEngagements: 3,
   dimensions: {
     alignmentToBrand: dealer.type === "loyal" ? 82 : dealer.type === "new" ? 45 : dealer.type === "declining" ? 28 : 15,
