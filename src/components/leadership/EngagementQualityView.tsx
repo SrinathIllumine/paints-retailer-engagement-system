@@ -10,7 +10,14 @@ import {
   STATE_DISTRICT_GEO,
   type MarketReport,
 } from "@/data/leadershipReports";
-import { geometryToPath, makeProjector, type GeoGeometry, type GeoBounds } from "@/lib/geoProjection";
+import {
+  geometryToPath,
+  geometryLabelPlacement,
+  makeProjector,
+  wrapLabel,
+  type GeoGeometry,
+  type GeoBounds,
+} from "@/lib/geoProjection";
 import MarketPopup from "./MarketPopup";
 
 const VIEW_W = 700;
@@ -65,33 +72,104 @@ const scoreColor = (score: number) => (score >= 7 ? PALETTE.green : score >= 5 ?
 
 const engagementByState = new Map(stateEngagement.map((s) => [s.state, s]));
 
+const LABEL_MIN_FONT = 4.5;
+const LABEL_MAX_FONT = 14;
+const LABEL_K = 0.15;
+const LABEL_MAX_LINES = 3;
+
+const labelFontSize = (area: number) => Math.max(LABEL_MIN_FONT, Math.min(LABEL_MAX_FONT, LABEL_K * Math.sqrt(area)));
+
 interface GeoFeature {
   type: "Feature";
   properties: Record<string, string>;
   geometry: GeoGeometry;
 }
 
+interface MapPath {
+  key: string;
+  name: string;
+  d: string;
+  labelX: number;
+  labelY: number;
+  fontSize: number;
+  lines: string[];
+  fill: string;
+  clickable: boolean;
+}
+
+const buildPaths = (
+  features: GeoFeature[],
+  project: ReturnType<typeof makeProjector>,
+  nameOf: (f: GeoFeature) => string,
+  keyOf: (f: GeoFeature, i: number) => string,
+  scoreOf: (name: string) => number | undefined,
+): MapPath[] =>
+  features.map((f, i) => {
+    const name = nameOf(f);
+    const placement = geometryLabelPlacement(f.geometry, project);
+    const fontSize = labelFontSize(placement.width * placement.height);
+    const lines = wrapLabel(name, placement.width * 0.86, fontSize).slice(0, LABEL_MAX_LINES);
+    const score = scoreOf(name);
+    return {
+      key: keyOf(f, i),
+      name,
+      d: geometryToPath(f.geometry, project),
+      labelX: placement.x,
+      labelY: placement.y,
+      fontSize,
+      lines,
+      fill: score !== undefined ? scoreColor(score) : PALETTE.muted,
+      clickable: score !== undefined,
+    };
+  });
+
 const LegendDot = ({ color, label }: { color: string; label: string }) => (
   <span className="inline-flex items-center gap-1.5">
-    <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: color }} />
+    <span className="w-3 h-3 rounded-sm shrink-0" style={{ background: color }} />
     <span>{label}</span>
   </span>
 );
+
+const MapLabel = ({ p }: { p: MapPath }) => {
+  const lineHeight = p.fontSize * 1.15;
+  const startDy = -((p.lines.length - 1) / 2) * lineHeight;
+  return (
+    <text
+      x={p.labelX}
+      y={p.labelY}
+      textAnchor="middle"
+      dominantBaseline="middle"
+      fontSize={p.fontSize}
+      fill="#14202b"
+      stroke="#ffffff"
+      strokeWidth={Math.max(0.4, p.fontSize * 0.14)}
+      paintOrder="stroke fill"
+      style={{ pointerEvents: "none", fontWeight: 600 }}
+    >
+      {p.lines.map((line, i) => (
+        <tspan key={i} x={p.labelX} dy={i === 0 ? startDy : lineHeight}>
+          {line}
+        </tspan>
+      ))}
+    </text>
+  );
+};
 
 const EngagementQualityView = () => {
   const [activeState, setActiveState] = useState<string | null>(null); // null = India view
   const [selectedMarket, setSelectedMarket] = useState<MarketReport | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; label: string } | null>(null);
   const [query, setQuery] = useState("");
 
   const indiaPaths = useMemo(() => {
     const project = makeProjector(INDIA_BOUNDS, VIEW_W, VIEW_H);
-    return (indiaGeo as { features: GeoFeature[] }).features.map((f) => ({
-      key: f.properties.name,
-      name: f.properties.name,
-      d: geometryToPath(f.geometry, project),
-    }));
+    return buildPaths(
+      (indiaGeo as { features: GeoFeature[] }).features,
+      project,
+      (f) => f.properties.name,
+      (f) => f.properties.name,
+      (name) => engagementByState.get(name)?.score,
+    );
   }, []);
 
   const districtPaths = useMemo(() => {
@@ -100,11 +178,13 @@ const EngagementQualityView = () => {
     const bounds = STATE_BOUNDS[activeState];
     if (!geo || !bounds) return [];
     const project = makeProjector(bounds, VIEW_W, VIEW_H);
-    return (geo.features as unknown as GeoFeature[]).map((f, i) => ({
-      key: `${f.properties.district}-${i}`,
-      name: f.properties.district,
-      d: geometryToPath(f.geometry, project),
-    }));
+    return buildPaths(
+      geo.features as unknown as GeoFeature[],
+      project,
+      (f) => f.properties.district,
+      (f, i) => `${f.properties.district}-${i}`,
+      (district) => getMarket(activeState, district)?.engagementQuality,
+    );
   }, [activeState]);
 
   const goToIndia = () => {
@@ -131,8 +211,10 @@ const EngagementQualityView = () => {
   const isMatch = (name: string) => q.length > 0 && name.toLowerCase().includes(q);
   const searching = q.length > 0;
 
+  const activePaths = activeState ? districtPaths : indiaPaths;
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <header>
         <p className="text-xs font-semibold uppercase tracking-wider text-primary">Engagement Quality</p>
         <h1 className="font-display text-2xl font-bold text-foreground">
@@ -181,79 +263,42 @@ const EngagementQualityView = () => {
         </div>
       </div>
 
-      <div className="bg-card border rounded-lg p-4 relative">
+      <div className="bg-card border rounded-lg p-3 relative" style={{ height: "min(64vh, 640px)" }}>
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-          className="w-full h-auto"
+          className="w-full h-full"
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={activeState ? `${activeState} district engagement quality map` : "India engagement quality map"}
         >
-          {!activeState
-            ? indiaPaths.map((p) => {
-                const s = engagementByState.get(p.name);
-                const fill = s ? scoreColor(s.score) : PALETTE.muted;
-                const clickable = !!s;
-                const matched = isMatch(p.name);
-                return (
-                  <path
-                    key={p.key}
-                    d={p.d}
-                    fill={fill}
-                    fillRule="evenodd"
-                    stroke={searching && matched ? "#111827" : "#fff"}
-                    strokeWidth={searching && matched ? 2 : 0.6}
-                    opacity={searching ? (matched ? 1 : 0.2) : hovered === p.name && clickable ? 0.78 : 1}
-                    onClick={() => handleStateClick(p.name)}
-                    onMouseEnter={() => setHovered(p.name)}
-                    onMouseMove={(e) => setTooltip({ x: e.clientX, y: e.clientY, label: p.name })}
-                    onMouseLeave={() => {
-                      setHovered(null);
-                      setTooltip(null);
-                    }}
-                    style={{ cursor: clickable ? "pointer" : "default" }}
-                  />
-                );
-              })
-            : districtPaths.map((p) => {
-                const market = getMarket(activeState, p.name);
-                const fill = market ? scoreColor(market.engagementQuality) : PALETTE.muted;
-                const matched = isMatch(p.name);
-                return (
-                  <path
-                    key={p.key}
-                    d={p.d}
-                    fill={fill}
-                    fillRule="evenodd"
-                    stroke={searching && matched ? "#111827" : "#fff"}
-                    strokeWidth={searching && matched ? 2 : 0.6}
-                    opacity={searching ? (matched ? 1 : 0.2) : hovered === p.key ? 0.78 : 1}
-                    onClick={() => handleDistrictClick(p.name)}
-                    onMouseEnter={() => setHovered(p.key)}
-                    onMouseMove={(e) => setTooltip({ x: e.clientX, y: e.clientY, label: p.name })}
-                    onMouseLeave={() => {
-                      setHovered(null);
-                      setTooltip(null);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  />
-                );
-              })}
+          {activePaths.map((p) => {
+            const matched = isMatch(p.name);
+            const dimmed = searching && !matched;
+            return (
+              <g key={p.key} opacity={dimmed ? 0.2 : 1}>
+                <path
+                  d={p.d}
+                  fill={p.fill}
+                  fillRule="evenodd"
+                  stroke={searching && matched ? "#111827" : "#fff"}
+                  strokeWidth={searching && matched ? 2 : 0.6}
+                  opacity={!searching && hovered === p.key && p.clickable ? 0.78 : 1}
+                  onClick={() => (activeState ? handleDistrictClick(p.name) : handleStateClick(p.name))}
+                  onMouseEnter={() => setHovered(p.key)}
+                  onMouseLeave={() => setHovered(null)}
+                  style={{ cursor: p.clickable ? "pointer" : "default" }}
+                />
+                <MapLabel p={p} />
+              </g>
+            );
+          })}
         </svg>
-      </div>
 
-      {tooltip && (
-        <div
-          className="fixed z-50 pointer-events-none rounded-md bg-foreground text-background text-[11px] font-medium px-2 py-1 shadow-lg"
-          style={{ left: tooltip.x + 14, top: tooltip.y + 14 }}
-        >
-          {tooltip.label}
+        <div className="absolute top-4 right-4 bg-card/95 backdrop-blur-sm border rounded-lg shadow-sm px-3.5 py-2.5 space-y-1.5 text-sm font-medium text-foreground">
+          <LegendDot color={PALETTE.green} label="High engagement (7–10)" />
+          <LegendDot color={PALETTE.orange} label="Moderate (5–6.9)" />
+          <LegendDot color={PALETTE.red} label="Needs attention (below 5)" />
         </div>
-      )}
-
-      <div className="flex items-center gap-4 text-[12px] text-muted-foreground flex-wrap">
-        <LegendDot color={PALETTE.green} label="High engagement (7–10)" />
-        <LegendDot color={PALETTE.orange} label="Moderate (5–6.9)" />
-        <LegendDot color={PALETTE.red} label="Needs attention (below 5)" />
       </div>
 
       <Dialog open={!!selectedMarket} onOpenChange={(open) => !open && setSelectedMarket(null)}>

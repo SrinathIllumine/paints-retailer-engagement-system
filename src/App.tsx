@@ -13,6 +13,7 @@ import VisitNotes from "./pages/me/VisitNotes.tsx";
 import VisitComplete from "./pages/me/VisitComplete.tsx";
 import VisitSummary from "./pages/me/VisitSummary.tsx";
 import MyDashboard from "./pages/me/MyDashboard.tsx";
+import MeProfile from "./pages/me/MeProfile.tsx";
 import Dashboard from "./pages/leadership/Dashboard.tsx";
 import Objections from "./pages/leadership/Objections.tsx";
 import Insights from "./pages/leadership/Insights.tsx";
@@ -20,7 +21,6 @@ import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
 import ASMObjections from "./pages/asm/ASMObjections.tsx";
 import ASMLeaderboard from "./pages/asm/ASMLeaderboard.tsx";
 import ASMInsights from "./pages/asm/ASMInsights.tsx";
-import AsmDashboardNew from "./pages/AsmDashboardNew.tsx";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +40,7 @@ const App = () => (
           <Route path="/me/complete/:id" element={<VisitComplete />} />
           <Route path="/me/visit-summary/:id" element={<VisitSummary />} />
           <Route path="/me/dashboard" element={<MyDashboard />} />
+          <Route path="/me/profile" element={<MeProfile />} />
           <Route path="/leadership" element={<Dashboard />} />
           <Route path="/leadership/objections" element={<Objections />} />
           <Route path="/leadership/insights" element={<Insights />} />
@@ -49,8 +50,6 @@ const App = () => (
           <Route path="/asm/retailers" element={<ASMLeaderboard />} />
           <Route path="/asm/insights" element={<ASMInsights />} />
           {/* Backwards-compatible aliases */}
-          <Route path="/asm-dashboard-new" element={<AsmDashboardNew />} />
-          
           <Route path="/asm/area-snapshot" element={<ASMDashboard />} />
           <Route path="/asm/weekly-snapshot" element={<ASMDashboard />} />
           <Route path="*" element={<NotFound />} />

@@ -480,7 +480,7 @@ export interface ObjectionSlice {
   color: string;
 }
 
-// Colors match the ASM Analytics App's PALETTE (see src/pages/AsmDashboardNew.tsx)
+// Colors match the ASM Analytics App's objection palette (see src/pages/asm/ASMObjections.tsx)
 export const objectionBreakdown: ObjectionSlice[] = [
   { name: "Competition Related", value: 45, color: "#1D9E75" },
   { name: "Product quality", value: 30, color: "#E24B4A" },

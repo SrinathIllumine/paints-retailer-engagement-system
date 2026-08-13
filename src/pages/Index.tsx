@@ -1,21 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Smartphone, Monitor, BarChart3, LayoutDashboard, Gauge } from "lucide-react";
+import { Smartphone, Monitor, BarChart3, UserCircle } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <div className="max-w-7xl w-full space-y-8 animate-slide-up">
+      <div className="max-w-4xl w-full space-y-8 animate-slide-up">
         <div className="text-center space-y-2">
           <p className="text-muted-foreground text-lg font-medium tracking-wide mb-1">Paints</p>
           <h1 className="font-display font-bold text-4xl text-foreground">Retailer Engagement System</h1>
           <p className="text-muted-foreground text-sm">Select your interface to continue</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/area")}>
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
@@ -23,15 +23,6 @@ const Index = () => {
             <h2 className="font-display font-bold text-xl text-foreground mb-1">ME App</h2>
             <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits...</p>
             <Button variant="field" className="w-full">Open ME App →</Button>
-          </Card>
-
-          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/dashboard")}>
-            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <Gauge className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
-            </div>
-            <h2 className="font-display font-bold text-xl text-foreground mb-1">ME Dashboard</h2>
-            <p className="text-sm text-muted-foreground mb-4">MEs can see an overview of their retailers' objections, market insights shared and the past engagements.</p>
-            <Button variant="outline" className="w-full">Open ME Dashboard →</Button>
           </Card>
 
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/asm")}>
@@ -56,13 +47,13 @@ const Index = () => {
             <Button variant="outline" className="w-full">Open Dashboard →</Button>
           </Card>
 
-          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/asm-dashboard-new")}>
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/profile")}>
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <LayoutDashboard className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
+              <UserCircle className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
             </div>
-            <h2 className="font-display font-bold text-xl text-foreground mb-1">ASM Dashboard (New)</h2>
-            <p className="text-sm text-muted-foreground mb-4">Redesigned ASM weekly view — KPIs, Engagement Unit pentagon, objections, market insights and daily reports.</p>
-            <Button variant="outline" className="w-full">Open New Dashboard →</Button>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">ME Profile</h2>
+            <p className="text-sm text-muted-foreground mb-4">MEs can see an overview of their retailers' objections, market insights shared and the past engagements.</p>
+            <Button variant="outline" className="w-full">Open ME Profile →</Button>
           </Card>
         </div>
       </div>
