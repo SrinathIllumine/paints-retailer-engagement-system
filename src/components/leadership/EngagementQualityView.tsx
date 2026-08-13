@@ -14,6 +14,7 @@ import {
   geometryToPath,
   geometryLabelPlacement,
   makeProjector,
+  resolveLabelCollisions,
   wrapLabel,
   type GeoGeometry,
   type GeoBounds,
@@ -103,8 +104,8 @@ const buildPaths = (
   keyOf: (f: GeoFeature, i: number) => string,
   scoreOf: (name: string) => number | undefined,
   fontSize: number,
-): MapPath[] =>
-  features.map((f, i) => {
+): MapPath[] => {
+  const paths = features.map((f, i) => {
     const name = nameOf(f);
     const placement = geometryLabelPlacement(f.geometry, project);
     const lines = wrapLabel(name, Math.max(placement.width * 0.86, fontSize * 3), fontSize).slice(0, LABEL_MAX_LINES);
@@ -122,6 +123,22 @@ const buildPaths = (
     };
   });
 
+  // Nudge overlapping labels apart so two neighboring regions' names never sit on top of each other.
+  const boxes = paths.map((p) => ({
+    key: p.key,
+    x: p.labelX,
+    y: p.labelY,
+    width: Math.max(...p.lines.map((l) => l.length), 1) * p.fontSize * 0.56,
+    height: p.lines.length * p.fontSize * 1.15,
+  }));
+  resolveLabelCollisions(boxes);
+  const adjusted = new Map(boxes.map((b) => [b.key, b]));
+  return paths.map((p) => {
+    const box = adjusted.get(p.key);
+    return box ? { ...p, labelX: box.x, labelY: box.y } : p;
+  });
+};
+
 const LegendDot = ({ color, label }: { color: string; label: string }) => (
   <span className="inline-flex items-center gap-1.5">
     <span className="w-3 h-3 rounded-sm shrink-0" style={{ background: color }} />
@@ -129,7 +146,7 @@ const LegendDot = ({ color, label }: { color: string; label: string }) => (
   </span>
 );
 
-const MapLabel = ({ p }: { p: MapPath }) => {
+const MapLabel = ({ p, opacity = 1 }: { p: MapPath; opacity?: number }) => {
   const lineHeight = p.fontSize * 1.15;
   const startDy = -((p.lines.length - 1) / 2) * lineHeight;
   return (
@@ -143,6 +160,7 @@ const MapLabel = ({ p }: { p: MapPath }) => {
       stroke="#ffffff"
       strokeWidth={Math.max(0.4, p.fontSize * 0.14)}
       paintOrder="stroke fill"
+      opacity={opacity}
       style={{ pointerEvents: "none", fontWeight: 600 }}
     >
       {p.lines.map((line, i) => (
@@ -280,27 +298,36 @@ const EngagementQualityView = () => {
           role="img"
           aria-label={activeState ? `${activeState} district engagement quality map` : "India engagement quality map"}
         >
-          {activePaths.map((p) => {
-            const matched = isMatch(p.name);
-            const dimmed = searching && !matched;
-            return (
-              <g key={p.key} opacity={dimmed ? 0.2 : 1}>
+          {/* All region fills render first, then every label is drawn in a second pass on top —
+              so a neighboring region's fill can never visually cover another region's name. */}
+          <g>
+            {activePaths.map((p) => {
+              const matched = isMatch(p.name);
+              const dimmed = searching && !matched;
+              return (
                 <path
+                  key={p.key}
                   d={p.d}
                   fill={p.fill}
                   fillRule="evenodd"
                   stroke={searching && matched ? "#111827" : "#fff"}
                   strokeWidth={searching && matched ? 2 : 0.6}
-                  opacity={!searching && hovered === p.key && p.clickable ? 0.78 : 1}
+                  opacity={dimmed ? 0.2 : !searching && hovered === p.key && p.clickable ? 0.78 : 1}
                   onClick={() => (activeState ? handleDistrictClick(p.name) : handleStateClick(p.name))}
                   onMouseEnter={() => setHovered(p.key)}
                   onMouseLeave={() => setHovered(null)}
                   style={{ cursor: p.clickable ? "pointer" : "default" }}
                 />
-                <MapLabel p={p} />
-              </g>
-            );
-          })}
+              );
+            })}
+          </g>
+          <g>
+            {activePaths.map((p) => {
+              const matched = isMatch(p.name);
+              const dimmed = searching && !matched;
+              return <MapLabel key={p.key} p={p} opacity={dimmed ? 0.35 : 1} />;
+            })}
+          </g>
         </svg>
       </div>
 

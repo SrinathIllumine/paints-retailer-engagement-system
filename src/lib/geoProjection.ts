@@ -155,3 +155,67 @@ export const wrapLabel = (text: string, maxWidth: number, fontSize: number): str
   if (current) lines.push(current);
   return lines;
 };
+
+export interface LabelBox {
+  key: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Nudges overlapping label boxes apart (in place) using a simple iterative
+ * force-separation pass, so two neighboring regions' names never sit on top
+ * of each other. Movement per label is capped at `maxDrift` so a label
+ * doesn't wander away from its own region while resolving a crowded cluster.
+ */
+export const resolveLabelCollisions = <T extends LabelBox>(
+  boxes: T[],
+  padding = 1.5,
+  maxDrift = 9,
+  iterations = 60,
+): T[] => {
+  const anchors = boxes.map((b) => ({ x: b.x, y: b.y }));
+
+  for (let iter = 0; iter < iterations; iter++) {
+    let moved = false;
+    for (let i = 0; i < boxes.length; i++) {
+      for (let j = i + 1; j < boxes.length; j++) {
+        const a = boxes[i];
+        const b = boxes[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const overlapX = (a.width + b.width) / 2 + padding - Math.abs(dx);
+        const overlapY = (a.height + b.height) / 2 + padding - Math.abs(dy);
+        if (overlapX > 0 && overlapY > 0) {
+          moved = true;
+          if (overlapX < overlapY) {
+            const push = (overlapX / 2) * (dx < 0 ? -1 : 1);
+            a.x -= push;
+            b.x += push;
+          } else {
+            const push = (overlapY / 2) * (dy < 0 ? -1 : 1);
+            a.y -= push;
+            b.y += push;
+          }
+        }
+      }
+    }
+    if (!moved) break;
+  }
+
+  boxes.forEach((b, i) => {
+    const anchor = anchors[i];
+    const dx = b.x - anchor.x;
+    const dy = b.y - anchor.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist > maxDrift) {
+      const scale = maxDrift / dist;
+      b.x = anchor.x + dx * scale;
+      b.y = anchor.y + dy * scale;
+    }
+  });
+
+  return boxes;
+};
