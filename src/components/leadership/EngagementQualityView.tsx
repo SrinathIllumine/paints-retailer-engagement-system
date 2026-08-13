@@ -1,11 +1,18 @@
 import { useMemo, useState } from "react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { ChevronLeft } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import indiaGeo from "@/data/geo/india-states.json";
 import maharashtraGeo from "@/data/geo/maharashtra-districts.json";
 import { getMarketByDistrict, stateEngagement, type MarketReport } from "@/data/leadershipReports";
+import { geometryToPath, makeProjector, type GeoGeometry } from "@/lib/geoProjection";
 import MarketPopup from "./MarketPopup";
+
+const VIEW_W = 700;
+const VIEW_H = 520;
+
+// Real-world lon/lat extents (computed from the source GeoJSON), used to fit each map into the viewBox.
+const INDIA_BOUNDS = { minLon: 67.8, maxLon: 97.7, minLat: 6.5, maxLat: 37.3 };
+const MAHARASHTRA_BOUNDS = { minLon: 72.4, maxLon: 81.1, minLat: 15.4, maxLat: 22.3 };
 
 const PALETTE = { green: "#1D9E75", orange: "#EF9F27", red: "#E24B4A", muted: "#E2E4E8" };
 
@@ -13,11 +20,11 @@ const scoreColor = (score: number) => (score >= 7 ? PALETTE.green : score >= 5 ?
 
 const engagementByState = new Map(stateEngagement.map((s) => [s.state, s]));
 
-const geographyStyle = (fill: string, clickable: boolean) => ({
-  default: { fill, stroke: "#fff", strokeWidth: 0.6, outline: "none", cursor: clickable ? "pointer" : "default" },
-  hover: { fill, opacity: clickable ? 0.78 : 1, stroke: "#fff", strokeWidth: 0.6, outline: "none", cursor: clickable ? "pointer" : "default" },
-  pressed: { fill, opacity: 0.65, stroke: "#fff", strokeWidth: 0.6, outline: "none" },
-});
+interface GeoFeature {
+  type: "Feature";
+  properties: Record<string, string>;
+  geometry: GeoGeometry;
+}
 
 const stateMarket = (name: string): MarketReport | null => {
   const s = engagementByState.get(name);
@@ -49,6 +56,25 @@ const LegendDot = ({ color, label }: { color: string; label: string }) => (
 const EngagementQualityView = () => {
   const [view, setView] = useState<"india" | "maharashtra">("india");
   const [selectedMarket, setSelectedMarket] = useState<MarketReport | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const indiaPaths = useMemo(() => {
+    const project = makeProjector(INDIA_BOUNDS, VIEW_W, VIEW_H);
+    return (indiaGeo as { features: GeoFeature[] }).features.map((f) => ({
+      key: f.properties.name,
+      name: f.properties.name,
+      d: geometryToPath(f.geometry, project),
+    }));
+  }, []);
+
+  const maharashtraPaths = useMemo(() => {
+    const project = makeProjector(MAHARASHTRA_BOUNDS, VIEW_W, VIEW_H);
+    return (maharashtraGeo as { features: GeoFeature[] }).features.map((f) => ({
+      key: f.properties.district,
+      name: f.properties.district,
+      d: geometryToPath(f.geometry, project),
+    }));
+  }, []);
 
   const handleStateClick = (name: string) => {
     if (name === "Maharashtra") {
@@ -64,7 +90,7 @@ const EngagementQualityView = () => {
     if (market) setSelectedMarket(market);
   };
 
-  const highlightedDistrict = useMemo(() => "Pune", []);
+  const highlightedDistrict = "Pune";
 
   return (
     <div className="space-y-4">
@@ -91,59 +117,48 @@ const EngagementQualityView = () => {
       )}
 
       <div className="bg-card border rounded-lg p-4">
-        {view === "india" ? (
-          <ComposableMap
-            projection="geoMercator"
-            projectionConfig={{ scale: 950, center: [82, 22.5] }}
-            width={700}
-            height={520}
-            style={{ width: "100%", height: "auto" }}
-          >
-            <Geographies geography={indiaGeo}>
-              {({ geographies }) =>
-                geographies.map((geo) => {
-                  const name: string = geo.properties.name;
-                  const s = engagementByState.get(name);
-                  const fill = s ? scoreColor(s.score) : PALETTE.muted;
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      onClick={() => handleStateClick(name)}
-                      style={geographyStyle(fill, !!s)}
-                    />
-                  );
-                })
-              }
-            </Geographies>
-          </ComposableMap>
-        ) : (
-          <ComposableMap
-            projection="geoMercator"
-            projectionConfig={{ scale: 4200, center: [76.6, 19.0] }}
-            width={700}
-            height={520}
-            style={{ width: "100%", height: "auto" }}
-          >
-            <Geographies geography={maharashtraGeo}>
-              {({ geographies }) =>
-                geographies.map((geo) => {
-                  const district: string = geo.properties.district;
-                  const market = getMarketByDistrict(district);
-                  const fill = market ? scoreColor(market.engagementQuality) : PALETTE.muted;
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      onClick={() => handleDistrictClick(district)}
-                      style={geographyStyle(fill, !!market)}
-                    />
-                  );
-                })
-              }
-            </Geographies>
-          </ComposableMap>
-        )}
+        <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} className="w-full h-auto" role="img" aria-label={view === "india" ? "India engagement quality map" : "Maharashtra district engagement quality map"}>
+          {view === "india"
+            ? indiaPaths.map((p) => {
+                const s = engagementByState.get(p.name);
+                const fill = s ? scoreColor(s.score) : PALETTE.muted;
+                const clickable = !!s;
+                return (
+                  <path
+                    key={p.key}
+                    d={p.d}
+                    fill={fill}
+                    fillRule="evenodd"
+                    stroke="#fff"
+                    strokeWidth={0.6}
+                    opacity={hovered === p.name && clickable ? 0.78 : 1}
+                    onClick={() => handleStateClick(p.name)}
+                    onMouseEnter={() => clickable && setHovered(p.name)}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{ cursor: clickable ? "pointer" : "default" }}
+                  />
+                );
+              })
+            : maharashtraPaths.map((p) => {
+                const market = getMarketByDistrict(p.name);
+                const fill = market ? scoreColor(market.engagementQuality) : PALETTE.muted;
+                return (
+                  <path
+                    key={p.key}
+                    d={p.d}
+                    fill={fill}
+                    fillRule="evenodd"
+                    stroke="#fff"
+                    strokeWidth={0.6}
+                    opacity={hovered === p.name ? 0.78 : 1}
+                    onClick={() => handleDistrictClick(p.name)}
+                    onMouseEnter={() => setHovered(p.name)}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{ cursor: "pointer" }}
+                  />
+                );
+              })}
+        </svg>
       </div>
 
       <div className="flex items-center gap-4 text-[12px] text-muted-foreground flex-wrap">
