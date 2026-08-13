@@ -72,12 +72,11 @@ const scoreColor = (score: number) => (score >= 7 ? PALETTE.green : score >= 5 ?
 
 const engagementByState = new Map(stateEngagement.map((s) => [s.state, s]));
 
-const LABEL_MIN_FONT = 4.5;
-const LABEL_MAX_FONT = 14;
-const LABEL_K = 0.15;
+// A single fixed font size per view keeps every label visually consistent —
+// deliberately not scaled per-region, so a tiny UT and a huge state read the same.
+const STATE_LABEL_FONT = 7.5;
+const DISTRICT_LABEL_FONT = 6.5;
 const LABEL_MAX_LINES = 3;
-
-const labelFontSize = (area: number) => Math.max(LABEL_MIN_FONT, Math.min(LABEL_MAX_FONT, LABEL_K * Math.sqrt(area)));
 
 interface GeoFeature {
   type: "Feature";
@@ -103,12 +102,12 @@ const buildPaths = (
   nameOf: (f: GeoFeature) => string,
   keyOf: (f: GeoFeature, i: number) => string,
   scoreOf: (name: string) => number | undefined,
+  fontSize: number,
 ): MapPath[] =>
   features.map((f, i) => {
     const name = nameOf(f);
     const placement = geometryLabelPlacement(f.geometry, project);
-    const fontSize = labelFontSize(placement.width * placement.height);
-    const lines = wrapLabel(name, placement.width * 0.86, fontSize).slice(0, LABEL_MAX_LINES);
+    const lines = wrapLabel(name, Math.max(placement.width * 0.86, fontSize * 3), fontSize).slice(0, LABEL_MAX_LINES);
     const score = scoreOf(name);
     return {
       key: keyOf(f, i),
@@ -169,6 +168,7 @@ const EngagementQualityView = () => {
       (f) => f.properties.name,
       (f) => f.properties.name,
       (name) => engagementByState.get(name)?.score,
+      STATE_LABEL_FONT,
     );
   }, []);
 
@@ -184,6 +184,7 @@ const EngagementQualityView = () => {
       (f) => f.properties.district,
       (f, i) => `${f.properties.district}-${i}`,
       (district) => getMarket(activeState, district)?.engagementQuality,
+      DISTRICT_LABEL_FONT,
     );
   }, [activeState]);
 
@@ -263,7 +264,15 @@ const EngagementQualityView = () => {
         </div>
       </div>
 
-      <div className="bg-card border rounded-lg p-3 relative" style={{ height: "min(64vh, 640px)" }}>
+      <div className="flex justify-end">
+        <div className="flex items-center flex-wrap gap-x-5 gap-y-1.5 bg-card border rounded-lg shadow-sm px-4 py-2.5 text-sm font-medium text-foreground">
+          <LegendDot color={PALETTE.green} label="High engagement (7–10)" />
+          <LegendDot color={PALETTE.orange} label="Moderate (5–6.9)" />
+          <LegendDot color={PALETTE.red} label="Needs attention (below 5)" />
+        </div>
+      </div>
+
+      <div className="bg-card border rounded-lg p-3" style={{ height: "min(76vh, 780px)" }}>
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
           className="w-full h-full"
@@ -293,12 +302,6 @@ const EngagementQualityView = () => {
             );
           })}
         </svg>
-
-        <div className="absolute top-4 right-4 bg-card/95 backdrop-blur-sm border rounded-lg shadow-sm px-3.5 py-2.5 space-y-1.5 text-sm font-medium text-foreground">
-          <LegendDot color={PALETTE.green} label="High engagement (7–10)" />
-          <LegendDot color={PALETTE.orange} label="Moderate (5–6.9)" />
-          <LegendDot color={PALETTE.red} label="Needs attention (below 5)" />
-        </div>
       </div>
 
       <Dialog open={!!selectedMarket} onOpenChange={(open) => !open && setSelectedMarket(null)}>

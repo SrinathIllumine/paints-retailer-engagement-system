@@ -11,12 +11,36 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ArrowRight, LayoutDashboard, MapPin } from "lucide-react";
-import { dealers, discussionPoints } from "@/data/mockData";
+import { dealers } from "@/data/mockData";
 
 type NudgeKey = "engagement" | "objections" | "bestPractice";
 
 const newRetailers = dealers.filter((d) => d.type === "new");
-const pendingObjections = discussionPoints.flatMap((dp) => dp.objections);
+
+// Retailers with a pending objection, each paired with a response tailored to their specific situation
+// (rather than a generic FAQ) — drawn from their type and last-visit outcome.
+const pendingObjections = [
+  {
+    dealerId: "3", // Krishna Traders
+    objection: "Considering a competitor brand for better schemes",
+    response: "Highlight our current scheme edge and share a side-by-side comparison — most retailers reconsider once they see the full picture.",
+  },
+  {
+    dealerId: "4", // Gupta Paint House
+    objection: "Shop has gone inactive — reason unclear",
+    response: "Try an off-peak visit or a phone check-in first to understand if it's a temporary closure or a deeper issue before re-pitching.",
+  },
+  {
+    dealerId: "7", // Singh Building Centre
+    objection: "Feels under-served by ME visit frequency",
+    response: "Step up visit cadence for the next month and proactively share upcoming scheme changes — under-visited retailers respond well to a visible increase in attention.",
+  },
+  {
+    dealerId: "9", // Deshpande Hardware Stores
+    objection: "Cited service gaps in past engagements",
+    response: "Acknowledge the specific service gap first, then offer a concrete fix (faster delivery commitment, dedicated support contact) before reintroducing the product pitch.",
+  },
+].map((o) => ({ ...o, dealer: dealers.find((d) => d.id === o.dealerId) }));
 
 const nudges: { key: NudgeKey; label: string; quote: string; cta: string }[] = [
   {
@@ -46,8 +70,16 @@ const MeProfile = () => {
   return (
     <MeLayout title="ME Profile" showBack>
       <div className="p-4 space-y-4">
+        <Button
+          className="w-full bg-warning text-warning-foreground hover:bg-warning/90"
+          onClick={() => navigate("/me/dashboard")}
+        >
+          <LayoutDashboard className="w-4 h-4 mr-2" />
+          View my dashboard
+        </Button>
+
         <Card className="p-5">
-          <h2 className="font-display font-bold text-xl text-foreground">ME Nudges</h2>
+          <h2 className="font-display font-bold text-xl text-foreground">Your Nudges</h2>
           <p className="text-xs text-muted-foreground mt-0.5">For the current week</p>
 
           <div className="mt-4 divide-y divide-border">
@@ -66,11 +98,6 @@ const MeProfile = () => {
             ))}
           </div>
         </Card>
-
-        <Button className="w-full" variant="outline" onClick={() => navigate("/me/dashboard")}>
-          <LayoutDashboard className="w-4 h-4 mr-2" />
-          View my dashboard
-        </Button>
       </div>
 
       {/* Engagement Nudge popup */}
@@ -111,13 +138,25 @@ const MeProfile = () => {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>How to respond</DialogTitle>
-            <DialogDescription>Suggested responses to common pending objections</DialogDescription>
+            <DialogDescription>Retailers with a pending objection, and how to approach each one</DialogDescription>
           </DialogHeader>
           <div className="max-h-[60vh] overflow-auto space-y-3 pr-1">
             {pendingObjections.map((o) => (
-              <div key={o.id} className="pl-3 border-l-2 border-primary/40">
-                <p className="text-sm font-medium text-foreground leading-snug">“{o.label}”</p>
-                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{o.response}</p>
+              <div key={o.dealerId} className="rounded-lg border border-border p-3">
+                <p className="text-sm font-medium text-foreground">{o.dealer?.name}</p>
+                <p className="text-xs text-foreground/85 leading-snug mt-1">“{o.objection}”</p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-1">{o.response}</p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="mt-2 h-7 text-xs"
+                  onClick={() => {
+                    setOpenNudge(null);
+                    navigate(`/me/dealer/${o.dealerId}`);
+                  }}
+                >
+                  Engage →
+                </Button>
               </div>
             ))}
           </div>
