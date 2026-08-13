@@ -8,14 +8,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <div className="max-w-4xl w-full space-y-8 animate-slide-up">
+      <div className="max-w-7xl w-full space-y-8 animate-slide-up">
         <div className="text-center space-y-2">
           <p className="text-muted-foreground text-lg font-medium tracking-wide mb-1">Paints</p>
           <h1 className="font-display font-bold text-4xl text-foreground">Retailer Engagement System</h1>
           <p className="text-muted-foreground text-sm">Select your interface to continue</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/area")}>
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               <Smartphone className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
