@@ -14,17 +14,95 @@ import telanganaGeo from "./geo/districts/telangana.json";
 import punjabGeo from "./geo/districts/punjab.json";
 import biharGeo from "./geo/districts/bihar.json";
 import odishaGeo from "./geo/districts/odisha.json";
+import andamanNicobarGeo from "./geo/districts/andaman-and-nicobar.json";
+import andhraPradeshGeo from "./geo/districts/andhra-pradesh.json";
+import arunachalPradeshGeo from "./geo/districts/arunachal-pradesh.json";
+import assamGeo from "./geo/districts/assam.json";
+import chandigarhGeo from "./geo/districts/chandigarh.json";
+import chhattisgarhGeo from "./geo/districts/chhattisgarh.json";
+import dadraNagarHaveliGeo from "./geo/districts/dadra-and-nagar-haveli.json";
+import damanDiuGeo from "./geo/districts/daman-and-diu.json";
+import delhiGeo from "./geo/districts/delhi.json";
+import goaGeo from "./geo/districts/goa.json";
+import haryanaGeo from "./geo/districts/haryana.json";
+import himachalPradeshGeo from "./geo/districts/himachal-pradesh.json";
+import jammuKashmirGeo from "./geo/districts/jammu-and-kashmir.json";
+import jharkhandGeo from "./geo/districts/jharkhand.json";
+import keralaGeo from "./geo/districts/kerala.json";
+import ladakhGeo from "./geo/districts/ladakh.json";
+import lakshadweepGeo from "./geo/districts/lakshadweep.json";
+import manipurGeo from "./geo/districts/manipur.json";
+import meghalayaGeo from "./geo/districts/meghalaya.json";
+import mizoramGeo from "./geo/districts/mizoram.json";
+import nagalandGeo from "./geo/districts/nagaland.json";
+import puducherryGeo from "./geo/districts/puducherry.json";
+import sikkimGeo from "./geo/districts/sikkim.json";
+import tripuraGeo from "./geo/districts/tripura.json";
+import uttarakhandGeo from "./geo/districts/uttarakhand.json";
+
+interface DistrictGeoJSON {
+  features: { properties: { district: string } }[];
+}
+
+// Keyed by the same state names used in `src/data/geo/india-states.json`. Covers every state/UT.
+export const STATE_DISTRICT_GEO: Record<string, DistrictGeoJSON> = {
+  Maharashtra: maharashtraGeo as DistrictGeoJSON,
+  Gujarat: gujaratGeo as DistrictGeoJSON,
+  Rajasthan: rajasthanGeo as DistrictGeoJSON,
+  Karnataka: karnatakaGeo as DistrictGeoJSON,
+  "Tamil Nadu": tamilNaduGeo as DistrictGeoJSON,
+  "Uttar Pradesh": uttarPradeshGeo as DistrictGeoJSON,
+  "Madhya Pradesh": madhyaPradeshGeo as DistrictGeoJSON,
+  "West Bengal": westBengalGeo as DistrictGeoJSON,
+  Telangana: telanganaGeo as DistrictGeoJSON,
+  Punjab: punjabGeo as DistrictGeoJSON,
+  Bihar: biharGeo as DistrictGeoJSON,
+  Odisha: odishaGeo as DistrictGeoJSON,
+  "Andaman & Nicobar": andamanNicobarGeo as DistrictGeoJSON,
+  "Andhra Pradesh": andhraPradeshGeo as DistrictGeoJSON,
+  "Arunachal Pradesh": arunachalPradeshGeo as DistrictGeoJSON,
+  Assam: assamGeo as DistrictGeoJSON,
+  Chandigarh: chandigarhGeo as DistrictGeoJSON,
+  Chhattisgarh: chhattisgarhGeo as DistrictGeoJSON,
+  "Dadra & Nagar Haveli": dadraNagarHaveliGeo as DistrictGeoJSON,
+  "Daman & Diu": damanDiuGeo as DistrictGeoJSON,
+  Delhi: delhiGeo as DistrictGeoJSON,
+  Goa: goaGeo as DistrictGeoJSON,
+  Haryana: haryanaGeo as DistrictGeoJSON,
+  "Himachal Pradesh": himachalPradeshGeo as DistrictGeoJSON,
+  "Jammu & Kashmir": jammuKashmirGeo as DistrictGeoJSON,
+  Jharkhand: jharkhandGeo as DistrictGeoJSON,
+  Kerala: keralaGeo as DistrictGeoJSON,
+  Ladakh: ladakhGeo as DistrictGeoJSON,
+  Lakshadweep: lakshadweepGeo as DistrictGeoJSON,
+  Manipur: manipurGeo as DistrictGeoJSON,
+  Meghalaya: meghalayaGeo as DistrictGeoJSON,
+  Mizoram: mizoramGeo as DistrictGeoJSON,
+  Nagaland: nagalandGeo as DistrictGeoJSON,
+  Puducherry: puducherryGeo as DistrictGeoJSON,
+  Sikkim: sikkimGeo as DistrictGeoJSON,
+  Tripura: tripuraGeo as DistrictGeoJSON,
+  Uttarakhand: uttarakhandGeo as DistrictGeoJSON,
+};
+
+/** All unique district names for a state, derived straight from its GeoJSON (source of truth — never hand-typed). */
+export const getStateDistricts = (state: string): string[] => {
+  const geo = STATE_DISTRICT_GEO[state];
+  if (!geo) return [];
+  return [...new Set(geo.features.map((f) => f.properties.district))];
+};
 
 // ---------- Tab 1: Engagement quality across markets ----------
 
 export interface StateEngagement {
-  state: string; // must match the `name` property in src/data/geo/india-states.json (Odisha is aliased from "Orissa" in the map component)
+  state: string; // must match the `name` property in src/data/geo/india-states.json
   score: number; // 0–10 engagement quality score
   retailersEngaged: number;
   totalRetailers: number;
 }
 
-export const stateEngagement: StateEngagement[] = [
+// Hand-curated scores for the states with the deepest retailer network.
+const curatedStateEngagement: StateEngagement[] = [
   { state: "Maharashtra", score: 7.8, retailersEngaged: 5760, totalRetailers: 7200 },
   { state: "Gujarat", score: 7.2, retailersEngaged: 4900, totalRetailers: 6400 },
   { state: "Rajasthan", score: 6.8, retailersEngaged: 4200, totalRetailers: 5600 },
@@ -39,32 +117,26 @@ export const stateEngagement: StateEngagement[] = [
   { state: "Odisha", score: 3.0, retailersEngaged: 1140, totalRetailers: 2300 },
 ];
 
-interface DistrictGeoJSON {
-  features: { properties: { district: string } }[];
-}
-
-// Keyed by the same state names used in `stateEngagement` above.
-export const STATE_DISTRICT_GEO: Record<string, DistrictGeoJSON> = {
-  Maharashtra: maharashtraGeo as DistrictGeoJSON,
-  Gujarat: gujaratGeo as DistrictGeoJSON,
-  Rajasthan: rajasthanGeo as DistrictGeoJSON,
-  Karnataka: karnatakaGeo as DistrictGeoJSON,
-  "Tamil Nadu": tamilNaduGeo as DistrictGeoJSON,
-  "Uttar Pradesh": uttarPradeshGeo as DistrictGeoJSON,
-  "Madhya Pradesh": madhyaPradeshGeo as DistrictGeoJSON,
-  "West Bengal": westBengalGeo as DistrictGeoJSON,
-  Telangana: telanganaGeo as DistrictGeoJSON,
-  Punjab: punjabGeo as DistrictGeoJSON,
-  Bihar: biharGeo as DistrictGeoJSON,
-  Odisha: odishaGeo as DistrictGeoJSON,
+const hashScore = (name: string, min: number, max: number) => {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return Math.round((min + ((h % 1000) / 1000) * (max - min)) * 10) / 10;
 };
 
-/** All unique district names for a state, derived straight from its GeoJSON (source of truth — never hand-typed). */
-export const getStateDistricts = (state: string): string[] => {
-  const geo = STATE_DISTRICT_GEO[state];
-  if (!geo) return [];
-  return [...new Set(geo.features.map((f) => f.properties.district))];
-};
+const curatedStateNames = new Set(curatedStateEngagement.map((s) => s.state));
+
+// Every remaining state/UT gets a deterministically generated (but stable) score,
+// so the whole country is covered — not just the states with a curated presence.
+const generatedStateEngagement: StateEngagement[] = Object.keys(STATE_DISTRICT_GEO)
+  .filter((state) => !curatedStateNames.has(state))
+  .map((state) => {
+    const score = hashScore(state, 2.5, 8.5);
+    const totalRetailers = Math.round(600 + hashScore(state + "t", 0, 2600));
+    const retailersEngaged = Math.round(totalRetailers * (score / 11));
+    return { state, score, retailersEngaged, totalRetailers };
+  });
+
+export const stateEngagement: StateEngagement[] = [...curatedStateEngagement, ...generatedStateEngagement];
 
 export interface MarketReport {
   state: string;
@@ -339,12 +411,6 @@ const suggestionVariants = [
   "Retailers want more frequent ME visits and clearer communication on upcoming scheme changes.",
 ];
 
-const hashScore = (name: string, min: number, max: number) => {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
-  return Math.round((min + ((h % 1000) / 1000) * (max - min)) * 10) / 10;
-};
-
 const handAuthoredKey = (state: string, district: string) => `${state}|${district}`;
 const handAuthoredSet = new Set(handAuthoredMarkets.map((m) => handAuthoredKey(m.state, m.district)));
 
@@ -376,59 +442,34 @@ export const getMarket = (state: string, district: string): MarketReport | undef
 
 // ---------- Tab 2: Repeated insights across markets ----------
 
-export interface InsightItem {
+export const insightCategories = [
+  "Competition Related",
+  "Product Quality",
+  "Schemes Related",
+  "Contractor Related",
+  "Demand Related",
+] as const;
+export type InsightCategory = typeof insightCategories[number];
+
+export interface MarketInsight {
+  id: string;
+  category: InsightCategory;
   title: string;
   detail: string;
 }
 
-export interface InsightSection {
-  num: number;
-  title: string;
-  items: InsightItem[];
-}
-
-export const repeatedInsights: InsightSection[] = [
-  {
-    num: 1,
-    title: "Competition Related",
-    items: [
-      { title: "Birla Opus piloting EMI payments for retailers", detail: "Birla offering 30/60/90 day EMI on bulk orders. Particularly attractive to declining retailers with working-capital pressure. Adoption rising in west and south markets." },
-      { title: "Asian Paints locking-in retailers with bundled Primer schemes", detail: "Schemes on Paints are conditional on bundled Primer purchases above 50 units. Changing monthly primer order decisions across four states." },
-      { title: "Chetak Paints aggressive new-entrant push", detail: "Local sales reps from Chetak are visiting top contractor-focused dealers. Multiple retailers approached in the last two weeks." },
-    ],
-  },
-  {
-    num: 2,
-    title: "Product Quality",
-    items: [
-      { title: "Packaging damage on monsoon dispatches", detail: "Retailers across north and east reporting torn outer packaging on early-monsoon shipments. No product loss but visible damage hurts shelf presentation." },
-      { title: "[Positive feedback] Shade consistency praised by painters", detail: "Painters are highlighting consistent coverage and zero shade variation. This is leading to optimal material consumption and even finish on larger surfaces — worth building into core campaigns." },
-    ],
-  },
-  {
-    num: 3,
-    title: "Schemes Related",
-    items: [
-      { title: "Retailers are asking for simpler retailer scheme structures", detail: "Retailers prefer schemes with fewer tiers. Our 4-tier slab plus bonus SKU structure is hard to explain to contractors." },
-      { title: "Quarterly points-based redemption ask", detail: "Loyal retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers." },
-    ],
-  },
-  {
-    num: 4,
-    title: "Contractor Related",
-    items: [
-      { title: "Experienced contractors are increasingly upselling complete wall systems instead of standalone products", detail: "Rather than discussing only paint, leading contractors are recommending combinations: crack fillers + primer + topcoat. This is especially visible in premium renovation projects where homeowners seek longer repaint life." },
-      { title: "Contractors are shifting toward products that protect their reputation, not just improve their margins", detail: "Products linked with fewer callbacks, cracks, and finish complaints are earning stronger long-term loyalty among painters." },
-    ],
-  },
-  {
-    num: 5,
-    title: "Demand Related",
-    items: [
-      { title: "Occupied-home repainting is creating demand for cleaner, less messy application experiences", detail: "Homeowners are becoming more sensitive to dust, odour, and furniture disturbance during interior repaint projects." },
-      { title: "Festival-led spike expected in premium emulsion paints", detail: "Retailers report contractors stocking up for festival re-finishing work. Emulsion and waterproofing enquiries are up week-on-week." },
-    ],
-  },
+export const repeatedInsights: MarketInsight[] = [
+  { id: "mi1", category: "Competition Related", title: "Birla Opus piloting EMI payments for retailers", detail: "Birla offering 30/60/90 day EMI on bulk orders. Particularly attractive to declining retailers with working-capital pressure. Adoption rising in west and south markets." },
+  { id: "mi2", category: "Competition Related", title: "Asian Paints locking-in retailers with bundled Primer schemes", detail: "Schemes on Paints are conditional on bundled Primer purchases above 50 units. Changing monthly primer order decisions across four states." },
+  { id: "mi3", category: "Competition Related", title: "Chetak Paints aggressive new-entrant push", detail: "Local sales reps from Chetak are visiting top contractor-focused dealers. Multiple retailers approached in the last two weeks." },
+  { id: "mi4", category: "Product Quality", title: "Packaging damage on monsoon dispatches", detail: "Retailers across north and east reporting torn outer packaging on early-monsoon shipments. No product loss but visible damage hurts shelf presentation." },
+  { id: "mi5", category: "Product Quality", title: "[Positive feedback] Shade consistency praised by painters", detail: "Painters are highlighting consistent coverage and zero shade variation. This is leading to optimal material consumption and even finish on larger surfaces — worth building into core campaigns." },
+  { id: "mi6", category: "Schemes Related", title: "Retailers are asking for simpler retailer scheme structures", detail: "Retailers prefer schemes with fewer tiers. Our 4-tier slab plus bonus SKU structure is hard to explain to contractors." },
+  { id: "mi7", category: "Schemes Related", title: "Quarterly points-based redemption ask", detail: "Loyal retailers want a points-based scheme with quarterly redemption. Current scheme is volume-locked and discourages mid-tier retailers." },
+  { id: "mi8", category: "Contractor Related", title: "Experienced contractors are increasingly upselling complete wall systems instead of standalone products", detail: "Rather than discussing only paint, leading contractors are recommending combinations: crack fillers + primer + topcoat. This is especially visible in premium renovation projects where homeowners seek longer repaint life." },
+  { id: "mi9", category: "Contractor Related", title: "Contractors are shifting toward products that protect their reputation, not just improve their margins", detail: "Products linked with fewer callbacks, cracks, and finish complaints are earning stronger long-term loyalty among painters." },
+  { id: "mi10", category: "Demand Related", title: "Occupied-home repainting is creating demand for cleaner, less messy application experiences", detail: "Homeowners are becoming more sensitive to dust, odour, and furniture disturbance during interior repaint projects." },
+  { id: "mi11", category: "Demand Related", title: "Festival-led spike expected in premium emulsion paints", detail: "Retailers report contractors stocking up for festival re-finishing work. Emulsion and waterproofing enquiries are up week-on-week." },
 ];
 
 // ---------- Tab 3: Key retailer objections ----------

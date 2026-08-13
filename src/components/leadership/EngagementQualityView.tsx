@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Search, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import indiaGeo from "@/data/geo/india-states.json";
 import {
   getMarket,
@@ -31,6 +32,31 @@ const STATE_BOUNDS: Record<string, GeoBounds> = {
   Punjab: { minLon: 73.7, maxLon: 77.1, minLat: 29.3, maxLat: 32.7 },
   Bihar: { minLon: 83.1, maxLon: 88.5, minLat: 24.1, maxLat: 27.7 },
   Odisha: { minLon: 81.2, maxLon: 87.7, minLat: 17.6, maxLat: 22.8 },
+  "Andaman & Nicobar": { minLon: 92.0, maxLon: 94.5, minLat: 6.5, maxLat: 13.9 },
+  "Andhra Pradesh": { minLon: 76.6, maxLon: 85.0, minLat: 12.4, maxLat: 19.4 },
+  "Arunachal Pradesh": { minLon: 91.4, maxLon: 97.6, minLat: 26.5, maxLat: 29.7 },
+  Assam: { minLon: 89.5, maxLon: 96.2, minLat: 24.0, maxLat: 28.2 },
+  Chandigarh: { minLon: 76.6, maxLon: 76.95, minLat: 30.6, maxLat: 30.9 },
+  Chhattisgarh: { minLon: 80.1, maxLon: 84.6, minLat: 17.6, maxLat: 24.3 },
+  "Dadra & Nagar Haveli": { minLon: 70.7, maxLon: 73.4, minLat: 19.9, maxLat: 20.9 },
+  "Daman & Diu": { minLon: 70.7, maxLon: 73.4, minLat: 19.9, maxLat: 20.9 },
+  Delhi: { minLon: 76.7, maxLon: 77.5, minLat: 28.3, maxLat: 29.0 },
+  Goa: { minLon: 73.5, maxLon: 74.5, minLat: 14.7, maxLat: 16.0 },
+  Haryana: { minLon: 74.3, maxLon: 77.75, minLat: 27.5, maxLat: 31.1 },
+  "Himachal Pradesh": { minLon: 75.4, maxLon: 79.2, minLat: 30.2, maxLat: 33.4 },
+  "Jammu & Kashmir": { minLon: 73.2, maxLon: 77.0, minLat: 32.1, maxLat: 35.3 },
+  Jharkhand: { minLon: 83.1, maxLon: 88.2, minLat: 21.8, maxLat: 25.5 },
+  Kerala: { minLon: 74.7, maxLon: 77.6, minLat: 8.1, maxLat: 13.0 },
+  Ladakh: { minLon: 72.3, maxLon: 80.6, minLat: 32.1, maxLat: 37.3 },
+  Lakshadweep: { minLon: 72.0, maxLon: 73.9, minLat: 8.1, maxLat: 11.9 },
+  Manipur: { minLon: 92.8, maxLon: 94.9, minLat: 23.6, maxLat: 25.9 },
+  Meghalaya: { minLon: 89.65, maxLon: 93.0, minLat: 24.85, maxLat: 26.3 },
+  Mizoram: { minLon: 92.1, maxLon: 93.6, minLat: 21.7, maxLat: 24.7 },
+  Nagaland: { minLon: 93.15, maxLon: 95.4, minLat: 25.0, maxLat: 27.2 },
+  Puducherry: { minLon: 75.3, maxLon: 82.5, minLat: 10.6, maxLat: 17.0 },
+  Sikkim: { minLon: 87.85, maxLon: 89.1, minLat: 26.9, maxLat: 28.3 },
+  Tripura: { minLon: 91.0, maxLon: 92.5, minLat: 22.75, maxLat: 24.7 },
+  Uttarakhand: { minLon: 77.4, maxLon: 81.2, minLat: 28.55, maxLat: 31.6 },
 };
 
 const PALETTE = { green: "#1D9E75", orange: "#EF9F27", red: "#E24B4A", muted: "#E2E4E8" };
@@ -57,6 +83,7 @@ const EngagementQualityView = () => {
   const [selectedMarket, setSelectedMarket] = useState<MarketReport | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; label: string } | null>(null);
+  const [query, setQuery] = useState("");
 
   const indiaPaths = useMemo(() => {
     const project = makeProjector(INDIA_BOUNDS, VIEW_W, VIEW_H);
@@ -80,8 +107,16 @@ const EngagementQualityView = () => {
     }));
   }, [activeState]);
 
+  const goToIndia = () => {
+    setActiveState(null);
+    setQuery("");
+  };
+
   const handleStateClick = (name: string) => {
-    if (STATE_DISTRICT_GEO[name]) setActiveState(name);
+    if (STATE_DISTRICT_GEO[name]) {
+      setActiveState(name);
+      setQuery("");
+    }
   };
 
   const handleDistrictClick = (district: string) => {
@@ -91,6 +126,10 @@ const EngagementQualityView = () => {
   };
 
   const districtCount = activeState ? getStateDistricts(activeState).length : 0;
+
+  const q = query.trim().toLowerCase();
+  const isMatch = (name: string) => q.length > 0 && name.toLowerCase().includes(q);
+  const searching = q.length > 0;
 
   return (
     <div className="space-y-4">
@@ -106,15 +145,41 @@ const EngagementQualityView = () => {
         </p>
       </header>
 
-      {activeState && (
-        <button
-          onClick={() => setActiveState(null)}
-          className="inline-flex items-center gap-1 text-[12px] font-medium text-destructive hover:underline underline-offset-2"
-        >
-          <ChevronLeft className="w-3.5 h-3.5" />
-          Back to India map
-        </button>
-      )}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        {activeState ? (
+          <div className="flex items-center gap-3">
+            <button
+              onClick={goToIndia}
+              className="inline-flex items-center gap-1 text-[12px] font-medium text-destructive hover:underline underline-offset-2"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+              Back to India map
+            </button>
+            <h2 className="font-display text-lg font-bold text-foreground">{activeState}</h2>
+          </div>
+        ) : (
+          <span />
+        )}
+
+        <div className="relative w-full max-w-[260px]">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={activeState ? "Search district…" : "Search state…"}
+            className="h-8 pl-8 pr-7 text-[12px]"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              aria-label="Clear search"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
 
       <div className="bg-card border rounded-lg p-4 relative">
         <svg
@@ -128,15 +193,16 @@ const EngagementQualityView = () => {
                 const s = engagementByState.get(p.name);
                 const fill = s ? scoreColor(s.score) : PALETTE.muted;
                 const clickable = !!s;
+                const matched = isMatch(p.name);
                 return (
                   <path
                     key={p.key}
                     d={p.d}
                     fill={fill}
                     fillRule="evenodd"
-                    stroke="#fff"
-                    strokeWidth={0.6}
-                    opacity={hovered === p.name && clickable ? 0.78 : 1}
+                    stroke={searching && matched ? "#111827" : "#fff"}
+                    strokeWidth={searching && matched ? 2 : 0.6}
+                    opacity={searching ? (matched ? 1 : 0.2) : hovered === p.name && clickable ? 0.78 : 1}
                     onClick={() => handleStateClick(p.name)}
                     onMouseEnter={() => setHovered(p.name)}
                     onMouseMove={(e) => setTooltip({ x: e.clientX, y: e.clientY, label: p.name })}
@@ -151,15 +217,16 @@ const EngagementQualityView = () => {
             : districtPaths.map((p) => {
                 const market = getMarket(activeState, p.name);
                 const fill = market ? scoreColor(market.engagementQuality) : PALETTE.muted;
+                const matched = isMatch(p.name);
                 return (
                   <path
                     key={p.key}
                     d={p.d}
                     fill={fill}
                     fillRule="evenodd"
-                    stroke="#fff"
-                    strokeWidth={0.6}
-                    opacity={hovered === p.key ? 0.78 : 1}
+                    stroke={searching && matched ? "#111827" : "#fff"}
+                    strokeWidth={searching && matched ? 2 : 0.6}
+                    opacity={searching ? (matched ? 1 : 0.2) : hovered === p.key ? 0.78 : 1}
                     onClick={() => handleDistrictClick(p.name)}
                     onMouseEnter={() => setHovered(p.key)}
                     onMouseMove={(e) => setTooltip({ x: e.clientX, y: e.clientY, label: p.name })}

@@ -1,74 +1,108 @@
+import { useState } from "react";
 import LeadershipLayout from "@/components/leadership/LeadershipLayout";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { PieChart, Pie, Cell, Tooltip as RTooltip, ResponsiveContainer } from "recharts";
+import { AlertTriangle } from "lucide-react";
 import { objectionBreakdown, topObjections } from "@/data/leadershipReports";
 
-const Objections = () => (
-  <LeadershipLayout>
-    <div className="space-y-6">
-      <header>
-        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Retailer Objections</p>
-        <h1 className="font-display text-2xl font-bold text-foreground">
-          Key retailer objections which are repeating across dealers?
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          National roll-up of the most frequently raised retailer concerns, by category.
-        </p>
-      </header>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-card border rounded-lg p-4">
-          <p className="text-[15px] font-medium text-foreground mb-3">Key retailer objections across the country</p>
-          <div className="grid grid-cols-[160px_1fr] gap-4 items-center">
-            <div className="h-[180px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={objectionBreakdown}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius="55%"
-                    outerRadius="95%"
-                    paddingAngle={1}
-                    stroke="none"
-                  >
-                    {objectionBreakdown.map((o) => (
-                      <Cell key={o.name} fill={o.color} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div>
-              {objectionBreakdown.map((o) => (
-                <div key={o.name} className="flex justify-between items-center text-[12px] border-t first:border-t-0 py-1.5">
-                  <span className="flex items-center gap-2 min-w-0">
-                    <span className="w-2 h-2 rounded-sm shrink-0" style={{ background: o.color }} />
-                    <span className="text-foreground truncate">{o.name}</span>
-                  </span>
-                  <span className="font-medium text-foreground ml-2">{o.value}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-card border rounded-lg p-4">
-          <p className="text-[15px] font-medium text-foreground mb-3">Top 5 objections repeating across the country</p>
-          <ul className="space-y-4">
-            {topObjections.map((o, idx) => (
-              <li key={idx} className={idx > 0 ? "pt-4 border-t border-border" : ""}>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">{o.category}</p>
-                <p className="text-[13px] font-semibold text-foreground leading-snug mt-0.5">{o.title}</p>
-                <p className="text-[12px] text-muted-foreground italic leading-relaxed mt-1">{o.detail}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </LeadershipLayout>
+const groupedTopObjections = topObjections.reduce<{ cat: string; items: { q: string; e: string }[] }[]>(
+  (groups, o) => {
+    const group = groups.find((g) => g.cat === o.category);
+    const item = { q: o.title, e: o.detail };
+    if (group) group.items.push(item);
+    else groups.push({ cat: o.category, items: [item] });
+    return groups;
+  },
+  [],
 );
+
+const Objections = () => {
+  const [openTop, setOpenTop] = useState(false);
+
+  return (
+    <LeadershipLayout>
+      <div className="space-y-6">
+        <header>
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">Retailer Objections</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Key retailer objections which are repeating across dealers?
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            National roll-up of the most frequently raised retailer concerns, by category.
+          </p>
+        </header>
+
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h3 className="font-semibold text-foreground">Key retailer objections across the country</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Share of objections raised by category</p>
+            </div>
+            <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+              <AlertTriangle className="w-3.5 h-3.5" />
+              engagement signals
+            </span>
+          </div>
+          <ResponsiveContainer width="100%" height={380}>
+            <PieChart>
+              <Pie
+                data={objectionBreakdown}
+                cx="50%"
+                cy="50%"
+                outerRadius={140}
+                dataKey="value"
+                label={({ name, value }) => `${name} (${value}%)`}
+              >
+                {objectionBreakdown.map((o) => (
+                  <Cell key={o.name} fill={o.color} />
+                ))}
+              </Pie>
+              <RTooltip />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="flex justify-end pt-2 border-t border-border mt-2">
+            <button
+              onClick={() => setOpenTop(true)}
+              className="text-primary text-sm font-medium hover:underline"
+            >
+              See top 5 objections in the country →
+            </button>
+          </div>
+        </Card>
+      </div>
+
+      <Dialog open={openTop} onOpenChange={setOpenTop}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Top 5 objections in the country</DialogTitle>
+            <DialogDescription>Most frequently raised retailer concerns this period</DialogDescription>
+          </DialogHeader>
+          <div className="max-h-[72vh] overflow-auto pr-1 space-y-6">
+            {groupedTopObjections.map((sec) => (
+              <section key={sec.cat}>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground font-medium mb-2">{sec.cat}</p>
+                <ul className="space-y-3">
+                  {sec.items.map((it, idx) => (
+                    <li key={idx} className="pl-3 border-l-2 border-primary/40">
+                      <p className="text-sm font-medium text-foreground leading-snug">“{it.q}”</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{it.e}</p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </LeadershipLayout>
+  );
+};
 
 export default Objections;
