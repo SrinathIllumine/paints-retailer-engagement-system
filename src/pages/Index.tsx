@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Smartphone, Monitor, BarChart3, LayoutDashboard } from "lucide-react";
+import { Smartphone, Monitor, BarChart3, LayoutDashboard, Gauge } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -23,6 +23,15 @@ const Index = () => {
             <h2 className="font-display font-bold text-xl text-foreground mb-1">ME App</h2>
             <p className="text-sm text-muted-foreground mb-4">MEs use the app with each of their retailers for their day-to-day engagements as part of their field visits...</p>
             <Button variant="field" className="w-full">Open ME App →</Button>
+          </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/me/dashboard")}>
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Gauge className="w-7 h-7 text-primary group-hover:text-primary-foreground" />
+            </div>
+            <h2 className="font-display font-bold text-xl text-foreground mb-1">ME Dashboard</h2>
+            <p className="text-sm text-muted-foreground mb-4">MEs can see an overview of their retailers' objections, market insights shared and the past engagements.</p>
+            <Button variant="outline" className="w-full">Open ME Dashboard →</Button>
           </Card>
 
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group" onClick={() => navigate("/asm")}>
