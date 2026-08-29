@@ -13,6 +13,11 @@ import {
   Flag,
   Radar,
   MessageSquareQuote,
+  Users2,
+  Zap,
+  Database,
+  Gauge,
+  Check,
 } from "lucide-react";
 
 const ME_IMG = "/Placeholder%20Images/IMG_20260622_101109.jpg";
@@ -53,34 +58,48 @@ const reportSections = [
 
 const intelligenceModels = [
   {
+    icon: Users2,
     title: "Retailer Morphologies",
-    body: "Classifies every retailer by engagement state",
+    points: ["Classifies every retailer by their current engagement state"],
     tags: ["New", "Declining", "Inactive", "Loyal"],
   },
   {
+    icon: Zap,
     title: "AI-based flashpoints retrieval model",
-    body:
-      "Library of flashpoints · library of best practices per flashpoint, mapped from the top MEs & retailers · voice-based retrieval tagging for faster, relevant access",
+    points: [
+      "Library of flashpoints",
+      "Library of best practices per flashpoint — mapped from the top MEs & retailers",
+      "Voice-based retrieval tagging for faster, relevant access",
+    ],
     tags: [],
   },
   {
+    icon: Database,
     title: "Knowledge-harvesting models",
-    body:
-      "Identifies patterns across insight types — competition, contractor, schemes, demand, painter, product — into market-specific insight databases",
+    points: [
+      "Spots patterns across insight types",
+      "Captures them in market-specific insight databases",
+    ],
     tags: ["Competition", "Contractor", "Schemes", "Demand", "Painter", "Product"],
   },
   {
+    icon: Gauge,
     title: "Engagement Quality Index model",
-    body:
-      "Scores each engagement from the report output — time spent / duration, preparation levels, pending action points, objections raised, and more",
+    points: [
+      "Analyses the engagement report output",
+      "Time spent / duration",
+      "Preparation levels",
+      "Pending action points",
+      "Objections raised, and more",
+    ],
     tags: [],
   },
 ];
 
 const nudgeTypes = [
-  { label: "Engagement nudge", hint: "Prompts to engage under-served or newly introduced retailers" },
-  { label: "Pending objection nudge", hint: "Surfaces objections still left unaddressed" },
-  { label: "Best practice nudge", hint: "Shares an approach that worked for a comparable ME / retailer" },
+  { label: "Engagement nudge", hint: "Engage under-served or newly introduced retailers" },
+  { label: "Pending objection nudge", hint: "Objections still left unaddressed" },
+  { label: "Best practice nudge", hint: "An approach that worked for a comparable ME / retailer" },
 ];
 
 const evolutionAreas = [
@@ -101,9 +120,9 @@ const SecondaryCard = ({
   caption: string;
   children: React.ReactNode;
 }) => (
-  <Card className="p-5 bg-secondary/40 border-border/60">
+  <Card className="p-4 bg-secondary/40 border-border/60 h-full">
     <div className="flex items-center gap-2.5">
-      <div className="w-9 h-9 rounded-lg bg-card flex items-center justify-center border border-border/60">
+      <div className="w-9 h-9 rounded-lg bg-card flex items-center justify-center border border-border/60 shrink-0">
         <Icon className="w-4 h-4 text-muted-foreground" />
       </div>
       <div>
@@ -111,7 +130,7 @@ const SecondaryCard = ({
         <p className="text-[11px] text-muted-foreground">{caption}</p>
       </div>
     </div>
-    <div className="mt-4">{children}</div>
+    <div className="mt-3">{children}</div>
   </Card>
 );
 
@@ -164,14 +183,9 @@ const MeRetailerSubsystem = () => {
             The engagement
           </span>
 
-          <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-6 md:gap-4 items-start">
-            <div className="flex justify-center">
-              <PersonCard
-                img={ME_IMG}
-                objectPosition="50% 25%"
-                role="ME"
-                name="Manish Kumar"
-              />
+          <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-6 md:gap-4 items-stretch">
+            <div className="flex items-center justify-center">
+              <PersonCard img={ME_IMG} objectPosition="50% 25%" role="ME" name="Manish Kumar" />
             </div>
 
             {/* Engagement Report — the connecting interface */}
@@ -179,7 +193,6 @@ const MeRetailerSubsystem = () => {
               <div className="px-4 py-2.5 border-b border-border bg-primary/5 rounded-t-lg flex items-center gap-2">
                 <FileText className="w-4 h-4 text-primary" />
                 <span className="text-sm font-semibold text-foreground">Engagement Report</span>
-                <span className="ml-auto text-[11px] text-muted-foreground">the connecting interface</span>
               </div>
               <div className="px-4 py-2 border-b border-border/70 text-[11px] text-muted-foreground flex flex-wrap gap-x-3 gap-y-0.5">
                 <span>29 Aug 2026</span>
@@ -204,7 +217,7 @@ const MeRetailerSubsystem = () => {
               </ul>
             </Card>
 
-            <div className="flex justify-center">
+            <div className="flex items-center justify-center">
               <PersonCard
                 img={RETAILER_IMG}
                 objectPosition="78% 55%"
@@ -218,23 +231,34 @@ const MeRetailerSubsystem = () => {
         {/* Subtle loop-back cue */}
         <div className="flex items-center gap-3 my-6 text-muted-foreground">
           <div className="flex-1 border-t border-dashed border-border" />
-          <span className="text-[11px] uppercase tracking-wide">Working quietly in the background</span>
+          <span className="text-[11px] uppercase tracking-wide">What goes on in the background</span>
           <div className="flex-1 border-t border-dashed border-border" />
         </div>
 
         {/* Secondary emphasis: the intelligence layers */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-3">
-            <SecondaryCard
-              icon={Brain}
-              title="Retailer Intelligence"
-              caption="AI + rules layer · prepares the next engagement"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {intelligenceModels.map((m) => (
+        <div className="space-y-4">
+          <SecondaryCard
+            icon={Brain}
+            title="Retailer Intelligence"
+            caption="AI + rules layer · prepares the next engagement"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {intelligenceModels.map((m) => {
+                const MIcon = m.icon;
+                return (
                   <div key={m.title} className="rounded-lg bg-card border border-border/60 p-3.5">
-                    <p className="text-sm font-semibold text-foreground">{m.title}</p>
-                    <p className="text-xs text-muted-foreground leading-snug mt-1">{m.body}</p>
+                    <div className="flex items-center gap-2">
+                      <MIcon className="w-4 h-4 text-primary shrink-0" />
+                      <p className="text-sm font-semibold text-foreground leading-snug">{m.title}</p>
+                    </div>
+                    <ul className="mt-2 space-y-1">
+                      {m.points.map((p) => (
+                        <li key={p} className="flex gap-1.5 text-xs text-muted-foreground leading-snug">
+                          <Check className="w-3 h-3 mt-0.5 text-success shrink-0" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
                     {m.tags.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {m.tags.map((t) => (
@@ -248,38 +272,41 @@ const MeRetailerSubsystem = () => {
                       </div>
                     )}
                   </div>
-                ))}
-              </div>
-            </SecondaryCard>
-          </div>
+                );
+              })}
+            </div>
+          </SecondaryCard>
 
-          <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <SecondaryCard icon={BellRing} title="Nudges" caption="execution layer · steers the ME before the visit">
-              <ul className="space-y-2">
+              <ul className="divide-y divide-border/60 rounded-lg bg-card border border-border/60">
                 {nudgeTypes.map((n) => (
-                  <li key={n.label} className="rounded-lg bg-card border border-border/60 p-3">
-                    <p className="text-sm font-semibold text-foreground">{n.label}</p>
-                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">{n.hint}</p>
+                  <li key={n.label} className="px-3 py-2 flex items-baseline gap-2">
+                    <BellRing className="w-3 h-3 text-primary shrink-0 translate-y-0.5" />
+                    <span className="text-xs font-semibold text-foreground">{n.label}</span>
+                    <span className="text-xs text-muted-foreground leading-snug">— {n.hint}</span>
                   </li>
                 ))}
               </ul>
             </SecondaryCard>
-          </div>
 
-          <div>
             <SecondaryCard
               icon={RefreshCw}
               title="Continuous Evolution"
               caption="ongoing improvement layer · refines what comes next"
             >
-              <ul className="space-y-1.5">
+              <p className="text-xs text-muted-foreground mb-2">Continuously refines</p>
+              <div className="grid grid-cols-2 gap-1.5">
                 {evolutionAreas.map((a) => (
-                  <li key={a} className="text-xs text-foreground/80 flex items-center gap-2">
-                    <RefreshCw className="w-3 h-3 text-muted-foreground shrink-0" />
-                    Continuously refines {a.toLowerCase()}
-                  </li>
+                  <span
+                    key={a}
+                    className="flex items-center gap-1.5 rounded-md bg-card border border-border/60 px-2 py-1.5 text-xs text-foreground/80"
+                  >
+                    <RefreshCw className="w-3 h-3 text-primary shrink-0" />
+                    {a}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </SecondaryCard>
           </div>
         </div>
