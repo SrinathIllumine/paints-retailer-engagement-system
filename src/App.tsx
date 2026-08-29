@@ -21,6 +21,8 @@ import ASMDashboard from "./pages/asm/ASMDashboard.tsx";
 import ASMObjections from "./pages/asm/ASMObjections.tsx";
 import ASMLeaderboard from "./pages/asm/ASMLeaderboard.tsx";
 import ASMInsights from "./pages/asm/ASMInsights.tsx";
+import MeRetailerSubsystem from "./pages/system/MeRetailerSubsystem.tsx";
+import SubsystemPending from "./pages/system/SubsystemPending.tsx";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          {/* Systemic view sub-systems */}
+          <Route path="/system/me-retailer" element={<MeRetailerSubsystem />} />
+          <Route path="/system/me-asm" element={<SubsystemPending name="ME – ASM" />} />
+          <Route
+            path="/system/me-asm-leadership"
+            element={<SubsystemPending name="ME – ASM – Leadership" />}
+          />
           <Route path="/me/area" element={<MyTradingArea />} />
           <Route path="/me/dealer/:id" element={<DealerSnapshot />} />
           <Route path="/me/conversation/:id" element={<GuidedConversation />} />
