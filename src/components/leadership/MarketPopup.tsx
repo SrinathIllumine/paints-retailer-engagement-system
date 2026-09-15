@@ -1,5 +1,19 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import type { MarketReport } from "@/data/leadershipReports";
+import { hashScore, type MarketReport } from "@/data/leadershipReports";
+
+// Objections are listed most-to-least prominent, so give each rank its own
+// (deterministic, market-specific) share band rather than a flat random split.
+const shareBands = [
+  [42, 58],
+  [18, 34],
+  [8, 18],
+  [4, 10],
+];
+
+const objectionShare = (market: string, objection: string, rank: number) => {
+  const [min, max] = shareBands[Math.min(rank, shareBands.length - 1)];
+  return Math.round(hashScore(`${market}|${objection}`, min, max));
+};
 
 const PALETTE = {
   green: { bar: "#1D9E75", bg: "#E1F5EE", text: "#085041" },
@@ -40,7 +54,9 @@ const MarketPopup = ({ market, onBack }: Props) => {
             {market.commonObjections.map((o, i) => (
               <li key={i} className="text-[13px] text-foreground leading-snug flex gap-2">
                 <span className="text-muted-foreground shrink-0">–</span>
-                <span>{o}</span>
+                <span>
+                  {o} <span className="text-muted-foreground">({objectionShare(market.market, o, i)}%)</span>
+                </span>
               </li>
             ))}
           </ul>

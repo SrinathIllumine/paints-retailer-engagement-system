@@ -117,7 +117,7 @@ const curatedStateEngagement: StateEngagement[] = [
   { state: "Odisha", score: 3.0, retailersEngaged: 1140, totalRetailers: 2300 },
 ];
 
-const hashScore = (name: string, min: number, max: number) => {
+export const hashScore = (name: string, min: number, max: number) => {
   let h = 0;
   for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
   return Math.round((min + ((h % 1000) / 1000) * (max - min)) * 10) / 10;
