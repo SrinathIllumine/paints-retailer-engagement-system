@@ -70,33 +70,6 @@ const recentlyVisited = [
   { id: "8", name: "Mahalaxmi Traders", lastVisit: "4 days ago" },
 ];
 
-const objectionRetailers = [
-  {
-    id: "3",
-    name: "Krishna Traders",
-    topObjection: "Pricing higher than competitor",
-    count: 4,
-    pendingDays: 21,
-    severity: "high" as const,
-  },
-  {
-    id: "7",
-    name: "Singh Building Centre",
-    topObjection: "Delayed delivery in last cycle",
-    count: 2,
-    pendingDays: 9,
-    severity: "medium" as const,
-  },
-  {
-    id: "9",
-    name: "Deshpande Hardware Stores",
-    topObjection: "Service follow-up missing",
-    count: 1,
-    pendingDays: 4,
-    severity: "low" as const,
-  },
-];
-
 interface CategoryObjection {
   id: string;
   text: string;
@@ -276,12 +249,6 @@ const engagementHistory = [
   },
 ];
 
-const severityClass: Record<"high" | "medium" | "low", string> = {
-  high: "bg-destructive/10 text-destructive border-destructive/20",
-  medium: "bg-warning/10 text-warning border-warning/20",
-  low: "bg-muted text-muted-foreground border-border",
-};
-
 const StatCard = ({
   icon: Icon,
   label,
@@ -415,7 +382,7 @@ const MyDashboard = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-3 pb-3">
-                <div className="mb-3 p-3 rounded-lg border border-border/60 bg-background">
+                <div className="p-3 rounded-lg border border-border/60 bg-background">
                   <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">
                     By objection category
                   </p>
@@ -443,43 +410,6 @@ const MyDashboard = () => {
                       </button>
                     ))}
                   </div>
-                </div>
-                <div className="space-y-2">
-                  {objectionRetailers.map((r) => (
-                    <div
-                      key={r.id}
-                      className="p-3 rounded-lg border border-border/60 bg-background"
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-medium text-foreground truncate flex-1">
-                          {r.name}
-                        </p>
-                        <Badge
-                          variant="outline"
-                          className={`text-[10px] font-medium ${severityClass[r.severity]}`}
-                        >
-                          {r.count} open
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1.5 leading-snug">
-                        {r.topObjection}
-                      </p>
-                      <div className="flex items-center gap-1 mt-2">
-                        <Clock className="w-3 h-3 text-muted-foreground" />
-                        <span
-                          className={`text-[11px] font-medium ${
-                            r.pendingDays > 14
-                              ? "text-destructive"
-                              : r.pendingDays > 7
-                              ? "text-warning"
-                              : "text-muted-foreground"
-                          }`}
-                        >
-                          Pending {r.pendingDays} days
-                        </span>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
