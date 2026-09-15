@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { dealers } from "@/data/mockData";
 import { Send, CheckCheck } from "lucide-react";
 
@@ -60,6 +60,7 @@ import {
   CheckCircle2,
   FileText,
   MessageSquare,
+  Lightbulb as LightbulbIcon,
 } from "lucide-react";
 
 const recentlyVisited = [
@@ -93,6 +94,114 @@ const objectionRetailers = [
     count: 1,
     pendingDays: 4,
     severity: "low" as const,
+  },
+];
+
+interface CategoryObjection {
+  id: string;
+  text: string;
+  bestPractices: string[];
+}
+
+interface ObjectionCategory {
+  id: string;
+  name: string;
+  percentage: number;
+  barClass: string;
+  badgeClass: string;
+  objections: CategoryObjection[];
+}
+
+const objectionCategories: ObjectionCategory[] = [
+  {
+    id: "pricing",
+    name: "Pricing & Competition",
+    percentage: 38,
+    barClass: "bg-destructive",
+    badgeClass: "bg-destructive/10 text-destructive",
+    objections: [
+      {
+        id: "ob1",
+        text: "Pricing higher than competitor",
+        bestPractices: [
+          "Reframe the conversation around total value — quality, coverage, and after-sales support, not just per-litre price.",
+          "Share a coats-per-wall / repaint-cycle comparison to show lower long-run cost versus the competitor.",
+          "Offer a volume-linked or combo scheme instead of a flat discount to protect margins.",
+        ],
+      },
+      {
+        id: "ob2",
+        text: "Competitor running more attractive schemes",
+        bestPractices: [
+          "Confirm the retailer is aware of our current active scheme — many objections are simply an awareness gap.",
+          "Loop in ASM to check if a matching counter-scheme can be activated for this market area.",
+          "Emphasize non-monetary support (branding, training, painter meets) the competitor may not offer.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "delivery",
+    name: "Delivery & Logistics",
+    percentage: 26,
+    barClass: "bg-warning",
+    badgeClass: "bg-warning/10 text-warning",
+    objections: [
+      {
+        id: "ob3",
+        text: "Delayed delivery in last cycle",
+        bestPractices: [
+          "Acknowledge the specific incident and share the corrective action already taken with the distributor.",
+          "Set a clear delivery SLA for the next order and confirm it with the retailer in writing/WhatsApp.",
+          "Offer to personally track the next dispatch and proactively update the retailer.",
+        ],
+      },
+      {
+        id: "ob4",
+        text: "Order quantities not matching what was placed",
+        bestPractices: [
+          "Cross-check the order against the invoice with the retailer before escalating.",
+          "Involve the distributor/depot on a joint call to resolve discrepancies quickly.",
+          "Document the pattern if it repeats, and flag it to ASM for a systemic fix.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "service",
+    name: "Service & Support",
+    percentage: 20,
+    barClass: "bg-primary",
+    badgeClass: "bg-primary/10 text-primary",
+    objections: [
+      {
+        id: "ob5",
+        text: "Service follow-up missing after a complaint",
+        bestPractices: [
+          "Close the loop on the specific complaint first — share status, resolution, and timeline.",
+          "Set a recurring follow-up reminder so the retailer isn't left chasing updates.",
+          "Introduce the retailer to the service escalation contact for faster resolution next time.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "credit",
+    name: "Credit & Working Capital",
+    percentage: 16,
+    barClass: "bg-info",
+    badgeClass: "bg-info/10 text-info",
+    objections: [
+      {
+        id: "ob6",
+        text: "Credit terms shorter than competitor",
+        bestPractices: [
+          "Clarify the current credit policy and explain the rationale (risk tier, volume, payment history).",
+          "Explore a case-by-case extension for high-performing, long-standing retailers with ASM approval.",
+          "Position combo/bundled schemes that improve effective margin without changing credit terms.",
+        ],
+      },
+    ],
   },
 ];
 
@@ -183,6 +292,9 @@ const MyDashboard = () => {
   const navigate = useNavigate();
   const [expandedEntry, setExpandedEntry] = useState<number | null>(null);
   const [summaryDealerId, setSummaryDealerId] = useState<string | null>(null);
+  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
+  const [expandedObjectionId, setExpandedObjectionId] = useState<string | null>(null);
+  const openCategory = objectionCategories.find((c) => c.id === openCategoryId) ?? null;
   const summaryDealer = summaryDealerId ? dealers.find((d) => d.id === summaryDealerId) : null;
   const summaryRecent = recentlyVisited.find((r) => r.id === summaryDealerId);
   const summaryName = summaryDealer?.name ?? summaryRecent?.name ?? "";
@@ -289,6 +401,38 @@ const MyDashboard = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-3 pb-3">
+                <div className="mb-3 p-3 rounded-lg border border-border/60 bg-background">
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                    By objection category
+                  </p>
+                  <div className="space-y-2">
+                    {objectionCategories.map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => {
+                          setOpenCategoryId(c.id);
+                          setExpandedObjectionId(null);
+                        }}
+                        className="w-full text-left group"
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className="text-xs font-medium text-foreground group-hover:text-primary transition-colors">
+                            {c.name}
+                          </span>
+                          <span className="text-[11px] font-semibold text-muted-foreground shrink-0">
+                            {c.percentage}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${c.barClass}`}
+                            style={{ width: `${c.percentage}%` }}
+                          />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="space-y-2">
                   {objectionRetailers.map((r) => (
                     <div
@@ -489,6 +633,69 @@ const MyDashboard = () => {
           <Button className="w-full bg-[#25D366] hover:bg-[#1ebe57] text-white" onClick={shareWa}>
             <Send className="w-4 h-4 mr-1.5" /> Share via WhatsApp
           </Button>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={!!openCategoryId}
+        onOpenChange={(o) => {
+          if (!o) {
+            setOpenCategoryId(null);
+            setExpandedObjectionId(null);
+          }
+        }}
+      >
+        <DialogContent className="max-w-md p-4 gap-3">
+          <DialogHeader>
+            <DialogTitle className="text-base">{openCategory?.name}</DialogTitle>
+            <DialogDescription className="text-xs">
+              Objections raised in this category · tap one for best practices
+            </DialogDescription>
+          </DialogHeader>
+          <div className="max-h-[65vh] overflow-y-auto space-y-2 pr-1">
+            {openCategory?.objections.map((ob) => {
+              const isExpanded = expandedObjectionId === ob.id;
+              return (
+                <div
+                  key={ob.id}
+                  className="rounded-lg border border-border/60 bg-background overflow-hidden"
+                >
+                  <button
+                    onClick={() => setExpandedObjectionId(isExpanded ? null : ob.id)}
+                    className="w-full flex items-start justify-between gap-2 p-3 text-left"
+                  >
+                    <p className="text-sm font-medium text-foreground leading-snug flex-1">
+                      {ob.text}
+                    </p>
+                    {isExpanded ? (
+                      <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                    )}
+                  </button>
+                  {isExpanded && (
+                    <div className="px-3 pb-3 animate-fade-in">
+                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                        <LightbulbIcon className="w-3 h-3" />
+                        Best practices
+                      </div>
+                      <ul className="space-y-1.5">
+                        {ob.bestPractices.map((bp, i) => (
+                          <li
+                            key={i}
+                            className="text-xs text-muted-foreground leading-relaxed flex items-start gap-1.5"
+                          >
+                            <span className="w-1 h-1 rounded-full bg-primary mt-1.5 shrink-0" />
+                            {bp}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </DialogContent>
       </Dialog>
     </MeLayout>
