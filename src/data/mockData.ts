@@ -301,10 +301,12 @@ export const engagementTrend = [
   { month: "Jun", conversations: 2900, quality: 7.6 },
 ];
 
+// The 5 standard objection categories, used consistently across ME Dashboard,
+// ME Profile, ASM Analytics, and the Leadership dashboard.
 export const objectionBreakdown = [
-  { name: "Demand-related", value: 28 },
-  { name: "Working capital", value: 22 },
-  { name: "SKU space", value: 18 },
-  { name: "Competition from other brands", value: 17 },
-  { name: "Poor Product Quality", value: 15 },
+  { name: "Competition Related", value: 45 },
+  { name: "Product quality", value: 30 },
+  { name: "Scheme related", value: 9 },
+  { name: "SKU Space related", value: 7 },
+  { name: "Working Capital related", value: 3 },
 ];

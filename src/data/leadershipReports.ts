@@ -480,13 +480,15 @@ export interface ObjectionSlice {
   color: string;
 }
 
+// The 5 standard objection categories, used consistently across ME Dashboard,
+// ME Profile, ASM Analytics, and the Leadership dashboard.
 // Colors match the ASM Analytics App's objection palette (see src/pages/asm/ASMObjections.tsx)
 export const objectionBreakdown: ObjectionSlice[] = [
-  { name: "Competition Related", value: 45, color: "#1D9E75" },
-  { name: "Product quality", value: 30, color: "#E24B4A" },
-  { name: "Scheme related", value: 9, color: "#EF9F27" },
-  { name: "SKU Space related", value: 7, color: "#378ADD" },
-  { name: "Working Capital related", value: 3, color: "#D85A30" },
+  { name: "Competition Related", value: 45, color: "hsl(0,78%,48%)" },
+  { name: "Product quality", value: 30, color: "hsl(30,80%,52%)" },
+  { name: "Scheme related", value: 9, color: "hsl(210,80%,52%)" },
+  { name: "SKU Space related", value: 7, color: "hsl(152,60%,40%)" },
+  { name: "Working Capital related", value: 3, color: "hsl(220,10%,46%)" },
 ];
 
 export interface TopObjection {

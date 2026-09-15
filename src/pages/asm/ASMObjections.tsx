@@ -35,7 +35,7 @@ const objections = [
 
 const topObjections: { cat: string; items: { q: string; e: string; bestPractices: string[] }[] }[] = [
   {
-    cat: "Competition-related",
+    cat: "Competition Related",
     items: [
       {
         q: "Competitor schemes are more visible and frequent.",
@@ -67,7 +67,7 @@ const topObjections: { cat: string; items: { q: string; e: string; bestPractices
     ],
   },
   {
-    cat: "Product-quality related",
+    cat: "Product quality",
     items: [
       {
         q: "Retailers feel product consistency changes batch-to-batch.",
@@ -81,7 +81,7 @@ const topObjections: { cat: string; items: { q: string; e: string; bestPractices
     ],
   },
   {
-    cat: "Scheme-related",
+    cat: "Scheme related",
     items: [
       {
         q: "Schemes are either unclear or not exciting enough.",

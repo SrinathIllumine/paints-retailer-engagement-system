@@ -108,92 +108,106 @@ interface ObjectionCategory {
   name: string;
   percentage: number;
   barClass: string;
-  badgeClass: string;
   objections: CategoryObjection[];
 }
 
+// The 5 standard objection categories, used consistently across ME Dashboard,
+// ME Profile, ASM Analytics, and the Leadership dashboard.
 const objectionCategories: ObjectionCategory[] = [
   {
-    id: "pricing",
-    name: "Pricing & Competition",
-    percentage: 38,
+    id: "competition",
+    name: "Competition Related",
+    percentage: 45,
     barClass: "bg-destructive",
-    badgeClass: "bg-destructive/10 text-destructive",
     objections: [
       {
         id: "ob1",
-        text: "Pricing higher than competitor",
+        text: "Competitor schemes are more visible and frequent",
         bestPractices: [
-          "Reframe the conversation around total value — quality, coverage, and after-sales support, not just per-litre price.",
-          "Share a coats-per-wall / repaint-cycle comparison to show lower long-run cost versus the competitor.",
-          "Offer a volume-linked or combo scheme instead of a flat discount to protect margins.",
+          "Show the retailer the current company scheme and explain the direct earning / benefit on his likely purchases.",
+          "Prioritize and communicate the most relevant schemes to the retailer instead of sharing every scheme without context.",
+          "Increase scheme visibility through every ME interaction — share scheme details on WhatsApp and revisit the retailer before the scheme closes to drive participation.",
         ],
       },
       {
         id: "ob2",
-        text: "Competitor running more attractive schemes",
+        text: "Customers recognize competitor paint shades faster",
         bestPractices: [
-          "Confirm the retailer is aware of our current active scheme — many objections are simply an awareness gap.",
-          "Loop in ASM to check if a matching counter-scheme can be activated for this market area.",
-          "Emphasize non-monetary support (branding, training, painter meets) the competitor may not offer.",
+          "Carry the shade card and tinting guide on every visit so customers can compare instantly at the counter.",
+          "Coach the retailer's staff on 2-3 close shade matches to our range so they can respond confidently to walk-ins.",
+          "Push for better in-shop shade display placement near the entrance to build recall.",
         ],
       },
-    ],
-  },
-  {
-    id: "delivery",
-    name: "Delivery & Logistics",
-    percentage: 26,
-    barClass: "bg-warning",
-    badgeClass: "bg-warning/10 text-warning",
-    objections: [
       {
         id: "ob3",
-        text: "Delayed delivery in last cycle",
+        text: "Competitors are doing more painter meets and site activities",
         bestPractices: [
-          "Acknowledge the specific incident and share the corrective action already taken with the distributor.",
-          "Set a clear delivery SLA for the next order and confirm it with the retailer in writing/WhatsApp.",
-          "Offer to personally track the next dispatch and proactively update the retailer.",
-        ],
-      },
-      {
-        id: "ob4",
-        text: "Order quantities not matching what was placed",
-        bestPractices: [
-          "Cross-check the order against the invoice with the retailer before escalating.",
-          "Involve the distributor/depot on a joint call to resolve discrepancies quickly.",
-          "Document the pattern if it repeats, and flag it to ASM for a systemic fix.",
+          "Propose a painter meet at this retailer's shop and loop in the ME team for scheduling support.",
+          "Identify 2-3 active painters in the area and organize a small on-site demo to rebuild visibility.",
+          "Share our activation calendar with the retailer so they see upcoming events they can host.",
         ],
       },
     ],
   },
   {
-    id: "service",
-    name: "Service & Support",
-    percentage: 20,
-    barClass: "bg-primary",
-    badgeClass: "bg-primary/10 text-primary",
+    id: "product-quality",
+    name: "Product quality",
+    percentage: 30,
+    barClass: "bg-warning",
+    objections: [
+      {
+        id: "ob4",
+        text: "Retailers feel product consistency changes batch-to-batch",
+        bestPractices: [
+          "Acknowledge the specific batch issue and log it for QA tracking with the batch number and date.",
+          "Offer a replacement/exchange for the affected stock to preserve trust immediately.",
+          "Share the quality-control certification process to reassure the retailer on consistency.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "scheme",
+    name: "Scheme related",
+    percentage: 9,
+    barClass: "bg-info",
     objections: [
       {
         id: "ob5",
-        text: "Service follow-up missing after a complaint",
+        text: "Schemes are either unclear or not exciting enough",
         bestPractices: [
-          "Close the loop on the specific complaint first — share status, resolution, and timeline.",
-          "Set a recurring follow-up reminder so the retailer isn't left chasing updates.",
-          "Introduce the retailer to the service escalation contact for faster resolution next time.",
+          "Simplify the scheme pitch to one clear headline benefit instead of multiple conditions.",
+          "Use a visual scheme calendar/poster in-shop so retailers can track progress themselves.",
+          "Gather retailer feedback on scheme structure and escalate to ASM for the next cycle's design.",
         ],
       },
     ],
   },
   {
-    id: "credit",
-    name: "Credit & Working Capital",
-    percentage: 16,
-    barClass: "bg-info",
-    badgeClass: "bg-info/10 text-info",
+    id: "sku-space",
+    name: "SKU Space related",
+    percentage: 7,
+    barClass: "bg-success",
     objections: [
       {
         id: "ob6",
+        text: "No space in shop for additional SKUs",
+        bestPractices: [
+          "Offer the compact display stand (2-4 sq ft) designed for small shops instead of asking for open floor space.",
+          "Start with the top 3-5 fastest-moving SKUs only, rather than the full range, to minimize the space ask.",
+          "Position the display near the counter/entrance where it earns its footprint through visibility.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "working-capital",
+    name: "Working Capital related",
+    percentage: 3,
+    barClass: "bg-muted-foreground",
+    objections: [
+      {
+        id: "ob7",
         text: "Credit terms shorter than competitor",
         bestPractices: [
           "Clarify the current credit policy and explain the rationale (risk tier, volume, payment history).",
