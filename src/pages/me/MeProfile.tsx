@@ -10,37 +10,44 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowRight, LayoutDashboard, MapPin } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp, LayoutDashboard, Lightbulb, MapPin } from "lucide-react";
 import { dealers } from "@/data/mockData";
 
 type NudgeKey = "engagement" | "objections" | "bestPractice";
 
 const newRetailers = dealers.filter((d) => d.type === "new");
 
-// Retailers with a pending objection, each paired with a response tailored to their specific situation
-// (rather than a generic FAQ) — drawn from their type and last-visit outcome.
-const pendingObjections = [
+// Competition-related objections raised across the trading area, each paired with
+// concrete best practices an ME can use to respond (rather than a generic FAQ).
+const competitionObjections = [
   {
-    dealerId: "3", // Krishna Traders
-    objection: "Considering a competitor brand for better schemes",
-    response: "Highlight our current scheme edge and share a side-by-side comparison — most retailers reconsider once they see the full picture.",
+    id: "co1",
+    text: "Competitor schemes are more visible and frequent",
+    bestPractices: [
+      "Show the retailer the current company scheme and explain the direct earning / benefit on his likely purchases.",
+      "Prioritize and communicate the most relevant schemes to the retailer instead of sharing every scheme without context.",
+      "Increase scheme visibility through every ME interaction — share scheme details on WhatsApp and revisit the retailer before the scheme closes to drive participation.",
+    ],
   },
   {
-    dealerId: "4", // Gupta Paint House
-    objection: "Shop has gone inactive — reason unclear",
-    response: "Try an off-peak visit or a phone check-in first to understand if it's a temporary closure or a deeper issue before re-pitching.",
+    id: "co2",
+    text: "Customers recognize competitor paint shades faster",
+    bestPractices: [
+      "Carry the shade card and tinting guide on every visit so customers can compare instantly at the counter.",
+      "Coach the retailer's staff on 2-3 close shade matches to our range so they can respond confidently to walk-ins.",
+      "Push for better in-shop shade display placement near the entrance to build recall.",
+    ],
   },
   {
-    dealerId: "7", // Singh Building Centre
-    objection: "Feels under-served by ME visit frequency",
-    response: "Step up visit cadence for the next month and proactively share upcoming scheme changes — under-visited retailers respond well to a visible increase in attention.",
+    id: "co3",
+    text: "Competitors are doing more painter meets and site activities",
+    bestPractices: [
+      "Propose a painter meet at this retailer's shop and loop in the ME team for scheduling support.",
+      "Identify 2-3 active painters in the area and organize a small on-site demo to rebuild visibility.",
+      "Share our activation calendar with the retailer so they see upcoming events they can host.",
+    ],
   },
-  {
-    dealerId: "9", // Deshpande Hardware Stores
-    objection: "Cited service gaps in past engagements",
-    response: "Acknowledge the specific service gap first, then offer a concrete fix (faster delivery commitment, dedicated support contact) before reintroducing the product pitch.",
-  },
-].map((o) => ({ ...o, dealer: dealers.find((d) => d.id === o.dealerId) }));
+];
 
 const nudges: { key: NudgeKey; label: string; quote: string; cta: string }[] = [
   {
@@ -51,9 +58,9 @@ const nudges: { key: NudgeKey; label: string; quote: string; cta: string }[] = [
   },
   {
     key: "objections",
-    label: "Pending Objections Nudge:",
-    quote: "30% of retailer objections in your trading area are yet to be addressed.",
-    cta: "Click here to see how to respond",
+    label: "Objections Nudge:",
+    quote: "45% of the objections in your trading area are competition-related",
+    cta: "Click here to see the best practices",
   },
   {
     key: "bestPractice",
@@ -66,6 +73,7 @@ const nudges: { key: NudgeKey; label: string; quote: string; cta: string }[] = [
 const MeProfile = () => {
   const navigate = useNavigate();
   const [openNudge, setOpenNudge] = useState<NudgeKey | null>(null);
+  const [expandedObjectionId, setExpandedObjectionId] = useState<string | null>(null);
 
   return (
     <MeLayout title="ME Profile" showBack>
@@ -133,32 +141,60 @@ const MeProfile = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Pending Objections Nudge popup */}
-      <Dialog open={openNudge === "objections"} onOpenChange={(open) => !open && setOpenNudge(null)}>
+      {/* Objections Nudge popup */}
+      <Dialog
+        open={openNudge === "objections"}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOpenNudge(null);
+            setExpandedObjectionId(null);
+          }
+        }}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>How to respond</DialogTitle>
-            <DialogDescription>Retailers with a pending objection, and how to approach each one</DialogDescription>
+            <DialogTitle>How to respond – best practices</DialogTitle>
+            <DialogDescription>
+              What are the best practices which I can use to resolve retailer objections
+            </DialogDescription>
           </DialogHeader>
-          <div className="max-h-[60vh] overflow-auto space-y-3 pr-1">
-            {pendingObjections.map((o) => (
-              <div key={o.dealerId} className="rounded-lg border border-border p-3">
-                <p className="text-sm font-medium text-foreground">{o.dealer?.name}</p>
-                <p className="text-xs text-foreground/85 leading-snug mt-1">“{o.objection}”</p>
-                <p className="text-xs text-muted-foreground leading-relaxed mt-1">{o.response}</p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="mt-2 h-7 text-xs"
-                  onClick={() => {
-                    setOpenNudge(null);
-                    navigate(`/me/dealer/${o.dealerId}`);
-                  }}
-                >
-                  Engage →
-                </Button>
-              </div>
-            ))}
+          <div className="max-h-[60vh] overflow-auto space-y-2.5 pr-1">
+            {competitionObjections.map((ob) => {
+              const isExpanded = expandedObjectionId === ob.id;
+              return (
+                <div key={ob.id} className="rounded-lg border border-border overflow-hidden">
+                  <button
+                    onClick={() => setExpandedObjectionId(isExpanded ? null : ob.id)}
+                    className="w-full flex items-start justify-between gap-2 p-3 text-left"
+                  >
+                    <p className="text-sm font-semibold text-foreground leading-snug flex-1">
+                      {ob.text}
+                    </p>
+                    {isExpanded ? (
+                      <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                    )}
+                  </button>
+                  {isExpanded && (
+                    <div className="px-3 pb-3">
+                      <div className="flex items-center gap-1.5 text-xs font-medium italic text-muted-foreground mb-1.5">
+                        <Lightbulb className="w-3.5 h-3.5" />
+                        Best Practices
+                      </div>
+                      <ul className="space-y-1.5">
+                        {ob.bestPractices.map((bp, i) => (
+                          <li key={i} className="text-sm text-foreground/85 leading-relaxed flex gap-2">
+                            <span className="text-primary font-semibold shrink-0">{i + 1}.</span>
+                            <span>{bp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </DialogContent>
       </Dialog>
@@ -183,7 +219,7 @@ const MeProfile = () => {
               </p>
               <ul className="space-y-1.5">
                 {[
-                  "Identify 1-2 upcoming construction clusters in your trading area",
+                  "Identify 1-2 upcoming construction prospects in your trading area",
                   "Shortlist retailers within that cluster who aren't yet engaged",
                   "Open with a sample kit + joint site visit alongside an active contractor",
                   "Follow up within 2 weeks to convert interest into a first order",
