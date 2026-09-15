@@ -416,10 +416,13 @@ const MyDashboard = () => {
               </AccordionTrigger>
               <AccordionContent className="px-3 pb-3">
                 <div className="mb-3 p-3 rounded-lg border border-border/60 bg-background">
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">
                     By objection category
                   </p>
-                  <div className="space-y-2">
+                  <p className="text-[11px] text-muted-foreground mt-0.5 mb-2">
+                    Tap a category to see best practices
+                  </p>
+                  <div className="space-y-1.5">
                     {objectionCategories.map((c) => (
                       <button
                         key={c.id}
@@ -427,22 +430,16 @@ const MyDashboard = () => {
                           setOpenCategoryId(c.id);
                           setExpandedObjectionId(null);
                         }}
-                        className="w-full text-left group"
+                        className="w-full flex items-center gap-2.5 p-2.5 rounded-lg border border-border/60 bg-card hover:bg-accent/40 active:scale-[0.99] transition-all text-left"
                       >
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <span className="text-xs font-medium text-foreground group-hover:text-primary transition-colors">
-                            {c.name}
-                          </span>
-                          <span className="text-[11px] font-semibold text-muted-foreground shrink-0">
-                            {c.percentage}%
-                          </span>
-                        </div>
-                        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                          <div
-                            className={`h-full rounded-full ${c.barClass}`}
-                            style={{ width: `${c.percentage}%` }}
-                          />
-                        </div>
+                        <span className={`w-2 h-2 rounded-full shrink-0 ${c.barClass}`} />
+                        <span className="text-xs font-medium text-foreground flex-1 truncate">
+                          {c.name}
+                        </span>
+                        <span className="text-[11px] font-semibold text-muted-foreground shrink-0">
+                          {c.percentage}%
+                        </span>
+                        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                       </button>
                     ))}
                   </div>
